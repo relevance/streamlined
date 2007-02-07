@@ -9,7 +9,7 @@ begin
   FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'grids'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'stylesheets')
   
   unless FileTest.exist? File.join(File.dirname(__FILE__), '..','..','..', 'public', 'images', 'streamlined')
-    FileUtils.mkdir( File.join(RAILS_ROOT, 'public', 'images', 'streamlined') )
+    FileUtils.mkdir( File.join((File.dirname(__FILE__), '..','..','..', 'public', 'images', 'streamlined') )
   end
   
   FileUtils.cp( 
