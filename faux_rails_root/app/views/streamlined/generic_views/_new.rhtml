@@ -1,0 +1,8 @@
+<h1>New <%= @model_name %></h1>
+
+<% remote_form_for @model_underscore.to_sym, @streamlined_item, 
+            :url => { :action => "create", :id=>@streamlined_item, :from_window => true} do |form| %>
+  <%= streamlined_render :partial => 'form', :locals=>{:form=>form} %>
+  <%= submit_tag "Create" %>
+<% end %>
+

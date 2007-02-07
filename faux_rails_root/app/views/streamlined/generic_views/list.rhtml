@@ -1,0 +1,36 @@
+<script type="text/javascript">
+  var streamlined_model = '<%= @model_underscore %>';
+  var streamlined_models = '<%= params[:controller] %>';
+</script>
+<% form_for :page_options, @page_options, 
+            :url => { :action => "list"}, :html=> {:id => :page_options, :style => 'display: none;'} do |form| %>
+  <%# TODO: hide this form when JavaScript is available, then use it behind scenes%>
+  Filter <%= form.text_field 'filter', {:autocomplete=>"off"} %>
+  Page <%= form.text_field 'page', {:autocomplete=>"off"} %>
+  Sort Order <%= form.text_field 'sort_order', {:autocomplete=>"off"} %>
+  Sort Column <%= form.text_field 'sort_column', {:autocomplete=>"off"} %>
+  Counter <%= form.text_field 'counter', {:autocomplete=>"off"} %>
+  <%= submit_tag "Show Me" %>
+<% end %>
+<div id="main">
+	<div id="streamlined_table_header">
+		  <span id="title"><%= image_tag_if_exists("#{@model_table}.png", {:align => 'top'}) %> <%= @model_name.titleize.pluralize %></span>	
+		  <span id="filter">
+			  <form id="streamlined_filter_form">
+				Filter:  <input type="text" id="streamlined_filter_term" autocomplete="off">
+			  </form>
+		  </span>
+	</div>
+	<div id="streamlined_table_content">
+		<div id="<%= @model_underscore %>_list">
+			<%= streamlined_render :partial=>'list' %>
+		</div>
+		<div id="controls">
+					<%= link_to_function image_tag('add_16.png', {:alt => "New #{@model_name}", :title => "New #{@model_name}", :border => '0'}), "Streamlined.Windows.open_local_window_from_url('New', '#{url_for(:action => 'new')}')" %>&nbsp;<%= link_to_function(image_tag('export_16.png', {:alt => "Export XML", :title => "Export XML", :border => '0'}),"Streamlined.Exporter.export_to('#{url_for(:action => 'export_to_xml')}')")%>&nbsp;<%= link_to_function(image_tag('save_16.png', {:alt => "Export CSV", :title => "Export CSV", :border => 0}),"Streamlined.Exporter.export_to('#{url_for(:action => 'export_to_csv')}')")%>
+			<%= link_to_function image_tag('control-reverse_16.png', {:id => 'previous_page', :alt => 'Previous Page', :style => @streamlined_item_pages != [] && @streamlined_item_pages.current.previous ? "" : "display: none;", :title => 'Previous Page', :border => '0'}), "Streamlined.PageOptions.previousPage()" %>
+			<%= link_to_function image_tag('control-forward_16.png', {:id => 'next_page', :alt => 'Next Page', :style => @streamlined_item_pages != [] && @streamlined_item_pages.current.next ? "" : "display: none;", :title => 'Next Page', :border => '0'}), "Streamlined.PageOptions.nextPage()" %> 
+			<br />
+
+		</div>
+	</div>
+</div>

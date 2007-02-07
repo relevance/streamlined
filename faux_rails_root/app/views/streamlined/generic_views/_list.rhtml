@@ -1,0 +1,56 @@
+<table class="streamlined">
+  <thead>
+	<tr>
+  <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
+    <th scope="col" class="sortSelector"><%= column.human_name %><%= column_sort_image(@page_options, column)%></th>
+  <% end %>
+
+  <% for relationship in @model.reflect_on_all_associations %>
+    <% if @model_ui.relationships[relationship.name].summary_def %>
+    	<th scope="col"><%= Inflector.humanize(relationship.name.to_s) %></th>
+   	<% end %>
+  <% end %>
+
+    <th width="100">&nbsp;</th>
+	</tr>
+  </thead>
+  <tbody>
+<% alt = 0 %>
+<% for item in @streamlined_items %>
+<% alt = 1 - alt %>
+  <tr <%= "class='odd'" if alt == 0 %>>
+  <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
+    <td <%= popup_events_for_item(item, column, @model_ui) %>><%=h item.send(column.name) %></td>
+  <% end %>
+
+  <% for relationship in @model.reflect_on_all_associations %>
+    <% if @model_ui.relationships[relationship.name].summary_def %>
+		<td><div id="<%= relationship_div_id(relationship, item) %>">
+				<%= render(:partial => "#{@model_ui.relationships[relationship.name].summary_def.partial}", :locals => {:item => item, :relationship => relationship, :streamlined_def => @model_ui.relationships[relationship.name].summary_def})%>
+		</div> <%= link_to_function("Edit", "Streamlined.Relationships.open_relationship('#{relationship_div_id(relationship, item)}', this, '/#{params[:controller]}')")%></td>
+	<% end %>
+  <% end %>
+
+
+
+    <td><%= link_to_function image_tag('search_16.png', {:alt => 'Show', :title => 'Show', :border => '0'}), "Streamlined.Windows.open_local_window_from_url('Show', '#{url_for(:action => 'show', :id => item.id)}', #{item.id})" %>
+    <%= link_to_function image_tag('edit_16.png', {:alt => 'Edit', :title => 'Edit', :border => '0'}), "Streamlined.Windows.open_local_window_from_url('Edit', '#{url_for(:action => 'edit', :id => item.id)}', #{item.id})" %>
+    <%= link_to image_tag('delete_16.png', {:alt => 'Destroy', :title => 'Destroy', :border => '0'}), { :action => 'destroy', :id => item }, :confirm => 'Are you sure?', :method => "post" %></td>
+  </tr>
+<% end %>
+  </tbody>
+</table>
+
+<% if @streamlined_item_pages != [] && @streamlined_item_pages.current.previous %>
+<script type="text/javascript">
+   if($('previous_page')) {
+   	Element.show('previous_page');
+   }
+</script>
+<% else %>
+<script type="text/javascript">
+   if($('previous_page')) {
+   	Element.hide('previous_page');
+   }
+</script>
+<% end %>

@@ -1,0 +1,8 @@
+<table>
+<% @item.attributes.each do |att| %>
+	<tr>
+		<td align="right" valign="top"><b><%= att[0]%></b> :</td>
+		<td valign="top"><%= att[1]%></td>
+	</tr>
+<% end %>
+</table>

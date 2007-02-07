@@ -1,0 +1,455 @@
+# Logfile created on Sat Nov 18 18:59:17 MST 2006 by logger.rb/1.5.2.7
+@model NAME: Widget
+@model: Widget
+hello
+hello
+
+
+Processing WidgetsController#list (for 0.0.0.0 at 2006-11-18 18:59:17) [GET]
+  Session ID: 
+  Parameters: {"action"=>"list", "controller"=>"widgets"}
+Rendering /streamlined/generic_views/list
+Completed in 0.01460 (68 reqs/sec) | Rendering: 0.01168 (80%) | DB: 0.00000 (0%) | 200 OK [http://test.host/widgets/list]
+@model NAME: Widget
+@model: Widget
+hello
+hello
+
+
+Processing WidgetsController#new (for 0.0.0.0 at 2006-11-18 18:59:17) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"widgets"}
+Completed in 0.00347 (287 reqs/sec) | Rendering: 0.00325 (93%) | DB: 0.00000 (0%) | 200 OK [http://test.host/widgets/new]
+@model NAME: Widget
+@model: Widget
+hello
+hello
+
+
+Processing WidgetsController#show (for 0.0.0.0 at 2006-11-18 18:59:17) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "id"=>"1", "controller"=>"widgets"}
+Completed in 0.00281 (356 reqs/sec) | Rendering: 0.00224 (80%) | DB: 0.00000 (0%) | 200 OK [http://test.host/widgets/show/1]
+@model NAME: Person
+@model: Person
+hello
+hello
+Cannot directly browse the Streamlined framework (/streamlined)
+@model NAME: Person
+@model: Person
+hello
+hello
+
+
+Processing PeopleController#create (for 0.0.0.0 at 2007-01-26 11:52:14) [POST]
+  Session ID: 
+  Parameters: {"action"=>"create", "controller"=>"people", "person"=>{"first_name"=>"Another", "last_name"=>"Person"}}
+Redirected to http://test.host/people/show/5?layout=streamlined_window
+Completed in 0.00247 (405 reqs/sec) | DB: 0.00000 (0%) | 302 Found [http://test.host/people/create?person=last_namePersonfirst_nameAnother]
+@model NAME: Person
+@model: Person
+hello
+hello
+
+
+Processing PeopleController#edit (for 0.0.0.0 at 2007-01-26 11:52:14) [GET]
+  Session ID: 
+  Parameters: {"action"=>"edit", "id"=>"1", "controller"=>"people"}
+
+
+ActionView::TemplateError (/usr/local/lib/ruby/gems/1.8/gems/activesupport-1.4.0/lib/active_support/dependencies.rb:478:in `const_missing': uninitialized constant Class::PersonAdditions) on line #7 of app/views/streamlined/generic_views/_form.rhtml:
+4: 
+5: <table class="streamlined_form">
+6: 
+7:   <% @model_ui.user_columns_for_display.each do |column| %>
+8:     <tr><td class="streamlined_label_cell"><label class="streamlined_label" for="#{record}_#{column.name}"><%= column.human_name %></label></td><td class="streamlined_input_cell"><%= input(@model_underscore, column.name) %></td></tr>
+9:   <% end %>
+10: 
+
+    lib/streamlined_ui.rb:202:in `initialize_user_columns'
+    (eval):1:in `initialize_user_columns'
+    lib/streamlined_ui.rb:79:in `user_columns_for_display'
+    faux_rails_root/app/views//streamlined/generic_views/_form.rhtml:7:in `_run_rhtml_47app47views47streamlined47generic_views47_form46rhtml'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:326:in `compile_and_render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:301:in `render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:260:in `render_file'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:275:in `render'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:59:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:30:in `benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:58:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:287:in `render'
+    lib/streamlined_helper.rb:80:in `streamlined_render'
+    faux_rails_root/app/views//streamlined/generic_views/_edit.rhtml:4:in `_run_rhtml_47app47views47streamlined47generic_views47_edit46rhtml'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/helpers/form_helper.rb:151:in `fields_for'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/helpers/prototype_helper.rb:187:in `remote_form_for'
+    faux_rails_root/app/views//streamlined/generic_views/_edit.rhtml:2:in `_run_rhtml_47app47views47streamlined47generic_views47_edit46rhtml'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:326:in `compile_and_render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:301:in `render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:260:in `render_file'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:275:in `render'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:59:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:30:in `benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:58:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:850:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:762:in `render_with_no_layout'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/layout.rb:256:in `render_without_benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:50:in `render'
+    /usr/local/lib/ruby/1.8/benchmark.rb:293:in `measure'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:50:in `render'
+    lib/streamlined_controller.rb:331:in `render'
+    lib/streamlined_controller.rb:178:in `edit'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:1095:in `perform_action_without_filters'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:632:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:634:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:638:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:438:in `call'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:637:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:619:in `perform_action_without_benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:66:in `perform_action_without_rescue'
+    /usr/local/lib/ruby/1.8/benchmark.rb:293:in `measure'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:66:in `perform_action_without_rescue'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/rescue.rb:83:in `perform_action'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:430:in `process_without_filters'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:624:in `process_without_session_management_support'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/session_management.rb:114:in `process_without_test'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:15:in `process'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:382:in `process'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:353:in `get'
+    test/functional/streamlined_controller_functional_test.rb:78:in `test_edit'
+    /usr/local/lib/ruby/1.8/test/unit/testcase.rb:70:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:32:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:31:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:32:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:31:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/ui/testrunnermediator.rb:44:in `run_suite'
+    /usr/local/lib/ruby/1.8/test/unit/ui/console/testrunner.rb:65:in `start_mediator'
+    /usr/local/lib/ruby/1.8/test/unit/ui/console/testrunner.rb:39:in `start'
+    /usr/local/lib/ruby/1.8/test/unit/ui/testrunnerutilities.rb:27:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/autorunner.rb:200:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/autorunner.rb:13:in `run'
+    /usr/local/lib/ruby/1.8/test/unit.rb:285
+    /usr/local/lib/ruby/gems/1.8/gems/rake-0.7.1/lib/rake/rake_test_loader.rb:5
+
+
+Rendering /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/templates/rescues/layout.rhtml (500 Internal Error)
+@model NAME: Person
+@model: Person
+hello
+hello
+
+
+Processing PeopleController#index (for 0.0.0.0 at 2007-01-26 11:52:14) [GET]
+  Session ID: 
+  Parameters: {"action"=>"index", "controller"=>"people"}
+Rendering /streamlined/generic_views/list
+
+
+ActionView::TemplateError (/usr/local/lib/ruby/gems/1.8/gems/activesupport-1.4.0/lib/active_support/dependencies.rb:478:in `const_missing': uninitialized constant Class::PersonAdditions) on line #4 of app/views/streamlined/generic_views/_list.rhtml:
+1: <table class="streamlined">
+2:   <thead>
+3: 	<tr>
+4:   <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
+5:     <th scope="col" class="sortSelector"><%= column.human_name %><%= column_sort_image(@page_options, column)%></th>
+6:   <% end %>
+7: 
+
+    lib/streamlined_ui.rb:202:in `initialize_user_columns'
+    (eval):1:in `initialize_user_columns'
+    lib/streamlined_ui.rb:79:in `user_columns_for_display'
+    lib/streamlined_helper.rb:107:in `current_show_columns'
+    lib/streamlined_helper.rb:56:in `show_columns_for_model'
+    faux_rails_root/app/views//streamlined/generic_views/_list.rhtml:4:in `_run_rhtml_47app47views47streamlined47generic_views47_list46rhtml'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:326:in `compile_and_render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:301:in `render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:260:in `render_file'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:275:in `render'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:59:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:30:in `benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:58:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:287:in `render'
+    lib/streamlined_helper.rb:80:in `streamlined_render'
+    faux_rails_root/app/views//streamlined/generic_views/list.rhtml:26:in `_run_rhtml_47app47views47streamlined47generic_views47list46rhtml'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:326:in `compile_and_render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:301:in `render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:260:in `render_file'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:806:in `render_file'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:741:in `render_with_no_layout'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/layout.rb:256:in `render_without_benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:50:in `render'
+    /usr/local/lib/ruby/1.8/benchmark.rb:293:in `measure'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:50:in `render'
+    lib/streamlined_controller.rb:340:in `render'
+    lib/streamlined_controller.rb:54:in `index'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:1095:in `perform_action_without_filters'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:632:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:634:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:638:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:438:in `call'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:637:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:619:in `perform_action_without_benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:66:in `perform_action_without_rescue'
+    /usr/local/lib/ruby/1.8/benchmark.rb:293:in `measure'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:66:in `perform_action_without_rescue'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/rescue.rb:83:in `perform_action'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:430:in `process_without_filters'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:624:in `process_without_session_management_support'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/session_management.rb:114:in `process_without_test'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:15:in `process'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:382:in `process'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:353:in `get'
+    test/functional/streamlined_controller_functional_test.rb:43:in `test_index'
+    /usr/local/lib/ruby/1.8/test/unit/testcase.rb:70:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:32:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:31:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:32:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:31:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/ui/testrunnermediator.rb:44:in `run_suite'
+    /usr/local/lib/ruby/1.8/test/unit/ui/console/testrunner.rb:65:in `start_mediator'
+    /usr/local/lib/ruby/1.8/test/unit/ui/console/testrunner.rb:39:in `start'
+    /usr/local/lib/ruby/1.8/test/unit/ui/testrunnerutilities.rb:27:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/autorunner.rb:200:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/autorunner.rb:13:in `run'
+    /usr/local/lib/ruby/1.8/test/unit.rb:285
+    /usr/local/lib/ruby/gems/1.8/gems/rake-0.7.1/lib/rake/rake_test_loader.rb:5
+
+
+Rendering /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/templates/rescues/layout.rhtml (500 Internal Error)
+@model NAME: Person
+@model: Person
+hello
+hello
+
+
+Processing PeopleController#list (for 0.0.0.0 at 2007-01-26 11:52:14) [GET]
+  Session ID: 
+  Parameters: {"action"=>"list", "controller"=>"people"}
+Rendering /streamlined/generic_views/list
+
+
+ActionView::TemplateError (/usr/local/lib/ruby/gems/1.8/gems/activesupport-1.4.0/lib/active_support/dependencies.rb:478:in `const_missing': uninitialized constant Class::PersonAdditions) on line #4 of app/views/streamlined/generic_views/_list.rhtml:
+1: <table class="streamlined">
+2:   <thead>
+3: 	<tr>
+4:   <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
+5:     <th scope="col" class="sortSelector"><%= column.human_name %><%= column_sort_image(@page_options, column)%></th>
+6:   <% end %>
+7: 
+
+    lib/streamlined_ui.rb:202:in `initialize_user_columns'
+    (eval):1:in `initialize_user_columns'
+    lib/streamlined_ui.rb:79:in `user_columns_for_display'
+    lib/streamlined_helper.rb:107:in `current_show_columns'
+    lib/streamlined_helper.rb:56:in `show_columns_for_model'
+    faux_rails_root/app/views//streamlined/generic_views/_list.rhtml:4:in `_run_rhtml_47app47views47streamlined47generic_views47_list46rhtml'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:326:in `compile_and_render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:301:in `render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:260:in `render_file'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:275:in `render'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:59:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:30:in `benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:58:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:287:in `render'
+    lib/streamlined_helper.rb:80:in `streamlined_render'
+    faux_rails_root/app/views//streamlined/generic_views/list.rhtml:26:in `_run_rhtml_47app47views47streamlined47generic_views47list46rhtml'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:326:in `compile_and_render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:301:in `render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:260:in `render_file'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:806:in `render_file'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:741:in `render_with_no_layout'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/layout.rb:256:in `render_without_benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:50:in `render'
+    /usr/local/lib/ruby/1.8/benchmark.rb:293:in `measure'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:50:in `render'
+    lib/streamlined_controller.rb:346:in `render'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:1096:in `perform_action_without_filters'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:632:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:634:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:638:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:438:in `call'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:637:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:619:in `perform_action_without_benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:66:in `perform_action_without_rescue'
+    /usr/local/lib/ruby/1.8/benchmark.rb:293:in `measure'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:66:in `perform_action_without_rescue'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/rescue.rb:83:in `perform_action'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:430:in `process_without_filters'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:624:in `process_without_session_management_support'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/session_management.rb:114:in `process_without_test'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:15:in `process'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:382:in `process'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:353:in `get'
+    test/functional/streamlined_controller_functional_test.rb:49:in `test_list'
+    /usr/local/lib/ruby/1.8/test/unit/testcase.rb:70:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:32:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:31:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:32:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:31:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/ui/testrunnermediator.rb:44:in `run_suite'
+    /usr/local/lib/ruby/1.8/test/unit/ui/console/testrunner.rb:65:in `start_mediator'
+    /usr/local/lib/ruby/1.8/test/unit/ui/console/testrunner.rb:39:in `start'
+    /usr/local/lib/ruby/1.8/test/unit/ui/testrunnerutilities.rb:27:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/autorunner.rb:200:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/autorunner.rb:13:in `run'
+    /usr/local/lib/ruby/1.8/test/unit.rb:285
+    /usr/local/lib/ruby/gems/1.8/gems/rake-0.7.1/lib/rake/rake_test_loader.rb:5
+
+
+Rendering /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/templates/rescues/layout.rhtml (500 Internal Error)
+@model NAME: Person
+@model: Person
+hello
+hello
+
+
+Processing PeopleController#new (for 0.0.0.0 at 2007-01-26 11:52:14) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"people"}
+
+
+ActionView::TemplateError (/usr/local/lib/ruby/gems/1.8/gems/activesupport-1.4.0/lib/active_support/dependencies.rb:478:in `const_missing': uninitialized constant Class::PersonAdditions) on line #7 of app/views/streamlined/generic_views/_form.rhtml:
+4: 
+5: <table class="streamlined_form">
+6: 
+7:   <% @model_ui.user_columns_for_display.each do |column| %>
+8:     <tr><td class="streamlined_label_cell"><label class="streamlined_label" for="#{record}_#{column.name}"><%= column.human_name %></label></td><td class="streamlined_input_cell"><%= input(@model_underscore, column.name) %></td></tr>
+9:   <% end %>
+10: 
+
+    lib/streamlined_ui.rb:202:in `initialize_user_columns'
+    (eval):1:in `initialize_user_columns'
+    lib/streamlined_ui.rb:79:in `user_columns_for_display'
+    faux_rails_root/app/views//streamlined/generic_views/_form.rhtml:7:in `_run_rhtml_47app47views47streamlined47generic_views47_form46rhtml'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:326:in `compile_and_render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:301:in `render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:260:in `render_file'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:275:in `render'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:59:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:30:in `benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:58:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:287:in `render'
+    lib/streamlined_helper.rb:80:in `streamlined_render'
+    faux_rails_root/app/views//streamlined/generic_views/_new.rhtml:5:in `_run_rhtml_47app47views47streamlined47generic_views47_new46rhtml'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/helpers/form_helper.rb:151:in `fields_for'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/helpers/prototype_helper.rb:187:in `remote_form_for'
+    faux_rails_root/app/views//streamlined/generic_views/_new.rhtml:3:in `_run_rhtml_47app47views47streamlined47generic_views47_new46rhtml'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:326:in `compile_and_render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:301:in `render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:260:in `render_file'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:275:in `render'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:59:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:30:in `benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:58:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:850:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:762:in `render_with_no_layout'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/layout.rb:256:in `render_without_benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:50:in `render'
+    /usr/local/lib/ruby/1.8/benchmark.rb:293:in `measure'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:50:in `render'
+    lib/streamlined_controller.rb:331:in `render'
+    lib/streamlined_controller.rb:138:in `new'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:1095:in `perform_action_without_filters'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:632:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:634:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:638:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:438:in `call'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:637:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:619:in `perform_action_without_benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:66:in `perform_action_without_rescue'
+    /usr/local/lib/ruby/1.8/benchmark.rb:293:in `measure'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:66:in `perform_action_without_rescue'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/rescue.rb:83:in `perform_action'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:430:in `process_without_filters'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:624:in `process_without_session_management_support'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/session_management.rb:114:in `process_without_test'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:15:in `process'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:382:in `process'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:353:in `get'
+    test/functional/streamlined_controller_functional_test.rb:63:in `test_new'
+    /usr/local/lib/ruby/1.8/test/unit/testcase.rb:70:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:32:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:31:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:32:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:31:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/ui/testrunnermediator.rb:44:in `run_suite'
+    /usr/local/lib/ruby/1.8/test/unit/ui/console/testrunner.rb:65:in `start_mediator'
+    /usr/local/lib/ruby/1.8/test/unit/ui/console/testrunner.rb:39:in `start'
+    /usr/local/lib/ruby/1.8/test/unit/ui/testrunnerutilities.rb:27:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/autorunner.rb:200:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/autorunner.rb:13:in `run'
+    /usr/local/lib/ruby/1.8/test/unit.rb:285
+    /usr/local/lib/ruby/gems/1.8/gems/rake-0.7.1/lib/rake/rake_test_loader.rb:5
+
+
+Rendering /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/templates/rescues/layout.rhtml (500 Internal Error)
+@model NAME: Person
+@model: Person
+hello
+hello
+
+
+Processing PeopleController#show (for 0.0.0.0 at 2007-01-26 11:52:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "id"=>"1", "controller"=>"people"}
+
+
+ActionView::TemplateError (/usr/local/lib/ruby/gems/1.8/gems/activesupport-1.4.0/lib/active_support/dependencies.rb:478:in `const_missing': uninitialized constant Class::PersonAdditions) on line #3 of app/views/streamlined/generic_views/_show.rhtml:
+1: <div id="content">
+2:   <table class="streamlined_form">
+3: <% for column in @model_ui.user_columns_for_display %>
+4: <tr>
+5:   <td class="streamlined_label_cell"><span class="streamlined_label"><%= column.human_name %>:</span></td><td class="streamlined_value_cell"><%=h @streamlined_item.send(column.name) %></td>
+6: </tr>
+
+    lib/streamlined_ui.rb:202:in `initialize_user_columns'
+    (eval):1:in `initialize_user_columns'
+    lib/streamlined_ui.rb:79:in `user_columns_for_display'
+    faux_rails_root/app/views//streamlined/generic_views/_show.rhtml:3:in `_run_rhtml_47app47views47streamlined47generic_views47_show46rhtml'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:326:in `compile_and_render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:301:in `render_template'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:260:in `render_file'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/base.rb:275:in `render'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:59:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:30:in `benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_view/partials.rb:58:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:850:in `render_partial'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:762:in `render_with_no_layout'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/layout.rb:256:in `render_without_benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:50:in `render'
+    /usr/local/lib/ruby/1.8/benchmark.rb:293:in `measure'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:50:in `render'
+    lib/streamlined_controller.rb:331:in `render'
+    lib/streamlined_controller.rb:123:in `show'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:1095:in `perform_action_without_filters'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:632:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:634:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:638:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:438:in `call'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:637:in `call_filter'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:619:in `perform_action_without_benchmark'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:66:in `perform_action_without_rescue'
+    /usr/local/lib/ruby/1.8/benchmark.rb:293:in `measure'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/benchmarking.rb:66:in `perform_action_without_rescue'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/rescue.rb:83:in `perform_action'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/base.rb:430:in `process_without_filters'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/filters.rb:624:in `process_without_session_management_support'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/session_management.rb:114:in `process_without_test'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:15:in `process'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:382:in `process'
+    /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/test_process.rb:353:in `get'
+    test/functional/streamlined_controller_functional_test.rb:55:in `test_show'
+    /usr/local/lib/ruby/1.8/test/unit/testcase.rb:70:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:32:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:31:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:32:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/testsuite.rb:31:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/ui/testrunnermediator.rb:44:in `run_suite'
+    /usr/local/lib/ruby/1.8/test/unit/ui/console/testrunner.rb:65:in `start_mediator'
+    /usr/local/lib/ruby/1.8/test/unit/ui/console/testrunner.rb:39:in `start'
+    /usr/local/lib/ruby/1.8/test/unit/ui/testrunnerutilities.rb:27:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/autorunner.rb:200:in `run'
+    /usr/local/lib/ruby/1.8/test/unit/autorunner.rb:13:in `run'
+    /usr/local/lib/ruby/1.8/test/unit.rb:285
+    /usr/local/lib/ruby/gems/1.8/gems/rake-0.7.1/lib/rake/rake_test_loader.rb:5
+
+
+Rendering /usr/local/lib/ruby/gems/1.8/gems/actionpack-1.13.1/lib/action_controller/templates/rescues/layout.rhtml (500 Internal Error)
