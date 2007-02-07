@@ -1,4 +1,17 @@
-RelevanceExtensions
+Streamlined
 ===================
+Streamlined allows you to quickly generate useful user interfaces, declaratively.
 
-Description goes here
+After installing the plugin, you MUST add the following line to app/helpers/application_helper.rb:
+
+include StreamlinedHelper
+
+
+Then, to make any controller into a Streamlined controller, do the following:
+
+class MyNiftyController < ApplicationController
+	layout 'streamlined'
+	acts_as_streamlined
+	
+	...[anything else you want to do]
+end
