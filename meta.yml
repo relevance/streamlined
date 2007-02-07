@@ -1,0 +1,7 @@
+author: 
+    name: Relevance
+    homepage: http://relevancellc.com
+summary: Declarative Interface for Rails
+homepage: http://streamlinedframework.org
+plugin: https://relevancellc.com:8080/svn/streamlined/plugins/streamlined
+license: MIT
