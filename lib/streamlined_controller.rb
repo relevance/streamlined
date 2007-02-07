@@ -402,7 +402,12 @@ module StreamlinedController
                     @model_name ||= Inflector.singularize(self.class.name.chomp("Controller"))
                     @model = Class.class_eval(@model_name)
                     @model_symbol = Inflector.underscore(@model_name).to_sym
-                    @model_ui = Class.class_eval(@model_name + "UI")
+                    if Object.const_defined? (@model_name + "UI")
+                      @model_ui = Class.class_eval(@model_name + "UI")
+                    else
+                      @model_ui = Streamlined.generic_ui
+                      @model_ui.model = @model
+                    end
                     @model_table = Inflector.tableize(@model_name)
                     @model_underscore = Inflector.underscore(@model_name)
                     @page_title = "Manage \#{@model_name.pluralize}"

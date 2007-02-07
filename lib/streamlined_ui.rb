@@ -199,7 +199,11 @@ module Streamlined
        
        # Intializes the user_columns using a regex match to eliminate the unneeded columns from the Model's default columns collection.
        def initialize_user_columns
-        @user_columns = model.columns.reject {|d| d.name.match /(_at|_on|position|lock_version|_id|password_hash|id)$/ }.concat(calculated_columns(*Class.class_eval(model.name + "Additions").instance_methods)) 
+         @user_columns = model.columns.reject {|d| d.name.match /(_at|_on|position|lock_version|_id|password_hash|id)$/ }
+         if Object.const_defined?(model.name + "Additions")
+           @user_columns.concat(calculated_columns(*Class.class_eval(model.name + "Additions").instance_methods)) 
+         end
+         return @user_columns
        end
        
        # Enforce parity of options on any relationship declaration.
@@ -239,7 +243,31 @@ module Streamlined
        
        
      end
+     
   end
+  
+  class GenericUI < Streamlined::UI
+
+     def self.user_columns_for_display
+        initialize_user_columns
+     end
+
+      def self.initialize_user_columns
+       user_columns = model.columns.reject {|d| d.name.match /(_at|_on|position|lock_version|_id|password_hash|id)$/ }
+       if Object.const_defined?(model.name + "Additions")
+         user_columns.concat(calculated_columns(*Class.class_eval(model.name + "Additions").instance_methods)) 
+       end
+       return user_columns
+      end
+
+      def self.all_columns
+       initialize_user_columns
+      end
+   end
+
+   def self.generic_ui
+     GenericUI
+   end
   
    # Imitates ActiveRecord's Column, for use as wrapper around calculated columns.
    class Column
