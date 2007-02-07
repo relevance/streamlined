@@ -8,4 +8,4 @@ FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'streamlined.css'), Fil
 FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'overlib'), File.join(RAILS_ROOT, 'public')
 FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'windows_js'), File.join(RAILS_ROOT, 'public')
 FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'grids'), File.join(RAILS_ROOT, 'public', 'stylesheets')
-FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'images'), File.join(RAILS_ROOT, 'public', 'images', 'streamline')
+FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'images'), File.join(RAILS_ROOT, 'public', 'images', 'streamlined')
