@@ -4,6 +4,7 @@ begin
   FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'streamlined.js'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'javascripts')
   FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'streamlined.rhtml'), File.join(File.dirname(__FILE__), '..','..','..', 'app', 'views', 'layouts')
   FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'streamlined.css'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'stylesheets')
+  FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'as_style.css'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'stylesheets')
   FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'overlib'), File.join(File.dirname(__FILE__), '..','..','..', 'public')
   FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'windows_js'), File.join(File.dirname(__FILE__), '..','..','..', 'public')
   FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'grids'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'stylesheets')
