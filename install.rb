@@ -7,7 +7,17 @@ begin
   FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'overlib'), File.join(File.dirname(__FILE__), '..','..','..', 'public')
   FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'windows_js'), File.join(File.dirname(__FILE__), '..','..','..', 'public')
   FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'grids'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'stylesheets')
-  FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'images'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'images', 'streamlined')
+  
+  unless FileTest.exist? File.join(File.dirname(__FILE__), '..','..','..', 'public', 'images', 'streamlined')
+    FileUtils.mkdir( File.join(RAILS_ROOT, 'public', 'images', 'streamlined') )
+  end
+  
+  FileUtils.cp( 
+    Dir[File.join(File.dirname(__FILE__), 'files', 'images', '*.png')] + Dir[File.join(File.dirname(__FILE__), 'files', 'images', '*.gif')], 
+    File.join(File.dirname(__FILE__), '..','..','..', 'public', 'images', 'streamlined'),
+    :verbose => true
+  )
+  
 rescue Exception => ex
   puts "FAILED TO COPY FILES DURING STREAMLINED INSTALL.  PLEASE RUN rake streamlined:install_files."
   puts "EXCEPTION: #{ex}"
