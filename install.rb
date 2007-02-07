@@ -1,5 +1,4 @@
 # Install hook code here
-RAILS_ROOT = File.join(File.dirname(__FILE__), '../../../')
 begin
   FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'rico_corner.js'), File.join(RAILS_ROOT, 'public', 'javascripts')
   FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'streamlined.js'), File.join(RAILS_ROOT, 'public', 'javascripts')
@@ -11,4 +10,5 @@ begin
   FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'images'), File.join(RAILS_ROOT, 'public', 'images', 'streamlined')
 rescue Exception => ex
   puts "FAILED TO COPY FILES DURING STREAMLINED INSTALL.  PLEASE RUN rake streamlined:install_files."
+  puts "EXCEPTION: #{ex}"
 end
