@@ -263,10 +263,28 @@ module Streamlined
       def self.all_columns
        initialize_user_columns
       end
+      
+      def self.default_model
+        @model
+      end
+      
+      def self.relationships
+        return initialize_relationships
+      end
+      
    end
 
    def self.generic_ui
      GenericUI
+   end
+  
+  
+   def self.get_ui(klass_name)
+     if Object.const_defined?(klass_name + "UI")
+       Class.class_eval(klass_name + "UI")
+     else
+       self.generic_ui
+     end
    end
   
    # Imitates ActiveRecord's Column, for use as wrapper around calculated columns.

@@ -225,7 +225,7 @@ module StreamlinedController
           rel_name = params[:rel_name].to_sym
           instance.send(rel_name).clear
           klass = Class.class_eval(params[:klass])
-          @klass_ui = Class.class_eval(params[:klass] + "UI")     
+          @klass_ui = Streamlined.get_ui(params[:klass])
           relationship = @model_ui.relationships[rel_name]
           items.each do |id, onoff|
             instance.send(rel_name).push(klass.find(id)) if onoff == 'on'
@@ -351,7 +351,7 @@ module StreamlinedController
            @items = instance.send(@relationship_name)
            if rel_type.associables.size == 1
              @klass = Class.class_eval(params[:klass])
-             @klass_ui = Class.class_eval(params[:klass] + "UI")
+             @klass_ui = Streamlined.get_ui(params[:klass])
              if item_filter
                @all_items = @klass.find(:all, :conditions => @klass.conditions_by_like(item_filter))
              else            
