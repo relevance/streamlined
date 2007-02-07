@@ -1,6 +1,6 @@
 
   <form id="rel_<%= @relationship_name %>_<%= @root.id %>">
-	<input type="text" id="filter" size="12" name="filter"/><%= image_tag 'spinner.gif', :id=>"rel_#{@relationship_name}_#{@root.id}_spinner", :style=>"display:none; position: relative; top: 2px; left: 5px; width: 15px; height: 15px;" %><br/>
+	<input type="text" id="filter" size="12" name="filter"/><%= image_tag 'streamlined/spinner.gif', :id=>"rel_#{@relationship_name}_#{@root.id}_spinner", :style=>"display:none; position: relative; top: 2px; left: 5px; width: 15px; height: 15px;" %><br/>
 	<input type="hidden" name="id" value="<%= @root.id %>">
 	<input type="hidden" name="rel_name" value="<%= @relationship_name %>">
 	<input type="hidden" name="klass" value="<%= @klass %>">

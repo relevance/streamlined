@@ -19,9 +19,9 @@
     <td><%=h item.send(column.name) %></td>
   <% end %>
 
-    <td><%= link_to_function image_tag('search_16.png', {:alt => 'Show', :title => 'Show', :border => '0'}), "Streamlined.Windows.open_window('Show', '#{url_for(:controller => Inflector.tableize(@klass.name), :action => 'show', :id => item.id)}', #{item.id})" %>
-    <%= link_to_function image_tag('edit_16.png', {:alt => 'Edit', :title => 'Edit', :border => '0'}), "Streamlined.Windows.open_window('Edit', '#{url_for(:controller => Inflector.tableize(@klass.name), :action => 'edit', :id => item.id)}', #{item.id})" %>
-    <%= link_to image_tag('delete_16.png', {:alt => 'Destroy', :title => 'Destroy', :border => '0'}), { :controller => Inflector.tableize(@klass.name), :action => 'destroy', :id => item }, :confirm => 'Are you sure?', :method => "post" %></td>
+    <td><%= link_to_function image_tag('streamlined/search_16.png', {:alt => 'Show', :title => 'Show', :border => '0'}), "Streamlined.Windows.open_window('Show', '#{url_for(:controller => Inflector.tableize(@klass.name), :action => 'show', :id => item.id)}', #{item.id})" %>
+    <%= link_to_function image_tag('streamlined/edit_16.png', {:alt => 'Edit', :title => 'Edit', :border => '0'}), "Streamlined.Windows.open_window('Edit', '#{url_for(:controller => Inflector.tableize(@klass.name), :action => 'edit', :id => item.id)}', #{item.id})" %>
+    <%= link_to image_tag('streamlined/delete_16.png', {:alt => 'Destroy', :title => 'Destroy', :border => '0'}), { :controller => Inflector.tableize(@klass.name), :action => 'destroy', :id => item }, :confirm => 'Are you sure?', :method => "post" %></td>
   </tr>
 <% end %>
   </tbody>

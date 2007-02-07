@@ -39,9 +39,9 @@
 
 
 
-    <td><%= link_to_function image_tag('search_16.png', {:alt => 'Show', :title => 'Show', :border => '0'}), "Streamlined.Windows.open_local_window_from_url('Show', '#{url_for(:action => 'show', :id => item.id)}', #{item.id})" %>
-    <%= link_to_function image_tag('edit_16.png', {:alt => 'Edit', :title => 'Edit', :border => '0'}), "Streamlined.Windows.open_local_window_from_url('Edit', '#{url_for(:action => 'edit', :id => item.id)}', #{item.id})" %>
-    <%= link_to image_tag('delete_16.png', {:alt => 'Destroy', :title => 'Destroy', :border => '0'}), { :action => 'destroy', :id => item }, :confirm => 'Are you sure?', :method => "post" %></td>
+    <td><%= link_to_function image_tag('streamlined/search_16.png', {:alt => 'Show', :title => 'Show', :border => '0'}), "Streamlined.Windows.open_local_window_from_url('Show', '#{url_for(:action => 'show', :id => item.id)}', #{item.id})" %>
+    <%= link_to_function image_tag('streamlined/edit_16.png', {:alt => 'Edit', :title => 'Edit', :border => '0'}), "Streamlined.Windows.open_local_window_from_url('Edit', '#{url_for(:action => 'edit', :id => item.id)}', #{item.id})" %>
+    <%= link_to image_tag('streamlined/delete_16.png', {:alt => 'Destroy', :title => 'Destroy', :border => '0'}), { :action => 'destroy', :id => item }, :confirm => 'Are you sure?', :method => "post" %></td>
   </tr>
 <% end %>
   </tbody>
