@@ -1,0 +1,11 @@
+Use 'rake menu' to create a personalized menu.
+<div id="button">
+<ul>
+		<li>
+	<a href="<%= url_for(:controller => 'events', :action => 'list') %>">Events</a></li>
+		<li>
+	<a href="<%= url_for(:controller => 'logins', :action => 'list') %>">Logins</a></li>
+		<li>
+	<a href="<%= url_for(:controller => 'evals', :action => 'list') %>">Evals</a></li>
+	</ul>
+</div>
