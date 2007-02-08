@@ -19,6 +19,16 @@ begin
     :verbose => true
   )
   
+  unless FileTest.exist? File.join(File.dirname(__FILE__), '..','..','..', 'app', 'views', 'shared', 'streamlined')
+    FileUtils.mkdir(File.join(File.join(File.dirname(__FILE__), '..','..','..', 'app', 'views', 'shared', 'streamlined')))
+  end
+  
+  FileUtils.cp(
+   Dir[File.join(File.dirname(__FILE__), 'files', 'partials', '*.rhtml')],
+   File.join(File.dirname(__FILE__), '..','..','..', 'app', 'views', 'shared', 'streamlined'),
+   :verbose => true
+  )
+  
 rescue Exception => ex
   puts "FAILED TO COPY FILES DURING STREAMLINED INSTALL.  PLEASE RUN rake streamlined:install_files."
   puts "EXCEPTION: #{ex}"
