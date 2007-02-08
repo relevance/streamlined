@@ -3,8 +3,10 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'test/ar_helper'
 
-desc 'Default: run unit tests.'
-task :default => ['test:units', 'test:functionals']
+task :test => ['test:units', 'test:functionals']
+
+desc 'Default: run tests.'
+task :default => ['test']
 
 namespace :test do
   desc 'Unit test the streamlined plugin.'
