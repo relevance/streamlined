@@ -5,6 +5,7 @@
 require "#{RAILS_ROOT}/app/controllers/application"
 module StreamlinedController 
   def self.included(base)
+    raise "Cannot extend ApplicationController with acts_as_streamlined: please extend individual controllers." if base.instance_of? ApplicationController
     base.extend(ClassMethods)              
   end
   
