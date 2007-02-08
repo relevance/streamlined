@@ -285,6 +285,7 @@ module StreamlinedController
         rescue ActionView::TemplateError => ex 
           raise ex
         rescue Exception => ex
+          puts "EXCEPTION: #{ex}"
           if options
             if options[:partial] && @managed_partials.include?(options[:partial])
               options[:partial] = generic_view(options[:partial])

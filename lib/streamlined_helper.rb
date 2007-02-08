@@ -92,7 +92,7 @@ module StreamlinedHelper
   def render_path(template, options = {:partial => true, :con_name => nil})
      options[:con_name] ||= controller_name
      template_file = "_#{template}" if options[:partial]
-     File.exist?(File.join(RAILS_ROOT, 'vendor', 'plugins', 'streamlined', 'templates', options[:con_name], template_file + ".rhtml")) ? template : "/streamlined/generic_views/#{template}"
+     File.exist?(File.join(RAILS_ROOT, 'app', 'views', options[:con_name], template_file + ".rhtml")) ? template : "../../vendor/plugins/streamlined/templates/generic_views/#{template}"
   end
   
   private
