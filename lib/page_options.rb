@@ -11,6 +11,7 @@ class PageOptions
   attr_accessor :filter, :page, :sort_order, :sort_column, :counter
   include HashInit
 
+
   def filter?
     !self.filter.blank?
   end
