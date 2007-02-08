@@ -13,7 +13,8 @@ class ActionView::Base
   end
 end
 
-class PeopleController < StreamlinedController
+class PeopleController < ApplicationController
+  include StreamlinedController
 end  
 
 # TODO: this should go away once the UI class is optional
