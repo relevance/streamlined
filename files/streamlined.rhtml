@@ -15,20 +15,20 @@
 </head>
 <body>
 		<div id="header">
-			<%= render(:partial => '../../vendor/plugins/streamlined/templates/header' )%>
+			<%= render(:partial => 'shared/streamlined/header' )%>
 		</div>
 		<div id="center" class="column">
 			<%= image_tag 'streamlined/loading.gif', :id=>'spinner', :style=>"display:none;" %>
 			<%= @content_for_layout %>
 		</div>
 		<div id="left" class="column">
-			<%= render(:partial => "../../vendor/plugins/streamlined/templates/manage")%>
+			<%= render(:partial => "shared/streamlined/manage")%>
 		</div>
 		<div id="right" class="column">
 			&nbsp;
 		</div>
 		<div id="footer">
-			<%= render(:partial => '../../vendor/plugins/streamlined/templates/footer')%>
+			<%= render(:partial => 'shared/streamlined/footer')%>
 	    </div>
 </body>
 </html>

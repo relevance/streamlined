@@ -10,7 +10,7 @@ begin
   FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'grids'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'stylesheets')
   
   unless FileTest.exist? File.join(File.dirname(__FILE__), '..','..','..', 'public', 'images', 'streamlined')
-    FileUtils.mkdir( File.join(File.dirname(__FILE__), '..','..','..', 'public', 'images', 'streamlined') )
+    FileUtils.mkdir_p( File.join(File.dirname(__FILE__), '..','..','..', 'public', 'images', 'streamlined') )
   end
   
   FileUtils.cp( 
@@ -20,7 +20,7 @@ begin
   )
   
   unless FileTest.exist? File.join(File.dirname(__FILE__), '..','..','..', 'app', 'views', 'shared', 'streamlined')
-    FileUtils.mkdir(File.join(File.join(File.dirname(__FILE__), '..','..','..', 'app', 'views', 'shared', 'streamlined')))
+    FileUtils.mkdir_p(File.join(File.join(File.dirname(__FILE__), '..','..','..', 'app', 'views', 'shared', 'streamlined')))
   end
   
   FileUtils.cp(
