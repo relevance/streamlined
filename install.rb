@@ -7,7 +7,6 @@ begin
   FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'as_style.css'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'stylesheets')
   FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'overlib'), File.join(File.dirname(__FILE__), '..','..','..', 'public')
   FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'windows_js'), File.join(File.dirname(__FILE__), '..','..','..', 'public')
-  FileUtils.cp_r  File.join(File.dirname(__FILE__), 'files', 'grids'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'stylesheets')
   
   unless FileTest.exist? File.join(File.dirname(__FILE__), '..','..','..', 'public', 'images', 'streamlined')
     FileUtils.mkdir_p( File.join(File.dirname(__FILE__), '..','..','..', 'public', 'images', 'streamlined') )
