@@ -46,11 +46,11 @@ class StreamlinedUITest < Test::Unit::TestCase
   
   def test_model
     flexstub(@ui).should_receive(:default_model).and_return(Class)
-    assert_equal Class, @ui.@model
-    assert_equal String, @ui.@model(:string)
-    assert_equal String, @ui.@model
-    assert_equal Fixnum, @ui.@model("Fixnum")
-    assert_equal Fixnum, @ui.@model
+    assert_equal Class, @ui.model
+    assert_equal String, @ui.model(:string)
+    assert_equal String, @ui.model
+    assert_equal Fixnum, @ui.model("Fixnum")
+    assert_equal Fixnum, @ui.model
   end
   
   def test_calculated_columns
