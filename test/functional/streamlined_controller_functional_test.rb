@@ -14,7 +14,7 @@ class ActionView::Base
 end
 
 class PeopleController < ApplicationController
-  include StreamlinedController
+	acts_as_streamlined
 end  
 
 # TODO: this should go away once the UI class is optional
@@ -29,17 +29,17 @@ class StreamlinedControllerTest < Test::Unit::TestCase
   def setup
     @controller = PeopleController.new
     @controller.logger = RAILS_DEFAULT_LOGGER
-    @controller.logger.info "hello"
-    @controller.logger.warn "hello"
+    # Justin TODO: we need some kind of override like this to point to the templates during testing
+    # class <<@controller
+    #   def generic_view(template)
+    #     File.join(File.dirname(__FILE__), '../../templates/generic_views', template)
+    #   end
+    # end
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     @person = Person.create(:id=>3, :first_name=>'Test', :last_name=>'Person')
   end
 
-  def test_base_class_initialize_is_illegal
-    assert_raise(RuntimeError) { StreamlinedController.new }
-  end
-  
   def test_index
     get :index
     assert_response :success
