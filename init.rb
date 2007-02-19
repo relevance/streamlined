@@ -20,4 +20,5 @@ ActionController::Base.class_eval do
   include StreamlinedController
 end
 
+ActionView::Base.send :include, StreamlinedHelper
   
