@@ -19,7 +19,7 @@ module StreamlinedHelper
   def column_sort_image(page_options, column)
     if page_options.sort_column == column.human_name
       direction = page_options.ascending? ? 'up' : 'down'
-      image_tag("arrow-#{direction}_16.png", {:height => '10px', :border => 0})
+      image_tag("streamlined/arrow-#{direction}_16.png", {:height => '10px', :border => 0})
     else
       ''
     end
