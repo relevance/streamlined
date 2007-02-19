@@ -36,4 +36,34 @@ namespace :streamlined do
       puts "EXCEPTION: #{ex}"
     end  
   end
+  
+  desc 'Create the StreamlinedUI file for one or more models.'
+  task :model => :environment do
+    raise "Must specify at least one model name using MODEL=." unless ENV['MODEL']
+    
+    ui_template = ERB.new <<-TEMPLATE
+module <%= model %>Additions
+
+end
+<%= model %>.class_eval {include <%= model %>Additions}
+
+class <%= model %>UI < Streamlined::UI
+
+end   
+    TEMPLATE
+
+    unless FileTest.exist? File.join(RAILS_ROOT, 'app', 'streamlined')
+      FileUtils.mkdir(File.Join(RAILS_ROOT, 'app', 'streamlined'))
+    end
+
+    ENV['MODEL'].split(',').each do |model|
+      file_name = "#{model.underscore}_ui.rb"
+
+      unless FileTest.exist? File.join(RAILS_ROOT, 'app', 'streamlined', file_name)
+          File.open(File.join(RAILS_ROOT, 'app', 'streamlined', file_name), "a") { |f|
+             f << ui_template.result(binding)
+          }
+      end
+    end
+  end
 end
