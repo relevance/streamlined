@@ -18,13 +18,12 @@ xml.feed "xmlns" => "http://www.w3.org/2005/Atom" do
     xml.entry "xmlns" => "http://www.w3.org/2005/Atom" do
       xml.title  ({"type" => "html"}, item.streamlined_name)
       xml.published Time.now.strftime "%Y-%m-%dT%H:%M:%SZ" 
-      xml.updated Time.now.strftime "%Y-%m-%dT%H:%M:%SZ" 
+      xml.updated item.updated_at.strftime "%Y-%m-%dT%H:%M:%SZ" if item.respond_to?('updated_at')
       xml.link    "rel" => "alternate", "href" => url_for(:only_path => false, :controller => params[:controller], :action => 'show', :id => item.id)
-      xml.id      url_for(:only_path => false, :controller => params[:controller], :action => 'show', :id => item.id)
-    #  xml.updated item.updated_at.strftime "%Y-%m-%dT%H:%M:%SZ" if item.respond_to?('updated_at')
+      xml.id      item.id.to_s + ( item.respond_to?('updated_at') ? item.updated_at.strftime("%Y-%m-%dT%H:%M:%SZ") : "" )
       xml.summary Inflector.pluralize(@model_name)
       xml.content "type" => "html" do
-        xml.text! render(:partial => 'streamlined/show_atom', :locals => {:item => item})
+        xml.text! render(:partial => generic_view('show_atom'), :locals => {:item => item})
       end
     end
   end

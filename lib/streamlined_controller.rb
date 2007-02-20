@@ -37,7 +37,7 @@ module StreamlinedController
          if @page_options.filter?
            options.merge! :conditions=>@model.conditions_by_like(@page_options.filter)
          end
-         if params[:atom]
+         if params[:syndicated]
            @models = @model.find(:all, :conditions=>@model.conditions_by_like(@page_options.filter))
            @streamlined_items = @models
          else
@@ -54,7 +54,7 @@ module StreamlinedController
            @streamlined_item_pages = @model_pages
          end
          render :partial => render_path('list') if request.xhr?
-         render :template => 'streamlined/atom' if params[:atom]
+         render :template => generic_view('atom'), :controler => @model_name, :layout => false if params[:syndicated]
        end
 
        # Opens the search view.  The default is a criteria query view.
@@ -415,6 +415,8 @@ module StreamlinedController
                     @page_title = "Manage \#{@model_name.pluralize}"
                     @managed_views = ['list']
                     @managed_partials = ['list', 'edit', 'show', 'new', 'form', 'popup']
+                    @syndication_type ||= "rss"
+                    @syndication_actions ||= "list"
                     RAILS_DEFAULT_LOGGER.info("@model NAME: #{@model_name}")
                     RAILS_DEFAULT_LOGGER.info("@model: #{@model.inspect}")
                   rescue Exception => ex
@@ -431,11 +433,12 @@ module StreamlinedController
     def generic_view(template)
       "../../vendor/plugins/streamlined/templates/generic_views/#{template}"
     end
+    
+    def syndication(options = {})
+       @syndication_type = options[:type].nil? ? "rss" : options[:type].to_s
+       @syndication_actions = options[:actions].nil? ? "list" : (options[:actions].map &:to_s)
+    end
   end
   
-  
-  
-
-   
   
 end

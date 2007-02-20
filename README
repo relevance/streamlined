@@ -18,4 +18,9 @@ class MyNiftyController < ApplicationController
 	...[anything else you want to do]
 end
 
+
+If you want to enable Atom syndication for your Streamlined views, add the following line to config/routes.rb:
+
+map.connect ':controller/:action/xml', :syndicated => true, :basic_auth => true
+
 *NOTE: You cannot extend ApplicationController with acts_as_streamlined, only children of ApplicationController.

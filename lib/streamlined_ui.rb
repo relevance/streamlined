@@ -17,6 +17,16 @@ module Streamlined
   class UI
     class << self
       
+     def column_header( column )
+          return "" if column.nil?
+
+          column_name = column.name.to_sym
+
+          return column.human_name if @column_headers.nil?
+          return @column_headers[ column_name ] unless @column_headers[ column_name ].nil?
+          return column.human_name
+      end
+      
       # Method that gets hooked into Rails' application reloading mechanism.  Resets all class variables
       # for the controller, enabling clean resets in development mode.
       def reset_subclasses

@@ -95,6 +95,31 @@ module StreamlinedHelper
      File.exist?(File.join(RAILS_ROOT, 'app', 'views', options[:con_name], template_file + ".rhtml")) ? template : "../../vendor/plugins/streamlined/templates/generic_views/#{template}"
   end
   
+  # Create auto-discovery Atom link
+  def streamlined_auto_discovery_link_tag()
+        return if @syndication_type.nil? || @syndication_actions.nil?
+  
+        if @syndication_actions.include? params[:action]
+            "<link rel=\"alternate\" type=\"application/#{@syndication_type.downcase}+xml\" title=\"#{@syndication_type.upcase}\" href=\"#{params[:action]}/xml\" />"
+        end
+  end
+  
+  def streamlined_column_html( object, column )
+      begin
+          column_as_string = column.respond_to?( :name ) ? object.send( column.name.to_sym ) : ""
+
+          return column_as_string if column.class == Streamlined::Column
+
+          return html_escape( column_as_string )
+      rescue
+          return ""
+      end
+  end
+  
+  def generic_view(template)
+    "../../vendor/plugins/streamlined/templates/generic_views/#{template}"
+  end
+  
   private
 
    def current_show_columns(klass, klass_ui, controller)
