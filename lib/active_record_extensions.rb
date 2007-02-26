@@ -32,6 +32,10 @@ module Relevance::ActiveRecordExtensions::ClassMethods
     attrs.each {|a| vals << "#{a} LIKE " + ActiveRecord::Base.connection.quote("%#{template.send(a)}%") if !template.send(a).blank? && a != 'id' && a != 'lock_version' }
     vals.join(" AND ")
   end
+  def find_all_except(coll) 
+    ids = coll.collect {|item| item.id}
+    return self.find(:all).reject {|item| ids.include?(item.id)}
+  end
   def has_manies()
     self.reflect_on_all_associations.select {|x| x.macro == :has_many || x.macro == :has_and_belongs_to_many}
   end

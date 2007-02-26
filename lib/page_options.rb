@@ -8,7 +8,7 @@
 require 'pp'
 
 class PageOptions
-  attr_accessor :filter, :page, :sort_order, :sort_column, :counter
+  attr_accessor :filter, :page, :sort_order, :sort_column, :counter, :per_page
   include HashInit
 
 

@@ -1,0 +1,51 @@
+<div class="neocast-dialog">
+
+
+    <div id="buttonbar">
+        <span class="left_controls" style="margin-top:5px">
+            <%= link_to_function( 'Save', "new Ajax.Request('#{url_for(:action => 'save_columns')}', {evalScripts: true,parameters: Sortable.serialize('displaycolumns')});", {:class => "cssbutton"}  )%>
+            <%= link_to_function( 'Reset to Defaults', "new Ajax.Request('#{url_for(:action => 'reset_columns')}', {evalScripts: true,parameters: Sortable.serialize('displaycolumns')});", {:class => "cssbutton"}  )%>
+            <%= link_to_function 'Cancel', "Windows.close('show_win_new');", {:class => 'cssbutton'}%>
+            <span class="instructions">Drag and drop columns to move them between Show and Hide, or to order them within a category.</span>
+        </span>
+    </div>
+
+    <div id="customize_columns">
+        <table>
+        	<tr>
+        		<th class="dialog_header">
+        			Show Columns
+        		</th>
+		
+        		<th class="dialog_header">
+        			Hide Columns
+        		</th>
+        	</tr>
+        	<tr>
+        		<td valign="top">
+                    <ul id="displaycolumns" class="columns_list" style='min-height: 50px;'>
+                		<li/>
+                    	<%= render(:partial => render_path('show_columns', :partial => true, :con_name => params[:controller]))%>
+                    </ul>
+                </td>
+                <td valign="top">
+                	<ul id="hidecolumns" class="columns_list" style='min-height: 50px;'>
+                		<li/>
+                		<%= render(:partial => render_path('hide_columns', :partial => true, :con_name => params[:controller]))%>
+                	</ul>
+                </td>
+            </tr>
+        </table>
+
+        <%= sortable_element 'displaycolumns', 
+              :complete => visual_effect(:highlight, 'displaycolumns'), 
+         	  :containment => ['displaycolumns','hidecolumns'],
+         	  :constraint => false
+         %>
+        <%= sortable_element 'hidecolumns', 
+              :complete => visual_effect(:highlight, 'hidecolumns'),
+         	  :containment => ['displaycolumns','hidecolumns'],
+         	  :constraint => false
+         %>
+    </div>
+</div>

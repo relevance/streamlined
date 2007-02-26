@@ -1,0 +1,10 @@
+<% tag_editing_disabled ||= false %>
+<div style="height: 100px; overflow: auto; border: solid 1px black;">
+<% Tag.find(:all, :order => 'name ASC').each do |tag| %>
+  <input type="checkbox" name="tags[]" value="<%= tag.name %>" <%= 'disabled' if tag_editing_disabled %> <%= "checked='checked'" if item.tags.include?(tag) || (@new_tags && @new_tags.include?(tag)) %> /> <%= tag.name %><br/>
+<% end %>
+</div>
+<br/>
+<% unless tag_editing_disabled %>
+    New tag(s): <input type="text" id="new_tags"/><%= link_to_function 'Add Tags', "new Ajax.Request('#{url_for(:action => 'add_tags', :id => item.id)}', {evalScripts: true, parameters: 'new_tags=' + $('new_tags').value});" %>
+<% end %>

@@ -54,6 +54,7 @@ module StreamlinedHelper
   # Given a model and a controller, finds all the columns that are currently slated to be shown in the list view.
   def show_columns_for_model(klass, klass_ui, controller)    
     results = current_show_columns(klass, klass_ui, controller).collect {|c| klass_ui.all_columns.find {|col| col.name == c}}
+    results.reject! {|c| c == nil}
     return results
     # return klass.columns.select {|c| current_show_columns(klass, klass_ui, controller).include?(c.name)}
   end
@@ -126,10 +127,10 @@ module StreamlinedHelper
      controller = controller.to_sym
      session[:current_user] ? pref = session[:current_user].preferences : pref = nil
        
-     if pref && pref.page_columns && pref.page_columns[controller]
+     if pref && pref.page_columns && pref.page_columns.instance_of?(Hash) && pref.page_columns[controller]
        current = pref.page_columns[controller]
      else    
-       current = klass_ui.user_columns_for_display.collect {|c| c.name}
+       current = klass_ui.user_default_columns_for_display.collect {|c| c.name}
      end 
      return current
    end

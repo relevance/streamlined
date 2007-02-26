@@ -84,6 +84,32 @@ module Streamlined
           @user_columns
        end
        
+         def column_headers( options )
+              @column_headers = options[ :headers ]
+          end
+          
+           def default_columns( options = {} )
+             default_list_columns = options[ :columns ]
+              if default_list_columns.nil?
+                  @default_list_columns = @user_columns
+              else
+                 default_list_columns = default_list_columns.map(&:to_s)
+                 @default_list_columns = default_list_columns.map do |column_name|
+                     user_columns_for_display.find do |display_column|
+                         display_column.name == column_name
+                     end
+                 end
+              end
+              @default_list_columns
+           end
+           
+             def user_default_columns_for_display
+                  unless @default_list_columns.nil?
+                      return @default_list_columns 
+                  end
+                  return user_columns_for_display
+              end
+       
        # Used to return the currently defined user_columns collection.
        def user_columns_for_display
           @user_columns || initialize_user_columns

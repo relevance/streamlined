@@ -32,17 +32,31 @@ module StreamlinedController
        # If the request came via XHR, the action will render just the list partial,
        # not the entire list view.
        def list
+         @smart_folders = find_smart_folders
          @model_ui.pagination ? options = {:per_page => 10} : options = {}
          options.merge! order_options
          if @page_options.filter?
-           options.merge! :conditions=>@model.conditions_by_like(@page_options.filter)
+           options.merge! :conditions=>@model.conditions_by_like(@page_options.filter) 
+           @model_count = @model.count(:conditions => @model.conditions_by_like(@page_options.filter))
+         else
+           @model_count = @model.count
          end
          if params[:syndicated]
            @models = @model.find(:all, :conditions=>@model.conditions_by_like(@page_options.filter))
            @streamlined_items = @models
          else
            if @model_ui.pagination
-             @model_pages, @models = paginate Inflector.pluralize(@model_class).downcase.to_sym, options
+              if options[:non_ar_column]
+                 col = options[:non_ar_column]
+                 dir = options[:dir]
+                 options.delete :non_ar_column
+                 options.delete :dir
+                 model_pages, models = paginate Inflector.pluralize(@model_class).downcase.to_sym, options
+                 models.sort! {|a,b| a.send(col.to_sym) <=> b.send(col.to_sym)}
+                 models.reverse! if dir == 'DESC'
+               else
+                 model_pages, models = paginate Inflector.pluralize(@model_class).downcase.to_sym, options
+               end
            else
              @model_pages = []
              @models = @model.find(:all, options)
@@ -53,9 +67,54 @@ module StreamlinedController
            @streamlined_items = @models
            @streamlined_item_pages = @model_pages
          end
-         render :partial => render_path('list') if request.xhr?
+         
+         
+          if request.xhr?
+            @con_name = controller_name
+            render :update do |page|
+              page << "if($('notice')) {Element.hide('notice');} if($('notice-error')) {Element.hide('notice-error');} if($('notice-empty')) {Element.hide('notice-empty');}"
+              page.show 'notice-info'
+              page.replace_html "notice-info", @controller.list_notice_info
+              page.replace_html "#{@model_underscore}_list", :partial => render_path('list', :partial => true, :con_name => @con_name)
+              filter_text = [ @model_name.pluralize ] + ( @page_options.filter.blank? ? [] : [ "Filter", @page_options.filter] )
+              page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => @model_name, :text => filter_text )
+            end
+          else
+              flash[:info] = @controller.list_notice_info if @controller.respond_to?( "list_notice_info" )
+          end
          render :template => generic_view('atom'), :controler => @model_name, :layout => false if params[:syndicated]
        end
+       
+       def list_notice_info
+            "Found #{@model_count} #{ ( (@model_count == 1) ? @model_name : @model_name.pluralize ).downcase }"
+        end
+
+         def list_from_smart_folder( partial = 'list' )
+             @smart_folders = find_smart_folders
+             @smart_folder = SmartFolder.find(params[:smart_folder_id])
+
+             model_pages, models = [], @smart_folder.members
+
+             self.instance_variable_set("@#{Inflector.underscore(@model_name)}_pages", model_pages)
+             self.instance_variable_set("@#{Inflector.tableize(@model_name)}", models)
+             @streamlined_items = models
+             @streamlined_item_pages = model_pages
+             @model_count = models.size
+
+     #        flash[:notice] = "Found #{@model_count} #{(@model_count == 1) ? @model_name : @model_name.pluralize}" if @page_options.filter && @page_options.filter != ''
+             if request.xhr?
+                 @con_name = controller_name
+                 render :update do |page|
+                     page << "if($('notice')) {Element.hide('notice');} if($('notice-error')) {Element.hide('notice-error');} if($('notice-empty')) {Element.hide('notice-empty');}"
+                     page.show 'notice-info'
+                     page.replace_html "notice-info", @controller.list_notice_info  
+                     page.replace_html "#{@model_underscore}_list", :partial => render_path( partial, :partial => true, :con_name => @con_name )
+                     ##edit_link_html = link_to_function( '(edit)', "Streamlined.Windows.open_local_window_from_url('Smart Groups', '#{url_for(:controller => 'smart_folders', :action => 'edit', :id => @smart_folder.id, :target_controller => 'campaigns', :target_class => @model_name || target_class)}', null, null, {title: 'Edit Smart Group', closable: false, width:840, height:480 })" )
+                     page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => @model_name, :text => [ @model_name.pluralize, "Smart Group", @smart_folder.name ] )
+                     page.visual_effect :highlight, 'breadcrumbs'
+                 end
+             end
+         end
 
        # Opens the search view.  The default is a criteria query view.
        def search
@@ -148,6 +207,7 @@ module StreamlinedController
        def update
          self.instance = @model.find(params[:id])
           if instance.update_attributes(params[@model_symbol])
+            get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
             if request.xhr? && params[:from_window]
               @id = instance.id
               @con_name = controller_name
@@ -271,6 +331,33 @@ module StreamlinedController
         render :partial => 'popup'
        end
        
+        def columns
+         render(:partial => "columns")
+        end
+
+        def reset_columns
+         pref = current_user.preferences
+         pref.page_columns ||= {}
+         current_user.preferences.page_columns.delete( controller_name.to_sym )
+         current_user.preferences.save
+         current_user.preferences.reload
+         render :update do |page|
+           page.redirect_to(:action => 'list')
+         end
+        end
+
+        def save_columns
+         cols = params["displaycolumns"].find_all { |col| col unless col.blank? }
+         pref = current_user.preferences
+         pref.page_columns ||= {}
+         current_user.preferences.page_columns[controller_name.to_sym] = cols
+         current_user.preferences.save
+         current_user.preferences.reload
+         render :update do |page|
+           page.redirect_to(:action => 'list')
+         end
+        end
+       
        # Overrides the default ActionPack version of #render.  First, attempts
        # to render the request the standard way.  If the render fails, then 
        # attempts to render the Streamlined generic view of the same request.  
@@ -303,6 +390,22 @@ module StreamlinedController
        end
        
        
+       def add_tags
+        if Object.const_defined?(:Tag) && params[:new_tags]
+          item = @model.find(params[:id])
+          tags = params[:new_tags].split(' ')
+          @new_tags = []
+          tags.each do |tag| 
+            unless Tag.find_by_name(tag)
+              @new_tags << Tag.create(:name => tag)
+            end  
+          end
+          render :update do |page|
+            page['tags_form'].replace_html :partial => 'shared/tags', :locals => {:item => item}
+          end
+        end
+       end
+       
        private
         def initialize_page_options
           @page_options = PageOptions.new(params[:page_options])
@@ -322,7 +425,12 @@ module StreamlinedController
 
         def order_options
           if @page_options.order?
-            @page_options.active_record_order_option
+            vals = @page_options.order.split(',')
+            if @model.column_names.include? vals[0]
+              @page_options.active_record_order_option
+            else
+              {:non_ar_column => vals[0].downcase.tr(" ", "_"), :dir => vals[1]}
+            end
           else
             # override to set a default column sort, e.g. :order=>"col ASC|DESC"
             {}
@@ -370,6 +478,14 @@ module StreamlinedController
              end
            end
         end
+        
+         def find_smart_folders
+           if current_user.nil? 
+             return []
+           end
+
+           current_user.smart_folders.find(:all, :conditions => ['target_class = ?', @model_name]) || []
+         end
   end
   
   module ClassMethods
@@ -414,7 +530,8 @@ module StreamlinedController
                     @model_underscore = Inflector.underscore(@model_name)
                     @page_title = "Manage \#{@model_name.pluralize}"
                     @managed_views = ['list']
-                    @managed_partials = ['list', 'edit', 'show', 'new', 'form', 'popup']
+                    @managed_partials = ['list', 'edit', 'show', 'new', 'form', 'popup', 'tags', 'tag_list', 'columns', 'show_columns', 'hide_columns']
+                    @tags = @model.tag_list.split(',') if @model.respond_to? :tag_list
                     @syndication_type ||= "rss"
                     @syndication_actions ||= "list"
                     RAILS_DEFAULT_LOGGER.info("@model NAME: #{@model_name}")

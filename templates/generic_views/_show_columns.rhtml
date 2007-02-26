@@ -1,0 +1,5 @@
+<% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
+<% unless column.nil? %>
+    <li id="displaycolumns_<%= column.name %>"><%= column.human_name %></li>
+<% end %>
+<% end %>
