@@ -59,7 +59,9 @@ Streamlined.FilterWatcher = {
 														 }, 
 														parameters:value})});
 			new PeriodicalExecuter(function() {
-				$('page_options_filter').value = $('streamlined_filter_term').value;
+			    if($('streamlined_filter_term')) {
+				    $('page_options_filter').value = $('streamlined_filter_term').value;
+			    }
 			}, 0.5);
 			
 	}

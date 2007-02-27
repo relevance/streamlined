@@ -42,8 +42,12 @@ module StreamlinedController
            @model_count = @model.count
          end
          if params[:syndicated]
-           @models = @model.find(:all, :conditions=>@model.conditions_by_like(@page_options.filter))
-           @streamlined_items = @models
+           if @page_options.filter?
+              models = @model.find(:all, :conditions=>@model.conditions_by_like(@page_options.filter))
+            else
+              models = @model.find(:all)
+            end
+            @streamlined_items = models
          else
            if @model_ui.pagination
               if options[:non_ar_column]
@@ -556,6 +560,5 @@ module StreamlinedController
        @syndication_actions = options[:actions].nil? ? "list" : (options[:actions].map &:to_s)
     end
   end
-  
   
 end
