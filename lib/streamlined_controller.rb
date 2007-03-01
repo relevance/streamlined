@@ -62,14 +62,14 @@ module StreamlinedController
                  model_pages, models = paginate Inflector.pluralize(@model_class).downcase.to_sym, options
                end
            else
-             @model_pages = []
-             @models = @model.find(:all, options)
+             model_pages = []
+             models = @model.find(:all, options)
            end
 
-           self.instance_variable_set("@#{Inflector.underscore(@model_name)}_pages", @model_pages)
-           self.instance_variable_set("@#{Inflector.tableize(@model_name)}", @models)
-           @streamlined_items = @models
-           @streamlined_item_pages = @model_pages
+           self.instance_variable_set("@#{Inflector.underscore(@model_name)}_pages", model_pages)
+           self.instance_variable_set("@#{Inflector.tableize(@model_name)}", models)
+           @streamlined_items = models
+           @streamlined_item_pages = model_pages
          end
          
          
@@ -483,12 +483,14 @@ module StreamlinedController
            end
         end
         
-         def find_smart_folders
-           if current_user.nil? 
+        def find_smart_folders
+           begin
+             return [] if current_user.nil? 
+
+             current_user.smart_folders.find(:all, :conditions => ['target_class = ?', @model_name]) || []
+           rescue
              return []
            end
-
-           current_user.smart_folders.find(:all, :conditions => ['target_class = ?', @model_name]) || []
          end
   end
   
