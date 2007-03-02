@@ -73,19 +73,20 @@ module StreamlinedController
          end
          
          
-          if request.xhr?
-            @con_name = controller_name
-            render :update do |page|
-              page << "if($('notice')) {Element.hide('notice');} if($('notice-error')) {Element.hide('notice-error');} if($('notice-empty')) {Element.hide('notice-empty');}"
-              page.show 'notice-info'
-              page.replace_html "notice-info", @controller.list_notice_info
-              page.replace_html "#{@model_underscore}_list", :partial => render_path('list', :partial => true, :con_name => @con_name)
-              filter_text = [ @model_name.pluralize ] + ( @page_options.filter.blank? ? [] : [ "Filter", @page_options.filter] )
-              page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => @model_name, :text => filter_text )
-            end
-          else
-              flash[:info] = @controller.list_notice_info if @controller.respond_to?( "list_notice_info" )
-          end
+          # if request.xhr?
+          #   @con_name = controller_name
+          #   render :update do |page|
+          #     page << "if($('notice')) {Element.hide('notice');} if($('notice-error')) {Element.hide('notice-error');} if($('notice-empty')) {Element.hide('notice-empty');}"
+          #     page.show 'notice-info'
+          #     page.replace_html "notice-info", @controller.list_notice_info
+          #     page.replace_html "#{@model_underscore}_list", :partial => render_path('list', :partial => true, :con_name => @con_name)
+          #     filter_text = [ @model_name.pluralize ] + ( @page_options.filter.blank? ? [] : [ "Filter", @page_options.filter] )
+          #     page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => @model_name, :text => filter_text )
+          #   end
+          # else
+          #     flash[:info] = @controller.list_notice_info if @controller.respond_to?( "list_notice_info" )
+          # end
+         render :partial => render_path('list') if request.xhr?
          render :template => generic_view('atom'), :controler => @model_name, :layout => false if params[:syndicated]
        end
        
@@ -106,18 +107,19 @@ module StreamlinedController
              @model_count = models.size
 
      #        flash[:notice] = "Found #{@model_count} #{(@model_count == 1) ? @model_name : @model_name.pluralize}" if @page_options.filter && @page_options.filter != ''
-             if request.xhr?
-                 @con_name = controller_name
-                 render :update do |page|
-                     page << "if($('notice')) {Element.hide('notice');} if($('notice-error')) {Element.hide('notice-error');} if($('notice-empty')) {Element.hide('notice-empty');}"
-                     page.show 'notice-info'
-                     page.replace_html "notice-info", @controller.list_notice_info  
-                     page.replace_html "#{@model_underscore}_list", :partial => render_path( partial, :partial => true, :con_name => @con_name )
-                     ##edit_link_html = link_to_function( '(edit)', "Streamlined.Windows.open_local_window_from_url('Smart Groups', '#{url_for(:controller => 'smart_folders', :action => 'edit', :id => @smart_folder.id, :target_controller => 'campaigns', :target_class => @model_name || target_class)}', null, null, {title: 'Edit Smart Group', closable: false, width:840, height:480 })" )
-                     page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => @model_name, :text => [ @model_name.pluralize, "Smart Group", @smart_folder.name ] )
-                     page.visual_effect :highlight, 'breadcrumbs'
-                 end
-             end
+             # if request.xhr?
+          #        @con_name = controller_name
+          #        render :update do |page|
+          #            page << "if($('notice')) {Element.hide('notice');} if($('notice-error')) {Element.hide('notice-error');} if($('notice-empty')) {Element.hide('notice-empty');}"
+          #            page.show 'notice-info'
+          #            page.replace_html "notice-info", @controller.list_notice_info  
+          #            page.replace_html "#{@model_underscore}_list", :partial => render_path( partial, :partial => true, :con_name => @con_name )
+          #            ##edit_link_html = link_to_function( '(edit)', "Streamlined.Windows.open_local_window_from_url('Smart Groups', '#{url_for(:controller => 'smart_folders', :action => 'edit', :id => @smart_folder.id, :target_controller => 'campaigns', :target_class => @model_name || target_class)}', null, null, {title: 'Edit Smart Group', closable: false, width:840, height:480 })" )
+          #            page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => @model_name, :text => [ @model_name.pluralize, "Smart Group", @smart_folder.name ] )
+          #            page.visual_effect :highlight, 'breadcrumbs'
+          #        end
+          #    end
+           render :partial => render_path('list') if request.xhr?
          end
 
        # Opens the search view.  The default is a criteria query view.
