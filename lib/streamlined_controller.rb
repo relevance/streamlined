@@ -416,6 +416,26 @@ module StreamlinedController
         def initialize_page_options
           @page_options = PageOptions.new(params[:page_options])
         end
+        
+        def initialize_streamlined_values(mod_name = nil)
+          if mod_name
+            @model_name = mod_name
+          else
+            @model_name ||= self.class.model_name || Inflector.singularize(self.class.name.chomp("Controller"))
+          end
+          @model = Class.class_eval(@model_name)
+          @model_symbol = Inflector.underscore(@model_name).to_sym
+          if Object.const_defined? (@model_name + "UI")
+            @model_ui = Class.class_eval(@model_name + "UI")
+          else
+            @model_ui = Streamlined.generic_ui
+            @model_ui.model = @model
+          end
+          @model_table = Inflector.tableize(@model_name)
+          @model_underscore = Inflector.underscore(@model_name)
+          @page_title = "Manage \#{@model_name.pluralize}"
+          @tags = @model.tag_list.split(',') if @model.respond_to? :tag_list
+        end
 
         # rewrite of rails method
         def paginator_and_collection_for(collection_id, options) #:nodoc:
@@ -497,8 +517,7 @@ module StreamlinedController
   end
   
   module ClassMethods
-    
-
+    @custom_model_name = nil
     
     def acts_as_streamlined(options = {})
       class_eval <<-EOV
@@ -525,21 +544,9 @@ module StreamlinedController
                   end
 
                   begin
-                    @model_name ||= Inflector.singularize(self.class.name.chomp("Controller"))
-                    @model = Class.class_eval(@model_name)
-                    @model_symbol = Inflector.underscore(@model_name).to_sym
-                    if Object.const_defined? (@model_name + "UI")
-                      @model_ui = Class.class_eval(@model_name + "UI")
-                    else
-                      @model_ui = Streamlined.generic_ui
-                      @model_ui.model = @model
-                    end
-                    @model_table = Inflector.tableize(@model_name)
-                    @model_underscore = Inflector.underscore(@model_name)
-                    @page_title = "Manage \#{@model_name.pluralize}"
+                    initialize_streamlined_values
                     @managed_views = ['list']
-                    @managed_partials = ['list', 'edit', 'show', 'new', 'form', 'popup', 'tags', 'tag_list', 'columns', 'show_columns', 'hide_columns']
-                    @tags = @model.tag_list.split(',') if @model.respond_to? :tag_list
+                    @managed_partials = ['list', 'edit', 'show', 'new', 'form', 'popup', 'tags', 'tag_list', 'columns', 'show_columns', 'hide_columns']                    
                     @syndication_type ||= "rss"
                     @syndication_actions ||= "list"
                     RAILS_DEFAULT_LOGGER.info("@model NAME: #{@model_name}")
@@ -554,6 +561,10 @@ module StreamlinedController
         
       EOV
     end
+    
+    def model_name 
+      @custom_model_name || nil
+    end
         
     def generic_view(template)
       "../../vendor/plugins/streamlined/templates/generic_views/#{template}"
@@ -562,6 +573,10 @@ module StreamlinedController
     def syndication(options = {})
        @syndication_type = options[:type].nil? ? "rss" : options[:type].to_s
        @syndication_actions = options[:actions].nil? ? "list" : (options[:actions].map &:to_s)
+    end
+    
+    def streamlined_model(mod)
+      mod.instance_of?(String) ? @custom_model_name = mod : @custom_model_name = mod.name
     end
   end
   
