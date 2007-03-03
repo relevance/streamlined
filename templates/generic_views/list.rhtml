@@ -14,23 +14,24 @@
 <% end %>
 <div id="streamlined_list" class="ajax-scaffold">
 	<div class="ajax-scaffold-header">
-		  <h2><%= image_tag_if_exists("#{@model_table}.png", {:align => 'top'}) %> <%= @model_name.titleize.pluralize %></h2>	
-		  <div class="actions">
-			  <form>
-				Filter:  <input type="text" id="streamlined_filter_term">
-			  </form>
-		  </div>
+	  <h2><%= image_tag_if_exists("#{@model_table}.png", {:align => 'top'}) %> <%= @model_name.titleize.pluralize %></h2>	
+    <div class="actions">
+  	  <form>
+  		Filter:  <input type="text" id="streamlined_filter_term">
+  	  </form>
+    </div>
 	</div>
-			<div id="<%= @model_underscore %>_list">
-				<%= streamlined_render :partial=>'list' %>
-			</div>
-			<div class="ajax-scaffold-footer"> 
+	<div id="<%= @model_underscore %>_list">
+		<%= streamlined_render :partial=>'list' %>
+	</div>
+	<div class="ajax-scaffold-footer"> 
 		<div id="controls">
-					<%= link_to_function image_tag('streamlined/add_16.png', {:alt => "New #{@model_name}", :title => "New #{@model_name}", :border => '0'}), "Streamlined.Windows.open_local_window_from_url('New', '#{url_for(:action => 'new')}')" %>&nbsp;<%= link_to_function(image_tag('streamlined/export_16.png', {:alt => "Export XML", :title => "Export XML", :border => '0'}),"Streamlined.Exporter.export_to('#{url_for(:action => 'export_to_xml')}')")%>&nbsp;<%= link_to_function(image_tag('streamlined/save_16.png', {:alt => "Export CSV", :title => "Export CSV", :border => 0}),"Streamlined.Exporter.export_to('#{url_for(:action => 'export_to_csv')}')")%>
-			<%= link_to_function image_tag('streamlined/control-reverse_16.png', {:id => 'previous_page', :alt => 'Previous Page', :style => @streamlined_item_pages != [] && @streamlined_item_pages.current.previous ? "" : "display: none;", :title => 'Previous Page', :border => '0'}), "Streamlined.PageOptions.previousPage()" %>
-			<%= link_to_function image_tag('streamlined/control-forward_16.png', {:id => 'next_page', :alt => 'Next Page', :style => @streamlined_item_pages != [] && @streamlined_item_pages.current.next ? "" : "display: none;", :title => 'Next Page', :border => '0'}), "Streamlined.PageOptions.nextPage()" %> 
+		  <%= link_to_new_model -%>&nbsp;
+		  <%= link_to_xml_export -%>
+		  <%= link_to_csv_export -%>
+		  <%= link_to_next_page -%>
+		  <%= link_to_previous_page -%>
 			<br />
-
 		</div>
 		</div>
 	</div>

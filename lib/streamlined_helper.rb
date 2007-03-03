@@ -5,6 +5,7 @@
 #
 # The methods here are available to all Streamlined views.
 require 'streamlined/helpers/link_helper'
+require 'streamlined/helpers/degradable/link_helper'
   
 module StreamlinedHelper
   include Streamlined::Helpers::LinkHelper
