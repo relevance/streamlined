@@ -3,8 +3,11 @@
 # Streamlined is freely distributable under the terms of an MIT-style license.
 # For details, see http://streamlined.relevancellc.com
 #
-# The methods here are available to all Streamlined views.  
+# The methods here are available to all Streamlined views.
+require 'streamlined/helpers/link_helper'
+  
 module StreamlinedHelper
+  include Streamlined::Helpers::LinkHelper
   
   # Given an image file, checks to see if the image exists in the filesystem.
   # If it does, display the image. If not, suppress the generation of the image

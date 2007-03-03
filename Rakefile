@@ -12,14 +12,14 @@ namespace :test do
   desc 'Unit test the streamlined plugin.'
   Rake::TestTask.new('units') do |t|
     t.libs << 'test'
-    t.pattern = 'test/unit/*_test.rb'
+    t.pattern = 'test/unit/**/*_test.rb'
     t.verbose = true
   end
 
   desc 'Functional test the streamlined plugin.'
   Rake::TestTask.new('functionals') do |t|
     t.libs << 'test'
-    t.pattern = 'test/functional/*_test.rb'
+    t.pattern = 'test/functional/**/*_test.rb'
     t.verbose = true
   end
   
