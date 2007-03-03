@@ -19,7 +19,7 @@ class StreamlinedHelperTest < Test::Unit::TestCase
       o.sort_column.returns("name")
       o.ascending?.returns(true)
     end
-    flexstub(self).should_receive(:image_tag).with("arrow-up_16.png", Hash).and_return("testing up")
+    flexstub(self).should_receive(:image_tag).with("streamlined/arrow-up_16.png", Hash).and_return("testing up")
     assert_equal("testing up", column_sort_image(options,column_named_name))
   end
 
@@ -29,7 +29,7 @@ class StreamlinedHelperTest < Test::Unit::TestCase
       o.sort_column.returns("name")
       o.ascending?.returns(false)
     end
-    flexstub(self).should_receive(:image_tag).with("arrow-down_16.png", Hash).and_return("testing down")
+    flexstub(self).should_receive(:image_tag).with("streamlined/arrow-down_16.png", Hash).and_return("testing down")
     assert_equal("testing down", column_sort_image(options,column_named_name))
   end
 

@@ -15,6 +15,7 @@ require 'active_record_extensions'
 require 'streamlined_relationships'
 require 'streamlined_ui'
 require 'streamlined_controller'
+require 'streamlined_helper'
 
 ActionController::Base.class_eval do 
   include StreamlinedController
