@@ -372,13 +372,11 @@ module StreamlinedController
        # rendered from the /app/views/streamlined/generic_views folder.  If not, the
        # exception that was originally thrown is propogated to the outer scope.
        def render(options = nil, deprecated_status = nil, &block) #:doc:
-        puts "OPTIONS: #{options.inspect}"
         begin
           super(options, deprecated_status, &block)
         rescue ActionView::TemplateError => ex 
           raise ex
         rescue Exception => ex
-          puts "EXCEPTION: #{ex}"
           if options
             if options[:partial] && @managed_partials.include?(options[:partial])
               options[:partial] = generic_view(options[:partial])
