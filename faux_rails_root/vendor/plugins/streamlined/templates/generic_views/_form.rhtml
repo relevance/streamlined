@@ -1,0 +1,14 @@
+<%= error_messages_for @model_underscore %>
+
+<!--[form:<%= @model_underscore %>]-->
+
+<table class="streamlined_form">
+
+  <% @model_ui.user_columns_for_display.each do |column| %>
+    <tr><td class="streamlined_label_cell"><label class="streamlined_label" for="#{record}_#{column.name}"><%= column.human_name %></label></td><td class="streamlined_input_cell"><%= input(@model_underscore, column.name) %></td></tr>
+  <% end %>
+
+</table><!--[eoform:<%= @model_underscore %>]-->
+
+
+

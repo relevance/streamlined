@@ -1,0 +1,33 @@
+xml.instruct!
+
+xml.feed "xmlns" => "http://www.w3.org/2005/Atom" do
+
+  xml.title   ({"type" => "html"}, Inflector.pluralize(@model_name))
+  xml.link    "rel" => "self", "href" => url_for(:only_path => false, :controller => params[:controller], :action => params[:action])
+  xml.id      url_for(:only_path => false, :controller => params[:controller])
+  if @streamlined_items.any? && @streamlined_items.first.respond_to?('updated_at')
+    xml.updated @streamlined_items.first.updated_at.strftime "%Y-%m-%dT%H:%M:%SZ" 
+  else
+    xml.updated Time.now.strftime "%Y-%m-%dT%H:%M:%SZ" 
+  end
+  xml.author do
+    xml.name "Streamlined"
+  end 
+
+  @streamlined_items.each do |item|
+    xml.entry "xmlns" => "http://www.w3.org/2005/Atom" do
+      xml.title  ({"type" => "html"}, item.streamlined_name)
+      xml.published Time.now.strftime "%Y-%m-%dT%H:%M:%SZ" 
+      xml.updated item.updated_at.strftime "%Y-%m-%dT%H:%M:%SZ" if item.respond_to?('updated_at')
+      xml.link    "rel" => "alternate", "href" => url_for(:only_path => false, :controller => params[:controller], :action => 'show', :id => item.id)
+      xml.id      item.id.to_s + ( item.respond_to?('updated_at') ? item.updated_at.strftime("%Y-%m-%dT%H:%M:%SZ") : "" )
+      xml.summary Inflector.pluralize(@model_name)
+      xml.content "type" => "html" do
+        xml.text! render(:partial => generic_view('show_atom'), :locals => {:item => item})
+      end
+    end
+  end
+
+end
+
+

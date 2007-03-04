@@ -1,0 +1,24 @@
+<div id="content">
+  <table class="streamlined_form">
+<% for column in @model_ui.user_columns_for_display %>
+<tr>
+  <td class="streamlined_label_cell"><span class="streamlined_label"><%= column.human_name %>:</span></td><td class="streamlined_value_cell"><%=h @streamlined_item.send(column.name) %></td>
+</tr>
+<% end %>
+<% for relationship in @model.reflect_on_all_associations %>
+    <tr>
+	<td><div id="<%= relationship_div_id(relationship, @streamlined_item, true) %>">
+		<%= render(:partial => "#{@model_ui.relationships[relationship.name].summary_def.partial}", :locals => {:item => @streamlined_item, :relationship => relationship, :fields => @model_ui.relationships[relationship.name].summary_def.fields})%>
+	</div> <%= link_to_function("Edit", "Streamlined.Relationships.open_relationship('#{relationship_div_id(relationship, @streamlined_item, true)}', this, '/#{params[:controller]}')")%>
+    </td>
+</tr>
+<% end %>
+</table>
+<%= link_to_remote 'Edit', :url => {:action => 'edit', :id => @streamlined_item, :from_window => true} %> 
+
+<script>
+if (top.Streamlined.PageOptions.form()) {
+  top.Streamlined.PageOptions.poke();
+}
+</script>
+</div>
