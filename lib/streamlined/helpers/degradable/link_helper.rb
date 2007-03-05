@@ -14,7 +14,7 @@ module Streamlined::Helpers::Degradable::LinkHelper
         url_for(:action => 'show', :id=>item))
   end
 
-  def link_to_edit_model
+  def link_to_edit_model(item)
     link_to(image_tag('streamlined/edit_16.png', 
         {:alt => "Edit #{@model_name}", :title => "Edit #{@model_name}", :border => '0'}),          
         url_for(:action => 'edit', :id=>item))
