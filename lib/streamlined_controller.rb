@@ -170,7 +170,7 @@ module StreamlinedController::InstanceMethods
            page.replace_html "show_win_new_content", :partial => render_path('new', :partial => true, :con_name => @con_name)
          end
      else
-       render(:template => render_path('new'))
+       render(:template => render_path('new'), :layout=>!request.xhr?)
      end
    end
 
@@ -379,18 +379,20 @@ module StreamlinedController::InstanceMethods
   # or @managed_partials established at initialization time.  If so, it is 
   # rendered from the /app/views/streamlined/generic_views folder.  If not, the
   # exception that was originally thrown is propogated to the outer scope.
-  def render(options = nil, deprecated_status = nil, &block) #:doc:
+  def render(options = {}, deprecated_status = nil, &block) #:doc:
     begin
       super(options, deprecated_status, &block)
     rescue ActionView::TemplateError => ex 
       raise ex
     rescue Exception => ex
-      if options
+      if options.size > 0
         if options[:partial] && @managed_partials.include?(options[:partial])
           options[:partial] = generic_view(options[:partial])
           super(options, deprecated_status, &block)
         elsif options[:action] && @managed_views.include?(options[:action])
-          super(:template => generic_view(options[:action]))
+          options.merge!(:template => generic_view(options[:action]))
+          options.delete(:action)
+          super(options)
         else
           raise ex
         end
