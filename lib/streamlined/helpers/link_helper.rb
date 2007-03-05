@@ -5,6 +5,26 @@ module Streamlined::Helpers::LinkHelper
         "Streamlined.Windows.open_local_window_from_url('New', '#{url_for(:action => 'new')}')",
         :href => url_for(:action=>'new')
   end
+  def link_to_show_model(item)
+    id = item.id
+    link_to_function image_tag('streamlined/search_16.png', 
+        {:alt => 'Show', :title => 'Show', :border => '0'}), 
+        "Streamlined.Windows.open_local_window_from_url('Show', '#{url_for(:action => 'show', :id => id)}', #{id})",
+        :href => url_for(:action=>"show", :id=>id)
+  end
+  def link_to_edit_model(item)
+    id = item.id
+    link_to_function image_tag('streamlined/edit_16.png', 
+        {:alt => 'Edit', :title => 'Edit', :border => '0'}), 
+        "Streamlined.Windows.open_local_window_from_url('Edit', '#{url_for(:action => 'edit', :id => id)}', #{id})",      
+        :href => url_for(:action=>"edit", :id=>id)
+  end
+  def link_to_delete_model(item)
+    id = item.id
+    link_to image_tag('streamlined/delete_16.png', {:alt => 'Destroy', :title => 'Destroy', :border => '0'}), 
+        {:action => 'destroy', :id => item }, 
+        :confirm => 'Are you sure?', :method => "post"    
+  end
   # TODO add :hrefs options like above (dry and generalize...)
   def link_to_xml_export
     link_to_function(image_tag('streamlined/export_16.png', 
@@ -27,3 +47,5 @@ module Streamlined::Helpers::LinkHelper
         "Streamlined.PageOptions.nextPage()"  
   end
 end
+
+
