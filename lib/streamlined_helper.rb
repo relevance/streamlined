@@ -99,12 +99,7 @@ module StreamlinedHelper
   end
   
   # Given a template name, determines the precise location of the file to be used: model-specific view folders, or generic views
-  def render_path(template, options = {:partial => true, :con_name => nil})
-     options[:con_name] ||= controller_name
-     template_file = "_#{template}" if options[:partial]
-     File.exist?(File.join(RAILS_ROOT, 'app', 'views', options[:con_name], template_file + ".rhtml")) ? template : generic_view(template)
-  end
-  
+  delegate :render_path, :to=>:controller
   delegate :generic_view, :to=>:controller
   
   # Create auto-discovery Atom link

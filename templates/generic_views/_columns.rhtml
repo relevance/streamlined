@@ -25,13 +25,13 @@
         		<td valign="top">
                     <ul id="displaycolumns" class="columns_list" style='min-height: 50px;'>
                 		<li/>
-                    	<%= render(:partial => render_path('show_columns', :partial => true, :con_name => params[:controller]))%>
+                    	<%= render(:partial => render_path('_show_columns', :con_name => params[:controller]))%>
                     </ul>
                 </td>
                 <td valign="top">
                 	<ul id="hidecolumns" class="columns_list" style='min-height: 50px;'>
                 		<li/>
-                		<%= render(:partial => render_path('hide_columns', :partial => true, :con_name => params[:controller]))%>
+                		<%= render(:partial => render_path('_hide_columns', :con_name => params[:controller]))%>
                 	</ul>
                 </td>
             </tr>

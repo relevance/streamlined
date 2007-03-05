@@ -63,8 +63,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
   def test_create_xhr
     assert_difference(Person, :count) do
       xhr :post, :create, :person => {:first_name=>'Another', :last_name=>'Person'}
-      assert_response :redirect
-      assert_redirected_to :action => 'show', :layout=>'streamlined_window'
+      assert_response :success
     end
   end
 
@@ -83,5 +82,21 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
   end
+  
+  def test_update
+    assert_difference(Person, :count, 0) do
+      post :update, :id=>'1,', :person => {:first_name=>'Another', :last_name=>'Person'}
+      assert_response :redirect
+      assert_redirected_to :action => 'list'
+    end
+  end
+
+  def test_update_xhr
+    assert_difference(Person, :count, 0) do
+      xhr :post, :update, :id=>'1', :person => {:first_name=>'Another', :last_name=>'Person'}
+      assert_response :success
+    end
+  end
+  
   
 end

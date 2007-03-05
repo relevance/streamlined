@@ -94,7 +94,7 @@ module StreamlinedController::InstanceMethods
       # else
       #     flash[:info] = @controller.list_notice_info if @controller.respond_to?( "list_notice_info" )
       # end
-     render :partial => render_path('list') if request.xhr?
+     render :partial => render_path('_list') if request.xhr?
      render :template => generic_view('atom'), :controler => @model_name, :layout => false if params[:syndicated]
    end
        
@@ -127,13 +127,13 @@ module StreamlinedController::InstanceMethods
     #            page.visual_effect :highlight, 'breadcrumbs'
     #        end
     #    end
-     render :partial => render_path('list') if request.xhr?
+     render :partial => render_path('_list') if request.xhr?
    end
 
    # Opens the search view.  The default is a criteria query view.
    def search
      self.instance = @model.new
-     render(:partial => render_path('search'))
+     render(:partial => render_path('_search'))
    end
 
    # Executes the search.  The default behavior is to create 
@@ -142,36 +142,37 @@ module StreamlinedController::InstanceMethods
    def find
      self.instance = @model.new(params[@model_symbol])
      @results = @model.find_by_criteria(instance)
-     render(:partial => render_path('results'))
+     render(:partial => render_path('_results'))
    end
 
+  def render_streamlined_ajax(action, redirect=nil)
+    if request.xhr?
+      @id = instance.id
+      @con_name = controller_name
+      div_id = params[:from_window] ? "show_win_#{@id ? @id : "new"}_content" : "content_for_layout"
+      render :update do |page|
+        page.replace_html div_id, :template => render_path(action, :con_name => @con_name)
+      end
+    else
+      if redirect
+        redirect_to(redirect)
+      else
+        render :template=>render_path(action)
+      end
+    end
+  end
+  
    # Renders the Show view for a given instance.
    def show
      self.instance = @model.find(params[:id])
-      if request.xhr? && params[:from_window]
-        @id = instance.id
-        @con_name = controller_name
-        render :update do |page|
-          page.replace_html "show_win_#{@id}_content", :partial => render_path('show', :partial => true, :con_name => @con_name)
-        end
-      else
-        render(:template => render_path('show'), :layout=>!request.xhr?)
-      end
+     render_streamlined_ajax('show')
    end
 
    # Opens the @model form for creating a new instance of the
    # given @model class.
    def new
      self.instance = @model.new
-     if request.xhr? && params[:from_window]
-         @id = instance.id
-         @con_name = controller_name
-         render :update do |page|
-           page.replace_html "show_win_new_content", :partial => render_path('new', :partial => true, :con_name => @con_name)
-         end
-     else
-       render(:template => render_path('new'), :layout=>!request.xhr?)
-     end
+     render_streamlined_ajax('new')
    end
 
    # Uses the values from the rendered form to create a new
@@ -181,69 +182,33 @@ module StreamlinedController::InstanceMethods
    def create
      self.instance = @model.new(params[@model_symbol])
      if instance.save
-       if request.xhr? && params[:from_window]
-         @id = instance.id
-         @con_name = controller_name
-         render :update do |page|
-           page.replace_html "show_win_new_content", :partial => render_path('show', :partial => true, :con_name => @con_name)
-         end
-       else
-         flash[:notice] = "#{@model_name} was successfully created."
-         if request.xhr?
-           redirect_to :action => 'show', :id => instance, :layout => 'streamlined_window'
-         else
-           redirect_to :action => 'list'
-         end
-       end   
+       flash[:notice] = "#{@model_name} was successfully created."
+       render_streamlined_ajax("show", :action=>"list")
      else
-       @id = instance.id
-       @con_name = controller_name
-       render :update do |page|
-         page.replace_html "show_win_new_content", :partial => render_path('new', :partial => true, :con_name => @con_name)
-       end
+       render_streamlined_ajax('new')
      end
    end
 
-   # Opens the @model form for editing an existing instance.
-   def edit
-     self.instance = @model.find(params[:id])
-      if request.xhr? && params[:from_window]
-          @id = instance.id
-          @con_name = controller_name
-          render :update do |page|
-            page.replace_html "show_win_#{@id}_content", :partial => render_path('edit', :partial => true, :con_name => @con_name)
-          end
-      else
-        render(:template => render_path('edit'), :layout=>!request.xhr?)
-      end
-   end
+  # Opens the @model form for editing an existing instance.
+  def edit
+    self.instance = @model.find(params[:id])
+    render_streamlined_ajax('edit')
+  end
 
-   # Uses the values from the rendered form to update an existing
-   # instance of the @model.  If the instance was successfully saved,
-   # render the #show view.  If the save was unsuccessful, re-render
-   # the #edit view so that errors can be fixed.
-   def update
-     self.instance = @model.find(params[:id])
-      if instance.update_attributes(params[@model_symbol])
-        get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
-        if request.xhr? && params[:from_window]
-          @id = instance.id
-          @con_name = controller_name
-          render :update do |page|
-            page.replace_html "show_win_#{@id}_content", :partial => render_path('show', :partial => true, :con_name => @con_name)
-          end         
-        else
-          flash[:notice] = "#{@model_name} was successfully updated."
-          redirect_to :action => 'show', :id => instance, :layout => 'streamlined_window'
-        end
-      else
-        @id = instance.id
-        @con_name = controller_name
-        render :update do |page|
-          page.replace_html "show_win_#{@id}_content", :partial => render_path('edit', :partial => true, :con_name => @con_name)
-        end
-      end
-   end
+  # Uses the values from the rendered form to update an existing
+  # instance of the @model.  If the instance was successfully saved,
+  # render the #show view.  If the save was unsuccessful, re-render
+  # the #edit view so that errors can be fixed.
+  def update
+    self.instance = @model.find(params[:id])
+    if instance.update_attributes(params[@model_symbol])
+      get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
+      flash[:notice] = "#{@model_name} was successfully updated."
+      render_streamlined_ajax("show", :action=>"list")
+    else
+      render_streamlined_ajax("edit")
+    end
+  end
 
    # Deletes a given instance of the @model class and re-renders the #list view.
    def destroy
@@ -491,10 +456,10 @@ module StreamlinedController::InstanceMethods
     @model_ui.relationships[rel_name.to_sym]
   end
 
-  def render_path(template, options = {:partial => true, :con_name => nil})
-     options[:con_name] ||= controller_name
-     template_file = "_#{template}" if options[:partial]
-     File.exist?(File.join(RAILS_ROOT, 'app', 'views', options[:con_name], template_file + ".rhtml")) ? template : generic_view(template)
+  def render_path(template, options = {})
+    raise "Set _foo or foo, do not use :partial" if options.has_key?(:partial)
+    options[:con_name] ||= controller_name
+     File.exist?(File.join(RAILS_ROOT, 'app', 'views', options[:con_name], template + ".rhtml")) ? template : generic_view(template)
   end
 
   def set_items_and_all_items(rel_type, item_filter = nil)
