@@ -155,7 +155,7 @@ module StreamlinedController::InstanceMethods
           page.replace_html "show_win_#{@id}_content", :partial => render_path('show', :partial => true, :con_name => @con_name)
         end
       else
-        render(:template => render_path('show'))
+        render(:template => render_path('show'), :layout=>!request.xhr?)
       end
    end
 
@@ -210,7 +210,7 @@ module StreamlinedController::InstanceMethods
             page.replace_html "show_win_#{@id}_content", :partial => render_path('edit', :partial => true, :con_name => @con_name)
           end
       else
-        render(:partial => render_path('edit'))
+        render(:template => render_path('edit'), :layout=>!request.xhr?)
       end
    end
 
@@ -553,8 +553,8 @@ verify :method => :post, :only => [ :destroy, :create, :update ],
 
           begin
             initialize_streamlined_values
-            @managed_views = ['list', 'new', 'show']
-            @managed_partials = ['list', 'edit', 'form', 'popup', 'tags', 'tag_list', 'columns', 'show_columns', 'hide_columns']                    
+            @managed_views = ['list', 'new', 'show', 'edit']
+            @managed_partials = ['list', 'form', 'popup', 'tags', 'tag_list', 'columns', 'show_columns', 'hide_columns']                    
             @syndication_type ||= "rss"
             @syndication_actions ||= "list"
             RAILS_DEFAULT_LOGGER.info("@model NAME: #{@model_name}")

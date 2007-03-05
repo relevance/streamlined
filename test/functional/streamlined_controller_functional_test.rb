@@ -71,7 +71,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
   def test_edit
     get :edit, :id => 1
     assert_response :success
-    assert_template generic_view("_edit")
+    assert_template generic_view("edit")
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
   end
