@@ -56,7 +56,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
   def test_new
     get :new
     assert_response :success
-    assert_template generic_view("_new")
+    assert_template generic_view("new")
     assert_not_nil assigns(:streamlined_item)
   end
 
