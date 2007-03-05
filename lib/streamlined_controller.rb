@@ -15,9 +15,8 @@ module StreamlinedController
       render :action => 'list'
     end
     
-    
     def generic_view(template)
-      self.class.generic_view(template)
+      "#{STREAMLINED_GENERIC_VIEW_ROOT}/#{template}"
     end
     
        # Creates the list of items of the @managed @model class. Default behavior
@@ -423,7 +422,7 @@ module StreamlinedController
           end
           @model = Class.class_eval(@model_name)
           @model_symbol = Inflector.underscore(@model_name).to_sym
-          if Object.const_defined? (@model_name + "UI")
+          if Object.const_defined?(@model_name + "UI")
             @model_ui = Class.class_eval(@model_name + "UI")
           else
             @model_ui = Streamlined.generic_ui
@@ -564,10 +563,6 @@ module StreamlinedController
       @custom_model_name || nil
     end
         
-    def generic_view(template)
-      "../../vendor/plugins/streamlined/templates/generic_views/#{template}"
-    end
-    
     def syndication(options = {})
        @syndication_type = options[:type].nil? ? "rss" : options[:type].to_s
        @syndication_actions = options[:actions].nil? ? "list" : (options[:actions].map &:to_s)

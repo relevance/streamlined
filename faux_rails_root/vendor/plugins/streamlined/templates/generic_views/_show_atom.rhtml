@@ -1,9 +1,0 @@
-<br/>
-<table>
-    <% show_columns_for_model( @model, @model_ui, params[:controller] ).each do |column| %>
-        <tr>
-            <td align="right" valign="top"><b><%= @model_ui.column_header( column ) %></b>:</td>
-            <td valign="top"><%= streamlined_column_html( item, column ) %></td>
-        </tr>
-    <% end %>
-</table>

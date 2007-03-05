@@ -29,22 +29,26 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     @person = Person.create(:id=>3, :first_name=>'Test', :last_name=>'Person')
   end
 
+  def generic_view(template)
+    "../../../templates/generic_views/#{template}"
+  end
+  
   def test_index
     get :index
     assert_response :success
-    assert_template '../../vendor/plugins/streamlined/templates/generic_views/list'
+    assert_template generic_view("list")
   end
   
   def test_list
     get :list
     assert_response :success
-    assert_template '../../vendor/plugins/streamlined/templates/generic_views/list'
+    assert_template generic_view("list")
   end
 
   def test_show
     get :show, :id => 1
     assert_response :success
-    assert_template '../../vendor/plugins/streamlined/templates/generic_views/_show'
+    assert_template generic_view("_show")
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
   end
@@ -52,7 +56,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
   def test_new
     get :new
     assert_response :success
-    assert_template '../../vendor/plugins/streamlined/templates/generic_views/_new'
+    assert_template generic_view("_new")
     assert_not_nil assigns(:streamlined_item)
   end
 
@@ -67,7 +71,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
   def test_edit
     get :edit, :id => 1
     assert_response :success
-    assert_template '../../vendor/plugins/streamlined/templates/generic_views/_edit'
+    assert_template generic_view("_edit")
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
   end

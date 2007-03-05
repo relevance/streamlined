@@ -88,7 +88,7 @@ module StreamlinedHelper
         end
       else
         view_name = default_template_name.split("/")[-1]
-        render(:template => StreamlinedController.generic_view(view_name))
+        render(:template => controller.generic_view(view_name))
       end
     end
   end
@@ -97,7 +97,7 @@ module StreamlinedHelper
   def render_path(template, options = {:partial => true, :con_name => nil})
      options[:con_name] ||= controller_name
      template_file = "_#{template}" if options[:partial]
-     File.exist?(File.join(RAILS_ROOT, 'app', 'views', options[:con_name], template_file + ".rhtml")) ? template : "../../vendor/plugins/streamlined/templates/generic_views/#{template}"
+     File.exist?(File.join(RAILS_ROOT, 'app', 'views', options[:con_name], template_file + ".rhtml")) ? template : generic_view(template)
   end
   
   # Create auto-discovery Atom link
@@ -119,10 +119,6 @@ module StreamlinedHelper
       rescue
           return ""
       end
-  end
-  
-  def generic_view(template)
-    "../../vendor/plugins/streamlined/templates/generic_views/#{template}"
   end
   
   private
