@@ -1,12 +1,12 @@
 module Streamlined::Helpers::MenuHelper
-  attr_writer :streamlined_top_menus, :streamlined_side_menus
+  # override these in your own application helper, or controller specific helpers
   def streamlined_side_menus
-    @streamlined_side_menus ||= [
-      ["TBD", {:action=>"new"}]
+    [
+      ["TBD", {:action=>"list"}]
     ]
   end
   def streamlined_top_menus
-    @streamlined_top_menus ||= [
+    [
       ["TBD", {:action=>"new"}]
     ]
   end

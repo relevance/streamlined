@@ -189,7 +189,11 @@ module StreamlinedController::InstanceMethods
          end
        else
          flash[:notice] = "#{@model_name} was successfully created."
-         redirect_to :action => 'show', :id => instance, :layout => 'streamlined_window'
+         if request.xhr?
+           redirect_to :action => 'show', :id => instance, :layout => 'streamlined_window'
+         else
+           redirect_to :action => 'list'
+         end
        end   
      else
        @id = instance.id

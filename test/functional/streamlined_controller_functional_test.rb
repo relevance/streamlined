@@ -60,11 +60,19 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_not_nil assigns(:streamlined_item)
   end
 
+  def test_create_xhr
+    assert_difference(Person, :count) do
+      xhr :post, :create, :person => {:first_name=>'Another', :last_name=>'Person'}
+      assert_response :redirect
+      assert_redirected_to :action => 'show', :layout=>'streamlined_window'
+    end
+  end
+
   def test_create
     assert_difference(Person, :count) do
       post :create, :person => {:first_name=>'Another', :last_name=>'Person'}
       assert_response :redirect
-      assert_redirected_to :action => 'show', :layout=>'streamlined_window'
+      assert_redirected_to :action => 'list'
     end
   end
   
