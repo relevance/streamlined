@@ -2,6 +2,14 @@
 # (c) 2005-6 Relevance, LLC. (www.relevancellc.com)
 # Streamlined is freely distributable under the terms of an MIT-style license.
 # For details, see http://streamlined.relevancellc.com
+
+# This is not in init.rb because constants created there seem to get blown away! Yuck.
+raise "Must have a RAILS_ROOT" unless RAILS_ROOT
+STREAMLINED_ROOT = File.join(File.dirname(__FILE__), "..")
+STREAMLINED_GENERIC_VIEW_ROOT = 
+File.join(Pathname.new(STREAMLINED_ROOT).relative_path_from(Pathname.new(RAILS_ROOT+"/app/views")).to_s,
+                       "/templates/generic_views")
+
 require "#{RAILS_ROOT}/app/controllers/application"
 module StreamlinedController 
   def self.included(base)

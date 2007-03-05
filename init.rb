@@ -1,10 +1,3 @@
-raise "Must have a RAILS_ROOT" unless RAILS_ROOT
-STREAMLINED_ROOT = File.dirname(__FILE__)
-# STREAMLINED_GENERIC_VIEW_ROOT must be RELATIVE (!) to RAILS_ROOT/app/views
-# because that is how Rails looks up templates!
-STREAMLINED_GENERIC_VIEW_ROOT = 
-  File.join(Pathname.new(STREAMLINED_ROOT).relative_path_from(Pathname.new(RAILS_ROOT+"/app/views")).to_s,
-                         "/templates/generic_views")
 # begin
 begin
   Dependencies.load_paths.unshift("#{RAILS_ROOT}/app/streamlined")
