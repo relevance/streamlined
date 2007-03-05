@@ -4,12 +4,17 @@
 # For details, see http://streamlined.relevancellc.com
 #
 # The methods here are available to all Streamlined views.
+
+module Streamlined; end
+module Streamlined; module Helpers; end; end
+
 require 'streamlined/helpers/link_helper'
+require 'streamlined/helpers/menu_helper'
 require 'streamlined/helpers/degradable/link_helper'
   
 module StreamlinedHelper
   include Streamlined::Helpers::LinkHelper
-  
+  include Streamlined::Helpers::MenuHelper
   # Given an image file, checks to see if the image exists in the filesystem.
   # If it does, display the image. If not, suppress the generation of the image
   # tag.  Used to add model-specific icons to the UI.  If the icon does not

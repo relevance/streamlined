@@ -1,5 +1,3 @@
-module Streamlined; end
-module Streamlined; module Helpers; end; end
 module Streamlined::Helpers::LinkHelper
   def link_to_new_model
     link_to_function image_tag('streamlined/add_16.png', 
