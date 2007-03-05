@@ -155,7 +155,7 @@ module StreamlinedController::InstanceMethods
           page.replace_html div_id, :template => render_path(action, :con_name => @con_name)
         end
       else
-        render :template => render_path(action, :con_name => @con_name)
+        render :template => render_path(action, :con_name => @con_name), :layout=>false
       end
     else
       if redirect
