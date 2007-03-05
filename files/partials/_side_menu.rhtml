@@ -1,11 +1,9 @@
-Use 'rake menu' to create a personalized menu.
 <div id="button">
 <ul>
-		<li>
-	<a href="<%= url_for(:controller => 'events', :action => 'list') %>">Events</a></li>
-		<li>
-	<a href="<%= url_for(:controller => 'logins', :action => 'list') %>">Logins</a></li>
-		<li>
-	<a href="<%= url_for(:controller => 'evals', :action => 'list') %>">Evals</a></li>
-	</ul>
+  <% streamlined_side_menus.each do |text,url_for_options| %>
+  <li>
+	  <a href="<%= url_for(url_for_options) %>"><%= text %></a></li>
+	</li>
+	<% end %>
+</ul>
 </div>

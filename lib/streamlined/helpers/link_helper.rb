@@ -2,8 +2,10 @@ module Streamlined::Helpers::LinkHelper
   def link_to_new_model
     link_to_function image_tag('streamlined/add_16.png', 
         {:alt => "New #{@model_name}", :title => "New #{@model_name}", :border => '0'}),          
-        "Streamlined.Windows.open_local_window_from_url('New', '#{url_for(:action => 'new')}')"
+        "Streamlined.Windows.open_local_window_from_url('New', '#{url_for(:action => 'new')}')",
+        :href => url_for(:action=>'new')
   end
+  # TODO add :hrefs options like above (dry and generalize...)
   def link_to_xml_export
     link_to_function(image_tag('streamlined/export_16.png', 
         {:alt => "Export XML", :title => "Export XML", :border => '0'}),

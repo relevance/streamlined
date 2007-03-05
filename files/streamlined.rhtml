@@ -19,7 +19,7 @@
 		</div>
 		<div id="center" class="column">
 			<%= image_tag 'streamlined/loading.gif', :id=>'spinner', :style=>"display:none;" %>
-			<%= @content_for_layout %>
+			<div id="content_for_layout"><%= @content_for_layout %></div>
 		</div>
 		<div id="left" class="column">
 			<%= render(:partial => "shared/streamlined/side_menu")%>
