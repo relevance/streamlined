@@ -86,14 +86,14 @@ module StreamlinedHelper
     rescue Exception => ex
       if options
         if options[:partial] && @managed_partials.include?(options[:partial])
-          options[:partial] = controller.generic_view(options[:partial])
+          options[:partial] = generic_view(options[:partial])
           render(options, deprecated_status, &block)
         else
           raise ex
         end
       else
         view_name = default_template_name.split("/")[-1]
-        render(:template => controller.generic_view(view_name))
+        render(:template => generic_view(view_name))
       end
     end
   end
@@ -104,6 +104,8 @@ module StreamlinedHelper
      template_file = "_#{template}" if options[:partial]
      File.exist?(File.join(RAILS_ROOT, 'app', 'views', options[:con_name], template_file + ".rhtml")) ? template : generic_view(template)
   end
+  
+  delegate :generic_view, :to=>:controller
   
   # Create auto-discovery Atom link
   def streamlined_auto_discovery_link_tag()
