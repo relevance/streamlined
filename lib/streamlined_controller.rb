@@ -389,7 +389,7 @@ module StreamlinedController::InstanceMethods
     rescue ActionView::TemplateError => ex 
       raise ex
     rescue Exception => ex
-      if options.size > 0
+      if options.size != {}
         if options[:partial] && @managed_partials.include?(options[:partial])
           options[:partial] = generic_view(options[:partial])
           super(options, deprecated_status, &block)
