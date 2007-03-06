@@ -455,8 +455,10 @@ module StreamlinedController::InstanceMethods
 
   def render_path(template, options = {})
     raise "Set _foo or foo, do not use :partial" if options.has_key?(:partial)
+    # strip out the "_" in partials
+    result_name = template.gsub(/(.*\/)_([^\/]+$)/,"\\1\\2")
     options[:con_name] ||= controller_name
-     File.exist?(File.join(RAILS_ROOT, 'app', 'views', options[:con_name], template + ".rhtml")) ? template : generic_view(template)
+     File.exist?(File.join(RAILS_ROOT, 'app', 'views', options[:con_name], template + ".rhtml")) ? result_name : generic_view(result_name)
   end
 
   def set_items_and_all_items(rel_type, item_filter = nil)
