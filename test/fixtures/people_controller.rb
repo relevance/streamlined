@@ -1,3 +1,4 @@
+require "#{RAILS_ROOT}/app/controllers/application"
 class PeopleController < ApplicationController
 	acts_as_streamlined
 end  
