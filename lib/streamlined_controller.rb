@@ -94,7 +94,7 @@ module StreamlinedController::InstanceMethods
       # else
       #     flash[:info] = @controller.list_notice_info if @controller.respond_to?( "list_notice_info" )
       # end
-     render :partial => render_path('_list') if request.xhr?
+     render :partial => render_path('list') if request.xhr?
      render :template => generic_view('atom'), :controler => @model_name, :layout => false if params[:syndicated]
    end
        
@@ -127,13 +127,13 @@ module StreamlinedController::InstanceMethods
     #            page.visual_effect :highlight, 'breadcrumbs'
     #        end
     #    end
-     render :partial => render_path('_list') if request.xhr?
+     render :partial => render_path('list') if request.xhr?
    end
 
    # Opens the search view.  The default is a criteria query view.
    def search
      self.instance = @model.new
-     render(:partial => render_path('_search'))
+     render(:partial => render_path('search'))
    end
 
    # Executes the search.  The default behavior is to create 
@@ -142,7 +142,7 @@ module StreamlinedController::InstanceMethods
    def find
      self.instance = @model.new(params[@model_symbol])
      @results = @model.find_by_criteria(instance)
-     render(:partial => render_path('_results'))
+     render(:partial => render_path('results'))
    end
 
   def render_streamlined_ajax(action, redirect=nil)
