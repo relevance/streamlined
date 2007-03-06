@@ -10,10 +10,8 @@ STREAMLINED_GENERIC_VIEW_ROOT =
 File.join(Pathname.new(STREAMLINED_ROOT).relative_path_from(Pathname.new(RAILS_ROOT+"/app/views")).to_s,
                        "/templates/generic_views")
 
-require "#{RAILS_ROOT}/app/controllers/application"
 module StreamlinedController 
   def self.included(base)
-    raise "Cannot extend ApplicationController with acts_as_streamlined: please extend individual controllers." if base.instance_of? ApplicationController
     base.extend(ClassMethods)              
   end
 end
@@ -454,7 +452,7 @@ module StreamlinedController::InstanceMethods
   end
 
   def render_path(template, options = {})
-    raise "Set _foo or foo, do not use :partial" if options.has_key?(:partial)
+    raise "Do not use :partial" if options.has_key?(:partial)
     # strip out the "_" in partials
     result_name = template.gsub(/(.*\/)_([^\/]+$)/,"\\1\\2")
     options[:con_name] ||= controller_name
