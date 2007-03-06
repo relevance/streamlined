@@ -244,6 +244,14 @@ Streamlined.Popup = {
     }
 }
 
+Streamlined.Link = {
+  submit: function(anchor) {
+    new Ajax.Updater(anchor.parentNode, anchor.href,
+                     {asynchronous:true, evalScripts:true});
+    return false;
+  }
+}
+
 Streamlined.Form = {
   submit: function(form) {
     new Ajax.Updater(form.parentNode, form.action,
