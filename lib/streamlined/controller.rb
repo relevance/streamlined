@@ -57,13 +57,13 @@ module Streamlined::Controller::InstanceMethods
     #            page.visual_effect :highlight, 'breadcrumbs'
     #        end
     #    end
-     render :partial => render_path('list') if request.xhr?
+     render :partial => 'list' if request.xhr?
    end
 
    # Opens the search view.  The default is a criteria query view.
    def search
      self.instance = @model.new
-     render(:partial => render_path('search'))
+     render(:partial => 'search')
    end
 
    # Executes the search.  The default behavior is to create 
@@ -72,7 +72,7 @@ module Streamlined::Controller::InstanceMethods
    def find
      self.instance = @model.new(params[@model_symbol])
      @results = @model.find_by_criteria(instance)
-     render(:partial => render_path('results'))
+     render(:partial => 'results')
    end
 
    # Renders the current scoped list of @model instances as an XML document.  For example,

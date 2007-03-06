@@ -65,20 +65,20 @@ module Streamlined::Controller::CrudMethods
      # else
      #     flash[:info] = @controller.list_notice_info if @controller.respond_to?( "list_notice_info" )
      # end
-    render :partial => render_path('list') if request.xhr?
+    render :partial => 'list' if request.xhr?
     render :template => generic_view('atom'), :controler => @model_name, :layout => false if params[:syndicated]
   end
    # Renders the Show view for a given instance.
    def show
      self.instance = @model.find(params[:id])
-     render_streamlined_ajax('show')
+     render_or_redirect('show')
    end
 
    # Opens the @model form for creating a new instance of the
    # given @model class.
    def new
      self.instance = @model.new
-     render_streamlined_ajax('new')
+     render_or_redirect('new')
    end
 
    # Uses the values from the rendered form to create a new
@@ -89,16 +89,16 @@ module Streamlined::Controller::CrudMethods
      self.instance = @model.new(params[@model_symbol])
      if instance.save
        flash[:notice] = "#{@model_name} was successfully created."
-       render_streamlined_ajax("show", :action=>"list")
+       render_or_redirect("show", :action=>"list")
      else
-       render_streamlined_ajax('new')
+       render_or_redirect('new')
      end
    end
 
   # Opens the @model form for editing an existing instance.
   def edit
     self.instance = @model.find(params[:id])
-    render_streamlined_ajax('edit')
+    render_or_redirect('edit')
   end
 
   # Uses the values from the rendered form to update an existing
@@ -110,9 +110,9 @@ module Streamlined::Controller::CrudMethods
     if instance.update_attributes(params[@model_symbol])
       get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
       flash[:notice] = "#{@model_name} was successfully updated."
-      render_streamlined_ajax("show", :action=>"list")
+      render_or_redirect("show", :action=>"list")
     else
-      render_streamlined_ajax("edit")
+      render_or_redirect("edit")
     end
   end
 

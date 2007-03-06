@@ -99,7 +99,6 @@ module StreamlinedHelper
   end
   
   # Given a template name, determines the precise location of the file to be used: model-specific view folders, or generic views
-  delegate :render_path, :to=>:controller
   delegate :generic_view, :to=>:controller
   
   # Create auto-discovery Atom link
