@@ -396,7 +396,7 @@ module StreamlinedController::InstanceMethods
     if mod_name
       @model_name = mod_name
     else
-      @model_name ||= self.class.model_name || Inflector.singularize(self.class.name.chomp("Controller"))
+      @model_name ||= self.class.model_name || Inflector.classify(self.class.controller_name)
     end
     @model = Class.class_eval(@model_name)
     @model_symbol = Inflector.underscore(@model_name).to_sym
