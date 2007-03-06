@@ -1,6 +1,7 @@
 <div id="content">
-<% remote_form_for @model_underscore.to_sym, @streamlined_item, 
-            :url => { :action => "update", :id=>@streamlined_item, :from_window => true} do |form| %>
+<% form_for @model_underscore.to_sym, @streamlined_item, 
+            :url => { :action => "update", :id=>@streamlined_item},
+            :html => {:onsubmit=>"Streamlined.Form.submit(this); return false;"} do |form| %>
   <%= streamlined_render :partial => 'form', :locals=>{:form=>form} %>
   <%= submit_tag 'Edit' %>
 <% end %>

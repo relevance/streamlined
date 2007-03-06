@@ -245,12 +245,18 @@ Streamlined.Popup = {
 }
 
 Streamlined.Form = {
-    toggle_field: function(field) {
-        if($(field).disabled != '') {
-            $(field).disabled = '';
-            Field.activate($(field));
-        } else {
-            $(field).disabled = "true";
-        }
+  submit: function(form) {
+    new Ajax.Updater(form.parentNode, form.action,
+                     {asynchronous:true, evalScripts:true, parameters:Form.serialize(form)});
+    return false;
+  },
+
+  toggle_field: function(field) {
+    if($(field).disabled != '') {
+      $(field).disabled = '';
+      Field.activate($(field));
+    } else {
+      $(field).disabled = "true";
     }
+  }
 }

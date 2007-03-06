@@ -149,14 +149,7 @@ module StreamlinedController::InstanceMethods
     if request.xhr?
       @id = instance.id
       @con_name = controller_name
-      if params[:from_window]
-        div_id = "show_win_#{@id ? @id : "new"}_content"
-        render :update do |page|
-          page.replace_html div_id, :template => render_path(action, :con_name => @con_name)
-        end
-      else
-        render :template => render_path(action, :con_name => @con_name), :layout=>false
-      end
+      render :template => render_path(action, :con_name => @con_name), :layout=>false
     else
       if redirect
         redirect_to(redirect)

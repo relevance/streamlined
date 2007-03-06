@@ -25,7 +25,6 @@ namespace :test do
   
   task 'test:functionals'
 
-  # Use Rails test database so we don't need to manage our own
   desc 'Build the MySQL test databases'
   task :build_mysql_databases do 
     %x( mysqladmin -u root create streamlined_unittest )
