@@ -5,18 +5,19 @@
 
 # This is not in init.rb because constants created there seem to get blown away! Yuck.
 raise "Must have a RAILS_ROOT" unless RAILS_ROOT
-STREAMLINED_ROOT = File.join(File.dirname(__FILE__), "..")
+STREAMLINED_ROOT = File.join(File.dirname(__FILE__), "../..")
 STREAMLINED_GENERIC_VIEW_ROOT = 
 File.join(Pathname.new(STREAMLINED_ROOT).relative_path_from(Pathname.new(RAILS_ROOT+"/app/views")).to_s,
                        "/templates/generic_views")
 
-module StreamlinedController 
+module Streamlined; end
+module Streamlined::Controller 
   def self.included(base)
     base.extend(ClassMethods)              
   end
 end
 
-module StreamlinedController::InstanceMethods
+module Streamlined::Controller::InstanceMethods
   def index
     list
     render :action => 'list'
@@ -492,12 +493,12 @@ module StreamlinedController::InstanceMethods
   end
 end
 
-module StreamlinedController::ClassMethods  
+module Streamlined::Controller::ClassMethods  
   @custom_model_name = nil
     
   def acts_as_streamlined(options = {})
     class_eval <<-EOV
-include StreamlinedController::InstanceMethods
+include Streamlined::Controller::InstanceMethods
 
 if defined? AuthenticatedSystem
   include AuthenticatedSystem
@@ -510,7 +511,7 @@ verify :method => :post, :only => [ :destroy, :create, :update ],
        :redirect_to => { :action => :list }
        
        def initialize_with_streamlined_variables
-          if self.class == StreamlinedController
+          if self.class == Streamlined::Controller
               RAILS_DEFAULT_LOGGER.warn("Cannot directly browse the Streamlined framework (/streamlined)")
               raise "Cannot directly browse the Streamlined framework (/streamlined)" 
           end

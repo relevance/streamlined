@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__), '../test_functional_helper')
-require 'streamlined_controller'
+require 'streamlined/controller'
 require 'streamlined_ui'
 
 # Monkey patching ActionView. This sucks, but I got tired of trying to
