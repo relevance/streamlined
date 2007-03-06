@@ -64,7 +64,6 @@ module Streamlined::Controller::RenderMethods
     options = convert_default_options(options)
     options = convert_action_options(options)
     options = convert_partial_options(options)
-    logger.warn "****** options are #{options.inspect}"
     super(options, deprecated_status, &block)
   end
 
