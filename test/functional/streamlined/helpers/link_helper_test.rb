@@ -15,6 +15,13 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
     get 'index'
   end
   
+  def test_guess_show_link_for
+    assert_equal "(multiple)", @view.guess_show_link_for([])
+    assert_equal "(unassigned)", @view.guess_show_link_for(nil)
+    assert_equal "(unknown)", @view.guess_show_link_for(1)
+    assert_equal '<a href="/people/show/1">1</a>', @view.guess_show_link_for(people(:justin))
+  end
+  
   def test_link_to_new_model
     assert_equal "<a href=\"/people/new\" onclick=\"Streamlined.Windows.open_local_window_from_url('New', '/people/new'); return false;\"><img alt=\"New \" border=\"0\" src=\"/images/streamlined/add_16.png\" title=\"New \" /></a>", @view.link_to_new_model
   end

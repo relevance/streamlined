@@ -1,4 +1,16 @@
 module Streamlined::Helpers::LinkHelper
+  def guess_show_link_for(model)
+    case model
+      when Enumerable
+        "(multiple)"
+      when ActiveRecord::Base
+        link_to model.streamlined_name, :controller=>model.class.name.pluralize, :action=>"show", :id=>model
+      when nil
+        "(unassigned)"
+      else 
+        "(unknown)"
+    end
+  end
   def link_to_new_model
     link_to_function image_tag('streamlined/add_16.png', 
         {:alt => "New #{@model_name}", :title => "New #{@model_name}", :border => '0'}),          
