@@ -327,6 +327,8 @@ if defined? AuthenticatedSystem
 end
 before_filter :initialize_page_options
 
+require_dependencies :ui, Dir["#{RAILS_ROOT}/app/streamlined/*.rb"].collect {|f| f.gsub(".rb", "")}
+
 # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
 verify :method => :post, :only => [ :destroy, :create, :update ],
        :redirect_to => { :action => :list }
