@@ -19,4 +19,10 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
     assert_equal 1, Poet.has_ones.size
     assert_equal 0, Person.has_ones.size
   end
+  
+  def test_find_by_criteria
+    assert_equal Person.count, Person.find_by_criteria(Person.new).size
+    assert_equal [people(:justin)], 
+                 Person.find_by_criteria(Person.new(:first_name=>'usti'))
+  end
 end

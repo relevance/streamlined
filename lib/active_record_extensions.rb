@@ -16,7 +16,12 @@ module Relevance::ActiveRecordExtensions::ClassMethods
     self.find(:all, :conditions=>conditions_by_like(value, *columns))
   end
   def find_by_criteria(template)
-    self.find(:all, :conditions=>conditions_by_criteria(template))      
+    conditions = conditions_by_criteria(template)
+    if conditions.blank?
+      self.find(:all)
+    else 
+      self.find(:all, :conditions=>conditions)
+    end
   end
   def conditions_by_like(value, *columns)
     columns = self.user_columns if columns.size==0
