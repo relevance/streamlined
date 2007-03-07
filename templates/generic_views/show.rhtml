@@ -7,20 +7,23 @@
 <% end %>
 <% for relationship in @model.reflect_on_all_associations %>
 <% if @model_ui.relationships[relationship.name].summary_def %>
-    <tr>
-	<td><div id="<%= relationship_div_id(relationship, @streamlined_item, true) %>">
-		<%= render(:partial => "#{@model_ui.relationships[relationship.name].summary_def.partial}", :locals => {:item => @streamlined_item, :relationship => relationship, :streamlined_def => @model_ui.relationships[relationship.name].summary_def})%>
-	</div> <%= link_to_function("Edit", "Streamlined.Relationships.open_relationship('#{relationship_div_id(relationship, @streamlined_item, true)}', this, '/#{params[:controller]}')")%>
+  <tr>
+    <td class="streamlined_label_cell"><span class="streamlined_label"><%= relationship.name %>:</span></td>
+	  <td>
+	    <div id="<%= relationship_div_id(relationship, @streamlined_item, true) %>">
+		    <%= render(:partial => "#{@model_ui.relationships[relationship.name].summary_def.partial}", :locals => {:item => @streamlined_item, :relationship => relationship, :streamlined_def => @model_ui.relationships[relationship.name].summary_def})%>
+	    <%= link_to_function("Edit", "Streamlined.Relationships.open_relationship('#{relationship_div_id(relationship, @streamlined_item, true)}', this, '/#{params[:controller]}')")%>
+	    </div> 
     </td>
 </tr>
 <% end %>
 <% end %>
 </table>
-<%= link_to 'Edit', {:action => 'edit', :id => @streamlined_item}, 
-                    {:onclick => "Streamlined.Link.submit(this); return false;"} %> 
 <script>
 if (top.Streamlined.PageOptions.form()) {
   top.Streamlined.PageOptions.poke();
 }
 </script>
 </div>
+<%= link_to 'Edit', {:action => 'edit', :id => @streamlined_item}, 
+                    {:onclick => "Streamlined.Link.submit(this); return false;"} %> 
