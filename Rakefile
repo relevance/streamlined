@@ -51,17 +51,21 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-namespace 'rcov' do
-  begin
-    require 'rcov/rcovtask'
-    Rcov::RcovTask.new do |t|
-      t.name = 'test'
-      t.libs << "test"
-      t.test_files = FileList['test/**/*test.rb']   
-      t.verbose = true
+require 'rcov/rcovtask'
+namespace 'test' do
+  namespace 'coverage' do
+    namespace 'all' do
+      Rcov::RcovTask.new do |t|
+        t.name = "test"
+        t.libs << "test"
+        t.test_files = FileList['test/**/*test.rb']   
+        t.verbose = true
+        t.rcov_opts = ['-x', '^config/boot', '--sort', 'coverage']     
+      end
     end
-  rescue LoadError                                  
-    # ignore missing rcov
+    task :report => "all:test" do
+      system("open coverage/index.html") if PLATFORM['darwin']
+    end
   end
 end
 

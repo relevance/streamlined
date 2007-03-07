@@ -254,20 +254,6 @@ module Streamlined::Controller::InstanceMethods
     return paginator, collection 
   end
 
-  def order_options
-    if @page_options.order?
-      vals = @page_options.order.split(',')
-      if @model.column_names.include? vals[0]
-        @page_options.active_record_order_option
-      else
-        {:non_ar_column => vals[0].downcase.tr(" ", "_"), :dir => vals[1]}
-      end
-    else
-      # override to set a default column sort, e.g. :order=>"col ASC|DESC"
-      {}
-    end
-  end
-
   def instance
     self.instance_variable_get("@#{Inflector.underscore(@model_name)}")
   end

@@ -120,5 +120,23 @@ module Streamlined::Controller::CrudMethods
     @model.find(params[:id]).destroy
     redirect_to :action => 'list'
   end
+
+  private
+  attr_accessor :default_order_options
+  # TODO: Dump non_ar_column. 
+  # Figure out whether a column is ar or not when using it!
+  def order_options
+    if @page_options && @page_options.order?
+      column,order = @page_options.sort_column, @page_options.sort_order
+      if @model.column_names.include? column
+        @page_options.active_record_order_option
+      else
+        {:non_ar_column => column.downcase.tr(" ", "_"), :dir => order}
+      end
+    else
+      default_order_options || {}
+    end
+  end
+
   
 end   
