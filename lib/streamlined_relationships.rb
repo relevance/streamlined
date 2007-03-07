@@ -139,6 +139,11 @@ module Streamlined
           Class.class_eval(Inflector.camelize(sym.to_s)).new
         end
       end
+
+      # TODO: this is not very dry!
+      class Link < Streamlined::Relationships::Base
+  
+      end      
       
       # Renders a count of the total number of members of this collection.
       class Count < Streamlined::Relationships::Base
