@@ -8,11 +8,13 @@
 module Streamlined; end
 module Streamlined; module Helpers; end; end
 
+require 'relevance/dsl'
 require 'streamlined/helpers/link_helper'
 require 'streamlined/helpers/menu_helper'
 require 'streamlined/helpers/degradable/link_helper'
   
 module StreamlinedHelper
+  dsl_scalar :streamlined_branding
   include Streamlined::Helpers::LinkHelper
   include Streamlined::Helpers::MenuHelper
   # Given an image file, checks to see if the image exists in the filesystem.
