@@ -15,7 +15,8 @@
 </head>
 <body>
 		<div id="header">
-			<%= render(:partial => 'shared/streamlined/header' )%>
+      <span id="branding"><%= streamlined_branding %></span>
+      <%= render(:partial => 'shared/streamlined/top_menu') %>		
 		</div>
 		<div id="center" class="column">
 			<%= image_tag 'streamlined/loading.gif', :id=>'spinner', :style=>"display:none;" %>
@@ -27,8 +28,7 @@
 		<div id="right" class="column">
 			&nbsp;
 		</div>
-		<div id="footer">
-			<%= render(:partial => 'shared/streamlined/footer')%>
-	    </div>
+		
+		<div id="footer"><%= streamlined_footer %></div>
 </body>
 </html>
