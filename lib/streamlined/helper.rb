@@ -13,7 +13,7 @@ require 'streamlined/helpers/link_helper'
 require 'streamlined/helpers/menu_helper'
 require 'streamlined/helpers/degradable/link_helper'
   
-module StreamlinedHelper
+module Streamlined::Helper
   dsl_scalar :streamlined_branding
   include Streamlined::Helpers::LinkHelper
   include Streamlined::Helpers::MenuHelper

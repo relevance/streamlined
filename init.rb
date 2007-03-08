@@ -13,11 +13,11 @@ require 'active_record_extensions'
 require 'streamlined_relationships'
 require 'streamlined_ui'
 require 'streamlined/controller'
-require 'streamlined_helper'
+require 'streamlined/helper'
 
 ActionController::Base.class_eval do 
   include Streamlined::Controller
 end
 
-ActionView::Base.send :include, StreamlinedHelper
+ActionView::Base.send :include, Streamlined::Helper
   

@@ -1,9 +1,10 @@
 require File.join(File.dirname(__FILE__), '../test_helper')
-require 'streamlined_helper'
+require 'streamlined/helper'
 
-class StreamlinedHelperTest < Test::Unit::TestCase
+module Streamlined; end
+class Streamlined::HelperTest < Test::Unit::TestCase
   include FlexMock::TestCase
-  include StreamlinedHelper
+  include Streamlined::Helper
 
   def column_named_name
     column = flexmock("column")
