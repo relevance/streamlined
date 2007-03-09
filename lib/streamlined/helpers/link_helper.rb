@@ -24,7 +24,7 @@ module Streamlined::Helpers::LinkHelper
         "Streamlined.Windows.open_local_window_from_url('Show', '#{url_for(:action => 'show', :id => id)}', #{id})",
         :href => url_for(:action=>"show", :id=>id)
   end
-  def text_link_to_edit_model(item)
+  def text_link_to_edit_model(column,item)
     link_to_function(h(item.send(column.name)),   
         "Streamlined.Windows.open_local_window_from_url('Edit', '#{url_for(:action => 'edit', :id => item.id)}', #{item.id})",
         :href => url_for(:action=>"edit", :id=>id))

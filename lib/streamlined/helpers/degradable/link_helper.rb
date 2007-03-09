@@ -14,7 +14,7 @@ module Streamlined::Helpers::Degradable::LinkHelper
         :action => 'show', :id=>item)
   end
 
-  def text_link_to_edit_model(item)
+  def text_link_to_edit_model(column, item)
     link_to(h(item.send(column.name)),url_for(:action => 'edit', :id=>item))
   end
 
