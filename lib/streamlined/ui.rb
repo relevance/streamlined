@@ -102,14 +102,14 @@ module Streamlined
        # Given a relationship name, returns the View class representing it.
        def view_def(rel)
          opts = self.relationships[rel.to_sym]
-         Streamlined::Column::Views.create_relationship(opts[:view], opts[:view_fields])
+         Streamlined::Views::EditViews.create_relationship(opts[:view], opts[:view_fields])
        end
        
        # Given a relationship name, returns the Summary class representing it.
        def summary_def(rel)
          opts = self.relationships[rel.to_sym]
          return nil if opts[:summary] == :none
-         Streamlined::Column::Summaries.create_summary(opts[:summary], opts[:fields])
+         Streamlined::Views::ShowViews.create_summary(opts[:summary], opts[:fields])
        end
        
        # Return list of all known relationships.
