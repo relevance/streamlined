@@ -55,6 +55,7 @@ module Streamlined::Controller::RenderMethods
       unless specific_template_exists?("#{controller_name}/_#{options[:partial]}")
         options.delete(:partial)
         options[:template] = generic_view(partial)
+        options[:layout] = false unless options.has_key?(:layout)
       end
     end
     options
