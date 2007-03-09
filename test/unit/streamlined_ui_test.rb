@@ -59,4 +59,23 @@ class StreamlinedUITest < Test::Unit::TestCase
     assert_equal [Streamlined::Column.new("foo")], @ui.calculated_columns("foo")
   end
   
+  def test_column_header
+    assert_equal '', @ui.column_header(nil)
+    column = flexmock('column')
+    column.should_receive(:name).and_return('ColumnName')
+    column.should_receive(:human_name).and_return('Column name')
+    
+    assert_equal("Column name", @ui.column_header(column))
+    
+    @ui.column_headers(:headers => {'NoSuchColumn' => 'no such column'})
+    
+    assert_equal("Column name", @ui.column_header(column))
+    
+    column = flexmock('column')
+    column.should_receive(:name).and_return('ColumnName')
+    @ui.column_headers(:headers => {:ColumnName => 'a custom name'})
+    assert_equal("a custom name", @ui.column_header(column))
+    
+  end
+    
 end
