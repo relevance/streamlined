@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__), '../test_helper')
-require 'streamlined_ui'
+require 'streamlined/ui'
 
 class RelevanceModuleHelpersTest < Test::Unit::TestCase
   def setup
@@ -56,7 +56,7 @@ class StreamlinedUITest < Test::Unit::TestCase
   def test_calculated_columns
     assert_equal [1,2], [1,2]
     assert_equal [], @ui.calculated_columns
-    assert_equal [Streamlined::Column.new("foo")], @ui.calculated_columns("foo")
+    assert_equal [Streamlined::Column::Scalar.new("foo")], @ui.calculated_columns("foo")
   end
   
   def test_column_header

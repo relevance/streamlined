@@ -27,22 +27,6 @@ module Streamlined
           return column.human_name
       end
       
-      # Method that gets hooked into Rails' application reloading mechanism.  Resets all class variables
-      # for the controller, enabling clean resets in development mode.
-      def reset_subclasses
-        ObjectSpace.each_object(Class) do |klass|
-          if klass.ancestors[1..-1].include?(Streamlined::UI)
-            RAILS_DEFAULT_LOGGER.debug "resetting streamlined class #{klass}"
-         	  klass.instance_variables.each do |var|
-         	    klass.send(:remove_instance_variable, var)
-        	 	end
-        	 	klass.instance_methods(false).each do |m|
-        	 	  klass.send :undef_method, m
-        	 	end
-        	 end
-         end
-      end
-       
        # The default model name is the name of this class minus the "UI" suffix.
        def default_model
           Object.const_get(self.name.chomp("UI"))
@@ -118,14 +102,14 @@ module Streamlined
        # Given a relationship name, returns the View class representing it.
        def view_def(rel)
          opts = self.relationships[rel.to_sym]
-         Streamlined::Relationships::Views.create_relationship(opts[:view], opts[:view_fields])
+         Streamlined::Column::Views.create_relationship(opts[:view], opts[:view_fields])
        end
        
        # Given a relationship name, returns the Summary class representing it.
        def summary_def(rel)
          opts = self.relationships[rel.to_sym]
          return nil if opts[:summary] == :none
-         Streamlined::Relationships::Summaries.create_summary(opts[:summary], opts[:fields])
+         Streamlined::Column::Summaries.create_summary(opts[:summary], opts[:fields])
        end
        
        # Return list of all known relationships.
@@ -161,7 +145,7 @@ module Streamlined
         
         declarative_array :calculated_columns,
                           :default=>[],
-                          :writer=>Proc.new {|x| x.map {|item| Streamlined::Column.new(item)}}
+                          :writer=>Proc.new {|x| x.map {|item| Streamlined::Column::Scalar.new(item)}}
         declarative_array :popup_columns, :default=>[]
               
         # Used to override the default declarative values for a specific relationship.  Example usage:
@@ -193,9 +177,9 @@ module Streamlined
            initialize_relationships unless @relationships
            options = self.define_association(association, opts)
            if options[:summary] == :none
-             @relationships[rel] = Streamlined::Relationships::Association.new(model.reflect_on_association(rel),nil, nil)
+             @relationships[rel] = Streamlined::Column::Association.new(model.reflect_on_association(rel),nil, nil)
            else
-             @relationships[rel] = Streamlined::Relationships::Association.new(model.reflect_on_association(rel), Streamlined::Relationships::Views.create_relationship(options[:view][:name], options[:view].reject {|k,v| k == :name}), Streamlined::Relationships::Summaries.create_summary(options[:summary][:name], options[:summary].reject {|k,v| k == :name}))         
+             @relationships[rel] = Streamlined::Column::Association.new(model.reflect_on_association(rel), Streamlined::Column::Views.create_relationship(options[:view][:name], options[:view].reject {|k,v| k == :name}), Streamlined::Column::Summaries.create_summary(options[:summary][:name], options[:summary].reject {|k,v| k == :name}))         
            end
          end
 
@@ -323,22 +307,5 @@ module Streamlined
      end
    end
   
-   # Imitates ActiveRecord's Column, for use as wrapper around calculated columns.
-   class Column
-     attr_accessor :name, :human_name
-
-     def initialize(sym)
-       @name = sym.to_s
-       @human_name = sym.to_s.humanize
-     end
-
-     # Array#== calls this
-     def ==(o)
-       return true if o.object_id == object_id
-       return false unless Column === o
-       return name.eql?(o.name)
-     end
-     
-   end
 end
 

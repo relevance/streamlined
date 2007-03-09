@@ -97,7 +97,7 @@ module Streamlined::Controller::InstanceMethods
 
    # Opens the relationship +view+ for a given relationship on the @model.  This means
    # replacing the +summary+ view with the expanded +view+, as defined in streamlined_ui 
-   # and streamlined_relationships.
+   # and Streamlined::Column.
    def expand_relationship
      self.instance = @model.find(params[:id])
      rel_type = relationship_for_name(params[:relationship])
@@ -108,7 +108,7 @@ module Streamlined::Controller::InstanceMethods
    end
 
    # Closes the expanded relationship +view+ and replaces it with the +summary+ view, 
-   # as defined in streamlined_ui and streamlined_relationships.
+   # as defined in streamlined_ui and Streamlined::Column.
    def close_relationship
      self.instance = @model.find(params[:id])
      rel_type = relationship_for_name(params[:relationship])
@@ -121,7 +121,7 @@ module Streamlined::Controller::InstanceMethods
    end
 
    # Add new items to the given relationship collection. Used by the #membership view, as 
-   # defined in streamlined_relationships.
+   # defined in Streamlined::Column.
    def update_relationship
      items = params[:item]
       self.instance = @model.find(params[:id])
@@ -147,7 +147,7 @@ module Streamlined::Controller::InstanceMethods
    end
 
    # Add new items to the given relationship collection. Used by the #membership view, as 
-   # defined in streamlined_relationships.
+   # defined in Streamlined::Column.
    def update_n_to_one
     item = params[:item]
     self.instance = @model.find(params[:id])

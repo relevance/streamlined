@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), '../test_functional_helper')
 require 'streamlined/controller'
-require 'streamlined_ui'
+require 'streamlined/ui'
 
 # Monkey patching ActionView. This sucks, but I got tired of trying to
 # find how to get the base_path set.
