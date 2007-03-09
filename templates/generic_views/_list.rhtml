@@ -22,7 +22,7 @@
   <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
     <td <%= popup_events_for_item(item, column, @model_ui) %>>
 		<% if @model_ui.edit_link_column == column.name.to_sym %>
-			<%= link_to_function(h(item.send(column.name)), "Streamlined.Windows.open_local_window_from_url('Edit', '#{url_for(:action => 'edit', :id => item.id)}', #{item.id})") %>
+      <%= text_link_to_edit_model(item) %>
 		<% else %>
 			<%=h item.send(column.name) %>
 		<% end %>

@@ -5,19 +5,23 @@ module Streamlined::Helpers::Degradable::LinkHelper
   def link_to_new_model
     link_to(image_tag('streamlined/add_16.png', 
         {:alt => "New #{@model_name}", :title => "New #{@model_name}", :border => '0'}),          
-        url_for(:action => 'new'))
+        :action => 'new')
   end
 
   def link_to_show_model(item)
     link_to(image_tag('streamlined/search_16.png', 
         {:alt => "Show #{@model_name}", :title => "Show #{@model_name}", :border => '0'}),          
-        url_for(:action => 'show', :id=>item))
+        :action => 'show', :id=>item)
+  end
+
+  def text_link_to_edit_model(item)
+    link_to(h(item.send(column.name)),url_for(:action => 'edit', :id=>item))
   end
 
   def link_to_edit_model(item)
     link_to(image_tag('streamlined/edit_16.png', 
         {:alt => "Edit #{@model_name}", :title => "Edit #{@model_name}", :border => '0'}),          
-        url_for(:action => 'edit', :id=>item))
+        :action => 'edit', :id=>item)
   end
   
   # TODO: delete confirm with no JavaScript
