@@ -18,10 +18,10 @@ class Streamlined::View::Base
   
   # Returns the path to the partial that will be used to render this relationship type.
   def partial
+    # TODO: make this relative to some base 
     mod = self.class.name.split("::")[-2]
-    "../../vendor/plugins/streamlined/templates/relationships/#{mod.downcase}/#{Inflector.underscore(Inflector.demodulize(self.class.name))}"
+"../../vendor/plugins/streamlined/templates/relationships/#{mod.underscore}/#{Inflector.underscore(Inflector.demodulize(self.class.name))}"
   end
-  
   
   private
   
