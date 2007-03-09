@@ -19,4 +19,9 @@ class PageOptionsTest < Test::Unit::TestCase
     assert_equal({:order=>"name DESC"}, o.active_record_order_option)
   end
   
+  def test_empty_order_option
+    o = PageOptions.new
+    assert_equal({}, o.active_record_order_option)
+  end
+  
 end
