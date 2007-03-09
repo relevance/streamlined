@@ -179,7 +179,7 @@ module Streamlined
            if options[:summary] == :none
              @relationships[rel] = Streamlined::Column::Association.new(model.reflect_on_association(rel),nil, nil)
            else
-             @relationships[rel] = Streamlined::Column::Association.new(model.reflect_on_association(rel), Streamlined::Views.EditViews.create_relationship(options[:view][:name], options[:view].reject {|k,v| k == :name}), Streamlined::Views::ShowViews.create_summary(options[:summary][:name], options[:summary].reject {|k,v| k == :name}))         
+             @relationships[rel] = Streamlined::Column::Association.new(model.reflect_on_association(rel), Streamlined::Views::EditViews.create_relationship(options[:view][:name], options[:view].reject {|k,v| k == :name}), Streamlined::Views::ShowViews.create_summary(options[:summary][:name], options[:summary].reject {|k,v| k == :name}))         
            end
          end
 
