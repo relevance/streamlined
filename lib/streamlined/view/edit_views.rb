@@ -1,4 +1,4 @@
-module Streamlined::Views::EditViews
+module Streamlined::View::EditViews
   def self.create_relationship(sym, options = nil)
     Class.class_eval(Inflector.camelize(sym.to_s)).new options
   end  
