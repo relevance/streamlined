@@ -25,5 +25,9 @@ class Test::Unit::TestCase
   def assert_no_difference(object, method, &block)
     assert_difference object, method, 0, &block
   end
+  
+  def assert_equal_sets(a,b)
+    assert_equal(Set.new(a), Set.new(b))
+  end
 end
 

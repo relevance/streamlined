@@ -41,7 +41,9 @@ class Streamlined::UI
           @user_columns << column(name)
         end
       else
-        @user_columns ||= all_columns
+        @user_columns ||= all_columns.reject do |v|
+          v.name.to_s.match /(_at|_on|position|lock_version|_id|password_hash|id)$/
+        end
       end
     end
     
