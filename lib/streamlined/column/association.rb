@@ -1,8 +1,12 @@
+require 'relevance/delegates'
+
 # Wrapper around ActiveRecord::Association.  Keeps track of the underlying association, the View definition and the Summary definition.
 class Streamlined::Column::Association
   attr_reader :underlying_association
   attr_reader :view_def
   attr_reader :summary_def
+  
+  delegates :name, :to=>:underlying_association
   
   def initialize(assoc, view, summary)
     @underlying_association = assoc

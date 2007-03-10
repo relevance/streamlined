@@ -22,9 +22,9 @@ class Streamlined::ReflectionTest < Test::Unit::TestCase
     hash = reflect_on_relationships
     # TODO: why does poet show up here?
     assert_equal(Set.new([:poems,:poet]), Set.new(hash.keys))
+    hash.each do |k,v|
+      assert_equal k, v.name
+    end
   end
   
-  def test_reflect_on_all_columns
-    
-  end
 end
