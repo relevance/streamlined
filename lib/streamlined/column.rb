@@ -6,7 +6,7 @@
 
 module Streamlined; end
 module Streamlined; module Column; end; end
-require 'streamlined/column/scalar'
+require 'streamlined/column/addition'
 require 'streamlined/column/association'
 
 

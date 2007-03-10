@@ -143,7 +143,7 @@ END
      if pref && pref.page_columns && pref.page_columns.instance_of?(Hash) && pref.page_columns[controller]
        current = pref.page_columns[controller]
      else    
-       current = klass_ui.user_default_columns_for_display.collect {|c| c.name}
+       current = klass_ui.user_columns.collect {|c| c.name}
      end 
      return current
    end

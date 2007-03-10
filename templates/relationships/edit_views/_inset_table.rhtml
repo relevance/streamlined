@@ -1,7 +1,7 @@
 <table class="streamlined">
   <thead>
 	<tr>
-  <% for column in @klass_ui.user_columns_for_display %>
+  <% for column in @klass_ui.user_columns %>
     <th scope="col" class="sortSelector"><%= column.human_name %></th>
   <% end %>
 
@@ -15,7 +15,7 @@
 <% for item in @items %>
 <% alt = 1 - alt %>
   <tr <%= "class='odd'" if alt == 0 %>>
-  <% for column in @klass_ui.user_columns_for_display %>
+  <% for column in @klass_ui.user_columns %>
     <td><%=h item.send(column.name) %></td>
   <% end %>
 

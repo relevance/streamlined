@@ -1,6 +1,6 @@
 <div id="content">
   <table class="streamlined_form">
-<% for column in @model_ui.user_columns_for_display %>
+<% for column in @model_ui.user_columns %>
 <tr>
   <td class="streamlined_label_cell"><span class="streamlined_label"><%= column.human_name %>:</span></td><td class="streamlined_value_cell"><%=h @streamlined_item.send(column.name) %></td>
 </tr>
