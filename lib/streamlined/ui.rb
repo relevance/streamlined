@@ -104,6 +104,18 @@ class Streamlined::UI
       relationships[rel] = create_relationship(rel, opts)
     end
 
+    def generic_ui
+      Streamlined::UI::Generic
+    end
+    
+    def get_ui(klass_name)
+      if Object.const_defined?(klass_name + "UI")
+        Class.class_eval(klass_name + "UI")
+      else
+        self.generic_ui
+      end
+    end
+
     private
     def force_options_to_current_syntax(opts)
       return {:summary => :none} if [:off, :false, :none, false].include? opts
@@ -127,17 +139,6 @@ class Streamlined::UI
       opts
     end
 
-    def generic_ui
-      Streamlined::UI::Generic
-    end
-    
-    def get_ui(klass_name)
-      if Object.const_defined?(klass_name + "UI")
-        Class.class_eval(klass_name + "UI")
-      else
-        self.generic_ui
-      end
-    end
   end
 end
 
