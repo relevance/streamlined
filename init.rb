@@ -5,6 +5,7 @@ rescue
   # nothing
 end
 
+require 'relevance/delegates'
 require 'implants/module'
 require 'implants/hash_init'
 require 'implants/csv'

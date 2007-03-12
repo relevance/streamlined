@@ -3,7 +3,7 @@ module Streamlined; end
 module Streamlined::Reflection
   def reflect_on_scalars
     scalars = model.columns.inject({}) do |h,v|
-      h[v.name.to_sym] = v
+      h[v.name.to_sym] = Streamlined::Column::ActiveRecord.new(v)
       h
     end
   end
