@@ -4,58 +4,34 @@
   <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
     <th scope="col" class="sortSelector"><%= column.human_name %><%= column_sort_image(@page_options, column)%></th>
   <% end %>
-
-  <% for relationship in @model.reflect_on_all_associations %>
-    <% if @model_ui.relationships[relationship.name].summary_def %>
-    	<th><%= Inflector.humanize(relationship.name.to_s) %></th>
-   	<% end %>
-  <% end %>
-
-    <th width="100">&nbsp;</th>
-	</tr>
+  </tr>
   </thead>
   <tbody>
-<% alt = 0 %>
-<% for item in @streamlined_items %>
-<% alt = 1 - alt %>
-  <tr <%= "class='even'" if alt == 0 %>>
-  <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
-    <td <%= popup_events_for_item(item, column, @model_ui) %>>
-		<% if @model_ui.edit_link_column == column.name.to_sym %>
-      <%= text_link_to_edit_model(column,item) %>
-		<% else %>
-			<%=h item.send(column.name) %>
-		<% end %>
-	</td>
+  <% odd = false %>
+  <% for item in @streamlined_items %>
+    <% odd = !odd %>
+    <tr class="<%= odd ? 'odd' : 'even'%>">
+      <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
+      <%= column.render_td(self, item, @model_ui, params[:controller])%>
+    <% end %>
+
+      <td><%= link_to_show_model(item)%><%= link_to_edit_model(item)%><%= link_to_delete_model(item)%></td>
+    </tr>
   <% end %>
-
-  <% for relationship in @model.reflect_on_all_associations %>
-    <% if @model_ui.relationships[relationship.name].summary_def %>
-		<td><div id="<%= relationship_div_id(relationship, item) %>">
-				<%= streamlined_render(:partial => "#{@model_ui.relationships[relationship.name].summary_def.partial}", :locals => {:item => item, :relationship => relationship, :streamlined_def => @model_ui.relationships[relationship.name].summary_def})%>
-		</div> <%= link_to_function("Edit", "Streamlined.Relationships.open_relationship('#{relationship_div_id(relationship, item)}', this, '/#{params[:controller]}')")%></td>
-	<% end %>
-  <% end %>
-
-
-
-    <td><%= link_to_show_model(item)%><%= link_to_edit_model(item)%><%= link_to_delete_model(item)%></td>
-  </tr>
-<% end %>
   </tbody>
 </table>
 
 
 <% if @streamlined_item_pages != [] && @streamlined_item_pages.current.previous %>
 <script type="text/javascript">
-   if($('previous_page')) {
-   	Element.show('previous_page');
-   }
+if($('previous_page')) {
+	Element.show('previous_page');
+}
 </script>
 <% else %>
 <script type="text/javascript">
-   if($('previous_page')) {
-   	Element.hide('previous_page');
-   }
+if($('previous_page')) {
+	Element.hide('previous_page');
+}
 </script>
 <% end %>

@@ -1,4 +1,5 @@
 class Streamlined::Column::ActiveRecord
+  include Streamlined::Column
   attr_accessor :ar_column
   delegates :name, :human_name, :to=>:ar_column
   def initialize(ar_column)
@@ -10,4 +11,9 @@ class Streamlined::Column::ActiveRecord
     return false unless self.class == o.class
     return self.ar_column == o.ar_column
   end
+
+  def render_td(view, item, model_ui, controller)
+    "<td>#{ERB::Util.h(item.send(self.name))}</td>"
+  end
+
 end

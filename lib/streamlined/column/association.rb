@@ -2,12 +2,13 @@ require 'relevance/delegates'
 
 # Wrapper around ActiveRecord::Association.  Keeps track of the underlying association, the View definition and the Summary definition.
 class Streamlined::Column::Association
+  include Streamlined::Column
   attr_reader :underlying_association
   attr_reader :view_def
   attr_reader :summary_def
   attr_accessor :human_name
   
-  delegates :name, :to=>:underlying_association
+  delegates :name, :class_name, :to=>:underlying_association
   
   def initialize(assoc, view, summary)
     @underlying_association = assoc
@@ -26,5 +27,27 @@ class Streamlined::Column::Association
     end
     return results
   end
+  
+  def render_td(view, item, model_ui, controller)
+    <<-END
+<td>
+  <div id="#{relationship_div_id(self, item)}">
+		#{view.streamlined_render(:partial => summary_def.partial, 
+		                     :locals => {:item => item, :relationship => self, 
+		                     :streamlined_def => summary_def})}
+  </div>
+  #{view.link_to_function("Edit", 
+  "Streamlined.Relationships.open_relationship('#{relationship_div_id(item)}', 
+                                                this, '/#{controller}')")}
+</td>
+END
+  end
+  
+  # TODO: eliminate the helper version of this
+  def relationship_div_id(item, in_window = false)
+    fragment = view_def ? view_def.id_fragment : "temp"
+    "#{fragment}::#{name}::#{item.id}::#{class_name}#{'::win' if in_window}"
+  end
+  
 end
 
