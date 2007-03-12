@@ -31,7 +31,7 @@ class Streamlined::Column::Association
   def render_td(view, item, model_ui, controller)
     <<-END
 <td>
-  <div id="#{relationship_div_id(self, item)}">
+  <div id="#{relationship_div_id(item)}">
 		#{view.streamlined_render(:partial => summary_def.partial, 
 		                     :locals => {:item => item, :relationship => self, 
 		                     :streamlined_def => summary_def})}
