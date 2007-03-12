@@ -2,21 +2,11 @@
   <table class="streamlined_form">
 <% for column in @model_ui.user_columns %>
 <tr>
-  <td class="streamlined_label_cell"><span class="streamlined_label"><%= column.human_name %>:</span></td><td class="streamlined_value_cell"><%=h @streamlined_item.send(column.name) %></td>
+  <td class="streamlined_label_cell"><span class="streamlined_label"><%= column.human_name %>:</span></td>
+  <td class="streamlined_value_cell">
+    <td><%= column.render_td(self, @streamlined_item, @model_ui, params[:controller])%></td>
+  </td>
 </tr>
-<% end %>
-<% for relationship in @model.reflect_on_all_associations %>
-<% if @model_ui.relationships[relationship.name].summary_def %>
-  <tr>
-    <td class="streamlined_label_cell"><span class="streamlined_label"><%= relationship.name %>:</span></td>
-	  <td>
-	    <div id="<%= relationship_div_id(relationship, @streamlined_item, true) %>">
-		    <%= render(:partial => "#{@model_ui.relationships[relationship.name].summary_def.partial}", :locals => {:item => @streamlined_item, :relationship => relationship, :streamlined_def => @model_ui.relationships[relationship.name].summary_def})%>
-	    <%= link_to_function("Edit", "Streamlined.Relationships.open_relationship('#{relationship_div_id(relationship, @streamlined_item, true)}', this, '/#{params[:controller]}')")%>
-	    </div> 
-    </td>
-</tr>
-<% end %>
 <% end %>
 </table>
 <script>

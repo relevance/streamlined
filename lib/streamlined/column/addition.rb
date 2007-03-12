@@ -15,6 +15,6 @@ class Streamlined::Column::Addition
   end
   
   def render_td(view, item, model_ui, controller)
-    "<td>#{h(item.send(self.name))}</td>"
+    h(item.send(self.name))
   end
 end

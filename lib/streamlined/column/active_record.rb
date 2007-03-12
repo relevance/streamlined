@@ -13,7 +13,7 @@ class Streamlined::Column::ActiveRecord
   end
 
   def render_td(view, item, model_ui, controller)
-    "<td>#{ERB::Util.h(item.send(self.name))}</td>"
+    h(item.send(self.name))
   end
 
 end
