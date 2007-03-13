@@ -37,8 +37,8 @@ class Streamlined::UI
     def user_columns(*args)
       if args.size > 0
         @user_columns = []
-        args.each do 
-          @user_columns << column(name)
+        args.each do |arg|
+          @user_columns << column(arg)
         end
       else
         @user_columns ||= all_columns.reject do |v|

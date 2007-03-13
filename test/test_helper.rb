@@ -7,6 +7,8 @@ require 'action_controller'
 require 'action_controller/test_process'
 require 'active_support/breakpoint'
 require 'flexmock'
+require 'generator'
+
 silence_stream(STDERR) do
   RAILS_ROOT = File.join(File.dirname(__FILE__), '../faux_rails_root')
   logfile = File.join(File.dirname(__FILE__), '../log/test.log')
@@ -28,6 +30,14 @@ class Test::Unit::TestCase
   
   def assert_equal_sets(a,b)
     assert_equal(Set.new(a), Set.new(b))
+  end
+  
+  def assert_enum_of_same(expected, actual)
+    g = Generator.new(actual)
+    expected.each do |e|
+      assert_same(e,g.next)
+    end
+    assert_equal false, g.next?, "actual enumeration larger than expected"
   end
 end
 
