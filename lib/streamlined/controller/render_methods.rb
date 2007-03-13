@@ -18,6 +18,5 @@ module Streamlined::Controller::RenderMethods
     options = convert_all_options(options)
     super(options, deprecated_status, &block)
   end
-
 end
   

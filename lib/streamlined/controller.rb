@@ -340,6 +340,14 @@ verify :method => :post, :only => [ :destroy, :create, :update ],
         end       
        
 alias_method_chain :initialize, :streamlined_variables
+
+# stick streamlined's render overrides onto the view
+def self.view_class
+  first_time = !@view_class
+  super
+  @view_class.send(:include, Streamlined::View::RenderMethods) if first_time
+  @view_class
+end
 EOV
   end
     
