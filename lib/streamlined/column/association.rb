@@ -40,6 +40,7 @@ END
   "Streamlined.Relationships.open_relationship('#{relationship_div_id(item)}', 
                                                 this, '/#{controller}')")}
 END
+    div
   end
   
   # TODO: eliminate the helper version of this
