@@ -11,14 +11,5 @@ require 'implants/hash_init'
 require 'implants/csv'
 require 'page_options'
 require 'active_record_extensions'
-require 'streamlined/column'
-require 'streamlined/ui'
-require 'streamlined/controller'
-require 'streamlined/helper'
-
-ActionController::Base.class_eval do 
-  include Streamlined::Controller
-end
-
-ActionView::Base.send :include, Streamlined::Helper
+require 'streamlined'
   

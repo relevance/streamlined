@@ -23,6 +23,7 @@ class Streamlined::UI
           
     # Name of this class minus the "UI" suffix.
     def default_model
+      raise ArgumentError, "You must set a model" if name.blank?
       Object.const_get(self.name.chomp("UI"))
     end
 
@@ -38,7 +39,9 @@ class Streamlined::UI
       if args.size > 0
         @user_columns = []
         args.each do |arg|
-          @user_columns << column(arg)
+          col = column(arg)
+          raise(Streamlined::Error,"No column named #{arg}") unless col
+          @user_columns << col
         end
       else
         @user_columns ||= all_columns.reject do |v|
