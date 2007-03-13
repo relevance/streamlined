@@ -14,8 +14,9 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   end
 
   def test_render_link_td
-    @ui.user_columns :first_name, {:link_to=>{:action=>"foo", :id=>people(:justin)}}
+    @ui.user_columns :first_name, {:link_to=>{:action=>"foo"}}
     assert_equal '<a href="/people/foo/1">Justin</a>', @ui.column(:first_name).render_td(@view,people(:justin),@ui,@controller)
+    assert_equal '<a href="/people/foo/2">Stu</a>', @ui.column(:first_name).render_td(@view,people(:stu),@ui,@controller)
   end
   
 end
