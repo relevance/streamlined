@@ -1,8 +1,7 @@
 require 'relevance/delegates'
 
 # Wrapper around ActiveRecord::Association.  Keeps track of the underlying association, the View definition and the Summary definition.
-class Streamlined::Column::Association
-  include Streamlined::Column
+class Streamlined::Column::Association < Streamlined::Column::Base
   attr_reader :underlying_association
   attr_reader :view_def
   attr_reader :summary_def
@@ -29,12 +28,14 @@ class Streamlined::Column::Association
   end
   
   def render_td(view, item, model_ui, controller)
-    <<-END
+    div = <<-END
   <div id="#{relationship_div_id(item)}">
 		#{view.render(:partial => summary_def.partial, 
                    :locals => {:item => item, :relationship => self, 
                    :streamlined_def => summary_def})}
   </div>
+END
+    div += <<-END unless read_only
   #{view.link_to_function("Edit", 
   "Streamlined.Relationships.open_relationship('#{relationship_div_id(item)}', 
                                                 this, '/#{controller}')")}

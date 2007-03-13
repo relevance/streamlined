@@ -1,5 +1,4 @@
-class Streamlined::Column::Addition
-  include Streamlined::Column
+class Streamlined::Column::Addition < Streamlined::Column::Base
   attr_accessor :name, :human_name
 
   def initialize(sym)

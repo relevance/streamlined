@@ -39,9 +39,13 @@ class Streamlined::UI
       if args.size > 0
         @user_columns = []
         args.each do |arg|
-          col = column(arg)
-          raise(Streamlined::Error,"No column named #{arg}") unless col
-          @user_columns << col
+          if Hash === arg
+            @user_columns.last.set_attributes(arg)
+          else
+            col = column(arg)
+            raise(Streamlined::Error,"No column named #{arg}") unless col
+            @user_columns << col
+          end
         end
       else
         @user_columns ||= all_columns.reject do |v|

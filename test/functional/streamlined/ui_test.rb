@@ -25,4 +25,10 @@ class Streamlined::UITest < Test::Unit::TestCase
   def test_nonexistent_column
     assert_raise(Streamlined::Error) {@ui.user_columns(:nonexistent)}
   end
+  
+  def test_read_only_column
+    @ui.user_columns :first_name, {:read_only=>true}, :last_name
+    assert_equal true, @ui.scalars[:first_name].read_only
+    assert_equal nil, @ui.scalars[:last_name].read_only
+  end
 end

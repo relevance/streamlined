@@ -1,5 +1,4 @@
-class Streamlined::Column::ActiveRecord
-  include Streamlined::Column
+class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   attr_accessor :ar_column
   delegates :name, :human_name, :to=>:ar_column
   def initialize(ar_column)
