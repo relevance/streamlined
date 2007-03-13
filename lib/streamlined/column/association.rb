@@ -31,9 +31,9 @@ class Streamlined::Column::Association
   def render_td(view, item, model_ui, controller)
     <<-END
   <div id="#{relationship_div_id(item)}">
-		#{view.streamlined_render(:partial => summary_def.partial, 
-		                     :locals => {:item => item, :relationship => self, 
-		                     :streamlined_def => summary_def})}
+		#{view.render(:partial => summary_def.partial, 
+                   :locals => {:item => item, :relationship => self, 
+                   :streamlined_def => summary_def})}
   </div>
   #{view.link_to_function("Edit", 
   "Streamlined.Relationships.open_relationship('#{relationship_div_id(item)}', 

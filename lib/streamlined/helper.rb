@@ -86,30 +86,6 @@ END
   end
   
   
-  # Alternative to the default render method of ApplicationHelper.  Attempts to 
-  # perform the render through the standard #render method. If that fails, 
-  # ensure that the requested view or partial is managed by Streamlined, then 
-  # render it from app/views/streamlined/generic_views.
-  def streamlined_render(options = nil, deprecated_status = nil, &block)
-    begin
-      render(options, deprecated_status, &block)
-    rescue ActionView::TemplateError => ex 
-      raise ex
-    rescue Exception => ex
-      if options
-        if options[:partial] && @managed_partials.include?(options[:partial])
-          options[:partial] = generic_view(options[:partial])
-          render(options, deprecated_status, &block)
-        else
-          raise ex
-        end
-      else
-        view_name = default_template_name.split("/")[-1]
-        render(:template => generic_view(view_name))
-      end
-    end
-  end
-  
   # Given a template name, determines the precise location of the file to be used: model-specific view folders, or generic views
   delegate :generic_view, :to=>:controller
   
