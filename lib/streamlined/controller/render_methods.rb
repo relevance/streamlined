@@ -13,7 +13,7 @@ module Streamlined::Controller::RenderMethods
       end
     end
   end
-  
+
   def render(options = {}, deprecated_status = nil, &block) 
     options = convert_all_options(options)
     super(options, deprecated_status, &block)

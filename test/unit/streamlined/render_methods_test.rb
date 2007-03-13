@@ -1,8 +1,8 @@
-require File.join(File.dirname(__FILE__), '../../../test_helper')
+require File.join(File.dirname(__FILE__), '../../test_helper')
 require 'streamlined/controller/render_methods'
 
-class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
-  include Streamlined::Controller::RenderMethods
+class Streamlined::RenderMethodsTest < Test::Unit::TestCase
+  include Streamlined::RenderMethods
   include FlexMock::TestCase
   
   # begin stub methods
@@ -41,22 +41,22 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
 
   def test_convert_partial_options_for_generic
     pretend_template_exists(false)
-    options = {:partial=>"_list", :other=>"1"}
+    options = {:partial=>"list", :other=>"1"}
     convert_partial_options(options)
-    assert_equal({:layout=>false, :template=>"../../../templates/generic_views/_list", :other=>"1"}, options)
+    assert_equal({:layout=>false, :file=>"../../../templates/generic_views/_list", :other=>"1"}, options)
   end
 
   def test_convert_partial_options_and_layout_for_generic
     pretend_template_exists(false)
-    options = {:partial=>"_list", :other=>"1", :layout=>true}
+    options = {:partial=>"list", :other=>"1", :layout=>true}
     convert_partial_options(options)
-    assert_equal({:layout=>true, :template=>"../../../templates/generic_views/_list", :other=>"1"}, options)
+    assert_equal({:layout=>true, :file=>"../../../templates/generic_views/_list", :other=>"1"}, options)
   end
 
   def test_convert_partial_options_for_specific
     pretend_template_exists(true)
-    options = {:partial=>"_list", :other=>"1"}
+    options = {:partial=>"list", :other=>"1"}
     convert_partial_options(options)
-    assert_equal({:partial=>"_list", :other=>"1"}, options)
+    assert_equal({:partial=>"list", :other=>"1"}, options)
   end
 end

@@ -38,10 +38,10 @@ module Streamlined::RenderMethods
   
   def convert_partial_options(options)
     partial = options[:partial]
-    if partial && managed_partials_include?(options[:partial])
-      unless specific_template_exists?("#{controller_name}/_#{options[:partial]}")
+    if partial && managed_partials_include?(partial)
+      unless specific_template_exists?("#{controller_name}/_#{partial}")
         options.delete(:partial)
-        options[:template] = generic_view(partial)
+        options[:file] = generic_view("_#{partial}")
         options[:layout] = false unless options.has_key?(:layout)
       end
     end
