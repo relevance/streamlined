@@ -15,5 +15,17 @@ class Test::Unit::TestCase
   def create_fixtures(*table_names, &block)
     Fixtures.create_fixtures(self.class.fixture_path, table_names, {}, &block)
   end
+  
+  def stock_controller_and_view
+    @controller = PeopleController.new
+    @controller.logger = RAILS_DEFAULT_LOGGER
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+    @view = ActionView::Base.new
+    @view.extend Streamlined::Helpers::LinkHelper
+    @view.controller = @controller
+    @item = Struct.new(:id).new(1)
+    get 'index'
+  end
 end
 

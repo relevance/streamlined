@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '../test_helper')
+require File.join(File.dirname(__FILE__), '../../test_helper')
 require 'streamlined/ui'
 
 class RelevanceModuleHelpersTest < Test::Unit::TestCase
@@ -11,7 +11,7 @@ class RelevanceModuleHelpersTest < Test::Unit::TestCase
   end
 end
 
-class StreamlinedUITest < Test::Unit::TestCase
+class Streamlined::UITest < Test::Unit::TestCase
   include FlexMock::TestCase
   
   def setup

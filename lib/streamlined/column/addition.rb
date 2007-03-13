@@ -13,7 +13,4 @@ class Streamlined::Column::Addition < Streamlined::Column::Base
     return name.eql?(o.name)
   end
   
-  def render_td(view, item, model_ui, controller)
-    h(item.send(self.name))
-  end
 end

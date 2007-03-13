@@ -11,8 +11,4 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     return self.ar_column == o.ar_column
   end
 
-  def render_td(view, item, model_ui, controller)
-    h(item.send(self.name))
-  end
-
 end
