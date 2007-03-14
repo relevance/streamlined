@@ -27,16 +27,6 @@ class Streamlined::UITest < Test::Unit::TestCase
     assert_equal :another_value, @ui.table_row_buttons
   end
 
-  def test_popup_items
-    assert_equal [], @ui.popup_columns
-    assert_equal ["foo"], @ui.popup_columns("foo")
-    assert_equal ["foo"], @ui.popup_columns
-  end
-  
-  def test_popup_events_for_item
-    
-  end
-  
   def test_edit_link_column
     assert_equal nil, @ui.edit_link_column
     assert_equal "foo", @ui.edit_link_column("foo")

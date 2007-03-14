@@ -48,12 +48,17 @@ END
     end
   end
   
-  def popup_events_for_item(item, column, model_ui)
-    if model_ui.popup_columns.include?(column.name.to_sym)
-      %{onmouseover="Streamlined.Popup.show('#{url_for(:action => 'popup', :id => item.id)}');" onmouseout="nd();"} 
-    end
+  # invisible links are plucked out by unobtrusive JavaScript to add functionality
+  def invisible_link_to(options = {}, html_options={}, *parms)
+    link_to('', options, html_options.merge(:style=>"display:none;"), *parms)    
   end
-  
+ 
+#  TODO: look for spans with a popup class and layer in the JavaScript  
+#  def popup_events_for_item(item, column, model_ui)
+#    if model_ui.popup_columns.include?(column.name.to_sym)
+#      %{onmouseover="Streamlined.Popup.show('#{url_for(:action => 'popup', :id => item.id)}');" onmouseout="nd();"} 
+#    end
+#  end
   
   # Creates the id for the div containing a given relationship. 
   def relationship_div_id(relationship, item, in_window = false)

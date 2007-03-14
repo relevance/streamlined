@@ -19,4 +19,9 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     assert_equal '<a href="/people/foo/2">Stu</a>', @ui.column(:first_name).render_td(@view,people(:stu),@ui,@controller)
   end
   
+  def test_render_popup_td
+    @ui.user_columns :first_name, {:popup=>{:action=>"foo"}}
+    assert_equal '<span class="sl-popup"><a href="/people/foo/1" style="display:none;"></a>Justin</span>', @ui.column(:first_name).render_td(@view,people(:justin),@ui,@controller)
+  end
+  
 end

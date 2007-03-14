@@ -20,7 +20,6 @@ class Streamlined::UI
     declarative_scalar :edit_link_column
     declarative_scalar :pagination, :default=>true
     declarative_scalar :table_row_buttons, :default=>true
-    declarative_array  :popup_columns, :default=>[]
     
     def inherited(subclass)
       # subclasses inherit some settings from superclass

@@ -119,6 +119,7 @@ Event.observe(window, "load", function() {
   Streamlined.SortSelector.initialize();
   Streamlined.Menu.initialize();
   Streamlined.FilterWatcher.initialize();
+  Streamlined.Popup.initialize.bind(Streamlined.Popup)();
   if ($('spinner')) {
 	Ajax.Responders.register({
 	  onCreate: function(request) {
@@ -239,9 +240,28 @@ Streamlined.Relationships = {
 }
 
 Streamlined.Popup = {
-    show: function(url) {
-        new Ajax.Request(url,{ onSuccess: function(xhr) {return overlib(xhr.responseText);}})
-    }
+  initialize: function() {
+    $$(".sl-popup").each((function(el) {
+	    var href = this.popupURL(el)
+	    if (href) {
+		    Event.observe(el, "mouseover", (function() {
+          this.show(href);
+		    }).bind(this));
+  		  Event.observe(el, "mouseout", function() {
+  		    nd();
+  		  });
+  		}
+    }).bind(this));
+  },
+  popupURL: function(el) {
+    match = $A(el.childNodes).find(function(child) {
+      return child.attributes["href"];
+    });
+    return match.attributes["href"].value;
+  },
+  show: function(url) {
+    new Ajax.Request(url,{ method: "get", onSuccess: function(xhr) {return overlib(xhr.responseText);}})
+  }
 }
 
 Streamlined.Link = {
