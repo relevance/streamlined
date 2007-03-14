@@ -11,9 +11,11 @@ module Streamlined; module Helpers; end; end
 require 'relevance/dsl'
 require 'streamlined/helpers/link_helper'
 require 'streamlined/helpers/menu_helper'
+require 'streamlined/helpers/table_helper'
 require 'streamlined/helpers/degradable/link_helper'
   
 module Streamlined::Helper
+  include Streamlined::Helpers::TableHelper
   include Streamlined::Helpers::LinkHelper
   include Streamlined::Helpers::MenuHelper
   
