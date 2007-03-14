@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '../../test_functional_helper')
 require 'streamlined/reflection'
 
-class Streamlined::UITest < Test::Unit::TestCase
+class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   def setup
     @ui = Class.new(Streamlined::UI)
     @ui.model = Poet

@@ -15,7 +15,7 @@ class Streamlined::UITest < Test::Unit::TestCase
   include FlexMock::TestCase
   
   def setup
-    @ui = Streamlined::UI
+    @ui = Class.new(Streamlined::UI)
   end
 
   def test_popup_items
