@@ -21,7 +21,12 @@ class Streamlined::UI
     declarative_scalar :pagination, :default=>true
     declarative_scalar :table_row_buttons, :default=>true
     declarative_array  :popup_columns, :default=>[]
-          
+    
+    def inherited(subclass)
+      # subclasses inherit some settings from superclass
+      subclass.table_row_buttons(self.table_row_buttons)
+    end      
+    
     # Name of this class minus the "UI" suffix.
     def default_model
       raise ArgumentError, "You must set a model" if name.blank?

@@ -17,6 +17,15 @@ class Streamlined::UITest < Test::Unit::TestCase
   def setup
     @ui = Class.new(Streamlined::UI)
   end
+  
+  def test_declarative_setting_inheritance
+    @ui.table_row_buttons = :some_value
+    subclass = Class.new(@ui)
+    assert_equal :some_value, subclass.table_row_buttons
+    @ui.table_row_buttons = :another_value
+    assert_equal :some_value, subclass.table_row_buttons
+    assert_equal :another_value, @ui.table_row_buttons
+  end
 
   def test_popup_items
     assert_equal [], @ui.popup_columns

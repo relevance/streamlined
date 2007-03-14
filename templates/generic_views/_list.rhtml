@@ -3,8 +3,8 @@
 	<tr>
   <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
     <th scope="col" class="sortSelector"><%= column.human_name %><%= column_sort_image(@page_options, column)%></th>
-    <%= streamlined_table_row_button_header %>
   <% end %>
+  <%= streamlined_table_row_button_header %>
   </tr>
   </thead>
   <tbody>
