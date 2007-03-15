@@ -1,6 +1,6 @@
 module Streamlined::View::EditViews
-  def self.create_relationship(sym, options = nil)
-    raise ArgumentError unless Symbol == sym
+  def self.create_relationship(sym, options = {})
+    raise ArgumentError unless Symbol === sym
     Class.class_eval(Inflector.camelize(sym.to_s)).new options
   end  
 

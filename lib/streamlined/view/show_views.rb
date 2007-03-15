@@ -1,8 +1,8 @@
 module Streamlined::View::ShowViews
   
   # Factory method for creating a relationship Summary given the name of a summary.
-  def self.create_summary(sym, options = nil)
-    raise ArgumentError unless Symbol == sym
+  def self.create_summary(sym, options = {})
+    raise ArgumentError unless Symbol === sym
     if options
       Class.class_eval(Inflector.camelize(sym.to_s)).new options
     else

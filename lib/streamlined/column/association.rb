@@ -18,25 +18,40 @@ require 'relevance/delegates'
 class Streamlined::Column::Association < Streamlined::Column::Base
   attr_reader :underlying_association
   attr_accessor :human_name
-  
+  attr_reader :edit_view, :show_view
   delegates :name, :class_name, :to=>:underlying_association
   
   def initialize(assoc, edit, show)
     @underlying_association = assoc
-    @edit = (Enumerable === edit) ? edit : [edit]
-    @show = (Enumerable === show) ? show : [show]
-    raise ArgumentError unless Symbol === @edit.first
-    raise ArgumentError unless Symbol === @show.first
+    self.edit_view=edit
+    self.show_view=show
     @human_name = name.to_s.humanize
   end
-  
-  # TODO: renamed to edit_def and show_def
-  def show_view
-    @show_view ||= Streamlined::View::ShowViews.create_summary(*@show)    
+
+  def edit_view=(opts)
+    @edit_view = case(opts)
+    when(Symbol)
+      Streamlined::View::EditViews.create_relationship(opts)
+    when(Array)
+      Streamlined::View::EditViews.create_relationship(*opts)
+    when(Streamlined::View::Base)
+      opts
+    else
+      raise ArgumentError, opts.class.to_s
+    end
   end
   
-  def edit_view
-    @edit_view ||= Streamlined::View::EditViews.create_relationship(*@edit)
+  def show_view=(opts)
+    @show_view = case(opts)
+    when(Symbol)
+      Streamlined::View::ShowViews.create_summary(opts)
+    when(Array)
+      Streamlined::View::ShowViews.create_summary(*opts)
+    when(Streamlined::View::Base)
+      opts
+    else
+      raise ArgumentError, opts.class.to_s
+    end
   end
 
   # Returns a list of all the classes that can be used to satisfy this relationship.  In a polymorphic relationship, it is the union 

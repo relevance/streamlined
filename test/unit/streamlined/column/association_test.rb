@@ -12,9 +12,9 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
       o.name.returns("SomeName")
     end
     assert_raise(ArgumentError) {Association.new(ar_assoc,"foo","bar")}
-    a = Association.new(ar_assoc,:foo,:bar)
-    assert_equal [:foo], a.instance_variable_get(:@edit)
-    assert_equal [:bar], a.instance_variable_get(:@show)
+    a = Association.new(ar_assoc,:inset_table,:count)
     assert_equal "Somename", a.human_name
+    assert_instance_of(Streamlined::View::ShowViews::Count,a.show_view)
+    assert_instance_of(Streamlined::View::EditViews::InsetTable,a.edit_view)
   end
 end
