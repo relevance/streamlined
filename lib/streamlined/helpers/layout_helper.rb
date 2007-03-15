@@ -20,6 +20,13 @@ module Streamlined::Helpers::LayoutHelper
             "<link rel=\"alternate\" type=\"application/#{@syndication_type.downcase}+xml\" title=\"#{@syndication_type.upcase}\" href=\"#{params[:action]}/xml\" />"
         end
   end
-  
-  
+  def streamlined_branding
+    "Streamlined"
+  end
+
+  def streamlined_footer
+    <<-END
+Brought to you by Streamlined (<a href="http://www.streamlinedframework.org">StreamlinedFramework.org</a>  
+END
+  end
 end

@@ -36,16 +36,6 @@ module Streamlined::Helper
     end
   end
   
-  def streamlined_branding
-    "Streamlined"
-  end
-  
-  def streamlined_footer
-    <<-END
-Brought to you by Streamlined (<a href="http://www.streamlinedframework.org">StreamlinedFramework.org</a>  
-END
-  end
-  
   # Given an image file, checks to see if the image exists in the filesystem.
   # If it does, display the image. If not, suppress the generation of the image
   # tag.  Used to add model-specific icons to the UI.  If the icon does not
