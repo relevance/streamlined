@@ -80,16 +80,16 @@ END
   end
   
   # Given a model and a controller, finds all the columns that are currently slated to be shown in the list view.
-  def show_columns_for_model(klass, klass_ui, controller)    
-    results = current_show_columns(klass, klass_ui, controller).collect {|c| klass_ui.all_columns.find {|col| col.name == c}}
+  def list_columns_for_model(klass, klass_ui, controller)    
+    results = current_list_columns(klass, klass_ui, controller).collect {|c| klass_ui.all_columns.find {|col| col.name == c}}
     results.reject! {|c| c == nil}
     return results
-    # return klass.columns.select {|c| current_show_columns(klass, klass_ui, controller).include?(c.name)}
+    # return klass.columns.select {|c| current_list_columns(klass, klass_ui, controller).include?(c.name)}
   end
   
   # Given a model and a controller, finds all the columns that are currently NOT slated to be shown in the list view.
   def hide_columns_for_model(klass, klass_ui, controller)
-    return klass_ui.all_columns.reject {|c| current_show_columns(klass, klass_ui, controller).include?(c.name)}
+    return klass_ui.all_columns.reject {|c| current_list_columns(klass, klass_ui, controller).include?(c.name)}
   end
   
   
@@ -119,14 +119,14 @@ END
   
   private
 
-   def current_show_columns(klass, klass_ui, controller)
+   def current_list_columns(klass, klass_ui, controller)
      controller = controller.to_sym
      session[:current_user] ? pref = session[:current_user].preferences : pref = nil
        
      if pref && pref.page_columns && pref.page_columns.instance_of?(Hash) && pref.page_columns[controller]
        current = pref.page_columns[controller]
      else    
-       current = klass_ui.user_columns.collect {|c| c.name}
+       current = klass_ui.list_columns.collect {|c| c.name}
      end 
      return current
    end

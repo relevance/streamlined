@@ -1,10 +1,8 @@
 <table cellpadding="0" cellspacing="0">
   <thead>
 	<tr>
-  <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
-    <% unless column.list == false %>
+  <% list_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
     <th scope="col" class="sortSelector"><%= column.human_name %><%= column_sort_image(@page_options, column)%></th>
-    <% end %>
   <% end %>
   <%= streamlined_table_row_button_header %>
   </tr>
@@ -14,10 +12,8 @@
   <% for item in @streamlined_items %>
     <% odd = !odd %>
     <tr class="<%= odd ? 'odd' : 'even'%>">
-      <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
-	  <% unless column.list == false %>
+    <% list_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
       <td><%= column.render_td(self, item, @model_ui, params[:controller])%></td>
-      <% end %>
     <% end %>
     <%= streamlined_table_row_buttons(item) %>
     </tr>

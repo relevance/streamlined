@@ -4,10 +4,8 @@
 
 <table class="streamlined_form">
 
-  <% @model_ui.user_columns.each do |column| %>
-    <% unless column.edit == false %>
+  <% @model_ui.edit_columns.each do |column| %>
     <tr><td class="streamlined_label_cell"><label class="streamlined_label" for="#{record}_#{column.name}"><%= column.human_name %></label></td><td class="streamlined_input_cell"><%= input(@model_underscore, column.name) %></td></tr>
-    <% end %>
   <% end %>
 
 </table><!--[eoform:<%= @model_underscore %>]-->

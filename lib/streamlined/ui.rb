@@ -58,6 +58,33 @@ class Streamlined::UI
         end
       end
     end
+
+    def override_columns(name, *args)
+      if args.size > 0
+        instance_variable_set(name, [])
+        args.each do |arg|
+          if Hash === arg
+            instance_variable_get(name).last.set_attributes(arg)
+          else
+            col = column(arg)
+            raise(Streamlined::Error,"No column named #{arg}") unless col
+            instance_variable_get(name) << Marshal::load(Marshal.dump(col))
+          end
+        end
+      else
+        instance_variable_get(name) || user_columns
+      end
+    end
+
+    def show_columns(*args)
+      override_columns(:@show_columns, *args)
+    end
+    def edit_columns(*args)
+      override_columns(:@edit_columns, *args)
+    end
+    def list_columns(*args)
+      override_columns(:@list_columns, *args)
+    end
     
     def column(name)
       scalars[name] || additions[name] || relationships[name]
