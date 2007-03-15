@@ -1,12 +1,14 @@
 <div id="content">
   <table class="streamlined_form">
 <% for column in @model_ui.user_columns %>
+<% unless column.show == false %>
 <tr>
   <td class="streamlined_label_cell"><span class="streamlined_label"><%= column.human_name %>:</span></td>
   <td class="streamlined_value_cell">
     <td><%= column.render_td(self, @streamlined_item, @model_ui, params[:controller])%></td>
   </td>
 </tr>
+<% end %>
 <% end %>
 </table>
 <script>

@@ -2,7 +2,9 @@
   <thead>
 	<tr>
   <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
+    <% unless column.list == false %>
     <th scope="col" class="sortSelector"><%= column.human_name %><%= column_sort_image(@page_options, column)%></th>
+    <% end %>
   <% end %>
   <%= streamlined_table_row_button_header %>
   </tr>
@@ -13,7 +15,9 @@
     <% odd = !odd %>
     <tr class="<%= odd ? 'odd' : 'even'%>">
       <% show_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
+	  <% unless column.list == false %>
       <td><%= column.render_td(self, item, @model_ui, params[:controller])%></td>
+      <% end %>
     <% end %>
     <%= streamlined_table_row_buttons(item) %>
     </tr>
