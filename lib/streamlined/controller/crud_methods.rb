@@ -14,15 +14,15 @@ module Streamlined::Controller::CrudMethods
     @smart_folders = find_smart_folders
     model_ui.pagination ? options = {:per_page => 10} : options = {}
     options.merge! order_options
-    if @page_options.filter?
-      options.merge! :conditions=>model.conditions_by_like(@page_options.filter) 
-      @streamlined_items_count = model.count(:conditions => model.conditions_by_like(@page_options.filter))
+    if filter?
+      options.merge! :conditions=>model.conditions_by_like(filter) 
+      @streamlined_items_count = model.count(:conditions => model.conditions_by_like(filter))
     else
       @streamlined_items_count = model.count
     end
     if params[:syndicated]
-      if @page_options.filter?
-         models = model.find(:all, :conditions=>model.conditions_by_like(@page_options.filter))
+      if filter?
+         models = model.find(:all, :conditions=>model.conditions_by_like(filter))
        else
          models = model.find(:all)
        end
@@ -59,7 +59,7 @@ module Streamlined::Controller::CrudMethods
      #     page.show 'notice-info'
      #     page.replace_html "notice-info", @controller.list_notice_info
      #     page.replace_html "#{model_underscore}_list", :partial => render_path('list', :partial => true, :con_name => @con_name)
-     #     filter_text = [ model_name.pluralize ] + ( @page_options.filter.blank? ? [] : [ "Filter", @page_options.filter] )
+     #     filter_text = [ model_name.pluralize ] + ( filter.blank? ? [] : [ "Filter", filter] )
      #     page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => model_name, :text => filter_text )
      #   end
      # else
@@ -126,10 +126,10 @@ module Streamlined::Controller::CrudMethods
   # TODO: Dump non_ar_column. 
   # Figure out whether a column is ar or not when using it!
   def order_options
-    if @page_options && @page_options.order?
-      column,order = @page_options.sort_column, @page_options.sort_order
+    if order?
+      column,order = sort_column, sort_order
       if model.column_names.include? column
-        @page_options.active_record_order_option
+        active_record_order_option
       else
         {:non_ar_column => column.downcase.tr(" ", "_"), :dir => order}
       end

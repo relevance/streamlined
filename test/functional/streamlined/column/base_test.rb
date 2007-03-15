@@ -25,19 +25,19 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   end
   
   def test_sort_image_up
-    options = PageOptions.new(:sort_column=>"First name")
+    options = Streamlined::Context::RequestContext.new(:sort_column=>"First name")
     assert_equal "<img alt=\"Arrow-up_16\" border=\"0\" height=\"10px\" src=\"/images/streamlined/arrow-up_16.png\" />", 
                  @ui.column(:first_name).sort_image(options,@view)
   end
 
   def test_sort_image_down
-    options = PageOptions.new(:sort_column=>"First name", :sort_order=>"DESC")
+    options = Streamlined::Context::RequestContext.new(:sort_column=>"First name", :sort_order=>"DESC")
     assert_equal "<img alt=\"Arrow-down_16\" border=\"0\" height=\"10px\" src=\"/images/streamlined/arrow-down_16.png\" />", 
                  @ui.column(:first_name).sort_image(options,@view)
   end
 
   def test_sort_image_none
-    options = PageOptions.new
+    options = Streamlined::Context::RequestContext.new
     assert_equal '', @ui.column(:first_name).sort_image(options,nil)
   end
   

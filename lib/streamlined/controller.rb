@@ -44,7 +44,7 @@ module Streamlined::Controller::InstanceMethods
        @streamlined_item_pages = model_pages
        @model_count = models.size
 
-#        flash[:notice] = "Found #{@model_count} #{(@model_count == 1) ? model_name : model_name.pluralize}" if @page_options.filter && @page_options.filter != ''
+#        flash[:notice] = "Found #{@model_count} #{(@model_count == 1) ? model_name : model_name.pluralize}" if filter && filter != ''
        # if request.xhr?
     #        @con_name = controller_name
     #        render :update do |page|
@@ -82,7 +82,7 @@ module Streamlined::Controller::InstanceMethods
    def export_to_xml
      @headers["Content-Type"] = "text/xml"
      @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.xml\""
-     render(:text => model.find_by_like(@page_options.filter).to_xml)
+     render(:text => model.find_by_like(filter).to_xml)
    end
 
    # Renders the current scoped list of model instances as a CSV document.  For example,
@@ -92,7 +92,7 @@ module Streamlined::Controller::InstanceMethods
    def export_to_csv
      @headers["Content-Type"] = "text/csv"
      @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.csv\""
-     render(:text => model.find_by_like(@page_options.filter).to_csv(model.column_names))
+     render(:text => model.find_by_like(filter).to_csv(model.column_names))
    end
 
    # Opens the relationship +view+ for a given relationship on the model.  This means
@@ -218,8 +218,8 @@ module Streamlined::Controller::InstanceMethods
        
   private
 
-  def initialize_page_options
-    @page_options = PageOptions.new(params[:page_options])
+  def initialize_request_context
+    @streamlined_request_context = Streamlined::Context::RequestContext.new(params[:page_options])
   end
         
   def initialize_streamlined_values(mod_name = nil)
@@ -233,7 +233,7 @@ module Streamlined::Controller::InstanceMethods
   def paginator_and_collection_for(collection_id, options) #:nodoc:
     klass = model
     # page  = @params[options[:parameter]]
-    page = @page_options.page
+    page = streamlined_request_context.page
     count = count_collection_for_pagination(klass, options)
     paginator = ActionController::Pagination::Paginator.new(self, count, options[:per_page], page)
     collection = find_collection_for_pagination(klass, options, paginator)
@@ -292,14 +292,15 @@ module Streamlined::Controller::ClassMethods
     
   def acts_as_streamlined(options = {})
     class_eval do
-      attr_reader :streamlined_controller_context
+      attr_reader :streamlined_controller_context, :streamlined_request_context
       delegates *Streamlined::Context::ControllerContext::DELEGATES
+      delegates *Streamlined::Context::RequestContext::DELEGATES
       include Streamlined::Controller::InstanceMethods
       if defined? AuthenticatedSystem
         include AuthenticatedSystem
         before_filter :login_required  
       end
-      before_filter :initialize_page_options
+      before_filter :initialize_request_context
       require_dependencies :ui, Dir["#{RAILS_ROOT}/app/streamlined/*.rb"].collect {|f| f.gsub(".rb", "")}
       # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
       verify :method => :post, :only => [ :destroy, :create, :update ],

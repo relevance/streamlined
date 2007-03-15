@@ -2,7 +2,7 @@
   <thead>
 	<tr>
   <% list_columns_for_model(model, model_ui, params[:controller]).each do |column| %>
-    <%= column.render_th(@page_options, self )%>
+    <%= column.render_th(streamlined_request_context, self )%>
   <% end %>
   <%= streamlined_table_row_button_header %>
   </tr>

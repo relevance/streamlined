@@ -22,7 +22,7 @@ class Streamlined::Column::Base
   # TODO: make a request_context that delegates to other bits
   def sort_image(context, view)
     if context.sort_column?(self)
-      direction = context.ascending? ? 'up' : 'down'
+      direction = context.sort_ascending? ? 'up' : 'down'
       view.image_tag("streamlined/arrow-#{direction}_16.png", {:height => '10px', :border => 0})
     else
       ''

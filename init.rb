@@ -9,7 +9,6 @@ require 'relevance/delegates'
 require 'implants/module'
 require 'implants/hash_init'
 require 'implants/csv'
-require 'page_options'
 require 'active_record_extensions'
 require 'streamlined'
   

@@ -24,7 +24,7 @@ module Streamlined::Helper
   
   def self.included(includer)
     includer.class_eval do
-      attr_reader :streamlined_controller_context
+      attr_reader :streamlined_controller_context, :streamlined_request_context
       delegates *Streamlined::Context::ControllerContext::DELEGATES
     end
   end
