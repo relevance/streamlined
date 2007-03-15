@@ -2,7 +2,7 @@
   <thead>
 	<tr>
   <% list_columns_for_model(@model, @model_ui, params[:controller]).each do |column| %>
-    <th scope="col" class="sortSelector"><%= column.human_name %><%= column_sort_image(@page_options, column)%></th>
+    <%= column.render_th(@page_options, self )%>
   <% end %>
   <%= streamlined_table_row_button_header %>
   </tr>

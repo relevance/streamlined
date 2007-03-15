@@ -87,5 +87,12 @@ END
     "#{fragment}::#{name}::#{item.id}::#{class_name}#{'::win' if in_window}"
   end
   
+  def render_th(context,view)
+    x = Builder::XmlMarkup.new
+    x.th(:scope=>"col") {
+      x << human_name
+    }
+  end
+  
 end
 

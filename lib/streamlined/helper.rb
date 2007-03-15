@@ -37,17 +37,6 @@ END
     image_tag(image, options) if(File.exist?File.join(RAILS_ROOT, 'public', 'images', image)) 
   end
   
-  # TODO: move this onto mixin that mixes into AR Column and into Streamlined Column
-  # column_sort_image(page_options.sort_column, column.human_name, page_options.sort_order)
-  def column_sort_image(page_options, column)
-    if page_options.sort_column == column.human_name
-      direction = page_options.ascending? ? 'up' : 'down'
-      image_tag("streamlined/arrow-#{direction}_16.png", {:height => '10px', :border => 0})
-    else
-      ''
-    end
-  end
-  
   # invisible links are plucked out by unobtrusive JavaScript to add functionality
   def invisible_link_to(options = {}, html_options={}, *parms)
     link_to('', options, html_options.merge(:style=>"display:none;"), *parms)    

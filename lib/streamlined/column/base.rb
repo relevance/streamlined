@@ -19,4 +19,20 @@ class Streamlined::Column::Base
     end
     content
   end
+  # TODO: make a streamlined_context that delegates to pageoptions, etc.
+  def sort_image(context, view)
+    if context.sort_column?(self)
+      direction = context.ascending? ? 'up' : 'down'
+      view.image_tag("streamlined/arrow-#{direction}_16.png", {:height => '10px', :border => 0})
+    else
+      ''
+    end
+  end
+  def render_th(context,view)
+    x = Builder::XmlMarkup.new
+    x.th(:scope=>"col", :class=>"sortSelector") {
+      x << human_name
+      x << sort_image(context,view)
+    }
+  end
 end

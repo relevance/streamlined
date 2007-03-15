@@ -24,4 +24,11 @@ class PageOptionsTest < Test::Unit::TestCase
     assert_equal({}, o.active_record_order_option)
   end
   
+  def test_sort_column
+    o = PageOptions.new
+    column = Struct.new(:human_name).new("foo")
+    assert_equal false, o.sort_column?(column)
+    o.sort_column = "foo"
+    assert_equal true, o.sort_column?(column)
+  end
 end

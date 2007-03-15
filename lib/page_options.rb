@@ -28,6 +28,10 @@ class PageOptions
     @sort_order || 'ASC'
   end
   
+  def sort_column?(column)
+    column.human_name == sort_column
+  end
+  
   def active_record_order_option
     if self.sort_column && self.sort_order
       {:order => [self.sort_column, self.sort_order].map{|x| x.tr(" ", "_")}.join(" ")}

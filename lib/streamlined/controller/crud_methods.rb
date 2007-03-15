@@ -66,7 +66,7 @@ module Streamlined::Controller::CrudMethods
      #     flash[:info] = @controller.list_notice_info if @controller.respond_to?( "list_notice_info" )
      # end
     render :partial => 'list' if request.xhr?
-    render :template => generic_view('atom'), :controler => @model_name, :layout => false if params[:syndicated]
+    render :template => generic_view('atom'), :controller => @model_name, :layout => false if params[:syndicated]
   end
    # Renders the Show view for a given instance.
    def show
