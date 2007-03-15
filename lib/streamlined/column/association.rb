@@ -1,5 +1,19 @@
 require 'relevance/delegates'
 
+# Currently available Views:
+# * :membership => simple scrollable list of checkboxes.  DEFAULT for n_to_many
+# * :inset_table => full table view inserted into current table
+# * :window => same table from :inset_table but displayed in a window
+# * :filter_select => like :membership, but with an auto-filter text box and two checkbox lists, one for selected and one for unselected items
+# * :polymorphic_membership => like :membership, but for polymorphic associations.  DEPRECATED: :membership will be made to handle this case.
+# * :select => drop down box.  DEFAULT FOR n_to_one
+#
+# Currently available Summaries:
+# * :count => number of associated items. DEFAULT FOR n_to_many
+# * :name => name of the associated item. DEFAULT FOR n_to_one
+# * :list => list of data from specified :fields
+# * :sum => sum of values from a specific column of the associated items
+
 # Wrapper around ActiveRecord::Association.  Keeps track of the underlying association, the View definition and the Summary definition.
 class Streamlined::Column::Association < Streamlined::Column::Base
   attr_reader :underlying_association

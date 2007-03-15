@@ -89,28 +89,9 @@ class Streamlined::UI
     # Given a relationship name, returns the Summary class representing it.
     def summary_def(rel)
       opts = relationships[rel.to_sym]
-      return nil if opts[:summary] == :none
       Streamlined::View::ShowViews.create_summary(opts[:summary], opts[:fields])
     end
        
-    # Used to override the default declarative values for a specific relationship.  Example usage:
-    # <tt>relationship :books, :view => :inset_table, :summary => :list, :fields => [:title, :author]</tt>
-    # Shows the list of all related books inline as [title]:[author]
-    # When expanded, uses an inset table to show the books.
-    # 
-    # Currently available Views:
-    # * :membership => simple scrollable list of checkboxes.  DEFAULT for n_to_many
-    # * :inset_table => full table view inserted into current table
-    # * :window => same table from :inset_table but displayed in a window
-    # * :filter_select => like :membership, but with an auto-filter text box and two checkbox lists, one for selected and one for unselected items
-    # * :polymorphic_membership => like :membership, but for polymorphic associations.  DEPRECATED: :membership will be made to handle this case.
-    # * :select => drop down box.  DEFAULT FOR n_to_one
-    #
-    # Currently available Summaries:
-    # * :count => number of associated items. DEFAULT FOR n_to_many
-    # * :name => name of the associated item. DEFAULT FOR n_to_one
-    # * :list => list of data from specified :fields
-    # * :sum => sum of values from a specific column of the associated items
     def relationship(rel, opts = {:view => {}, :summary => {}})
       opts = force_options_to_current_syntax(opts)
       relationships[rel] = create_relationship(rel, opts)
@@ -130,7 +111,6 @@ class Streamlined::UI
 
     private
     def force_options_to_current_syntax(opts)
-      return {:summary => :none} if [:off, :false, :none, false].include? opts
       opts = {:view => {}, :summary => {} }.merge(opts)
       unless opts[:view].kind_of? Hash
         if opts[:view_fields]

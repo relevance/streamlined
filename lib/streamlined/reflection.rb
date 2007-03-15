@@ -44,11 +44,7 @@ module Streamlined::Reflection
     raise Exception, "STREAMLINED ERROR: No association '#{rel}' on class #{model}." unless association
     ensure_options_parity(opts, association)
     options = define_association(association, opts)
-    if options[:summary] == :none
-      Streamlined::Column::Association.new(association,nil, nil)
-    else
-      Streamlined::Column::Association.new(association, Streamlined::View::EditViews.create_relationship(options[:view][:name], options[:view].reject {|k,v| k == :name}), Streamlined::View::ShowViews.create_summary(options[:summary][:name], options[:summary].reject {|k,v| k == :name}))         
-    end
+    Streamlined::Column::Association.new(association, Streamlined::View::EditViews.create_relationship(options[:view][:name], options[:view].reject {|k,v| k == :name}), Streamlined::View::ShowViews.create_summary(options[:summary][:name], options[:summary].reject {|k,v| k == :name}))         
   end
 
   # Used to define the default relationship declarations for each relationship in the model.
