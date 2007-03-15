@@ -12,13 +12,13 @@ module Streamlined::Controller::CrudMethods
   # not the entire list view.
   def list
     @smart_folders = find_smart_folders
-    @model_ui.pagination ? options = {:per_page => 10} : options = {}
+    model_ui.pagination ? options = {:per_page => 10} : options = {}
     options.merge! order_options
     if @page_options.filter?
       options.merge! :conditions=>model.conditions_by_like(@page_options.filter) 
-      @model_count = model.count(:conditions => model.conditions_by_like(@page_options.filter))
+      @streamlined_items_count = model.count(:conditions => model.conditions_by_like(@page_options.filter))
     else
-      @model_count = model.count
+      @streamlined_items_count = model.count
     end
     if params[:syndicated]
       if @page_options.filter?
@@ -28,17 +28,17 @@ module Streamlined::Controller::CrudMethods
        end
        @streamlined_items = models
     else
-      if @model_ui.pagination
+      if model_ui.pagination
          if options[:non_ar_column]
             col = options[:non_ar_column]
             dir = options[:dir]
             options.delete :non_ar_column
             options.delete :dir
-            model_pages, models = paginate Inflector.pluralize(@model_class).downcase.to_sym, options
+            model_pages, models = paginate Inflector.pluralize(model).downcase.to_sym, options
             models.sort! {|a,b| a.send(col.to_sym) <=> b.send(col.to_sym)}
             models.reverse! if dir == 'DESC'
           else
-            model_pages, models = paginate Inflector.pluralize(@model_class).downcase.to_sym, options
+            model_pages, models = paginate Inflector.pluralize(model).downcase.to_sym, options
           end
       else
         model_pages = []
@@ -58,7 +58,7 @@ module Streamlined::Controller::CrudMethods
      #     page << "if($('notice')) {Element.hide('notice');} if($('notice-error')) {Element.hide('notice-error');} if($('notice-empty')) {Element.hide('notice-empty');}"
      #     page.show 'notice-info'
      #     page.replace_html "notice-info", @controller.list_notice_info
-     #     page.replace_html "#{@model_underscore}_list", :partial => render_path('list', :partial => true, :con_name => @con_name)
+     #     page.replace_html "#{model_underscore}_list", :partial => render_path('list', :partial => true, :con_name => @con_name)
      #     filter_text = [ model_name.pluralize ] + ( @page_options.filter.blank? ? [] : [ "Filter", @page_options.filter] )
      #     page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => model_name, :text => filter_text )
      #   end
@@ -86,7 +86,7 @@ module Streamlined::Controller::CrudMethods
    # render the #show view.  If the save was unsuccessful, re-render
    # the #new view so that errors can be fixed.
    def create
-     self.instance = model.new(params[@model_symbol])
+     self.instance = model.new(params[model_symbol])
      if instance.save
        flash[:notice] = "#{model_name} was successfully created."
        render_or_redirect("show", :action=>"list")
@@ -107,7 +107,7 @@ module Streamlined::Controller::CrudMethods
   # the #edit view so that errors can be fixed.
   def update
     self.instance = model.find(params[:id])
-    if instance.update_attributes(params[@model_symbol])
+    if instance.update_attributes(params[model_symbol])
       get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
       flash[:notice] = "#{model_name} was successfully updated."
       render_or_redirect("show", :action=>"list")

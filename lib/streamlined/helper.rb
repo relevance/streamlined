@@ -25,7 +25,7 @@ module Streamlined::Helper
   def self.included(includer)
     includer.class_eval do
       attr_reader :streamlined_context
-      delegates :model_name, :model, :to=>:streamlined_context
+      delegates *Streamlined::Context::DELEGATES
     end
   end
   
@@ -51,7 +51,7 @@ module Streamlined::Helper
   
   # Creates the id for the div containing a given relationship. 
   def relationship_div_id(relationship, item, in_window = false)
-    "#{@model_ui.relationships[relationship.name].edit_view.id_fragment}::#{relationship.name}::#{item.id}::#{relationship.class_name}#{'::win' if in_window}"
+    "#{model_ui.relationships[relationship.name].edit_view.id_fragment}::#{relationship.name}::#{item.id}::#{relationship.class_name}#{'::win' if in_window}"
   end
   
   # If the validation_reflection plugin is available and working properly, check to see if the given 

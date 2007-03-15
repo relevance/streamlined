@@ -51,7 +51,7 @@ module Streamlined::Controller::InstanceMethods
     #            page << "if($('notice')) {Element.hide('notice');} if($('notice-error')) {Element.hide('notice-error');} if($('notice-empty')) {Element.hide('notice-empty');}"
     #            page.show 'notice-info'
     #            page.replace_html "notice-info", @controller.list_notice_info  
-    #            page.replace_html "#{@model_underscore}_list", :partial => render_path( partial, :partial => true, :con_name => @con_name )
+    #            page.replace_html "#{model_underscore}_list", :partial => render_path( partial, :partial => true, :con_name => @con_name )
     #            ##edit_link_html = link_to_function( '(edit)', "Streamlined.Windows.open_local_window_from_url('Smart Groups', '#{url_for(:controller => 'smart_folders', :action => 'edit', :id => @smart_folder.id, :target_controller => 'campaigns', :target_class => model_name || target_class)}', null, null, {title: 'Edit Smart Group', closable: false, width:840, height:480 })" )
     #            page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => model_name, :text => [ model_name.pluralize, "Smart Group", @smart_folder.name ] )
     #            page.visual_effect :highlight, 'breadcrumbs'
@@ -70,7 +70,7 @@ module Streamlined::Controller::InstanceMethods
    # a criteria instance of the model being searched and execute
    # the find_by_criteria method on the model class.
    def find
-     self.instance = model.new(params[@model_symbol])
+     self.instance = model.new(params[model_symbol])
      @results = model.find_by_criteria(instance)
      render(:partial => 'results')
    end
@@ -129,7 +129,7 @@ module Streamlined::Controller::InstanceMethods
       instance.send(rel_name).clear
       klass = Class.class_eval(params[:klass])
       @klass_ui = Streamlined::UI.get_ui(params[:klass])
-      relationship = @model_ui.relationships[rel_name]
+      relationship = model_ui.relationships[rel_name]
       items.each do |id, onoff|
         instance.send(rel_name).push(klass.find(id)) if onoff == 'on'
       end
@@ -225,15 +225,6 @@ module Streamlined::Controller::InstanceMethods
   def initialize_streamlined_values(mod_name = nil)
     @streamlined_context = Streamlined::Context.new
     @streamlined_context.model_name = mod_name || self.class.model_name || Inflector.classify(self.class.controller_name)
-    @model_symbol = Inflector.underscore(model_name).to_sym
-    if Object.const_defined?(model_name + "UI")
-      @model_ui = Class.class_eval(model_name + "UI")
-    else
-      @model_ui = Streamlined.generic_ui
-      @model_ui.model = model
-    end
-    @model_table = Inflector.tableize(model_name)
-    @model_underscore = Inflector.underscore(model_name)
     @page_title = "Manage \#{model_name.pluralize}"
     @tags = model.tag_list.split(',') if model.respond_to? :tag_list
   end
@@ -260,7 +251,7 @@ module Streamlined::Controller::InstanceMethods
   end
 
   def relationship_for_name(rel_name)
-    @model_ui.relationships[rel_name.to_sym]
+    model_ui.relationships[rel_name.to_sym]
   end
 
   def set_items_and_all_items(rel_type, item_filter = nil)
@@ -302,7 +293,7 @@ module Streamlined::Controller::ClassMethods
   def acts_as_streamlined(options = {})
     class_eval do
       attr_reader :streamlined_context
-      delegates :model_name, :model, :to=>:streamlined_context
+      delegates *Streamlined::Context::DELEGATES
       include Streamlined::Controller::InstanceMethods
       if defined? AuthenticatedSystem
         include AuthenticatedSystem

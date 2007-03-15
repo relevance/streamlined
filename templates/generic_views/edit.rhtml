@@ -1,14 +1,14 @@
-<% form_for @model_underscore.to_sym, @streamlined_item, 
+<% form_for model_underscore.to_sym, @streamlined_item, 
             :url => { :action => "update", :id=>@streamlined_item},
             :html => {:onsubmit=>"Streamlined.Form.submit(this); return false;"} do |form| %>
   <%= render :partial => 'form', :locals=>{:form=>form} %>
   <table>
   	<% for relationship in model.reflect_on_all_associations %>
-  	<% if @model_ui.relationships[relationship.name].show_view %>
+  	<% if model_ui.relationships[relationship.name].show_view %>
   	    <tr>
         <td class="streamlined_label_cell"><span class="streamlined_label"><%= relationship.name %>:</span></td>
   		    <td><div id="<%= relationship_div_id(relationship, @streamlined_item, true) %>">
-  			<%= render(:partial => "#{@model_ui.relationships[relationship.name].show_view.partial}", :locals => {:item => @streamlined_item, :relationship => relationship, :streamlined_def => @model_ui.relationships[relationship.name].show_view})%>
+  			<%= render(:partial => "#{model_ui.relationships[relationship.name].show_view.partial}", :locals => {:item => @streamlined_item, :relationship => relationship, :streamlined_def => model_ui.relationships[relationship.name].show_view})%>
   		<%= link_to_function("Edit", "Streamlined.Relationships.open_relationship('#{relationship_div_id(relationship, @streamlined_item, true)}', this, '/#{params[:controller]}')")%></div> 
   	      </td>
   	    </tr>
