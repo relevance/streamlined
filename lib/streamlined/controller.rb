@@ -62,44 +62,44 @@ module Streamlined::Controller::InstanceMethods
 
    # Opens the search view.  The default is a criteria query view.
    def search
-     self.instance = @model.new
+     self.instance = model.new
      render(:partial => 'search')
    end
 
    # Executes the search.  The default behavior is to create 
-   # a criteria instance of the @model being searched and execute
-   # the find_by_criteria method on the @model class.
+   # a criteria instance of the model being searched and execute
+   # the find_by_criteria method on the model class.
    def find
-     self.instance = @model.new(params[@model_symbol])
-     @results = @model.find_by_criteria(instance)
+     self.instance = model.new(params[@model_symbol])
+     @results = model.find_by_criteria(instance)
      render(:partial => 'results')
    end
 
-   # Renders the current scoped list of @model instances as an XML document.  For example,
+   # Renders the current scoped list of model instances as an XML document.  For example,
    # if the user is just looking at the #list view, it will render all the existing instances
-   # of the @model.  However, if the user has used the filter to narrow the list, export_to_xml
+   # of the model.  However, if the user has used the filter to narrow the list, export_to_xml
    # will only render the current filter set to XML.
    def export_to_xml
      @headers["Content-Type"] = "text/xml"
      @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.xml\""
-     render(:text => @model.find_by_like(@page_options.filter).to_xml)
+     render(:text => model.find_by_like(@page_options.filter).to_xml)
    end
 
-   # Renders the current scoped list of @model instances as a CSV document.  For example,
+   # Renders the current scoped list of model instances as a CSV document.  For example,
    # if the user is just looking at the #list view, it will render all the existing instances
-   # of the @model.  However, if the user has used the filter to narrow the list, export_to_csv
+   # of the model.  However, if the user has used the filter to narrow the list, export_to_csv
    # will only render the current filter set to CSV.
    def export_to_csv
      @headers["Content-Type"] = "text/csv"
      @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.csv\""
-     render(:text => @model.find_by_like(@page_options.filter).to_csv(@model.column_names))
+     render(:text => model.find_by_like(@page_options.filter).to_csv(model.column_names))
    end
 
-   # Opens the relationship +view+ for a given relationship on the @model.  This means
+   # Opens the relationship +view+ for a given relationship on the model.  This means
    # replacing the +summary+ view with the expanded +view+, as defined in streamlined_ui 
    # and Streamlined::Column.
    def expand_relationship
-     self.instance = @model.find(params[:id])
+     self.instance = model.find(params[:id])
      rel_type = relationship_for_name(params[:relationship])
      @relationship_name = params[:relationship]
      @root = instance
@@ -110,7 +110,7 @@ module Streamlined::Controller::InstanceMethods
    # Closes the expanded relationship +view+ and replaces it with the +summary+ view, 
    # as defined in streamlined_ui and Streamlined::Column.
    def close_relationship
-     self.instance = @model.find(params[:id])
+     self.instance = model.find(params[:id])
      rel_type = relationship_for_name(params[:relationship])
      relationship_name = params[:relationship]
      # klass = Class.class_eval(params[:klass])
@@ -124,7 +124,7 @@ module Streamlined::Controller::InstanceMethods
    # defined in Streamlined::Column.
    def update_relationship
      items = params[:item]
-      self.instance = @model.find(params[:id])
+      self.instance = model.find(params[:id])
       rel_name = params[:rel_name].to_sym
       instance.send(rel_name).clear
       klass = Class.class_eval(params[:klass])
@@ -150,7 +150,7 @@ module Streamlined::Controller::InstanceMethods
    # defined in Streamlined::Column.
    def update_n_to_one
     item = params[:item]
-    self.instance = @model.find(params[:id])
+    self.instance = model.find(params[:id])
     rel_name = "#{params[:rel_name]}=".to_sym
     if item == 'nil' || item == nil
       instance.send(rel_name, nil)
@@ -169,7 +169,7 @@ module Streamlined::Controller::InstanceMethods
 
   # Creates the popup window for an item
   def popup
-    self.instance = @model.find(params[:id])
+    self.instance = model.find(params[:id])
     render :partial => 'popup'
   end
        
@@ -202,7 +202,7 @@ module Streamlined::Controller::InstanceMethods
        
   def add_tags
     if Object.const_defined?(:Tag) && params[:new_tags]
-      item = @model.find(params[:id])
+      item = model.find(params[:id])
       tags = params[:new_tags].split(' ')
       @new_tags = []
       tags.each do |tag| 
@@ -225,23 +225,22 @@ module Streamlined::Controller::InstanceMethods
   def initialize_streamlined_values(mod_name = nil)
     @streamlined_context = Streamlined::Context.new
     @streamlined_context.model_name = mod_name || self.class.model_name || Inflector.classify(self.class.controller_name)
-    @model = Class.class_eval(model_name)
     @model_symbol = Inflector.underscore(model_name).to_sym
     if Object.const_defined?(model_name + "UI")
       @model_ui = Class.class_eval(model_name + "UI")
     else
       @model_ui = Streamlined.generic_ui
-      @model_ui.model = @model
+      @model_ui.model = model
     end
     @model_table = Inflector.tableize(model_name)
     @model_underscore = Inflector.underscore(model_name)
     @page_title = "Manage \#{model_name.pluralize}"
-    @tags = @model.tag_list.split(',') if @model.respond_to? :tag_list
+    @tags = model.tag_list.split(',') if model.respond_to? :tag_list
   end
 
   # rewrite of rails method
   def paginator_and_collection_for(collection_id, options) #:nodoc:
-    klass = @model
+    klass = model
     # page  = @params[options[:parameter]]
     page = @page_options.page
     count = count_collection_for_pagination(klass, options)
@@ -303,7 +302,7 @@ module Streamlined::Controller::ClassMethods
   def acts_as_streamlined(options = {})
     class_eval do
       attr_reader :streamlined_context
-      delegates :model_name, :to=>:streamlined_context
+      delegates :model_name, :model, :to=>:streamlined_context
       include Streamlined::Controller::InstanceMethods
       if defined? AuthenticatedSystem
         include AuthenticatedSystem
@@ -338,8 +337,8 @@ module Streamlined::Controller::ClassMethods
             @managed_partials = ['list', 'form', 'popup', 'tags', 'tag_list', 'columns', 'show_columns', 'hide_columns']                    
             @syndication_type ||= "rss"
             @syndication_actions ||= "list"
-            RAILS_DEFAULT_LOGGER.info("@model NAME: #{model_name}")
-            RAILS_DEFAULT_LOGGER.info("@model: #{@model.inspect}")
+            RAILS_DEFAULT_LOGGER.info("model NAME: #{model_name}")
+            RAILS_DEFAULT_LOGGER.info("model: #{model.inspect}")
           rescue Exception => ex
             RAILS_DEFAULT_LOGGER.info("Could not instantiate controller: #{self.class.name}")
             raise ex

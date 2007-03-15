@@ -3,7 +3,7 @@
             :html => {:onsubmit=>"Streamlined.Form.submit(this); return false;"} do |form| %>
   <%= render :partial => 'form', :locals=>{:form=>form} %>
   <table>
-  	<% for relationship in @model.reflect_on_all_associations %>
+  	<% for relationship in model.reflect_on_all_associations %>
   	<% if @model_ui.relationships[relationship.name].show_view %>
   	    <tr>
         <td class="streamlined_label_cell"><span class="streamlined_label"><%= relationship.name %>:</span></td>

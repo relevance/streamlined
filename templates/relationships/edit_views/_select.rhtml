@@ -4,7 +4,7 @@
 	<input type="hidden" name="rel_name" value="<%= @relationship_name %>">
 	<input type="hidden" name="klass" value="<%= @klass %>">
 	<select name="item" id="item">
-	  <%= unassigned_if_allowed(@model, @relationship_name.to_sym, @items) %>	
+	  <%= unassigned_if_allowed(s, @relationship_name.to_sym, @items) %>	
 <% for item in @all_items %>
     <option <%= 'selected' if @items == item %> value="<%= item.id %>"><%= item.streamlined_name(@model_ui.relationships[@relationship_name.to_sym].edit_view.fields,@model_ui.relationships[@relationship_name.to_sym].edit_view.separator) %></option>
 <% end %>

@@ -4,7 +4,7 @@
 	<input type="hidden" name="rel_name" value="<%= @relationship_name %>">
 	<input type="hidden" name="klass" value="<%= @klass %>">
 	<select name="item" id="item">
-	  <%= unassigned_if_allowed(@model, @relationship_name.to_sym, @items) %>	
+	  <%= unassigned_if_allowed(model, @relationship_name.to_sym, @items) %>	
 	  <% @all_items.keys.each do |key| %>
 	    <option value="nil">--<%= key.capitalize %>--</option>
 	    <% @all_items[key].each do |item| %>

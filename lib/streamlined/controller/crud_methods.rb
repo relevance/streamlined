@@ -1,12 +1,12 @@
 module Streamlined::Controller::CrudMethods
-  # Creates the list of items of the @managed @model class. Default behavior
+  # Creates the list of items of the @managed model class. Default behavior
   # creates an Ajax-enabled table view that paginates in groups of 10.  The 
   # resulting view will use Prototype and XHR to allow the user to page
-  # through the @model instances.  
+  # through the model instances.  
   #
   # If the URL includes the <code>atom=true</code> querystring variable, the
   # action will instead render the Atom feed of all items found for this 
-  # @model.
+  # model.
   #
   # If the request came via XHR, the action will render just the list partial,
   # not the entire list view.
@@ -15,16 +15,16 @@ module Streamlined::Controller::CrudMethods
     @model_ui.pagination ? options = {:per_page => 10} : options = {}
     options.merge! order_options
     if @page_options.filter?
-      options.merge! :conditions=>@model.conditions_by_like(@page_options.filter) 
-      @model_count = @model.count(:conditions => @model.conditions_by_like(@page_options.filter))
+      options.merge! :conditions=>model.conditions_by_like(@page_options.filter) 
+      @model_count = model.count(:conditions => model.conditions_by_like(@page_options.filter))
     else
-      @model_count = @model.count
+      @model_count = model.count
     end
     if params[:syndicated]
       if @page_options.filter?
-         models = @model.find(:all, :conditions=>@model.conditions_by_like(@page_options.filter))
+         models = model.find(:all, :conditions=>model.conditions_by_like(@page_options.filter))
        else
-         models = @model.find(:all)
+         models = model.find(:all)
        end
        @streamlined_items = models
     else
@@ -42,7 +42,7 @@ module Streamlined::Controller::CrudMethods
           end
       else
         model_pages = []
-        models = @model.find(:all, options)
+        models = model.find(:all, options)
       end
 
       self.instance_variable_set("@#{Inflector.underscore(model_name)}_pages", model_pages)
@@ -70,23 +70,23 @@ module Streamlined::Controller::CrudMethods
   end
    # Renders the Show view for a given instance.
    def show
-     self.instance = @model.find(params[:id])
+     self.instance = model.find(params[:id])
      render_or_redirect('show')
    end
 
-   # Opens the @model form for creating a new instance of the
-   # given @model class.
+   # Opens the model form for creating a new instance of the
+   # given model class.
    def new
-     self.instance = @model.new
+     self.instance = model.new
      render_or_redirect('new')
    end
 
    # Uses the values from the rendered form to create a new
-   # instance of the @model.  If the instance was successfully saved,
+   # instance of the model.  If the instance was successfully saved,
    # render the #show view.  If the save was unsuccessful, re-render
    # the #new view so that errors can be fixed.
    def create
-     self.instance = @model.new(params[@model_symbol])
+     self.instance = model.new(params[@model_symbol])
      if instance.save
        flash[:notice] = "#{model_name} was successfully created."
        render_or_redirect("show", :action=>"list")
@@ -95,18 +95,18 @@ module Streamlined::Controller::CrudMethods
      end
    end
 
-  # Opens the @model form for editing an existing instance.
+  # Opens the model form for editing an existing instance.
   def edit
-    self.instance = @model.find(params[:id])
+    self.instance = model.find(params[:id])
     render_or_redirect('edit')
   end
 
   # Uses the values from the rendered form to update an existing
-  # instance of the @model.  If the instance was successfully saved,
+  # instance of the model.  If the instance was successfully saved,
   # render the #show view.  If the save was unsuccessful, re-render
   # the #edit view so that errors can be fixed.
   def update
-    self.instance = @model.find(params[:id])
+    self.instance = model.find(params[:id])
     if instance.update_attributes(params[@model_symbol])
       get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
       flash[:notice] = "#{model_name} was successfully updated."
@@ -117,7 +117,7 @@ module Streamlined::Controller::CrudMethods
   end
 
   def destroy
-    @model.find(params[:id]).destroy
+    model.find(params[:id]).destroy
     redirect_to :action => 'list'
   end
 
@@ -128,7 +128,7 @@ module Streamlined::Controller::CrudMethods
   def order_options
     if @page_options && @page_options.order?
       column,order = @page_options.sort_column, @page_options.sort_order
-      if @model.column_names.include? column
+      if model.column_names.include? column
         @page_options.active_record_order_option
       else
         {:non_ar_column => column.downcase.tr(" ", "_"), :dir => order}
