@@ -315,12 +315,16 @@ module Streamlined::Controller::ClassMethods
       verify :method => :post, :only => [ :destroy, :create, :update ],
             :redirect_to => { :action => :list }
       # stick streamlined's render overrides onto the view
+      # This is fragile because it duplicates Rails code
+      # Have to in order to inject methods at the right time!
       def self.view_class
-        # TODO: find an include_once idiom
-        first_time = !@view_class
-        super
-        @view_class.send(:include, Streamlined::Helper) if first_time
-        @view_class
+        @view_class ||=
+          # create a new class based on the default template class and include helper methods
+          returning Class.new(ActionView::Base) do |view_class|
+            # inject our methods first, so user can override them
+            view_class.send(:include, Streamlined::Helper)
+            view_class.send(:include, master_helper_module)
+          end
       end
        def initialize_with_streamlined_variables
           if self.class == Streamlined::Controller

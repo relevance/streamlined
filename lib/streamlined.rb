@@ -9,7 +9,7 @@ require 'streamlined/ui'
 require 'streamlined/controller'
 require 'streamlined/helper'
 
+# have to do this to provide acts_as_streamlined
 ActionController::Base.class_eval do 
   include Streamlined::Controller
 end
-
