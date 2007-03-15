@@ -104,7 +104,7 @@ module Streamlined::Controller::InstanceMethods
      @relationship_name = params[:relationship]
      @root = instance
      set_items_and_all_items(rel_type)
-     render(:partial => rel_type.view_def.partial)
+     render(:partial => rel_type.edit_view.partial)
    end
 
    # Closes the expanded relationship +view+ and replaces it with the +summary+ view, 
@@ -117,7 +117,7 @@ module Streamlined::Controller::InstanceMethods
 #      @klass_ui = Class.class_eval(params[:klass] + "UI")
      relationship = instance.class.reflect_on_all_associations.select {|x| x.name == relationship_name.to_sym}[0]
      @root = instance
-     render(:partial => rel_type.summary_def.partial, :locals => {:item => instance, :relationship => relationship, :streamlined_def => rel_type.summary_def})
+     render(:partial => rel_type.show_view.partial, :locals => {:item => instance, :relationship => relationship, :streamlined_def => rel_type.show_view})
    end
 
    # Add new items to the given relationship collection. Used by the #membership view, as 
@@ -134,12 +134,12 @@ module Streamlined::Controller::InstanceMethods
         instance.send(rel_name).push(klass.find(id)) if onoff == 'on'
       end
       instance.save
-      if relationship.view_def.respond_to?(:render_on_update)
+      if relationship.edit_view.respond_to?(:render_on_update)
         @relationship_name = rel_name
         @root = instance
         set_items_and_all_items(relationship, params[:filter])
         render :update do |page|
-          relationship.view_def.render_on_update(page, rel_name, params[:id])
+          relationship.edit_view.render_on_update(page, rel_name, params[:id])
         end
       else
         render(:nothing => true)

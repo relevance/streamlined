@@ -62,7 +62,7 @@ END
   
   # Creates the id for the div containing a given relationship. 
   def relationship_div_id(relationship, item, in_window = false)
-    "#{@model_ui.relationships[relationship.name].view_def.id_fragment}::#{relationship.name}::#{item.id}::#{relationship.class_name}#{'::win' if in_window}"
+    "#{@model_ui.relationships[relationship.name].edit_view.id_fragment}::#{relationship.name}::#{item.id}::#{relationship.class_name}#{'::win' if in_window}"
   end
   
   # If the validation_reflection plugin is available and working properly, check to see if the given 

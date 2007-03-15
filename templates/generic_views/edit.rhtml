@@ -4,11 +4,11 @@
   <%= render :partial => 'form', :locals=>{:form=>form} %>
   <table>
   	<% for relationship in @model.reflect_on_all_associations %>
-  	<% if @model_ui.relationships[relationship.name].summary_def %>
+  	<% if @model_ui.relationships[relationship.name].show_view %>
   	    <tr>
         <td class="streamlined_label_cell"><span class="streamlined_label"><%= relationship.name %>:</span></td>
   		    <td><div id="<%= relationship_div_id(relationship, @streamlined_item, true) %>">
-  			<%= render(:partial => "#{@model_ui.relationships[relationship.name].summary_def.partial}", :locals => {:item => @streamlined_item, :relationship => relationship, :streamlined_def => @model_ui.relationships[relationship.name].summary_def})%>
+  			<%= render(:partial => "#{@model_ui.relationships[relationship.name].show_view.partial}", :locals => {:item => @streamlined_item, :relationship => relationship, :streamlined_def => @model_ui.relationships[relationship.name].show_view})%>
   		<%= link_to_function("Edit", "Streamlined.Relationships.open_relationship('#{relationship_div_id(relationship, @streamlined_item, true)}', this, '/#{params[:controller]}')")%></div> 
   	      </td>
   	    </tr>

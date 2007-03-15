@@ -17,17 +17,26 @@ require 'relevance/delegates'
 # Wrapper around ActiveRecord::Association.  Keeps track of the underlying association, the View definition and the Summary definition.
 class Streamlined::Column::Association < Streamlined::Column::Base
   attr_reader :underlying_association
-  attr_reader :view_def
-  attr_reader :summary_def
   attr_accessor :human_name
   
   delegates :name, :class_name, :to=>:underlying_association
   
-  def initialize(assoc, view, summary)
+  def initialize(assoc, edit, show)
     @underlying_association = assoc
-    @view_def = view
-    @summary_def = summary
+    @edit = (Enumerable === edit) ? edit : [edit]
+    @show = (Enumerable === show) ? show : [show]
+    raise ArgumentError unless Symbol === @edit.first
+    raise ArgumentError unless Symbol === @show.first
     @human_name = name.to_s.humanize
+  end
+  
+  # TODO: renamed to edit_def and show_def
+  def show_view
+    @show_view ||= Streamlined::View::ShowViews.create_summary(*@show)    
+  end
+  
+  def edit_view
+    @edit_view ||= Streamlined::View::EditViews.create_relationship(*@edit)
   end
 
   # Returns a list of all the classes that can be used to satisfy this relationship.  In a polymorphic relationship, it is the union 
@@ -44,9 +53,9 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   def render_td(view, item, model_ui, controller)
     div = <<-END
   <div id="#{relationship_div_id(item)}">
-		#{view.render(:partial => summary_def.partial, 
+		#{view.render(:partial => show_view.partial, 
                    :locals => {:item => item, :relationship => self, 
-                   :streamlined_def => summary_def})}
+                   :streamlined_def => show_view})}
   </div>
 END
     div += <<-END unless read_only
@@ -59,7 +68,7 @@ END
   
   # TODO: eliminate the helper version of this
   def relationship_div_id(item, in_window = false)
-    fragment = view_def ? view_def.id_fragment : "temp"
+    fragment = edit_view ? edit_view.id_fragment : "temp"
     "#{fragment}::#{name}::#{item.id}::#{class_name}#{'::win' if in_window}"
   end
   

@@ -78,25 +78,7 @@ class Streamlined::UI
     def all_columns
       @all_columns ||= (scalars.values + additions.values + relationships.values)
     end
-       
-    # Given a relationship name, returns the View class representing it.
-    def view_def(rel)
-      opts = relationships[rel.to_sym]
-      Streamlined::View::EditViews.create_relationship(opts[:view],
-                                                       opts[:view_fields])
-    end
-       
-    # Given a relationship name, returns the Summary class representing it.
-    def summary_def(rel)
-      opts = relationships[rel.to_sym]
-      Streamlined::View::ShowViews.create_summary(opts[:summary], opts[:fields])
-    end
-       
-    def relationship(rel, opts = {:view => {}, :summary => {}})
-      opts = force_options_to_current_syntax(opts)
-      relationships[rel] = create_relationship(rel, opts)
-    end
-
+ 
     def generic_ui
       Streamlined::UI::Generic
     end
@@ -107,28 +89,6 @@ class Streamlined::UI
       else
         self.generic_ui
       end
-    end
-
-    private
-    def force_options_to_current_syntax(opts)
-      opts = {:view => {}, :summary => {} }.merge(opts)
-      unless opts[:view].kind_of? Hash
-        if opts[:view_fields]
-          new_val = {:name => opts[:view], :fields => opts[:view_fields]}
-        else
-          new_val = {:name => opts[:view] }
-        end
-        opts[:view] = new_val
-      end
-      unless opts[:summary].kind_of? Hash
-        if opts[:fields]
-          new_val = {:name => opts[:summary], :fields => opts[:fields]}
-        else
-          new_val = {:name => opts[:summary] }
-        end
-        opts[:summary] = new_val
-        end
-      opts
     end
 
   end

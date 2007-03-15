@@ -8,7 +8,7 @@
 	  <% @all_items.keys.each do |key| %>
 	    <option value="nil">--<%= key.capitalize %>--</option>
 	    <% @all_items[key].each do |item| %>
-	        <option <%= 'selected' if @items == item %> value="<%= item.id %>::<%= item.class.name %>"><%= item.streamlined_name(@model_ui.relationships[@relationship_name.to_sym].view_def.fields, @model_ui.relationships[@relationship_name.to_sym].view_def.separator) %></option>
+	        <option <%= 'selected' if @items == item %> value="<%= item.id %>::<%= item.class.name %>"><%= item.streamlined_name(@model_ui.relationships[@relationship_name.to_sym].edit_view.fields, @model_ui.relationships[@relationship_name.to_sym].edit_view.separator) %></option>
 	    <% end %>
 	  <% end %>
   </form>

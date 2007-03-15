@@ -6,7 +6,7 @@
 	<select name="item" id="item">
 	  <%= unassigned_if_allowed(@model, @relationship_name.to_sym, @items) %>	
 <% for item in @all_items %>
-    <option <%= 'selected' if @items == item %> value="<%= item.id %>"><%= item.streamlined_name(@model_ui.relationships[@relationship_name.to_sym].view_def.fields,@model_ui.relationships[@relationship_name.to_sym].view_def.separator) %></option>
+    <option <%= 'selected' if @items == item %> value="<%= item.id %>"><%= item.streamlined_name(@model_ui.relationships[@relationship_name.to_sym].edit_view.fields,@model_ui.relationships[@relationship_name.to_sym].edit_view.separator) %></option>
 <% end %>
    </select>
   </form>

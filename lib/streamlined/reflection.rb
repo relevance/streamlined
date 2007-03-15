@@ -22,7 +22,7 @@ module Streamlined::Reflection
     relationships = {}
       model.reflect_on_all_associations.each do |assoc|
         rel = assoc.name.to_sym
-        relationships[rel] = create_relationship(rel, define_association(assoc)) unless relationships[rel]
+        relationships[rel] = create_relationship(rel) unless relationships[rel]
       end
     relationships
   end
@@ -30,6 +30,7 @@ module Streamlined::Reflection
   private
   # Enforce parity of options on any relationship declaration.
   # * use of the :list summary requires a :fields declaration
+  # TODO: move into association
   def ensure_options_parity(options, association)
     # RAILS_DEFAULT_LOGGER.debug("ensure_options_parity: #{options.inspect}, #{association.inspect}")
     return if options == nil || options = {}
@@ -38,32 +39,29 @@ module Streamlined::Reflection
     raise ArgumentError, "STREAMLINED ERROR: Error in #{self.name} : Cannot use *:view => :filter_select* for a #{association.macro} relationship" if options[:view] && options[:view][:name] == :filter_select && [:has_one, :belongs_to].include?(association.macro)  
   end
      
-  def create_relationship(rel, opts = {:view => {}, :summary => {}})
-    # opts = force_options_to_current_syntax(opts)  
+  def create_relationship(rel)
     association = model.reflect_on_association(rel)
     raise Exception, "STREAMLINED ERROR: No association '#{rel}' on class #{model}." unless association
-    ensure_options_parity(opts, association)
-    options = define_association(association, opts)
-    Streamlined::Column::Association.new(association, Streamlined::View::EditViews.create_relationship(options[:view][:name], options[:view].reject {|k,v| k == :name}), Streamlined::View::ShowViews.create_summary(options[:summary][:name], options[:summary].reject {|k,v| k == :name}))         
+    options = define_association(association)
+    Streamlined::Column::Association.new(association, *options)
   end
 
+  # TODO: move defaults down into association class
   # Used to define the default relationship declarations for each relationship in the model.
-  # n-to-many relationships default to the :membership view and the :count summary
-  # n-to-one relationships default to the :select view and the :name summary
   def define_association(assoc, options = {:view => {}, :summary => {}})
     return {:summary => :none} if options[:summary] == :none
     case assoc.macro
     when :has_one, :belongs_to
       if assoc.options[:polymorphic]
-        return {:view => {:name => :polymorphic_select}.merge(options[:view]), :summary => {:name => :name}.merge(options[:summary])}
+        [:polymorphic_select, :name]
       else
-        return {:view => {:name => :select}.merge(options[:view]), :summary => {:name => :name}.merge(options[:summary])}
+        [:select, :name]
       end
     when :has_many, :has_and_belongs_to_many
       if assoc.options[:polymorphic]
-        return {:view => {:name => :polymorphic_membership}.merge(options[:view]), :summary => {:name => :count}.merge(options[:summary])}
+        [:polymorphic_membership, :count]
       else
-        return {:view => {:name => :membership}.merge(options[:view]), :summary => {:name => :count}.merge(options[:summary])}
+        [:membership, :count]
       end           
     end
   end  
