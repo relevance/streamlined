@@ -223,8 +223,8 @@ module Streamlined::Controller::InstanceMethods
   end
         
   def initialize_streamlined_values(mod_name = nil)
-    @streamlined_context = Streamlined::Context.new
-    @streamlined_context.model_name = mod_name || self.class.model_name || Inflector.classify(self.class.controller_name)
+    @streamlined_controller_context = Streamlined::Context::ControllerContext.new
+    @streamlined_controller_context.model_name = mod_name || self.class.model_name || Inflector.classify(self.class.controller_name)
     @page_title = "Manage \#{model_name.pluralize}"
     @tags = model.tag_list.split(',') if model.respond_to? :tag_list
   end
@@ -292,8 +292,8 @@ module Streamlined::Controller::ClassMethods
     
   def acts_as_streamlined(options = {})
     class_eval do
-      attr_reader :streamlined_context
-      delegates *Streamlined::Context::DELEGATES
+      attr_reader :streamlined_controller_context
+      delegates *Streamlined::Context::ControllerContext::DELEGATES
       include Streamlined::Controller::InstanceMethods
       if defined? AuthenticatedSystem
         include AuthenticatedSystem

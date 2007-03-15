@@ -19,7 +19,7 @@ class Streamlined::Column::Base
     end
     content
   end
-  # TODO: make a streamlined_context that delegates to pageoptions, etc.
+  # TODO: make a request_context that delegates to other bits
   def sort_image(context, view)
     if context.sort_column?(self)
       direction = context.ascending? ? 'up' : 'down'
