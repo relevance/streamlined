@@ -10,14 +10,14 @@ module Streamlined; module Helpers; end; end
 
 require 'relevance/dsl'
 require 'streamlined/helpers/link_helper'
-require 'streamlined/helpers/menu_helper'
+require 'streamlined/helpers/layout_helper'
 require 'streamlined/helpers/table_helper'
 require 'streamlined/helpers/degradable/link_helper'
   
 module Streamlined::Helper
   include Streamlined::Helpers::TableHelper
   include Streamlined::Helpers::LinkHelper
-  include Streamlined::Helpers::MenuHelper
+  include Streamlined::Helpers::LayoutHelper
   
   # include this last
   include Streamlined::View::RenderMethods
@@ -101,15 +101,6 @@ END
   
   # Given a template name, determines the precise location of the file to be used: model-specific view folders, or generic views
   delegate :generic_view, :to=>:controller
-  
-  # Create auto-discovery Atom link
-  def streamlined_auto_discovery_link_tag()
-        return if @syndication_type.nil? || @syndication_actions.nil?
-  
-        if @syndication_actions.include? params[:action]
-            "<link rel=\"alternate\" type=\"application/#{@syndication_type.downcase}+xml\" title=\"#{@syndication_type.upcase}\" href=\"#{params[:action]}/xml\" />"
-        end
-  end
   
   def streamlined_column_html( object, column )
       begin
