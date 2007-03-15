@@ -13,7 +13,7 @@ module Streamlined::Helpers::LinkHelper
   end
   def link_to_new_model
     link_to_function image_tag('streamlined/add_16.png', 
-        {:alt => "New #{@model_name}", :title => "New #{@model_name}", :border => '0'}),          
+        {:alt => "New #{model_name}", :title => "New #{model_name}", :border => '0'}),          
         "Streamlined.Windows.open_local_window_from_url('New', '#{url_for(:action => 'new')}')",
         :href => url_for(:action=>'new')
   end

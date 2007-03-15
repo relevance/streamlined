@@ -2,6 +2,7 @@ module Streamlined
   class Error < RuntimeError; end
 end
 
+require 'streamlined/context'
 require 'streamlined/render_methods'
 require 'streamlined/column'
 require 'streamlined/ui'
@@ -12,6 +13,3 @@ ActionController::Base.class_eval do
   include Streamlined::Controller
 end
 
-ActionView::Base.class_eval do
-  include Streamlined::Helper
-end

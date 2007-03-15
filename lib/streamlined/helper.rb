@@ -19,6 +19,23 @@ module Streamlined::Helper
   include Streamlined::Helpers::LinkHelper
   include Streamlined::Helpers::MenuHelper
   
+  # include this last
+  include Streamlined::View::RenderMethods
+  
+  def self.included(includer)
+    includer.class_eval do
+      attr_reader :streamlined_context
+      delegates :model_name, :to=>:streamlined_context
+    end
+  end
+  
+  def self.extended(extender)
+    (class << extender; self; end).class_eval do
+      attr_reader :streamlined_context
+      delegates :model_name, :to=>:streamlined_context
+    end
+  end
+  
   def streamlined_branding
     "Streamlined"
   end

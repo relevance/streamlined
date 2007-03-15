@@ -29,7 +29,7 @@ module Streamlined::Controller::InstanceMethods
   end
   
    def list_notice_info
-    "Found #{@model_count} #{ ( (@model_count == 1) ? @model_name : @model_name.pluralize ).downcase }"
+    "Found #{@model_count} #{ ( (@model_count == 1) ? model_name : model_name.pluralize ).downcase }"
    end
 
    def list_from_smart_folder( partial = 'list' )
@@ -38,13 +38,13 @@ module Streamlined::Controller::InstanceMethods
 
        model_pages, models = [], @smart_folder.members
 
-       self.instance_variable_set("@#{Inflector.underscore(@model_name)}_pages", model_pages)
-       self.instance_variable_set("@#{Inflector.tableize(@model_name)}", models)
+       self.instance_variable_set("@#{Inflector.underscore(model_name)}_pages", model_pages)
+       self.instance_variable_set("@#{Inflector.tableize(model_name)}", models)
        @streamlined_items = models
        @streamlined_item_pages = model_pages
        @model_count = models.size
 
-#        flash[:notice] = "Found #{@model_count} #{(@model_count == 1) ? @model_name : @model_name.pluralize}" if @page_options.filter && @page_options.filter != ''
+#        flash[:notice] = "Found #{@model_count} #{(@model_count == 1) ? model_name : model_name.pluralize}" if @page_options.filter && @page_options.filter != ''
        # if request.xhr?
     #        @con_name = controller_name
     #        render :update do |page|
@@ -52,8 +52,8 @@ module Streamlined::Controller::InstanceMethods
     #            page.show 'notice-info'
     #            page.replace_html "notice-info", @controller.list_notice_info  
     #            page.replace_html "#{@model_underscore}_list", :partial => render_path( partial, :partial => true, :con_name => @con_name )
-    #            ##edit_link_html = link_to_function( '(edit)', "Streamlined.Windows.open_local_window_from_url('Smart Groups', '#{url_for(:controller => 'smart_folders', :action => 'edit', :id => @smart_folder.id, :target_controller => 'campaigns', :target_class => @model_name || target_class)}', null, null, {title: 'Edit Smart Group', closable: false, width:840, height:480 })" )
-    #            page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => @model_name, :text => [ @model_name.pluralize, "Smart Group", @smart_folder.name ] )
+    #            ##edit_link_html = link_to_function( '(edit)', "Streamlined.Windows.open_local_window_from_url('Smart Groups', '#{url_for(:controller => 'smart_folders', :action => 'edit', :id => @smart_folder.id, :target_controller => 'campaigns', :target_class => model_name || target_class)}', null, null, {title: 'Edit Smart Group', closable: false, width:840, height:480 })" )
+    #            page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => model_name, :text => [ model_name.pluralize, "Smart Group", @smart_folder.name ] )
     #            page.visual_effect :highlight, 'breadcrumbs'
     #        end
     #    end
@@ -81,7 +81,7 @@ module Streamlined::Controller::InstanceMethods
    # will only render the current filter set to XML.
    def export_to_xml
      @headers["Content-Type"] = "text/xml"
-     @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(@model_name)}_#{Time.now.strftime('%Y%m%d')}.xml\""
+     @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.xml\""
      render(:text => @model.find_by_like(@page_options.filter).to_xml)
    end
 
@@ -91,7 +91,7 @@ module Streamlined::Controller::InstanceMethods
    # will only render the current filter set to CSV.
    def export_to_csv
      @headers["Content-Type"] = "text/csv"
-     @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(@model_name)}_#{Time.now.strftime('%Y%m%d')}.csv\""
+     @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.csv\""
      render(:text => @model.find_by_like(@page_options.filter).to_csv(@model.column_names))
    end
 
@@ -223,22 +223,19 @@ module Streamlined::Controller::InstanceMethods
   end
         
   def initialize_streamlined_values(mod_name = nil)
-    if mod_name
-      @model_name = mod_name
-    else
-      @model_name ||= self.class.model_name || Inflector.classify(self.class.controller_name)
-    end
-    @model = Class.class_eval(@model_name)
-    @model_symbol = Inflector.underscore(@model_name).to_sym
-    if Object.const_defined?(@model_name + "UI")
-      @model_ui = Class.class_eval(@model_name + "UI")
+    @streamlined_context = Streamlined::Context.new
+    @streamlined_context.model_name = mod_name || self.class.model_name || Inflector.classify(self.class.controller_name)
+    @model = Class.class_eval(model_name)
+    @model_symbol = Inflector.underscore(model_name).to_sym
+    if Object.const_defined?(model_name + "UI")
+      @model_ui = Class.class_eval(model_name + "UI")
     else
       @model_ui = Streamlined.generic_ui
       @model_ui.model = @model
     end
-    @model_table = Inflector.tableize(@model_name)
-    @model_underscore = Inflector.underscore(@model_name)
-    @page_title = "Manage \#{@model_name.pluralize}"
+    @model_table = Inflector.tableize(model_name)
+    @model_underscore = Inflector.underscore(model_name)
+    @page_title = "Manage \#{model_name.pluralize}"
     @tags = @model.tag_list.split(',') if @model.respond_to? :tag_list
   end
 
@@ -255,11 +252,11 @@ module Streamlined::Controller::InstanceMethods
   end
 
   def instance
-    self.instance_variable_get("@#{Inflector.underscore(@model_name)}")
+    self.instance_variable_get("@#{Inflector.underscore(model_name)}")
   end
 
   def instance=(value)
-    self.instance_variable_set("@#{Inflector.underscore(@model_name)}", value)
+    self.instance_variable_set("@#{Inflector.underscore(model_name)}", value)
     @streamlined_item = value
   end
 
@@ -293,7 +290,7 @@ module Streamlined::Controller::InstanceMethods
   def find_smart_folders
     begin
       return [] if current_user.nil? 
-      current_user.smart_folders.find(:all, :conditions => ['target_class = ?', @model_name]) || []
+      current_user.smart_folders.find(:all, :conditions => ['target_class = ?', model_name]) || []
     rescue
       return []
     end
@@ -304,21 +301,27 @@ module Streamlined::Controller::ClassMethods
   @custom_model_name = nil
     
   def acts_as_streamlined(options = {})
-    class_eval <<-EOV
-include Streamlined::Controller::InstanceMethods
-
-if defined? AuthenticatedSystem
-  include AuthenticatedSystem
-  before_filter :login_required  
-end
-before_filter :initialize_page_options
-
-require_dependencies :ui, Dir["#{RAILS_ROOT}/app/streamlined/*.rb"].collect {|f| f.gsub(".rb", "")}
-
-# GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-verify :method => :post, :only => [ :destroy, :create, :update ],
-       :redirect_to => { :action => :list }
-       
+    class_eval do
+      attr_reader :streamlined_context
+      delegates :model_name, :to=>:streamlined_context
+      include Streamlined::Controller::InstanceMethods
+      if defined? AuthenticatedSystem
+        include AuthenticatedSystem
+        before_filter :login_required  
+      end
+      before_filter :initialize_page_options
+      require_dependencies :ui, Dir["#{RAILS_ROOT}/app/streamlined/*.rb"].collect {|f| f.gsub(".rb", "")}
+      # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
+      verify :method => :post, :only => [ :destroy, :create, :update ],
+            :redirect_to => { :action => :list }
+      # stick streamlined's render overrides onto the view
+      def self.view_class
+        # TODO: find an include_once idiom
+        first_time = !@view_class
+        super
+        @view_class.send(:include, Streamlined::Helper) if first_time
+        @view_class
+      end
        def initialize_with_streamlined_variables
           if self.class == Streamlined::Controller
               RAILS_DEFAULT_LOGGER.warn("Cannot directly browse the Streamlined framework (/streamlined)")
@@ -331,24 +334,15 @@ verify :method => :post, :only => [ :destroy, :create, :update ],
             @managed_partials = ['list', 'form', 'popup', 'tags', 'tag_list', 'columns', 'show_columns', 'hide_columns']                    
             @syndication_type ||= "rss"
             @syndication_actions ||= "list"
-            RAILS_DEFAULT_LOGGER.info("@model NAME: #{@model_name}")
+            RAILS_DEFAULT_LOGGER.info("@model NAME: #{model_name}")
             RAILS_DEFAULT_LOGGER.info("@model: #{@model.inspect}")
           rescue Exception => ex
             RAILS_DEFAULT_LOGGER.info("Could not instantiate controller: #{self.class.name}")
             raise ex
           end
         end       
-       
-alias_method_chain :initialize, :streamlined_variables
-
-# stick streamlined's render overrides onto the view
-def self.view_class
-  first_time = !@view_class
-  super
-  @view_class.send(:include, Streamlined::View::RenderMethods) if first_time
-  @view_class
-end
-EOV
+      alias_method_chain :initialize, :streamlined_variables
+    end
   end
     
   def model_name 

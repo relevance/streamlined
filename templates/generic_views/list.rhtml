@@ -14,7 +14,7 @@
 <% end %>
 <div id="streamlined_list" class="ajax-scaffold">
 	<div class="ajax-scaffold-header">
-	  <h2><%= image_tag_if_exists("#{@model_table}.png", {:align => 'top'}) %> <%= @model_name.titleize.pluralize %></h2>	
+	  <h2><%= image_tag_if_exists("#{@model_table}.png", {:align => 'top'}) %> <%= model_name.titleize.pluralize %></h2>	
     <div class="actions">
   	  <form>
   		Filter:  <input type="text" id="streamlined_filter_term">

@@ -45,8 +45,8 @@ module Streamlined::Controller::CrudMethods
         models = @model.find(:all, options)
       end
 
-      self.instance_variable_set("@#{Inflector.underscore(@model_name)}_pages", model_pages)
-      self.instance_variable_set("@#{Inflector.tableize(@model_name)}", models)
+      self.instance_variable_set("@#{Inflector.underscore(model_name)}_pages", model_pages)
+      self.instance_variable_set("@#{Inflector.tableize(model_name)}", models)
       @streamlined_items = models
       @streamlined_item_pages = model_pages
     end
@@ -59,14 +59,14 @@ module Streamlined::Controller::CrudMethods
      #     page.show 'notice-info'
      #     page.replace_html "notice-info", @controller.list_notice_info
      #     page.replace_html "#{@model_underscore}_list", :partial => render_path('list', :partial => true, :con_name => @con_name)
-     #     filter_text = [ @model_name.pluralize ] + ( @page_options.filter.blank? ? [] : [ "Filter", @page_options.filter] )
-     #     page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => @model_name, :text => filter_text )
+     #     filter_text = [ model_name.pluralize ] + ( @page_options.filter.blank? ? [] : [ "Filter", @page_options.filter] )
+     #     page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => model_name, :text => filter_text )
      #   end
      # else
      #     flash[:info] = @controller.list_notice_info if @controller.respond_to?( "list_notice_info" )
      # end
     render :partial => 'list' if request.xhr?
-    render :template => generic_view('atom'), :controller => @model_name, :layout => false if params[:syndicated]
+    render :template => generic_view('atom'), :controller => model_name, :layout => false if params[:syndicated]
   end
    # Renders the Show view for a given instance.
    def show
@@ -88,7 +88,7 @@ module Streamlined::Controller::CrudMethods
    def create
      self.instance = @model.new(params[@model_symbol])
      if instance.save
-       flash[:notice] = "#{@model_name} was successfully created."
+       flash[:notice] = "#{model_name} was successfully created."
        render_or_redirect("show", :action=>"list")
      else
        render_or_redirect('new')
@@ -109,7 +109,7 @@ module Streamlined::Controller::CrudMethods
     self.instance = @model.find(params[:id])
     if instance.update_attributes(params[@model_symbol])
       get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
-      flash[:notice] = "#{@model_name} was successfully updated."
+      flash[:notice] = "#{model_name} was successfully updated."
       render_or_redirect("show", :action=>"list")
     else
       render_or_redirect("edit")

@@ -21,11 +21,9 @@ class Test::Unit::TestCase
     @controller.logger = RAILS_DEFAULT_LOGGER
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
-    @view = ActionView::Base.new
-    @view.extend Streamlined::Helpers::LinkHelper
-    @view.controller = @controller
     @item = Struct.new(:id).new(1)
     get 'index'
+    @view = @response.template
   end
 end
 
