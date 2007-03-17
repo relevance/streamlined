@@ -5,10 +5,11 @@
 
 # This is not in init.rb because constants created there seem to get blown away! Yuck.
 raise "Must have a RAILS_ROOT" unless RAILS_ROOT
-STREAMLINED_ROOT = File.join(File.dirname(__FILE__), "../..")
+# Using all? absolute paths to deal with Ruby/JRuby launch differences!
+STREAMLINED_ROOT = Pathname.new(File.join(File.dirname(__FILE__), "../..")).expand_path.to_s
 STREAMLINED_GENERIC_VIEW_ROOT = 
-File.join(Pathname.new(STREAMLINED_ROOT).relative_path_from(Pathname.new(RAILS_ROOT+"/app/views")).to_s,
-                       "/templates/generic_views")
+File.join(Pathname.new(STREAMLINED_ROOT).relative_path_from(Pathname.new(RAILS_ROOT+"/app/views").expand_path),
+          "/templates/generic_views")
 
 module Streamlined; end
 module Streamlined::Controller 

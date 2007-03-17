@@ -10,7 +10,7 @@ require 'flexmock'
 require 'generator'
 
 silence_stream(STDERR) do
-  RAILS_ROOT = File.join(File.dirname(__FILE__), '../faux_rails_root')
+  RAILS_ROOT = Pathname.new(File.join(File.dirname(__FILE__), '../faux_rails_root')).expand_path.to_s
   logfile = File.join(File.dirname(__FILE__), '../log/test.log')
   (RAILS_DEFAULT_LOGGER = Logger.new(logfile)).level = Logger::INFO
 end
