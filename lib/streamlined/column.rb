@@ -1,3 +1,4 @@
+# TODO: arguably columns belong to Streamlined::Context::ControllerContext
 module Streamlined; end
 module Streamlined; module Column; end; end
 require 'streamlined/column/base'

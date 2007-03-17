@@ -31,7 +31,7 @@ class Streamlined::Context::ControllerContext
     model_ui ||= if Object.const_defined?(model_name + "UI")
       Class.class_eval(model_name + "UI")
     else
-      temp = Streamlined.generic_ui # TODO: s/b .dup ?!
+      temp = Streamlined::UI.generic_ui # TODO: s/b .dup ?!
       temp.model = model
       temp
     end

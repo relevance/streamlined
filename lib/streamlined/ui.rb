@@ -3,6 +3,7 @@
 # Streamlined is freely distributable under the terms of an MIT-style license.
 # For details, see http://streamlined.relevancellc.com
 
+# TODO: Arguably belongs to Streamlined::Controller::Context
 module Streamlined; end
 require 'streamlined/reflection'
 
@@ -120,4 +121,4 @@ class Streamlined::UI
 
   end
 end
-
+require 'streamlined/ui/generic'
