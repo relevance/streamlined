@@ -226,7 +226,8 @@ module Streamlined::Controller::InstanceMethods
   def initialize_streamlined_values(mod_name = nil)
     @streamlined_controller_context = Streamlined::Context::ControllerContext.new
     @streamlined_controller_context.model_name = mod_name || self.class.model_name || Inflector.classify(self.class.controller_name)
-    @page_title = "Manage \#{model_name.pluralize}"
+    # TODO: why isn't this in the html head?
+    @page_title = "Manage #{model_name.pluralize}"
     @tags = model.tag_list.split(',') if model.respond_to? :tag_list
   end
 

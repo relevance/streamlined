@@ -13,6 +13,7 @@ module Streamlined::Helpers::LayoutHelper
     ]
   end
   # Create auto-discovery Atom link
+  # TODO: move to REST
   def streamlined_auto_discovery_link_tag()
         return if @syndication_type.nil? || @syndication_actions.nil?
   
