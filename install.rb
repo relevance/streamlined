@@ -1,6 +1,5 @@
 # Install hook code here
 begin
-  FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'rico_corner.js'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'javascripts')
   FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'streamlined.js'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'javascripts')
   FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'streamlined.rhtml'), File.join(File.dirname(__FILE__), '..','..','..', 'app', 'views', 'layouts')
   FileUtils.cp  File.join(File.dirname(__FILE__), 'files', 'streamlined.css'), File.join(File.dirname(__FILE__), '..','..','..', 'public', 'stylesheets')
