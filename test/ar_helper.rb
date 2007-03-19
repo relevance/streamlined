@@ -1,6 +1,5 @@
 gem 'activerecord'
 require 'active_record'
-AR_BASE = $:.grep(/activerecord/).first.sub(/(activerecord.*?\/).*/,"\\1")
 
 ActiveRecord::Base.configurations = {
   'streamlined_unittest' => {

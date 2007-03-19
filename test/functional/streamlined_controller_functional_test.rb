@@ -15,18 +15,12 @@ class ActionView::Base
 end
 
 class StreamlinedControllerTest < Test::Unit::TestCase
+  fixtures :people
   def setup
     @controller = PeopleController.new
     @controller.logger = RAILS_DEFAULT_LOGGER
-    # Justin TODO: we need some kind of override like this to point to the templates during testing
-    # class <<@controller
-    #   def generic_view(template)
-    #     File.join(File.dirname(__FILE__), '../../templates/generic_views', template)
-    #   end
-    # end
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
-    @person = Person.create(:id=>3, :first_name=>'Test', :last_name=>'Person')
   end
 
   def generic_view(template)
@@ -49,6 +43,30 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     get :list, :page_options=>{:filter=>"Justin"}
     assert_response :success
     assert_template generic_view("list")
+  end
+  
+  # TODO: set Content-Disposition? optional?
+  # @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.csv\""
+  def test_list_xml
+    @request.env["HTTP_ACCEPT"] = "application/xml"
+    get :list
+    assert_response :success
+    assert_template nil
+    assert_equal "application/xml", @response.content_type
+    assert_select("people person", {:count=>2})
+  end
+
+  def test_list_csv
+    @request.env["HTTP_ACCEPT"] = "text/csv"
+    get :list
+    assert_response :success
+    assert_template nil
+    assert_equal "text/csv", @response.content_type
+    assert_equal(<<-END, @response.body)
+id,first_name,last_name
+1,Justin,Gehtland
+2,Stu,Halloway
+END
   end
 
   def test_show

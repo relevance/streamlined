@@ -11,18 +11,24 @@ module Streamlined::Helpers::LinkHelper
         "(unknown)"
     end
   end
+  # TODO: add unobtrusive JavaScript for:
+  # Streamlined.Windows.open_local_window_from_url('New', '#{url_for(:action => 'new')}'
   def link_to_new_model
-    link_to_function image_tag('streamlined/add_16.png', 
+    link_to(image_tag('streamlined/add_16.png', 
         {:alt => "New #{model_name}", :title => "New #{model_name}", :border => '0'}),          
-        "Streamlined.Windows.open_local_window_from_url('New', '#{url_for(:action => 'new')}')",
-        :href => url_for(:action=>'new')
+        :action => 'new')
   end
+
   def link_to_show_model(item)
-    id = item.id
-    link_to_function image_tag('streamlined/search_16.png', 
-        {:alt => 'Show', :title => 'Show', :border => '0'}), 
-        "Streamlined.Windows.open_local_window_from_url('Show', '#{url_for(:action => 'show', :id => id)}', #{id})",
-        :href => url_for(:action=>"show", :id=>id)
+    link_to(image_tag('streamlined/search_16.png', 
+        {:alt => "Show #{model_name}", :title => "Show #{model_name}", :border => '0'}),          
+        :action => 'show', :id=>item)
+  end
+
+  def link_to_edit_model(item)
+    link_to(image_tag('streamlined/edit_16.png', 
+        {:alt => "Edit #{model_name}", :title => "Edit #{model_name}", :border => '0'}),          
+        :action => 'edit', :id=>item)
   end
 
   # replaced by wrap_with_link, below, and see comment
@@ -40,15 +46,6 @@ module Streamlined::Helpers::LinkHelper
     link_to(yield,link_args)
   end
 
-  
-  # TODO: rename to image link for contrast with text link?
-  def link_to_edit_model(item)
-    id = item.id
-    link_to_function image_tag('streamlined/edit_16.png', 
-        {:alt => 'Edit', :title => 'Edit', :border => '0'}), 
-        "Streamlined.Windows.open_local_window_from_url('Edit', '#{url_for(:action => 'edit', :id => id)}', #{id})",      
-        :href => url_for(:action=>"edit", :id=>id)
-  end
   def link_to_delete_model(item)
     id = item.id
     link_to image_tag('streamlined/delete_16.png', {:alt => 'Destroy', :title => 'Destroy', :border => '0'}), 
@@ -59,12 +56,12 @@ module Streamlined::Helpers::LinkHelper
   def link_to_xml_export
     link_to_function(image_tag('streamlined/export_16.png', 
         {:alt => "Export XML", :title => "Export XML", :border => '0'}),
-        "Streamlined.Exporter.export_to('#{url_for(:action => 'export_to_xml')}')")    
+        "Streamlined.Exporter.export_to('#{url_for(:format => 'xml')}')")    
   end
   def link_to_csv_export
     link_to_function(image_tag('streamlined/save_16.png', 
         {:alt => "Export CSV", :title => "Export CSV", :border => 0}),
-        "Streamlined.Exporter.export_to('#{url_for(:action => 'export_to_csv')}')")
+        "Streamlined.Exporter.export_to('#{url_for(:format => 'csv')}')")
   end
   def link_to_next_page
     link_to_function image_tag('streamlined/control-reverse_16.png', 

@@ -44,7 +44,8 @@ module Streamlined::Controller::CrudMethods
     respond_to do |format|
       format.html {render :action=> "list"}
       format.js {render :partial => "list"}
-      format.xml  { render :xml => @streamlined_items.to_xml }
+      format.csv {render :text=> @streamlined_items.to_csv(model.columns.map(&:name))}
+      format.xml  {render :xml => @streamlined_items.to_xml }
     end
   end
 

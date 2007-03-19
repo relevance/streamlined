@@ -12,7 +12,6 @@ require 'relevance/dsl'
 require 'streamlined/helpers/link_helper'
 require 'streamlined/helpers/layout_helper'
 require 'streamlined/helpers/table_helper'
-require 'streamlined/helpers/degradable/link_helper'
   
 module Streamlined::Helper
   include Streamlined::Helpers::TableHelper

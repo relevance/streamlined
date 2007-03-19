@@ -16,11 +16,11 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
   
   # TODO: make link JavaScript unobtrusive!
   def test_link_to_new_model
-    assert_equal "<a href=\"/people/new\" onclick=\"Streamlined.Windows.open_local_window_from_url('New', '/people/new'); return false;\"><img alt=\"New Person\" border=\"0\" src=\"/images/streamlined/add_16.png\" title=\"New Person\" /></a>", @view.link_to_new_model
+    assert_equal "<a href=\"/people/new\"><img alt=\"New Person\" border=\"0\" src=\"/images/streamlined/add_16.png\" title=\"New Person\" /></a>", @view.link_to_new_model
   end
 
   def test_link_to_edit_model
-    assert_equal "<a href=\"/people/edit/1\" onclick=\"Streamlined.Windows.open_local_window_from_url('Edit', '/people/edit/1', 1); return false;\"><img alt=\"Edit\" border=\"0\" src=\"/images/streamlined/edit_16.png\" title=\"Edit\" /></a>", @view.link_to_edit_model(people(:justin))
+    assert_equal "<a href=\"/people/edit/1\"><img alt=\"Edit Person\" border=\"0\" src=\"/images/streamlined/edit_16.png\" title=\"Edit Person\" /></a>", @view.link_to_edit_model(people(:justin))
   end
   
   def test_wrap_with_link

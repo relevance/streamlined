@@ -78,16 +78,6 @@ module Streamlined::Controller::InstanceMethods
      render(:partial => 'results')
    end
 
-   # Renders the current scoped list of model instances as a CSV document.  For example,
-   # if the user is just looking at the #list view, it will render all the existing instances
-   # of the model.  However, if the user has used the filter to narrow the list, export_to_csv
-   # will only render the current filter set to CSV.
-   def export_to_csv
-     @headers["Content-Type"] = "text/csv"
-     @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.csv\""
-     render(:text => model.find_by_like(filter).to_csv(model.column_names))
-   end
-
   # Creates the popup window for an item
   def popup
     self.instance = model.find(params[:id])
