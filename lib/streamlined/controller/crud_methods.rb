@@ -20,54 +20,30 @@ module Streamlined::Controller::CrudMethods
     else
       @streamlined_items_count = model.count
     end
-    if params[:syndicated]
-      if filter?
-         models = model.find(:all, :conditions=>model.conditions_by_like(filter))
-       else
-         models = model.find(:all)
-       end
-       @streamlined_items = models
+    if model_ui.pagination
+       if options[:non_ar_column]
+          col = options[:non_ar_column]
+          dir = options[:dir]
+          options.delete :non_ar_column
+          options.delete :dir
+          model_pages, models = paginate Inflector.pluralize(model).downcase.to_sym, options
+          models.sort! {|a,b| a.send(col.to_sym) <=> b.send(col.to_sym)}
+          models.reverse! if dir == 'DESC'
+        else
+          model_pages, models = paginate Inflector.pluralize(model).downcase.to_sym, options
+        end
     else
-      if model_ui.pagination
-         if options[:non_ar_column]
-            col = options[:non_ar_column]
-            dir = options[:dir]
-            options.delete :non_ar_column
-            options.delete :dir
-            model_pages, models = paginate Inflector.pluralize(model).downcase.to_sym, options
-            models.sort! {|a,b| a.send(col.to_sym) <=> b.send(col.to_sym)}
-            models.reverse! if dir == 'DESC'
-          else
-            model_pages, models = paginate Inflector.pluralize(model).downcase.to_sym, options
-          end
-      else
-        model_pages = []
-        models = model.find(:all, options)
-      end
-
-      self.instance_variable_set("@#{Inflector.underscore(model_name)}_pages", model_pages)
-      self.instance_variable_set("@#{Inflector.tableize(model_name)}", models)
-      @streamlined_items = models
-      @streamlined_item_pages = model_pages
+      model_pages = []
+      models = model.find(:all, options)
     end
-      
-      
-     # if request.xhr?
-     #   @con_name = controller_name
-     #   render :update do |page|
-     #     page << "if($('notice')) {Element.hide('notice');} if($('notice-error')) {Element.hide('notice-error');} if($('notice-empty')) {Element.hide('notice-empty');}"
-     #     page.show 'notice-info'
-     #     page.replace_html "notice-info", @controller.list_notice_info
-     #     page.replace_html "#{model_underscore}_list", :partial => render_path('list', :partial => true, :con_name => @con_name)
-     #     filter_text = [ model_name.pluralize ] + ( filter.blank? ? [] : [ "Filter", filter] )
-     #     page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => model_name, :text => filter_text )
-     #   end
-     # else
-     #     flash[:info] = @controller.list_notice_info if @controller.respond_to?( "list_notice_info" )
-     # end
+
+    self.instance_variable_set("@#{Inflector.underscore(model_name)}_pages", model_pages)
+    self.instance_variable_set("@#{Inflector.tableize(model_name)}", models)
+    @streamlined_items = models
+    @streamlined_item_pages = model_pages
     render :partial => 'list' if request.xhr?
-    render :template => generic_view('atom'), :controller => model_name, :layout => false if params[:syndicated]
   end
+
    # Renders the Show view for a given instance.
    def show
      self.instance = model.find(params[:id])
