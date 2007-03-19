@@ -228,7 +228,7 @@ Streamlined.Relationships = {
 		rel_name = ids[1];
 		item_id = ids[2];
 		klass = ids[3];
-		new Ajax.Updater(id, url + "/close_relationship", {
+		new Ajax.Updater(id, url + "/show_relationship", {
 			parameters: "id=" + item_id + "&relationship=" + rel_name + "&klass=" + klass + "&type=" + rel_type
 		})
 		if(rel_type == "rel_many")
