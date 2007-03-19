@@ -29,7 +29,6 @@ module Streamlined::Controller::InstanceMethods
   
   def index
     list
-    render :action => 'list'
   end
   
    def list_notice_info
@@ -77,16 +76,6 @@ module Streamlined::Controller::InstanceMethods
      self.instance = model.new(params[model_symbol])
      @results = model.find_by_criteria(instance)
      render(:partial => 'results')
-   end
-
-   # Renders the current scoped list of model instances as an XML document.  For example,
-   # if the user is just looking at the #list view, it will render all the existing instances
-   # of the model.  However, if the user has used the filter to narrow the list, export_to_xml
-   # will only render the current filter set to XML.
-   def export_to_xml
-     @headers["Content-Type"] = "text/xml"
-     @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.xml\""
-     render(:text => model.find_by_like(filter).to_xml)
    end
 
    # Renders the current scoped list of model instances as a CSV document.  For example,

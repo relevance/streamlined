@@ -2,14 +2,14 @@ module Streamlined::Controller::RenderMethods
   include Streamlined::RenderMethods
   private
   def render_or_redirect(action, redirect=nil)
-    if request.xhr?
-      @id = instance.id
-      render :action => action, :layout=>false
+    @id = instance.id
+    if redirect && !request.xhr?
+      redirect_to(redirect)
     else
-      if redirect
-        redirect_to(redirect)
-      else
-        render :action => action
+      respond_to do |format|
+        format.html {render :action => action}
+        format.js {render :action => action, :layout=>false}
+        format.xml  { render :xml => instance.to_xml }
       end
     end
   end

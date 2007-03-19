@@ -41,7 +41,11 @@ module Streamlined::Controller::CrudMethods
     self.instance_variable_set("@#{Inflector.tableize(model_name)}", models)
     @streamlined_items = models
     @streamlined_item_pages = model_pages
-    render :partial => 'list' if request.xhr?
+    respond_to do |format|
+      format.html {render :action=> "list"}
+      format.js {render :partial => "list"}
+      format.xml  { render :xml => @streamlined_items.to_xml }
+    end
   end
 
    # Renders the Show view for a given instance.
