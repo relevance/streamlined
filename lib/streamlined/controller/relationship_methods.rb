@@ -4,6 +4,7 @@ module Streamlined::Controller::RelationshipMethods
  def edit_relationship
    self.instance = @root = model.find(params[:id])
    @relationship_name = params[:relationship]
+   rel_type = relationship_for_name(params[:relationship])
    set_items_and_all_items(relationship_for_name(@relationship_name))
    render(:partial => rel_type.edit_view.partial)
  end
