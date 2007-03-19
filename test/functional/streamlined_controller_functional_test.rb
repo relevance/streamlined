@@ -44,6 +44,12 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_response :success
     assert_template generic_view("list")
   end
+  
+  def test_list_with_filter
+    get :list, :page_options=>{:filter=>"Justin"}
+    assert_response :success
+    assert_template generic_view("list")
+  end
 
   def test_show
     get :show, :id => 1

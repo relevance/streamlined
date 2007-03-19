@@ -4,6 +4,7 @@ class Streamlined::Context::RequestContext
 
   DELEGATES = [:sort_order, 
                :sort_column, 
+               :filter,
                :filter?, 
                :order?, 
                :sort_ascending?, 
