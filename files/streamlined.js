@@ -214,7 +214,7 @@ Streamlined.Relationships = {
 				link.innerHTML = "-";
 			else
 				link.innerHTML = "Close";
-			link.onclick = new Function("Streamlined.Relationships.show_relationship('" + id + "', this, '" + url + "')");	
+			link.onclick = new Function("Streamlined.Relationships.close_relationship('" + id + "', this, '" + url + "')");	
 		}
 	},
 	
