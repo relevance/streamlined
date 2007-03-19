@@ -26,7 +26,7 @@ module Streamlined::Controller::RelationshipMethods
     klass = Class.class_eval(params[:klass])
     relationship = model_ui.relationships[rel_name]
     
-    items = params[:item].select{|k,v| v=='on'}    
+    items = params[:item].select{|k,v| v=='on'}.keys    
     instance.send(rel_name).clear
     instance.send(rel_name).push(klass.find(items))
     instance.save
