@@ -19,11 +19,14 @@ module Streamlined::Controller
 end
 
 require 'streamlined/controller/crud_methods'
+require 'streamlined/controller/relationship_methods'
 require 'streamlined/controller/render_methods'
 
 module Streamlined::Controller::InstanceMethods
   include Streamlined::Controller::CrudMethods
   include Streamlined::Controller::RenderMethods
+  include Streamlined::Controller::RelationshipMethods
+  
   def index
     list
     render :action => 'list'
@@ -94,78 +97,6 @@ module Streamlined::Controller::InstanceMethods
      @headers["Content-Type"] = "text/csv"
      @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.csv\""
      render(:text => model.find_by_like(filter).to_csv(model.column_names))
-   end
-
-   # Opens the relationship +view+ for a given relationship on the model.  This means
-   # replacing the +summary+ view with the expanded +view+, as defined in streamlined_ui 
-   # and Streamlined::Column.
-   def expand_relationship
-     self.instance = model.find(params[:id])
-     rel_type = relationship_for_name(params[:relationship])
-     @relationship_name = params[:relationship]
-     @root = instance
-     set_items_and_all_items(rel_type)
-     render(:partial => rel_type.edit_view.partial)
-   end
-
-   # Closes the expanded relationship +view+ and replaces it with the +summary+ view, 
-   # as defined in streamlined_ui and Streamlined::Column.
-   def close_relationship
-     self.instance = model.find(params[:id])
-     rel_type = relationship_for_name(params[:relationship])
-     relationship_name = params[:relationship]
-     # klass = Class.class_eval(params[:klass])
-#      @klass_ui = Class.class_eval(params[:klass] + "UI")
-     relationship = instance.class.reflect_on_all_associations.select {|x| x.name == relationship_name.to_sym}[0]
-     @root = instance
-     render(:partial => rel_type.show_view.partial, :locals => {:item => instance, :relationship => relationship, :streamlined_def => rel_type.show_view})
-   end
-
-   # Add new items to the given relationship collection. Used by the #membership view, as 
-   # defined in Streamlined::Column.
-   def update_relationship
-     items = params[:item]
-      self.instance = model.find(params[:id])
-      rel_name = params[:rel_name].to_sym
-      instance.send(rel_name).clear
-      klass = Class.class_eval(params[:klass])
-      @klass_ui = Streamlined::UI.get_ui(params[:klass])
-      relationship = model_ui.relationships[rel_name]
-      items.each do |id, onoff|
-        instance.send(rel_name).push(klass.find(id)) if onoff == 'on'
-      end
-      instance.save
-      if relationship.edit_view.respond_to?(:render_on_update)
-        @relationship_name = rel_name
-        @root = instance
-        set_items_and_all_items(relationship, params[:filter])
-        render :update do |page|
-          relationship.edit_view.render_on_update(page, rel_name, params[:id])
-        end
-      else
-        render(:nothing => true)
-      end
-   end
-
-   # Add new items to the given relationship collection. Used by the #membership view, as 
-   # defined in Streamlined::Column.
-   def update_n_to_one
-    item = params[:item]
-    self.instance = model.find(params[:id])
-    rel_name = "#{params[:rel_name]}=".to_sym
-    if item == 'nil' || item == nil
-      instance.send(rel_name, nil)
-    else
-      item_parts = item.split("::")
-      if item_parts.size == 1
-        new_item = Class.class_eval(params[:klass]).find(item)
-      else
-        new_item = Class.class_eval(item_parts[1]).find(item_parts[0])
-      end
-      instance.send(rel_name, new_item)
-    end
-    instance.save
-    render(:nothing)
    end
 
   # Creates the popup window for an item
@@ -250,33 +181,6 @@ module Streamlined::Controller::InstanceMethods
   def instance=(value)
     self.instance_variable_set("@#{Inflector.underscore(model_name)}", value)
     @streamlined_item = value
-  end
-
-  def relationship_for_name(rel_name)
-    model_ui.relationships[rel_name.to_sym]
-  end
-
-  def set_items_and_all_items(rel_type, item_filter = nil)
-     RAILS_DEFAULT_LOGGER.debug("SET_ITEMS_AND_ALL_ITEMS: #{item_filter}")
-     @items = instance.send(@relationship_name)
-     if rel_type.associables.size == 1
-       @klass = Class.class_eval(params[:klass])
-       @klass_ui = Streamlined::UI.get_ui(params[:klass])
-       if item_filter
-         @all_items = @klass.find(:all, :conditions => @klass.conditions_by_like(item_filter))
-       else            
-         @all_items = @klass.find(:all)
-       end
-     else
-       @all_items = {}
-       rel_type.associables.each do |klass|
-         if item_filter
-           @all_items[klass.name] = klass.find(:all, :conditions => klass.conditions_by_like(item_filter))
-         else
-           @all_items[klass.name] = klass.find(:all)
-         end
-       end
-     end
   end
         
   def find_smart_folders

@@ -200,13 +200,13 @@ Streamlined.Relationships = {
 		klass = ids[3];
         params = "id=" + item_id + "&relationship=" + rel_name + "&klass=" + klass + "&type=" + rel_type;
 		if(rel_type == "Window") {
-			new Ajax.Request(url + "/expand_relationship", {
+			new Ajax.Request(url + "/edit_relationship", {
 				method: "get",
 				parameters: params, 
 				onComplete: Streamlined.Relationships.open_relationship_in_window
 			});
 		} else {
-			new Ajax.Updater(id, url + "/expand_relationship", {
+			new Ajax.Updater(id, url + "/edit_relationship", {
 				evalScripts: true,
 				parameters: params
 			});
@@ -214,7 +214,7 @@ Streamlined.Relationships = {
 				link.innerHTML = "-";
 			else
 				link.innerHTML = "Close";
-			link.onclick = new Function("Streamlined.Relationships.close_relationship('" + id + "', this, '" + url + "')");	
+			link.onclick = new Function("Streamlined.Relationships.show_relationship('" + id + "', this, '" + url + "')");	
 		}
 	},
 	
