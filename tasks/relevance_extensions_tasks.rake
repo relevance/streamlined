@@ -36,12 +36,15 @@ namespace :streamlined do
      File.join(RAILS_ROOT, 'app', 'views', 'shared', 'streamlined')
     )
     
-    Dir.chdir(File.join(File.dirname(__FILE__), '..', 'files', 'windows_js'))
-    Dir.glob("**/*").each do |f|
-      unless File.directory?(f)
-        FileUtils.cp(f,File.join(RAILS_ROOT, 'public', 'windows_js'),:preserve => true)
-      end
-    end 
+    Dir.chdir(File.join(File.dirname(__FILE__), '..', 'files', 'windows_js')) do
+      base = File.join(RAILS_ROOT, 'public', 'windows_js')
+      Dir.glob("**/*").each do |f|
+        unless File.directory?(f)
+          FileUtils.mkdir_p(File.join(base, File.dirname(f)))
+          FileUtils.cp(f,File.join(base,f),:preserve => true)
+        end
+      end 
+    end
   end
   
   desc 'Create the StreamlinedUI file for one or more models.'
