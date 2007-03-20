@@ -2,18 +2,7 @@ require File.join(File.dirname(__FILE__), '../test_functional_helper')
 require 'streamlined/controller'
 require 'streamlined/ui'
 
-# Monkey patching ActionView. This sucks, but I got tired of trying to
-# find how to get the base_path set.
-class ActionView::Base
-  def initialize(base_path = nil, assigns_for_first_render = {}, controller = nil)#:nodoc:
-    @base_path, @assigns = base_path, assigns_for_first_render
-    @assigns_added = nil
-    @controller = controller
-    @logger = controller && controller.logger 
-    @base_path = File.join(RAILS_ROOT, "app/views")
-  end
-end
-
+# TODO: fold into the two meta-test classes
 class StreamlinedControllerTest < Test::Unit::TestCase
   fixtures :people
   def setup
@@ -121,12 +110,12 @@ END
   
   def test_update
     assert_difference(Person, :count, 0) do
-      post :update, :id=>'1,', :person => {:first_name=>'Another', :last_name=>'Person'}
+      post :update, :id=>'1', :person => {:first_name=>'Another', :last_name=>'Person'}
       assert_response :redirect
       assert_redirected_to :action => 'list'
     end
   end
-
+  
   def test_update_xhr
     assert_difference(Person, :count, 0) do
       xhr :post, :update, :id=>'1', :person => {:first_name=>'Another', :last_name=>'Person'}
@@ -134,5 +123,12 @@ END
     end
   end
   
+  def delete
+    assert_difference(Person, :count, -1) do
+      post :delete, :id=>'1'
+      assert_response :redirect
+      assert_redirected_to :action => 'list'
+    end
+  end
   
 end

@@ -16,6 +16,9 @@ silence_stream(STDERR) do
 end
 require 'initializer'
 require "#{File.dirname(__FILE__)}/../init"
+# must come after require init
+require 'relevance/rails_assertions'
+require 'relevance/controller_test_support'
 
 class Test::Unit::TestCase
   def assert_difference(object, method = nil, difference = 1)
