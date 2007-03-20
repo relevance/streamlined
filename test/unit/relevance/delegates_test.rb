@@ -10,6 +10,14 @@ class ModuleDelegatesTest < Test::Unit::TestCase
     delegates :fly, :zoom, :to=>:helper, :method=>:soar
   end
   
+  def test_bad_options
+    assert_raise(ArgumentError) do 
+      Class.new do
+        delegates :oops
+      end
+    end
+  end
+  
   def test_default
     t = TestMe.new
     assert_equal '', t.run
