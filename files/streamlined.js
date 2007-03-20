@@ -188,7 +188,13 @@ Streamlined.Windows = {
 
 Streamlined.Exporter = {
 	export_to: function(url) {
-			window.location = url + "?" + Form.serialize('page_options');
+	  var delimiter;
+	  if (url.match(/\?/)) {
+	    delimiter = '&'
+	  } else {
+	    delimiter = '?'
+	  }
+		window.location = url + delimiter + Form.serialize('page_options');
 	}
 }
 
