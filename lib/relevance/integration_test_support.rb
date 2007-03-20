@@ -1,6 +1,5 @@
 module Relevance; end
 module Relevance::IntegrationTestSupport
-  include Relevance::RailsAssertions
   include Relevance::ControllerTestSupport
   
   def url_for(*args)

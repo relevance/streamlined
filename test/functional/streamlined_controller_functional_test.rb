@@ -16,12 +16,6 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     "../../../templates/generic_views/#{template}"
   end
   
-  # TODO: make this true for every CRUD method
-  # TODO: also assert that various handlers like onclick do not exist
-  def assert_unobtrusive_javascript
-    assert_select("script", :count=>0, :text=>/./)
-  end
-  
   def test_index
     get :index
     assert_response :success
@@ -76,14 +70,6 @@ END
     # assert_unobtrusive_javascript
   end
   
-  def test_new
-    get :new
-    assert_response :success
-    assert_template generic_view("new")
-    assert_not_nil assigns(:streamlined_item)
-    assert_unobtrusive_javascript
-  end
-
   def test_create_xhr
     assert_difference(Person, :count) do
       xhr :post, :create, :person => {:first_name=>'Another', :last_name=>'Person'}
@@ -94,38 +80,6 @@ END
   def test_create
     assert_difference(Person, :count) do
       post :create, :person => {:first_name=>'Another', :last_name=>'Person'}
-      assert_response :redirect
-      assert_redirected_to :action => 'list'
-    end
-  end
-  
-  def test_edit
-    get :edit, :id => 1
-    assert_response :success
-    assert_template generic_view("edit")
-    assert_not_nil assigns(:streamlined_item)
-    assert assigns(:streamlined_item).valid?
-    assert_unobtrusive_javascript
-  end
-  
-  def test_update
-    assert_difference(Person, :count, 0) do
-      post :update, :id=>'1', :person => {:first_name=>'Another', :last_name=>'Person'}
-      assert_response :redirect
-      assert_redirected_to :action => 'list'
-    end
-  end
-  
-  def test_update_xhr
-    assert_difference(Person, :count, 0) do
-      xhr :post, :update, :id=>'1', :person => {:first_name=>'Another', :last_name=>'Person'}
-      assert_response :success
-    end
-  end
-  
-  def delete
-    assert_difference(Person, :count, -1) do
-      post :delete, :id=>'1'
       assert_response :redirect
       assert_redirected_to :action => 'list'
     end

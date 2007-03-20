@@ -1,5 +1,11 @@
 module Relevance; end
 module Relevance::RailsAssertions
+  # TODO: make this true for every CRUD method
+  # TODO: also assert that various handlers like onclick do not exist
+  def assert_unobtrusive_javascript
+    assert_select("script", :count=>0, :text=>/./)
+  end
+  
   def assert_true(expr, *args)
     assert_equal(true, expr, *args)
   end

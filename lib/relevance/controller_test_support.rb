@@ -1,6 +1,8 @@
 module Relevance; end
 module Relevance::ControllerTestSupport
   include FlexMock::TestCase
+  include Relevance::RailsAssertions
+  
   # Many attributes will derive by inference from :model_class if you do not set them
   attr_accessor :model_class
   attr_writer :object_for_create, :url_base, :object_for_new, :object_for_edit, :form_model_name, :form_fields
@@ -116,19 +118,5 @@ module Relevance::ControllerTestSupport
     url_for(url_base.merge(:action => 'delete', :id => object_for_edit))
   end
   
-  def post_create_form
-    assert_not_nil(form_model_name)
-    post url_for_create, form_model_name=>object_for_create.attributes
-  end
-  
-  def post_update_form
-    assert_not_nil(form_model_name)
-    post url_for_update, form_model_name=>object_for_edit.attributes
-  end
-  
-  def post_destroy_form
-    assert_not_nil(form_model_name)
-    post url_for_destroy, :id=>object_for_edit.id
-  end  
 end
 

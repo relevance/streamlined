@@ -2,7 +2,6 @@ gem 'flexmock', '~> 0.5.0.2'
 require 'relevance/controller_test_support'
 module Streamlined; end
 module Streamlined::FunctionalTests
-  include Relevance::RailsAssertions
   include Relevance::ControllerTestSupport
   def url_for(*args)
     assert(@controller, "You must hit a controller first before calling url_for")
@@ -13,9 +12,14 @@ module Streamlined::FunctionalTests
     post :create, form_model_name=>object_for_create.attributes
   end
 
-  def post_update_form
+  def post_update_form(ajax = nil)
     assert_not_nil(form_model_name)
-    post :update, :id=>object_for_edit.id, form_model_name=>object_for_edit.attributes
+    args = [:update, {:id=>object_for_edit.id, form_model_name=>object_for_edit.attributes}]
+    if ajax == :xhr
+      xhr :post, *args
+    else
+      post *args
+    end
   end
 
   def post_destroy_form
@@ -34,6 +38,8 @@ module Streamlined::FunctionalTests
     assert_response :success
     assert_true(assert_assigns(form_model_name).new_record?)
     assert_create_form
+    assert_not_nil assigns(:streamlined_item)
+    assert_unobtrusive_javascript
   end
 
   def test_successful_create
@@ -58,19 +64,36 @@ module Streamlined::FunctionalTests
     assert_response :success
     assert_equal(object_for_edit, assigns(form_model_name))
     assert_update_form
+    assert_not_nil assigns(:streamlined_item)
+    assert assigns(:streamlined_item).valid?
+    assert_unobtrusive_javascript
   end
-
+  
   def test_successful_update
     model_validations_succeed_for(:allocate)
     assert_no_difference(model_class, :count) do
       post_update_form
       assert_valid(assert_assigns(form_model_name))
+      assert_response :redirect
+      assert_redirected_to :action=>"list"
+    end
+  end
+
+  def test_successful_update_xhr
+    model_validations_succeed_for(:allocate)
+    assert_no_difference(model_class, :count) do
+      post_update_form(:xhr)
+      assert_valid(assert_assigns(form_model_name))
+      assert_response :success
     end
   end
 
   def test_destroy
     assert_difference(model_class, :count, -1) do
       post_destroy_form
+      assert_response :redirect
+      assert_redirected_to :action => 'list'
     end
   end
+  
 end
