@@ -21,110 +21,41 @@ end
 require 'streamlined/controller/crud_methods'
 require 'streamlined/controller/relationship_methods'
 require 'streamlined/controller/render_methods'
+require 'streamlined/controller/smart_folders'
+require 'streamlined/controller/smart_columns'
+require 'streamlined/controller/tags'
 
 module Streamlined::Controller::InstanceMethods
   include Streamlined::Controller::CrudMethods
   include Streamlined::Controller::RenderMethods
   include Streamlined::Controller::RelationshipMethods
+  include Streamlined::Controller::SmartFolders
+  include Streamlined::Controller::SmartColumns
+  include Streamlined::Controller::Tags
   
   def index
     list
   end
   
-   def list_notice_info
-    "Found #{@model_count} #{ ( (@model_count == 1) ? model_name : model_name.pluralize ).downcase }"
-   end
+  # Opens the search view.  The default is a criteria query view.
+  def search
+    self.instance = model.new
+    render(:partial => 'search')
+  end
 
-   def list_from_smart_folder( partial = 'list' )
-       @smart_folders = find_smart_folders
-       @smart_folder = SmartFolder.find(params[:smart_folder_id])
-
-       model_pages, models = [], @smart_folder.members
-
-       self.instance_variable_set("@#{Inflector.underscore(model_name)}_pages", model_pages)
-       self.instance_variable_set("@#{Inflector.tableize(model_name)}", models)
-       @streamlined_items = models
-       @streamlined_item_pages = model_pages
-       @model_count = models.size
-
-#        flash[:notice] = "Found #{@model_count} #{(@model_count == 1) ? model_name : model_name.pluralize}" if filter && filter != ''
-       # if request.xhr?
-    #        @con_name = controller_name
-    #        render :update do |page|
-    #            page << "if($('notice')) {Element.hide('notice');} if($('notice-error')) {Element.hide('notice-error');} if($('notice-empty')) {Element.hide('notice-empty');}"
-    #            page.show 'notice-info'
-    #            page.replace_html "notice-info", @controller.list_notice_info  
-    #            page.replace_html "#{model_underscore}_list", :partial => render_path( partial, :partial => true, :con_name => @con_name )
-    #            ##edit_link_html = link_to_function( '(edit)', "Streamlined.Windows.open_local_window_from_url('Smart Groups', '#{url_for(:controller => 'smart_folders', :action => 'edit', :id => @smart_folder.id, :target_controller => 'campaigns', :target_class => model_name || target_class)}', null, null, {title: 'Edit Smart Group', closable: false, width:840, height:480 })" )
-    #            page.replace_html "breadcrumbs_text", neocast_breadcrumbs_text_innerhtml( :model => model_name, :text => [ model_name.pluralize, "Smart Group", @smart_folder.name ] )
-    #            page.visual_effect :highlight, 'breadcrumbs'
-    #        end
-    #    end
-     render :partial => 'list' if request.xhr?
-   end
-
-   # Opens the search view.  The default is a criteria query view.
-   def search
-     self.instance = model.new
-     render(:partial => 'search')
-   end
-
-   # Executes the search.  The default behavior is to create 
-   # a criteria instance of the model being searched and execute
-   # the find_by_criteria method on the model class.
-   def find
-     self.instance = model.new(params[model_symbol])
-     @results = model.find_by_criteria(instance)
-     render(:partial => 'results')
-   end
+  # Executes the search.  The default behavior is to create 
+  # a criteria instance of the model being searched and execute
+  # the find_by_criteria method on the model class.
+  def find
+    self.instance = model.new(params[model_symbol])
+    @results = model.find_by_criteria(instance)
+    render(:partial => 'results')
+  end
 
   # Creates the popup window for an item
   def popup
     self.instance = model.find(params[:id])
     render :partial => 'popup'
-  end
-       
-  def columns
-    render(:partial => "columns")
-  end
-
-  def reset_columns
-    pref = current_user.preferences
-    pref.page_columns ||= {}
-    current_user.preferences.page_columns.delete( controller_name.to_sym )
-    current_user.preferences.save
-    current_user.preferences.reload
-    render :update do |page|
-      page.redirect_to(:action => 'list')
-    end
-  end
-
-  def save_columns
-    cols = params["displaycolumns"].find_all { |col| col unless col.blank? }
-    pref = current_user.preferences
-    pref.page_columns ||= {}
-    current_user.preferences.page_columns[controller_name.to_sym] = cols
-    current_user.preferences.save
-    current_user.preferences.reload
-    render :update do |page|
-      page.redirect_to(:action => 'list')
-    end
-  end
-       
-  def add_tags
-    if Object.const_defined?(:Tag) && params[:new_tags]
-      item = model.find(params[:id])
-      tags = params[:new_tags].split(' ')
-      @new_tags = []
-      tags.each do |tag| 
-        unless Tag.find_by_name(tag)
-          @new_tags << Tag.create(:name => tag)
-        end  
-      end
-      render :update do |page|
-        page['tags_form'].replace_html :partial => 'shared/tags', :locals => {:item => item}
-      end
-    end
   end
        
   private
@@ -162,14 +93,6 @@ module Streamlined::Controller::InstanceMethods
     @streamlined_item = value
   end
         
-  def find_smart_folders
-    begin
-      return [] if current_user.nil? 
-      current_user.smart_folders.find(:all, :conditions => ['target_class = ?', model_name]) || []
-    rescue
-      return []
-    end
-  end
 end
 
 module Streamlined::Controller::ClassMethods  
