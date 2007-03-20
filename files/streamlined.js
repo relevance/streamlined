@@ -51,7 +51,8 @@ Streamlined.FilterWatcher = {
 			new Form.Observer('page_options', 
 								0.5, 
 								function(element, value) {
-									new Ajax.Updater(streamlined_model + '_list', '/' + streamlined_models + '/list', 
+									new Ajax.Updater('model__list', 
+									                 location.pathname, 
 														{asynchronous:true, 
 														 evalScripts:true, 
 														 onComplete:function(request){

@@ -1,7 +1,3 @@
-<script type="text/javascript">
-  var streamlined_model = '<%= model_underscore %>';
-  var streamlined_models = '<%= params[:controller] %>';
-</script>
 <% form_for :page_options, @page_options, 
             :url => { :action => "list"}, :html=> {:id => :page_options, :style => 'display: none;'} do |form| %>
   <%# TODO: hide this form when JavaScript is available, then use it behind scenes%>
@@ -21,7 +17,7 @@
   	  </form>
     </div>
 	</div>
-	<div id="<%= model_underscore %>_list">
+	<div id="model_list">
 		<%= render :partial=>'list' %>
 	</div>
 	<div class="ajax-scaffold-footer"> 

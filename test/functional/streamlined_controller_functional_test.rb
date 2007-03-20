@@ -27,6 +27,12 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     "../../../templates/generic_views/#{template}"
   end
   
+  # TODO: make this true for every CRUD method
+  # TODO: also assert that various handlers like onclick do not exist
+  def assert_unobtrusive_javascript
+    assert_select("script", :count=>0, :text=>/./)
+  end
+  
   def test_index
     get :index
     assert_response :success
@@ -37,6 +43,8 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     get :list
     assert_response :success
     assert_template generic_view("list")
+    assert_select("\#model_list", true, "should have generic id names")
+    assert_select("\#people_list", false, "should not have model-specific id names")
   end
   
   def test_list_with_filter
@@ -75,6 +83,8 @@ END
     assert_template generic_view("show")
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
+    # TODO: refactor poke code so this becomes true
+    # assert_unobtrusive_javascript
   end
   
   def test_new
@@ -82,6 +92,7 @@ END
     assert_response :success
     assert_template generic_view("new")
     assert_not_nil assigns(:streamlined_item)
+    assert_unobtrusive_javascript
   end
 
   def test_create_xhr
@@ -105,6 +116,7 @@ END
     assert_template generic_view("edit")
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
+    assert_unobtrusive_javascript
   end
   
   def test_update
