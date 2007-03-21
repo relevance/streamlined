@@ -10,5 +10,9 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     return false unless self.class == o.class
     return self.ar_column == o.ar_column
   end
+  
+  def render_input(view)
+    view.input(view.model_underscore, name)    
+  end
 
 end

@@ -5,7 +5,9 @@
 <table class="streamlined_form">
 
   <% model_ui.edit_columns.each do |column| %>
-    <tr><td class="streamlined_label_cell"><label class="streamlined_label" for="#{record}_#{column.name}"><%= column.human_name %></label></td><td class="streamlined_input_cell"><%= input(model_underscore, column.name) %></td></tr>
+    <tr><td class="streamlined_label_cell"><label class="streamlined_label" for="#{record}_#{column.name}"><%= column.human_name %></label></td>
+        <td class="streamlined_input_cell"><%= column.render_input(self) %></td>
+    </tr>
   <% end %>
 
 </table><!--[eoform:<%= model_underscore %>]-->

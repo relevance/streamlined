@@ -12,5 +12,10 @@ class Streamlined::Column::Addition < Streamlined::Column::Base
     return false unless self.class === o
     return name.eql?(o.name)
   end
+
+  # TODO: additions are not generally editable, so...
+  def render_input(view)
+    "(not editable)"
+  end
   
 end

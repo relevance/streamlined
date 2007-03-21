@@ -95,5 +95,11 @@ END
     }
   end
   
+  # TODO: wire to render_td?
+  def render_input(view)
+    "[TBD: editable associations in forms]"
+  end
+  
+  
 end
 
