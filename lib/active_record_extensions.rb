@@ -26,10 +26,12 @@ module Relevance::ActiveRecordExtensions::ClassMethods
   def conditions_by_like(value, *columns)
     columns = self.user_columns if columns.size==0
     columns = columns[0] if columns[0].kind_of?(Array)
+    # the conditions local variable is necessary for rcov to see this as covered
     conditions = columns.map {|c|
       c = c.name if c.kind_of? ActiveRecord::ConnectionAdapters::Column
       "#{c} LIKE " + ActiveRecord::Base.connection.quote("%#{value}%")
-    }.join(" OR ")
+    }
+    conditions.join(" OR ")
   end
   def conditions_by_criteria(template)
     attrs = template.class.columns.map &:name

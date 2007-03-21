@@ -1,8 +1,5 @@
-# begin
-begin
+if defined?(Dependencies)
   Dependencies.load_paths.unshift("#{RAILS_ROOT}/app/streamlined")
-rescue
-  # nothing
 end
 
 require 'relevance/string_additions'

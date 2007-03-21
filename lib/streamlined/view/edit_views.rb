@@ -46,11 +46,5 @@ module Streamlined::View::EditViews
     end
   end
   
-  # Suppresses rendering of the expanded relationship view.
-  class None < Streamlined::View::Base
-    def partial
-      nil
-    end
-  end
 end
 

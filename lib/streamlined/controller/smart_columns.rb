@@ -25,4 +25,12 @@ module Streamlined::Controller::SmartColumns
       page.redirect_to(:action => 'list')
     end
   end
+  
+  # TODO: recapture user column preferences by having a controller method
+  #       list_columns that delegates to both the ui object and the user preferences
+  # controller = controller.to_sym
+  # session[:current_user] ? pref = session[:current_user].preferences : pref = nil
+  #   
+  # if pref && pref.page_columns && pref.page_columns.instance_of?(Hash) && pref.page_columns[controller]
+  
 end

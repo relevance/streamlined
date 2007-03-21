@@ -24,6 +24,7 @@ module Streamlined::Helper
     includer.class_eval do
       attr_reader :streamlined_controller_context, :streamlined_request_context
       delegates *Streamlined::Context::ControllerContext::DELEGATES
+      delegates :list_columns, :to=>:model_ui
     end
   end
   
@@ -66,34 +67,13 @@ module Streamlined::Helper
     end
   end
   
-  # Given a model and a controller, finds all the columns that are currently slated to be shown in the list view.
-  def list_columns_for_model(klass, klass_ui, controller)    
-    results = current_list_columns(klass, klass_ui, controller).collect {|c| klass_ui.all_columns.find {|col| col.name == c}}
-    results.reject! {|c| c == nil}
-    return results
-    # return klass.columns.select {|c| current_list_columns(klass, klass_ui, controller).include?(c.name)}
-  end
-  
   # Given a model and a controller, finds all the columns that are currently NOT slated to be shown in the list view.
   def hide_columns_for_model(klass, klass_ui, controller)
-    return klass_ui.all_columns.reject {|c| current_list_columns(klass, klass_ui, controller).include?(c.name)}
+    return klass_ui.all_columns.reject {|c| list_columns.include?(c.name)}
   end
   
   
   # Given a template name, determines the precise location of the file to be used: model-specific view folders, or generic views
   delegate :generic_view, :to=>:controller
   
-  private
-
-   def current_list_columns(klass, klass_ui, controller)
-     controller = controller.to_sym
-     session[:current_user] ? pref = session[:current_user].preferences : pref = nil
-       
-     if pref && pref.page_columns && pref.page_columns.instance_of?(Hash) && pref.page_columns[controller]
-       current = pref.page_columns[controller]
-     else    
-       current = klass_ui.list_columns.collect {|c| c.name}
-     end 
-     return current
-   end
 end

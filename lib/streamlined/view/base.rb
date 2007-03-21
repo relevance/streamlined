@@ -25,15 +25,5 @@ class Streamlined::View::Base
   
   private
   
-  def dependency_satisfied(dep)
-    results = true
-    begin
-      Class.class_eval(dep)
-    rescue Exception => ex
-      results = false
-    end
-    results
-  end
-  
 end
 

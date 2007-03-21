@@ -3,11 +3,7 @@ module Streamlined::View::ShowViews
   # Factory method for creating a relationship Summary given the name of a summary.
   def self.create_summary(sym, options = {})
     raise ArgumentError unless Symbol === sym
-    if options
-      Class.class_eval(Inflector.camelize(sym.to_s)).new options
-    else
-      Class.class_eval(Inflector.camelize(sym.to_s)).new
-    end
+    Class.class_eval(Inflector.camelize(sym.to_s)).new options
   end
 
   # TODO: this is not very dry!
@@ -44,7 +40,7 @@ module Streamlined::View::ShowViews
   
   class Graph < Streamlined::View::Base                            
     def graph_data(item, relationship)
-      raise "STREAMLINED ERROR: Cannot use the Sparklines Graph relationship summary: need to install Sparklines plugin first (requires RMagick, which is not the easiest thing to install, we're just warning you)" unless dependency_satisfied('Sparklines')
+      raise "STREAMLINED ERROR: Cannot use the Sparklines Graph relationship summary: need to install Sparklines plugin first (requires RMagick, which is not the easiest thing to install, we're just warning you)" unless 'Sparklines'.to_const
       if block_given?
         return yield(item, relationship)
       else
@@ -64,7 +60,4 @@ module Streamlined::View::ShowViews
     
   end
   
-  # Suppresses in-line relationship rendering.
-  class None < Streamlined::View::Base
-  end
 end
