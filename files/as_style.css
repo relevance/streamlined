@@ -5,12 +5,31 @@
  For details, see the AjaxScaffoldGenerator web site: http://www.ajaxscaffold.com/ */
  
 /* Holy Grail styling from A List Apart (http://www.alistapart.com/articles/holygrail/) */
+#header
+{
+	height: 100px;
+}
+#left
+{
+	float: left;
+	width: 180px;
+}
+#center
+{
+        float: left;
+	width: 100%;
+	margin-left: 20px;
+	padding: 0 20px;
+	min-width: 640px;
+}
+#footer
+{
+	height: 25px;
+	clear: both; 
+}
 
- #center { padding: 0 20px; width: 100%; }
- #footer { clear: both; }
  #header, #footer { margin-left: -200px; /* LC fullwidth */ margin-right: -190px; /* RC fullwidth + CC padding */ }
- #left { width: 180px; /* LC width */ padding: 0 10px; /* LC padding */ right: 240px; /* LC fullwidth + CC padding */ margin-left: -100%; }
- #right { width: 130px; /* RC width */ padding: 0 10px; /* RC padding */ margin-right: -100%; }
+ #left { width: 180px; /* LC width */ padding: 0 10px; /* LC padding */ right: 240px; /* LC fullwidth + CC padding */ margin-left: -200px; }
  .column { position: relative; float: left; }
 body { margin: 0; padding-left: 200px; /* LC fullwidth */ padding-right: 190px; /* RC fullwidth + CC padding */ min-width: 240px; /* LC fullwidth + CC padding */ }
 
