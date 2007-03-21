@@ -112,11 +112,7 @@ class Streamlined::UI
     end
     
     def get_ui(klass_name)
-      if Object.const_defined?(klass_name + "UI")
-        Class.class_eval(klass_name + "UI")
-      else
-        self.generic_ui
-      end
+      "#{klass_name}UI".to_const || generic_ui
     end
 
   end

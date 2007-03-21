@@ -30,6 +30,13 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_select("\#people_list", false, "should not have model-specific id names")
   end
   
+  def test_list_with_non_ar_column
+    get :list, :page_options=>{:sort_column=>"full_name", :sort_order=>"DESC"}
+    assert_response :success
+    assert_template generic_view("list")
+    assert_equal [people(:stu), people(:justin)], assigns(:streamlined_items)
+  end
+  
   def test_list_with_filter
     get :list, :page_options=>{:filter=>"Justin"}
     assert_response :success

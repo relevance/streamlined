@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 require 'relevance/delegates'
 
-class ModuleDelegatesTest < Test::Unit::TestCase
+class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
   include FlexMock::TestCase
   class TestMe
     attr_accessor :helper
@@ -40,6 +40,20 @@ class ModuleDelegatesTest < Test::Unit::TestCase
     t.helper = flexmock("helper")
     t.helper.should_receive(:jump).and_return(nil)
     assert_nil t.jump 
+  end
+  
+  class TestAWD
+    attr_with_default :a, ":alpha"
+    attr_with_default(:b) {:beta}
+  end
+  def test_attr_with_default
+    t = TestAWD.new
+    assert_equal :alpha, t.a
+    assert_equal :beta, t.b
+    t.a = nil
+    t.b = nil
+    assert_nil t.a
+    assert_nil t.b
   end
 end
 

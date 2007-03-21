@@ -65,7 +65,8 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     return results
   end
   
-  def render_td(view, item, model_ui, controller)
+  # TODO: unobtrusive JavaScript
+  def render_td(view, item)
     div = <<-END
   <div id="#{relationship_div_id(item)}">
 		#{view.render(:partial => show_view.partial, 
@@ -76,7 +77,7 @@ END
     div += <<-END unless read_only
   #{view.link_to_function("Edit", 
   "Streamlined.Relationships.open_relationship('#{relationship_div_id(item)}', 
-                                                this, '/#{controller}')")}
+                                                this, '/#{view.controller}')")}
 END
     div
   end

@@ -10,18 +10,18 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   end
   
   def test_render_straight_td
-    assert_equal "Justin", @ui.column(:first_name).render_td(@view,people(:justin),@ui,@controller)
+    assert_equal "Justin", @ui.column(:first_name).render_td(@view,people(:justin))
   end
 
   def test_render_link_td
     @ui.user_columns :first_name, {:link_to=>{:action=>"foo"}}
-    assert_equal '<a href="/people/foo/1">Justin</a>', @ui.column(:first_name).render_td(@view,people(:justin),@ui,@controller)
-    assert_equal '<a href="/people/foo/2">Stu</a>', @ui.column(:first_name).render_td(@view,people(:stu),@ui,@controller)
+    assert_equal '<a href="/people/foo/1">Justin</a>', @ui.column(:first_name).render_td(@view,people(:justin))
+    assert_equal '<a href="/people/foo/2">Stu</a>', @ui.column(:first_name).render_td(@view,people(:stu))
   end
   
   def test_render_popup_td
     @ui.user_columns :first_name, {:popup=>{:action=>"foo"}}
-    assert_equal '<span class="sl-popup"><a href="/people/foo/1" style="display:none;"></a>Justin</span>', @ui.column(:first_name).render_td(@view,people(:justin),@ui,@controller)
+    assert_equal '<span class="sl-popup"><a href="/people/foo/1" style="display:none;"></a>Justin</span>', @ui.column(:first_name).render_td(@view,people(:justin))
   end
   
   def test_sort_image_up

@@ -7,7 +7,7 @@ class Streamlined::Column::Base
       self.send sym, v
     end
   end
-  def render_td(view, item, model_ui, controller)
+  def render_td(view, item)
     content = h(item.send(self.name))
     if link_to
       link_args = link_to.has_key?(:id) ? link_to : link_to.merge(:id=>item)

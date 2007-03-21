@@ -5,8 +5,8 @@ rescue
   # nothing
 end
 
-require 'relevance/delegates'
-require 'relevance/attr_with_default'
+require 'relevance/string_additions'
+require 'relevance/module_additions'
 require 'implants/module'
 require 'implants/hash_init'
 require 'implants/csv'

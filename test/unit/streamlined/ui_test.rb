@@ -18,6 +18,15 @@ class Streamlined::UITest < Test::Unit::TestCase
     @ui = Class.new(Streamlined::UI)
   end
   
+  class Test; end
+  class TestUI; end
+  class TestWithout; end
+  
+  def test_get_ui
+    assert_equal TestUI, Streamlined::UI.get_ui(Test.name)
+    assert_equal Streamlined::UI::Generic, Streamlined::UI.get_ui(TestWithout.name)
+  end
+  
   def test_declarative_setting_inheritance
     @ui.table_row_buttons = :some_value
     subclass = Class.new(@ui)

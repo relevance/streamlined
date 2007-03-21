@@ -3,7 +3,7 @@
     <% list_columns_for_model( model, model_ui, params[:controller] ).each do |column| %>
         <tr>
             <td align="right" valign="top"><b><%= model_ui.column_header( column ) %></b>:</td>
-            <td valign="top"><%= streamlined_column_html( item, column ) %></td>
+            <%= column.render_td(self,item)%>
         </tr>
     <% end %>
 </table>

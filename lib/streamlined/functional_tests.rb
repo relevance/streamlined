@@ -27,12 +27,20 @@ module Streamlined::FunctionalTests
     post :destroy, :id=>object_for_edit.id
   end
   
+  # have to allow for both path-to-name and name
+  def assert_streamlined_template(expected, message=nil)
+    rendered =  @response.rendered_file
+    msg = build_message(message, "expecting <?> but rendering with <?>", expected, rendered)
+    assert rendered =~/\b#{expected}$/, msg
+  end
+  
   def test_list
     get :list
     assert_response :success
     assert_assigns(form_model_name.to_s.pluralize)
+    assert_streamlined_template("list")
   end
-  
+
   def test_new
     get :new, params_for_new
     assert_response :success
@@ -40,6 +48,7 @@ module Streamlined::FunctionalTests
     assert_create_form
     assert_not_nil assigns(:streamlined_item)
     assert_unobtrusive_javascript
+    assert_streamlined_template("new")
   end
 
   def test_successful_create
@@ -56,6 +65,8 @@ module Streamlined::FunctionalTests
     assert_no_difference(model_class, :count) do
       post_create_form
       assert_not_valid(assert_assigns(form_model_name))
+      assert_response :success
+      assert_streamlined_template("new")
     end
   end
 
@@ -66,6 +77,7 @@ module Streamlined::FunctionalTests
     assert_update_form
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
+    assert_streamlined_template("edit")
     assert_unobtrusive_javascript
   end
   
@@ -85,8 +97,20 @@ module Streamlined::FunctionalTests
       post_update_form(:xhr)
       assert_valid(assert_assigns(form_model_name))
       assert_response :success
+      assert_streamlined_template("show")
     end
   end
+
+  def test_failed_update
+    model_validations_fail_for(:allocate)
+    assert_no_difference(model_class, :count) do
+      post_update_form
+      assert_not_valid(assigns(form_model_name))
+      assert_response :success
+      assert_streamlined_template("edit")
+    end
+  end
+
 
   def test_destroy
     assert_difference(model_class, :count, -1) do

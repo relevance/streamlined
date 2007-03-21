@@ -8,7 +8,6 @@
 module Streamlined; end
 module Streamlined; module Helpers; end; end
 
-require 'relevance/dsl'
 require 'streamlined/helpers/link_helper'
 require 'streamlined/helpers/layout_helper'
 require 'streamlined/helpers/table_helper'
@@ -83,18 +82,6 @@ module Streamlined::Helper
   
   # Given a template name, determines the precise location of the file to be used: model-specific view folders, or generic views
   delegate :generic_view, :to=>:controller
-  
-  def streamlined_column_html( object, column )
-      begin
-          column_as_string = column.respond_to?( :name ) ? object.send( column.name.to_sym ) : ""
-
-          return column_as_string if column.class == Streamlined::Column
-
-          return html_escape( column_as_string )
-      rescue
-          return ""
-      end
-  end
   
   private
 
