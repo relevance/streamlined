@@ -1,5 +1,3 @@
-require 'relevance/delegates'
-
 # Currently available Views:
 # * :membership => simple scrollable list of checkboxes.  DEFAULT for n_to_many
 # * :inset_table => full table view inserted into current table

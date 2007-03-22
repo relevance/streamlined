@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../../test_helper'
-require 'relevance/delegates'
 
 class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
   include FlexMock::TestCase
