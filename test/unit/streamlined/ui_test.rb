@@ -42,6 +42,12 @@ class Streamlined::UITest < Test::Unit::TestCase
     assert_equal "foo", @ui.edit_link_column
   end
   
+  def test_read_only
+    assert_equal nil, @ui.read_only
+    assert_equal true, @ui.read_only(true)
+    assert_equal true, @ui.read_only
+  end
+  
   def test_pagination
     assert_equal true, @ui.pagination
     assert_equal "foo", @ui.pagination("foo")
