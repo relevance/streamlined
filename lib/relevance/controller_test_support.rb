@@ -4,7 +4,7 @@ module Relevance::ControllerTestSupport
   include Relevance::RailsAssertions
   
   # Many attributes will derive by inference from :model_class if you do not set them
-  attr_accessor :model_class
+  attr_accessor :model_class, :controller_name
   attr_writer :object_for_create, :url_base, :object_for_new, :object_for_edit, :form_model_name, :form_fields
   attr_with_default :relevance_crud_fixture, ":relevance_crud_fixture"
   attr_with_default :params_for_new, "{}"
