@@ -75,7 +75,7 @@ END
     div += <<-END unless read_only
   #{view.link_to_function("Edit", 
   "Streamlined.Relationships.open_relationship('#{relationship_div_id(item)}', 
-                                                this, '/#{view.controller}')")}
+                                                this, '/#{view.controller_name}')")}
 END
     div
   end
