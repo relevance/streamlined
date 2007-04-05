@@ -10,4 +10,12 @@ module Streamlined::Helpers::TableHelper
       ""
     end
   end
+  
+  def streamlined_filter
+    if model_ui.table_filter
+  	  "<form>Filter:  <input type='text' id='streamlined_filter_term'></form>"
+    else
+      ""
+    end
+  end
 end

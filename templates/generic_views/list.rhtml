@@ -12,9 +12,7 @@
 	<div class="ajax-scaffold-header">
 	  <h2><%= image_tag_if_exists("#{model_table}.png", {:align => 'top'}) %> <%= model_name.titleize.pluralize %></h2>	
     <div class="actions">
-  	  <form>
-  		Filter:  <input type="text" id="streamlined_filter_term">
-  	  </form>
+      <%= streamlined_filter %>
     </div>
 	</div>
 	<div id="model_list">
