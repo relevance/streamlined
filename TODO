@@ -1,9 +1,3 @@
-Dom ID and CLASS registry
-  helper method for rhtml
-  helper method for attributes/rxml
-  
-Remove neocast entries
-
 review the @custom_model_name stuff -- does this make any sense? does it belong on ControllerContext?
 
 create a streamlined exception type

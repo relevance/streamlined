@@ -7,6 +7,13 @@ class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
     delegates :jump, :to=>:helper
     delegates :run, :to=>:helper, :default=>''
     delegates :fly, :zoom, :to=>:helper, :method=>:soar
+    delegates :secret, :hidden, :to=>:helper, :visibility=>:private
+  end
+  
+  def test_visibility
+    t = TestMe.new
+    assert_has_public_methods(t, :jump, :run, :fly)
+    assert_has_private_methods(t, :secret, :hidden)
   end
   
   def test_bad_options
@@ -41,12 +48,13 @@ class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
     assert_nil t.jump 
   end
   
-  class TestAWD
+  class TestModuleAdditions
     attr_with_default :a, ":alpha"
     attr_with_default(:b) {:beta}
   end
+  
   def test_attr_with_default
-    t = TestAWD.new
+    t = TestModuleAdditions.new
     assert_equal :alpha, t.a
     assert_equal :beta, t.b
     t.a = nil
@@ -54,6 +62,7 @@ class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
     assert_nil t.a
     assert_nil t.b
   end
+  
 end
 
 

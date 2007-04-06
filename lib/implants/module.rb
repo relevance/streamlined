@@ -48,9 +48,9 @@ module Relevance
       Relevance::ModuleHelper.define_reader_from_options(self, setter_rhs, sym, options)
       Relevance::ModuleHelper.define_writer_from_options(self, sym, options)     
     end
-    def declarative_array(sym, options={})
-      declarative_attribute("args", sym, options)
-    end
+    # def declarative_array(sym, options={})
+    #   declarative_attribute("args", sym, options)
+    # end
     def declarative_scalar(sym, options={})
       declarative_attribute("args.first", sym, options)
     end

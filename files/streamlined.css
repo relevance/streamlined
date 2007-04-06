@@ -29,7 +29,7 @@ div#streamlined_table_header #title {font-size: 12pt; font-weight: bold;}
 /*----------------------------------*/
 /* Relationship styles */
 /*----------------------------------*/
-.relationship { background-color: #FFFFDC; height: 100px; overflow: auto; min-width: 100px; border: solid 1px gray;}
+.streamlined_relationship { background-color: #FFFFDC; height: 100px; overflow: auto; min-width: 100px; border: solid 1px gray;}
 table.streamlined table.streamlined { border: solid 1px gray; width: 150px;}
 /*----------------------------------*/
 

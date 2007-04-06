@@ -54,8 +54,8 @@ class Streamlined::UITest < Test::Unit::TestCase
     assert_equal "foo", @ui.pagination
     assert_equal "bar", @ui.pagination="bar"
     assert_equal "bar", @ui.pagination
-    assert_equal false, @ui.pagination=false
-    assert_equal false, @ui.pagination
+    assert_false @ui.pagination=false
+    assert_false @ui.pagination
   end
   
   def test_model

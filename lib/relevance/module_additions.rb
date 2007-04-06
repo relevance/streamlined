@@ -16,7 +16,7 @@ module Relevance::ModuleAdditions
     unless options.is_a?(Hash) && to = options[:to]
       raise ArgumentError, "Delegation needs a :to option"
     end
-    method_to, default = options[:method], options[:default]
+    method_to, default, visibility = options[:method], options[:default], options[:visibility]
     if default
       methods.each do |method_from|
         method = method_to ? method_to : method_from
@@ -34,6 +34,9 @@ module Relevance::ModuleAdditions
           end
         EOS
       end
+    end
+    if visibility
+      self.send(visibility, *methods)
     end
   end
   # Declare an attribute with an initial default 

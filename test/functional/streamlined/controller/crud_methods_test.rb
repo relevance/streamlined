@@ -7,9 +7,9 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
   attr_accessor :model, :streamlined_request_context
   delegates *Streamlined::Context::RequestContext::DELEGATES
   
-  # begin stub methods
-  # end stub methods
-  
+  def test_helper_delegates_are_private
+    assert_has_private_methods self, :pagination
+  end
   
   def test_default_options
     @streamlined_request_context = Streamlined::Context::RequestContext.new

@@ -12,6 +12,12 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     @response   = ActionController::TestResponse.new
   end
 
+  def test_delegated_methods_are_not_routable
+    action_methods = PeopleController.action_methods.map(&:to_sym)
+    assert_equal 0, (action_methods & Streamlined::Context::RequestContext::DELEGATES).size
+    assert_equal 0, (action_methods & Streamlined::Context::ControllerContext::DELEGATES).size
+  end
+
   def generic_view(template)
     "../../../templates/generic_views/#{template}"
   end
@@ -26,6 +32,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     get :list
     assert_response :success
     assert_template generic_view("list")
+    assert_kind_of(ActionController::Pagination::Paginator, assigns(:streamlined_item_pages))
     assert_select("\#model_list", true, "should have generic id names")
     assert_select("\#people_list", false, "should not have model-specific id names")
   end
@@ -41,6 +48,16 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     get :list, :page_options=>{:filter=>"Justin"}
     assert_response :success
     assert_template generic_view("list")
+  end
+  
+  def test_list_with_no_pagination
+    class <<@controller
+      def pagination; false; end
+    end
+    get :list
+    assert_response :success
+    assert_template generic_view("list")
+    assert_equal([], assigns(:streamlined_item_pages))
   end
   
   # TODO: set Content-Disposition? optional?
@@ -67,6 +84,12 @@ id,first_name,last_name
 END
   end
 
+  def test_popup
+    get :popup, :id => 1
+    assert_equal people(:justin), assigns(:person)
+    assert_template generic_view("_popup") 
+  end
+  
   def test_show
     get :show, :id => 1
     assert_response :success

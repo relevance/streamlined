@@ -21,6 +21,7 @@ require 'relevance/rails_assertions'
 require 'relevance/controller_test_support'
 
 class Test::Unit::TestCase
+  include Relevance::RailsAssertions
   def assert_difference(object, method = nil, difference = 1)
     initial_value = object.send(method)
     yield
@@ -41,6 +42,20 @@ class Test::Unit::TestCase
       assert_same(e,g.next)
     end
     assert_equal false, g.next?, "actual enumeration larger than expected"
+  end
+  
+  def assert_has_private_methods(inst, *methods)
+    methods.each do |method|
+      method = method.to_s
+      assert(inst.private_methods.member?(method), "#{method} should be private on #{inst.class}")
+    end
+  end
+
+  def assert_has_public_methods(inst, *methods)
+    methods.each do |method|
+      method = method.to_s
+      assert(inst.public_methods.member?(method), "#{method} should be public on #{inst.class}")
+    end
   end
 end
 

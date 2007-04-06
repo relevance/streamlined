@@ -67,12 +67,6 @@ module Streamlined::Helper
     end
   end
   
-  # Given a model and a controller, finds all the columns that are currently NOT slated to be shown in the list view.
-  def hide_columns_for_model(klass, klass_ui, controller)
-    return klass_ui.all_columns.reject {|c| list_columns.include?(c.name)}
-  end
-  
-  
   # Given a template name, determines the precise location of the file to be used: model-specific view folders, or generic views
   delegate :generic_view, :to=>:controller
   

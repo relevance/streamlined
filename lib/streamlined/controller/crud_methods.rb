@@ -4,15 +4,10 @@ module Streamlined::Controller::CrudMethods
   # resulting view will use Prototype and XHR to allow the user to page
   # through the model instances.  
   #
-  # If the URL includes the <code>atom=true</code> querystring variable, the
-  # action will instead render the Atom feed of all items found for this 
-  # model.
-  #
   # If the request came via XHR, the action will render just the list partial,
   # not the entire list view.
   def list
-    @smart_folders = find_smart_folders
-    model_ui.pagination ? options = {:per_page => 10} : options = {}
+    options = pagination ? {:per_page => 10} : {}
     options.merge! order_options
     if filter?
       options.merge! :conditions=>model.conditions_by_like(filter) 
@@ -20,7 +15,7 @@ module Streamlined::Controller::CrudMethods
     else
       @streamlined_items_count = model.count
     end
-    if model_ui.pagination
+    if pagination
        if options[:non_ar_column]
           col = options[:non_ar_column]
           dir = options[:dir]
@@ -103,6 +98,7 @@ module Streamlined::Controller::CrudMethods
   end
 
   private
+  delegates :pagination, :to=>:model_ui, :visibility=>:private
   attr_accessor :default_order_options
   # TODO: Dump non_ar_column. 
   # Figure out whether a column is ar or not when using it!

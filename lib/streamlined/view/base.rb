@@ -12,13 +12,13 @@ class Streamlined::View::Base
   end
   
   # Returns the string representation used to create JavaScript IDs for this relationship type.
+  # Fragile: might be a problem with modules or anonymous subclasses
   def id_fragment
     return Inflector.demodulize(self.class.name)
   end
   
   # Returns the path to the partial that will be used to render this relationship type.
   def partial
-    # TODO: make this relative to some base 
     mod = self.class.name.split("::")[-2]
 "../../vendor/plugins/streamlined/templates/relationships/#{mod.underscore}/#{Inflector.underscore(Inflector.demodulize(self.class.name))}"
   end

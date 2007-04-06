@@ -1,9 +1,0 @@
-<br/>
-<table>
-    <% list.each do |column| %>
-        <tr>
-            <td align="right" valign="top"><b><%= model_ui.column_header( column ) %></b>:</td>
-            <%= column.render_td(self,item)%>
-        </tr>
-    <% end %>
-</table>
