@@ -3,7 +3,8 @@ require 'streamlined/controller'
 
 class Streamlined::ControllerTest < Test::Unit::TestCase
   include FlexMock::TestCase
-
+  include Streamlined::Controller::ClassMethods
+  
   def test_exception_logging
     # TBD: something that gets coverage over exception logging in controller
     # c = Class.new
@@ -16,5 +17,14 @@ class Streamlined::ControllerTest < Test::Unit::TestCase
     # c.send :include, Streamlined::Controller
     # c.acts_as_streamlined
     # c.new.initialize_with_streamlined_variables
+  end
+  
+  def test_streamlined_model
+    streamlined_model("Test")
+    assert_equal "Test", model_name
+    streamlined_model(self)
+    assert_equal "test_streamlined_model(Streamlined::ControllerTest)", 
+                 model_name, 
+                 "streamlined_model should extract name property" 
   end
 end

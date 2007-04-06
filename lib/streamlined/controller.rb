@@ -135,5 +135,9 @@ module Streamlined::Controller::ClassMethods
   def model_name 
     @custom_model_name || nil
   end
+
+  def streamlined_model(mod)
+    @custom_model_name = mod.instance_of?(String) ? mod : mod.name
+  end
   
 end
