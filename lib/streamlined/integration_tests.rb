@@ -38,7 +38,7 @@
 # 7. If you need to tweak the fixture instance for a test, override methods
 #    like object_for_create from integration_test_support.rb.
 
-gem 'flexmock', '~> 0.5.0.2'
+gem 'flexmock', '~> 0.5'
 require 'relevance/integration_test_support'
 module Streamlined; end
 module Streamlined::IntegrationTests

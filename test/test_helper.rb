@@ -6,7 +6,7 @@ require 'active_record'
 require 'action_controller'
 require 'action_controller/test_process'
 require 'active_support/breakpoint'
-require 'flexmock'
+require "#{File.dirname(__FILE__)}/flexmock_patch"
 require 'generator'
 
 silence_stream(STDERR) do

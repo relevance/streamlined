@@ -1,4 +1,4 @@
-gem 'flexmock', '~> 0.5.0.2'
+gem 'flexmock', '~> 0.5'
 require 'relevance/controller_test_support'
 module Streamlined; end
 module Streamlined::FunctionalTests
