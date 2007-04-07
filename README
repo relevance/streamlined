@@ -1,13 +1,8 @@
-Streamlined (v0.0.7.1)
+Streamlined (v0.1.0)
 ===================
 Streamlined allows you to quickly generate useful user interfaces, declaratively.
 
-After installing the plugin, you MUST add the following line to app/helpers/application_helper.rb:
-
-include StreamlinedHelper
-
-Streamlined is not a code generator.  It relies on you having an existing database schema, controllers and models.  If you have not done so yet,
-follow the instructions in the Rolling with Ruby on Rails Revisited article series at http://www.onlamp.com/pub/a/onlamp/2006/12/14/revisiting-ruby-on-rails-revisited.html to create a database and some controllers and models.
+Streamlined is not a code generator.  It relies on you having an existing database schema, controllers and models.  If you have not done so yet, follow the instructions in the "Rolling with Ruby on Rails Revisited" article series at http://www.onlamp.com/pub/a/onlamp/2006/12/14/revisiting-ruby-on-rails-revisited.html to create a database and some controllers and models.
 
 Then, to make any controller into a Streamlined controller, do the following:
 
@@ -17,5 +12,8 @@ class MyNiftyController < ApplicationController
 	
 	...[anything else you want to do]
 end
+
+
+More documentation can be found on the Streamlined wiki at http://streamlinedframework.org:8079/trac/wiki
 
 *NOTE: You cannot extend ApplicationController with acts_as_streamlined, only children of ApplicationController.
