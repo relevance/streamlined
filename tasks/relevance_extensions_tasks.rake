@@ -63,7 +63,7 @@ end
     TEMPLATE
 
     unless FileTest.exist? File.join(RAILS_ROOT, 'app', 'streamlined')
-      FileUtils.mkdir(File.Join(RAILS_ROOT, 'app', 'streamlined'))
+      FileUtils.mkdir(File.join(RAILS_ROOT, 'app', 'streamlined'))
     end
 
     ENV['MODEL'].split(',').each do |model|
