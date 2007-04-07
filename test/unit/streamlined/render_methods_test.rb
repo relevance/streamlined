@@ -25,6 +25,14 @@ class Streamlined::RenderMethodsTest < Test::Unit::TestCase
     end
   end
   
+  def test_specific_template_exists?
+    assert specific_template_exists?("templates/template")
+    assert specific_template_exists?("templates/template.rhtml")
+    assert specific_template_exists?("templates/template.rxml")
+    assert !specific_template_exists?("templates/template.rpdf")
+    assert !specific_template_exists?("templates/non_existing_template")
+  end
+  
   def test_convert_action_options_for_generic
     pretend_template_exists(false)
     options = {:action=>"new", :id=>"1"}

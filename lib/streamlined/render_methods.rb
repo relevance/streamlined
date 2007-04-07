@@ -13,10 +13,13 @@ module Streamlined::RenderMethods
     @managed_partials.include?(action)
   end
 
-  #TODO: Expand to handle non-rhtml
+  # Returns true if the given template exists under <tt>app/views</tt>.
+  # The template name can optionally include an extension.  If an extension
+  # is not provided, <tt>rhtml</tt> will be used by default.
   def specific_template_exists?(template)
+    template, extension = template.split('.')
     path = File.join(RAILS_ROOT, "app/views", template)
-    File.exist?("#{path}.rhtml")
+    File.exist?("#{path}.#{extension || 'rhtml'}")
   end
   
   def convert_default_options(options)
