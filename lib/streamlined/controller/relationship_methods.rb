@@ -55,15 +55,15 @@ module Streamlined::Controller::RelationshipMethods
     instance.send(rel_name, nil)
   else
     if item.include?('::')
-      new_item = Class.class_eval(params[:klass]).find(item)
-    else
       item_id, item_name = item.split('::')
       new_item = Class.class_eval(item_name).find(item_id)
+    else
+      new_item = Class.class_eval(params[:klass]).find(item)
     end
     instance.send(rel_name, new_item)
   end
   instance.save
-  render(:nothing)
+  render(:nothing => true)
  end
  
  def relationship_for_name(rel_name)
