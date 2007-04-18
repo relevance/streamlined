@@ -4,8 +4,8 @@
 	<input type="hidden" name="rel_name" value="<%= @enumeration_name %>">
 	<select name="item" id="item">
 	  <%= unassigned_if_allowed(@model, @enumeration_name.to_sym, @items) %>	
-<% for item in @all_items %>
-    <option <%= 'selected' if @selected_item == item %> value="<%= item %>"><%= item %></option>
+<% for an_item in @all_items %>
+    <option <%= 'selected' if @selected_item == an_item %> value="<%= an_item %>"><%= an_item %></option>
 <% end %>
    </select>
   </form>

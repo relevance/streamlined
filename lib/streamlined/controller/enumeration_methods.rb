@@ -15,7 +15,7 @@ module Streamlined::Controller::EnumerationMethods
   def show_enumeration
     self.instance = model.find(params[:id])
     rel_type = model_ui.scalars[params[:enumeration].to_sym]
-    render(:partial => rel_type.show_view.partial, :locals => {:item => instance, :relationship => rel_type, :streamlined_def => rel_type.show_view})
+    render(:partial => rel_type.show_view.partial, :locals => {:item => instance, :relationship => rel_type})
   end
 
   # Select an item in the given enumeration. Used by the #enumerable view, as 

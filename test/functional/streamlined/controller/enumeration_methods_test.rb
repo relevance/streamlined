@@ -7,9 +7,9 @@ class Streamlined::Controller::EnumerationMethodsTest < Test::Unit::TestCase
   
   def setup
     @item = flexmock(:foo => 'selected_item')
-    @show_view = flexmock(:partial => 'show_partial')
-    @edit_view = flexmock(:partial => 'edit_partial')
-    @rel_type = flexmock(:enumeration => 'all_items', :edit_view => @edit_view, :show_view => @show_view)
+    show_view = flexmock(:partial => 'show_partial')
+    edit_view = flexmock(:partial => 'edit_partial')
+    @rel_type = flexmock(:enumeration => 'all_items', :edit_view => edit_view, :show_view => show_view)
     
     (model = flexmock).should_receive(:find).with('123').and_return(@item).once
     (model_ui = flexmock).should_receive(:scalars).and_return(:foo => @rel_type).once
@@ -31,7 +31,7 @@ class Streamlined::Controller::EnumerationMethodsTest < Test::Unit::TestCase
   end
   
   def test_show_enumeration
-    render_options = { :partial => 'show_partial', :locals => { :item => @item, :relationship => @rel_type, :streamlined_def => @show_view }}
+    render_options = { :partial => 'show_partial', :locals => { :item => @item, :relationship => @rel_type }}
     flexmock(self).should_receive(:render).with(render_options).and_return('render_results').once
     
     assert_equal 'render_results', show_enumeration
