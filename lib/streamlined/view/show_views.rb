@@ -38,6 +38,11 @@ module Streamlined::View::ShowViews
     
   end
   
+  # Renders the item as a string.  Used for enumerations.
+  class Enumerable < Streamlined::View::Base
+    
+  end
+  
   class Graph < Streamlined::View::Base                            
     def graph_data(item, relationship)
       raise "STREAMLINED ERROR: Cannot use the Sparklines Graph relationship summary: need to install Sparklines plugin first (requires RMagick, which is not the easiest thing to install, we're just warning you)" unless 'Sparklines'.to_const

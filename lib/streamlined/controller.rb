@@ -20,11 +20,13 @@ module Streamlined::Controller
 end
 
 require 'streamlined/controller/crud_methods'
+require 'streamlined/controller/enumeration_methods'
 require 'streamlined/controller/relationship_methods'
 require 'streamlined/controller/render_methods'
 
 module Streamlined::Controller::InstanceMethods
   include Streamlined::Controller::CrudMethods
+  include Streamlined::Controller::EnumerationMethods
   include Streamlined::Controller::RenderMethods
   include Streamlined::Controller::RelationshipMethods
   

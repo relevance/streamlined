@@ -3,7 +3,6 @@ require 'streamlined/column/association'
 
 class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   include Streamlined::Column
-  include FlexMock::TestCase
   
   def setup
     @ar_assoc = flexmock("ar")
@@ -11,6 +10,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
       o.name.returns("SomeName")
     end
   end
+  
   # This will probably change as more stuff moves from ui into assocation
   def test_initializer
     assert_raise(ArgumentError) {Association.new(@ar_assoc,"foo","bar")}

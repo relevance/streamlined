@@ -1,12 +1,14 @@
 class Streamlined::Column::Base
   include ERB::Util
   attr_accessor :read_only, :link_to, :popup
+  
   def set_attributes(hash)
     hash.each do |k,v|
       sym = "#{k}="
       self.send sym, v
     end
   end
+  
   def render_td(view, item)
     content = h(item.send(self.name))
     if link_to
@@ -19,6 +21,7 @@ class Streamlined::Column::Base
     end
     content
   end
+  
   # TODO: make a request_context that delegates to other bits
   def sort_image(context, view)
     if context.sort_column?(self)
@@ -28,11 +31,18 @@ class Streamlined::Column::Base
       ''
     end
   end
+  
   def render_th(context,view)
     x = Builder::XmlMarkup.new
     x.th(:scope=>"col", :class=>"sortSelector") {
       x << human_name
       x << sort_image(context,view)
     }
+  end
+  
+  # TODO: eliminate the helper version of this
+  def relationship_div_id(name, item, class_name = '', in_window = false)
+    fragment = edit_view ? edit_view.id_fragment : "temp"
+    "#{fragment}::#{name}::#{item.id}::#{class_name}#{'::win' if in_window}"
   end
 end

@@ -1,6 +1,7 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'rubygems'
 require 'test/unit'
+require 'flexmock/test_unit'
 gem 'rails'
 require 'active_record'
 require 'action_controller'

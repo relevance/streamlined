@@ -246,6 +246,46 @@ Streamlined.Relationships = {
 	}
 }
 
+Streamlined.Enumerations = {
+	open_enumeration: function(id, link, url) {
+		ids = id.split("::");
+		rel_type = ids[0];
+		rel_name = ids[1];
+		item_id = ids[2];
+        params = "id=" + item_id + "&enumeration=" + rel_name + "&type=" + rel_type;
+		if(rel_type == "Window") {
+			new Ajax.Request(url + "/edit_enumeration", {
+				method: "get",
+				parameters: params, 
+				onComplete: Streamlined.Enumerations.open_enumeration_in_window
+			});
+		} else {
+			new Ajax.Updater(id, url + "/edit_enumeration", {
+				evalScripts: true,
+				parameters: params
+			});
+			link.innerHTML = "Close";
+			link.onclick = new Function("Streamlined.Enumerations.close_enumeration('" + id + "', this, '" + url + "')");	
+		}
+	},
+	
+	open_enumeration_in_window: function(request) {
+		Streamlined.Windows.open_local_window('', request.responseText, null);
+	},
+
+	close_enumeration: function(id, link, url) {
+		ids = id.split("::");
+		rel_type = ids[0];
+		rel_name = ids[1];
+		item_id = ids[2];
+		new Ajax.Updater(id, url + "/show_enumeration", {
+			parameters: "id=" + item_id + "&enumeration=" + rel_name + "&type=" + rel_type
+		})
+		link.innerHTML = "Edit";
+		link.onclick = new Function("Streamlined.Enumerations.open_enumeration('" + id + "', this, '" + url + "')");
+	}
+}
+
 Streamlined.Popup = {
   initialize: function() {
     $$(".sl-popup").each((function(el) {

@@ -1,6 +1,7 @@
 class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
-  attr_accessor :ar_column, :human_name
-  delegates :name, :to=>:ar_column
+  attr_accessor :ar_column, :human_name, :enumeration
+  delegates :name, :to => :ar_column
+  
   def initialize(ar_column)
     @ar_column = ar_column
     @human_name = ar_column.human_name if ar_column.respond_to?(:human_name)
@@ -10,10 +11,43 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     return true if o.object_id == object_id
     return false unless self.class == o.class
     return self.ar_column == o.ar_column &&
-           self.human_name == o.human_name
+           self.human_name == o.human_name &&
+           self.enumeration == o.enumeration
+  end
+  
+  def edit_view
+    Streamlined::View::EditViews.create_relationship(:enumerable_select)
+  end
+  
+  def show_view
+    Streamlined::View::ShowViews.create_summary(:enumerable)
   end
   
   def render_input(view)
-    view.input(view.model_underscore, name)    
+    if enumeration
+      "[TBD: editable enumerations in forms]" 
+    else
+      view.input(view.model_underscore, name)
+    end
+  end
+  
+  def render_td(view, item)
+    if enumeration
+      div = <<-END
+    <div id="#{relationship_div_id(name, item)}">
+  		#{view.render(:partial => show_view.partial, 
+                    :locals => {:item => item, :relationship => self, 
+                    :streamlined_def => show_view})}
+    </div>
+END
+      div += <<-END unless read_only
+    #{view.link_to_function("Edit", 
+    "Streamlined.Enumerations.open_enumeration('#{relationship_div_id(name, item)}', 
+                                                  this, '/#{view.controller_name}')")}
+END
+      div
+    else
+      super
+    end
   end
 end

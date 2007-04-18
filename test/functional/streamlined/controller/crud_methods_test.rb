@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
 require 'streamlined/controller/crud_methods'
 
-class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
+class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
   include Streamlined::Controller::CrudMethods
   include FlexMock::TestCase
   attr_accessor :model, :streamlined_request_context

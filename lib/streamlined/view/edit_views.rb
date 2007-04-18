@@ -37,6 +37,11 @@ module Streamlined::View::EditViews
     
   end
   
+  # Like Select, but lists all possibles from an enumeration
+  class EnumerableSelect < Streamlined::View::Base
+    
+  end
+  
   # Like Membership, but with two distinct groups of checkboxes and an autofilter field
   class FilterSelect < Streamlined::View::Base
   

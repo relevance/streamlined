@@ -66,7 +66,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   # TODO: unobtrusive JavaScript
   def render_td(view, item)
     div = <<-END
-  <div id="#{relationship_div_id(item)}">
+  <div id="#{relationship_div_id(name, item, class_name)}">
 		#{view.render(:partial => show_view.partial, 
                    :locals => {:item => item, :relationship => self, 
                    :streamlined_def => show_view})}
@@ -74,16 +74,10 @@ class Streamlined::Column::Association < Streamlined::Column::Base
 END
     div += <<-END unless read_only
   #{view.link_to_function("Edit", 
-  "Streamlined.Relationships.open_relationship('#{relationship_div_id(item)}', 
+  "Streamlined.Relationships.open_relationship('#{relationship_div_id(name, item, class_name)}', 
                                                 this, '/#{view.controller_name}')")}
 END
     div
-  end
-  
-  # TODO: eliminate the helper version of this
-  def relationship_div_id(item, in_window = false)
-    fragment = edit_view ? edit_view.id_fragment : "temp"
-    "#{fragment}::#{name}::#{item.id}::#{class_name}#{'::win' if in_window}"
   end
   
   def render_th(context,view)
