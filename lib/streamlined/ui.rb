@@ -77,7 +77,13 @@ class Streamlined::UI
           else
             col = column(arg)
             raise(Streamlined::Error,"No column named #{arg}") unless col
-            instance_variable_get(name) << Marshal::load(Marshal.dump(col))
+            
+            # The line below used to marshal/unmarshal the column like so:
+            #   instance_variable_get(name) << Marshal.load(Marshal.dump(col))
+            #
+            # Justin explained that this was leftover from a specific case where a Streamlined
+            # user was storing the column in a database. It's not needed anymore.
+            instance_variable_get(name) << col
           end
         end
       else
