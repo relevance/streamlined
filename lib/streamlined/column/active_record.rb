@@ -30,10 +30,8 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   
   def render_input(view)
     if enumeration
-      # TODO: this is pretty hacky; a new method should probably be created to return true/false
-      # based on whether or not a given column can receive an 'unassigned' value
       choices = enumeration.collect { |e| [e, e] }
-      choices.unshift(['Unassigned', nil]) if unassigned_if_allowed(@model, name.to_sym, @items)
+      choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, name.to_sym)
       view.select(view.model_underscore, name, choices)
     else
       view.input(view.model_underscore, name)

@@ -86,9 +86,9 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
   
   def test_render_input_with_enumeration
     @ar.enumeration = %w{ foo bar }
-    view = flexmock(:model_underscore => 'model')
+    view = flexmock(:model_underscore => 'model_underscore', :model => 'model')
     expected_choices = [['Unassigned', nil], ['foo', 'foo'], ['bar', 'bar']]
-    view.should_receive(:select).with('model', 'column', expected_choices).once
+    view.should_receive(:select).with('model_underscore', 'column', expected_choices).once
     @ar.render_input(view)
   end
   
