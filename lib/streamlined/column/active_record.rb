@@ -1,4 +1,9 @@
+require 'streamlined/view'
+require 'streamlined/helper'
+
 class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
+  include Streamlined::Helpers::FormHelper
+  
   attr_accessor :ar_column, :human_name, :enumeration
   delegates :name, :to => :ar_column
   
@@ -25,7 +30,11 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   
   def render_input(view)
     if enumeration
-      "[TBD: editable enumerations in forms]" 
+      # TODO: this is pretty hacky; a new method should probably be created to return true/false
+      # based on whether or not a given column can receive an 'unassigned' value
+      choices = enumeration.collect { |e| [e, e] }
+      choices.unshift(['Unassigned', nil]) if unassigned_if_allowed(@model, name.to_sym, @items)
+      view.select(view.model_underscore, name, choices)
     else
       view.input(view.model_underscore, name)
     end

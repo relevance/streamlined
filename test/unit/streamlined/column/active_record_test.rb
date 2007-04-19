@@ -85,8 +85,11 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
   end
   
   def test_render_input_with_enumeration
-    @ar.enumeration = ['foo', 'bar']
-    assert @ar.render_input(nil).include?('TBD')
+    @ar.enumeration = %w{ foo bar }
+    view = flexmock(:model_underscore => 'model')
+    expected_choices = [['Unassigned', nil], ['foo', 'foo'], ['bar', 'bar']]
+    view.should_receive(:select).with('model', 'column', expected_choices).once
+    @ar.render_input(view)
   end
   
   def test_render_td

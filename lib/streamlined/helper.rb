@@ -11,11 +11,13 @@ module Streamlined; module Helpers; end; end
 require 'streamlined/helpers/link_helper'
 require 'streamlined/helpers/layout_helper'
 require 'streamlined/helpers/table_helper'
+require 'streamlined/helpers/form_helper'
   
 module Streamlined::Helper
   include Streamlined::Helpers::TableHelper
   include Streamlined::Helpers::LinkHelper
   include Streamlined::Helpers::LayoutHelper
+  include Streamlined::Helpers::FormHelper
   
   # include this last
   include Streamlined::View::RenderMethods
@@ -51,20 +53,6 @@ module Streamlined::Helper
   # Creates the id for the div containing a given relationship. 
   def relationship_div_id(relationship, item, in_window = false)
     "#{model_ui.relationships[relationship.name].edit_view.id_fragment}::#{relationship.name}::#{item.id}::#{relationship.class_name}#{'::win' if in_window}"
-  end
-  
-  # If the validation_reflection plugin is available and working properly, check to see if the given 
-  # relationship allows for a nil assignment.  If so, return the "Unassigned" option.  Otherwise, return nothing.
-  def unassigned_if_allowed(klass, relationship, items)
-    return "<option value='nil' #{'selected' unless items}>Unassigned</option>" unless klass.respond_to?("reflect_on_validations_for")
-    require 'facet/module/alias_method_chain' unless Module.respond_to?('alias_method_chain')
-    return "<option value='nil' #{'selected' unless items}>Unassigned</option>" unless Module.respond_to?('alias_method_chain')
-    
-    if klass.reflect_on_validations_for(relationship).collect {|v| v.macro}.include?(:validates_associated)
-      return ""
-    else
-      return "<option value='nil' #{'selected' unless items}>Unassigned</option>"
-    end
   end
   
   # Given a template name, determines the precise location of the file to be used: model-specific view folders, or generic views
