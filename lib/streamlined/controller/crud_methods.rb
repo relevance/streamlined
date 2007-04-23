@@ -47,14 +47,14 @@ module Streamlined::Controller::CrudMethods
    # Renders the Show view for a given instance.
    def show
      self.instance = model.find(params[:id])
-     render_or_redirect('show')
+     render_or_redirect(:success, 'show')
    end
 
    # Opens the model form for creating a new instance of the
    # given model class.
    def new
      self.instance = model.new
-     render_or_redirect('new')
+     render_or_redirect(:success, 'new')
    end
 
    # Uses the values from the rendered form to create a new
@@ -65,16 +65,16 @@ module Streamlined::Controller::CrudMethods
      self.instance = model.new(params[model_symbol])
      if instance.save
        flash[:notice] = "#{model_name} was successfully created."
-       render_or_redirect("show", :action=>"list")
+       render_or_redirect(:success, "show", :action=>"list")
      else
-       render_or_redirect('new')
+       render_or_redirect(:failure, 'new')
      end
    end
 
   # Opens the model form for editing an existing instance.
   def edit
     self.instance = model.find(params[:id])
-    render_or_redirect('edit')
+    render_or_redirect(:success, 'edit')
   end
 
   # Uses the values from the rendered form to update an existing
@@ -86,15 +86,15 @@ module Streamlined::Controller::CrudMethods
     if instance.update_attributes(params[model_symbol])
       get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
       flash[:notice] = "#{model_name} was successfully updated."
-      render_or_redirect("show", :action=>"list")
+      render_or_redirect(:success, "show", :action=>"list")
     else
-      render_or_redirect("edit")
+      render_or_redirect(:failure, "edit")
     end
   end
 
   def destroy
-    model.find(params[:id]).destroy
-    redirect_to :action => 'list'
+    self.instance = model.find(params[:id]).destroy
+    render_or_redirect(:success, nil, :action => "list")
   end
 
   private

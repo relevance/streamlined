@@ -4,6 +4,7 @@ require 'streamlined/controller/render_methods'
 class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
   include Streamlined::Controller::RenderMethods
   include FlexMock::TestCase
+  attr_accessor :instance, :render_filters
   
   # begin stub methods
   def controller_name
@@ -17,7 +18,41 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
   def managed_partials_include?(action)
     true
   end
+  
+  def params
+    { :action => 'edit' }
+  end
+  
+  def render_filters
+    @render_filters || {}
+  end
   # end stub methods
+  
+  def test_render_or_redirect_with_render
+    (@instance = flexmock).should_receive(:id).and_return(123).once
+    flexmock(self).should_receive(:respond_to).once  # not sure how to test blocks w/flexmock?
+    render_or_redirect(:success, 'show')
+    assert_equal 123, @id
+  end
+  
+  def test_render_or_redirect_with_redirect
+    (@instance = flexmock).should_receive(:id).and_return(123).once
+    (request = flexmock).should_receive(:xhr?).and_return(false).once
+    flexmock(self) do |mock|
+      mock.should_receive(:request).and_return(request).once
+      mock.should_receive(:redirect_to).with(:redirect_to => 'show').once
+    end
+    render_or_redirect(:success, nil, :redirect_to => 'show')
+    assert_equal 123, @id
+  end
+  
+  def test_render_or_redirect_with_render_filter
+    (@instance = flexmock).should_receive(:id).and_return(123).once
+    (proc = flexmock).should_receive(:call).once
+    @render_filters = { :edit => { :success => proc }}
+    render_or_redirect(:success, 'show')
+    assert_equal 123, @id
+  end
   
   def pretend_template_exists(exists)
     flexstub(self) do |stub|

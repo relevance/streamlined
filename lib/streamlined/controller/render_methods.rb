@@ -1,9 +1,13 @@
 module Streamlined::Controller::RenderMethods
   include Streamlined::RenderMethods
   private
-  def render_or_redirect(action, redirect=nil)
+  def render_or_redirect(status, action, redirect=nil)
     @id = instance.id
-    if redirect && !request.xhr?
+    current_action = params[:action].intern
+
+    if render_filters[current_action] && render_filters[current_action][status]
+      render_filters[current_action][status].call(self)
+    elsif redirect && !request.xhr?
       redirect_to(redirect)
     else
       respond_to do |format|

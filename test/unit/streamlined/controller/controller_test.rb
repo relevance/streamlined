@@ -27,4 +27,14 @@ class Streamlined::ControllerTest < Test::Unit::TestCase
                  model_name, 
                  "streamlined_model should extract name property" 
   end
+  
+  def test_render_filter
+    options = { :success => { :action => 'foo' }}
+    render_filter :show, options
+    assert_equal options, render_filters[:show]
+  end
+  
+  def test_render_filters_defaults_to_empty_hash
+    assert_equal({}, render_filters)
+  end
 end
