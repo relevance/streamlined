@@ -41,4 +41,8 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     assert_equal '', @ui.column(:first_name).sort_image(options,nil)
   end
   
+  def test_div_wrapper
+    result = @ui.column(:first_name).div_wrapper(123) { 'contents' }
+    assert_equal "<div id=\"123\">contents</div>", result
+  end
 end

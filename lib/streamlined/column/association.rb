@@ -65,19 +65,19 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   
   # TODO: unobtrusive JavaScript
   def render_td(view, item)
-    div = <<-END
-  <div id="#{relationship_div_id(name, item, class_name)}">
-		#{view.render(:partial => show_view.partial, 
-                   :locals => {:item => item, :relationship => self, 
-                   :streamlined_def => show_view})}
-  </div>
-END
-    div += <<-END unless read_only
-  #{view.link_to_function("Edit", 
-  "Streamlined.Relationships.open_relationship('#{relationship_div_id(name, item, class_name)}', 
-                                                this, '/#{view.controller_name}')")}
-END
+    id = relationship_div_id(name, item, class_name)
+    div = div_wrapper(id) do
+      view.render(:partial => show_view.partial, 
+                  :locals => { :item => item, :relationship => self, 
+                  :streamlined_def => show_view })
+    end
+    div += view.link_to_function("Edit", "Streamlined.Relationships." <<
+      "open_relationship('#{id}', this, '#{view.controller.url_for}')")
     div
+  end
+  
+  def div_wrapper(id, &block)
+    "<div id=\"#{id}\">#{yield}</div>"
   end
   
   def render_th(context,view)

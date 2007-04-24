@@ -45,4 +45,8 @@ class Streamlined::Column::Base
     fragment = edit_view ? edit_view.id_fragment : "temp"
     "#{fragment}::#{name}::#{item.id}::#{class_name}#{'::win' if in_window}"
   end
+  
+  def div_wrapper(id, &block)
+    "<div id=\"#{id}\">#{yield}</div>"
+  end
 end
