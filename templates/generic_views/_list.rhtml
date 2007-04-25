@@ -13,7 +13,7 @@
     <% odd = !odd %>
     <tr class="<%= odd ? 'odd' : 'even'%>">
     <% list_columns.each do |column| %>
-      <td><%= column.render_td(self, item)%></td>
+      <td><%= !column.render_td(self, item).blank? ? column.render_td(self, item) : '&nbsp;' %></td>
     <% end %>
     <%= streamlined_table_row_buttons(item) %>
     </tr>
