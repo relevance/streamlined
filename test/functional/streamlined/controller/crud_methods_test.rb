@@ -37,4 +37,20 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
     # assert_equal({:order=>"widget ASC"}, order_options)
     assert_equal({:dir=>"ASC", :non_ar_column=>"widget"}, order_options)
   end
+  
+  def test_sort_models
+    joe, frank, ted = models = build_models('Joe', 'Frank', 'Ted')
+    sort_models(models, :fname)
+    assert_equal [frank, joe, ted], models
+  end
+  
+  def test_sort_models_with_nil_value
+    joe, frank, nada = models = build_models('Joe', 'Frank', nil)
+    sort_models(models, :fname)
+    assert_equal [nada, frank, joe], models
+  end
+  
+  def build_models(*names)
+    names.collect { |n| flexmock(:fname => n) }
+  end
 end

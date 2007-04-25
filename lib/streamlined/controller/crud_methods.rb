@@ -22,7 +22,7 @@ module Streamlined::Controller::CrudMethods
           options.delete :non_ar_column
           options.delete :dir
           model_pages, models = paginate Inflector.pluralize(model).downcase.to_sym, options
-          models.sort! {|a,b| a.send(col.to_sym) <=> b.send(col.to_sym)}
+          sort_models(models, col)
           models.reverse! if dir == 'DESC'
         else
           model_pages, models = paginate Inflector.pluralize(model).downcase.to_sym, options
@@ -113,6 +113,10 @@ module Streamlined::Controller::CrudMethods
     else
       default_order_options || {}
     end
+  end
+  
+  def sort_models(models, column)
+    models.sort! {|a,b| a.send(column.to_sym).to_s <=> b.send(column.to_sym).to_s}
   end
 
   
