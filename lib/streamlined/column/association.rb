@@ -72,7 +72,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
                   :streamlined_def => show_view })
     end
     div += view.link_to_function("Edit", "Streamlined.Relationships." <<
-      "open_relationship('#{id}', this, '#{view.controller.url_for}')")
+      "open_relationship('#{id}', this, '/#{view.controller_name}')")
     div
   end
   

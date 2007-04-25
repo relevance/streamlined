@@ -43,8 +43,8 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   end
   
   def test_render_td
-    view = flexmock(:render => 'render', :controller => flexmock(:url_for => 'controller_url'))
-    expected_js = "Streamlined.Relationships.open_relationship('InsetTable::SomeName::123::klass', this, 'controller_url')"
+    view = flexmock(:render => 'render', :controller_name => 'controller_name')
+    expected_js = "Streamlined.Relationships.open_relationship('InsetTable::SomeName::123::klass', this, '/controller_name')"
     view.should_receive(:link_to_function).with("Edit", expected_js).and_return('link').once
     
     a = Association.new(@ar_assoc, :inset_table, :count)
