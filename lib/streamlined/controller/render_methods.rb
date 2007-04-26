@@ -6,7 +6,7 @@ module Streamlined::Controller::RenderMethods
     current_action = params[:action].intern
 
     if render_filters[current_action] && render_filters[current_action][status]
-      render_filters[current_action][status].call(self)
+      execute_render_filter(render_filters[current_action][status])
     elsif redirect && !request.xhr?
       redirect_to(redirect)
     else
@@ -14,6 +14,19 @@ module Streamlined::Controller::RenderMethods
         format.html {render :action => action}
         format.js {render :action => action, :layout=>false}
         format.xml  { render :xml => instance.to_xml }
+      end
+    end
+  end
+  
+  def execute_render_filter(options)
+    if options.is_a?(Proc)
+      options.call(self)
+    else
+      self.instance = instance.send(options[:with_instance]) if options[:with_instance]    
+      if options[:render_tabs]
+        render_tabs(*options[:render_tabs])
+      elsif options[:render]
+        render(options[:render])
       end
     end
   end

@@ -46,12 +46,38 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     assert_equal 123, @id
   end
   
-  def test_render_or_redirect_with_render_filter
+  def test_render_or_redirect_with_render_filter_proc
     (@instance = flexmock).should_receive(:id).and_return(123).once
-    (proc = flexmock).should_receive(:call).once
+    (proc = flexmock).should_receive(:is_a?).with(Proc).and_return(true).once
+    proc.should_receive(:call).once
     @render_filters = { :edit => { :success => proc }}
     render_or_redirect(:success, 'show')
     assert_equal 123, @id
+  end
+  
+  def test_execute_render_filter_with_proc
+    (proc = flexmock).should_receive(:is_a?).with(Proc).and_return(true).once
+    proc.should_receive(:call).once
+    execute_render_filter(proc)
+  end
+  
+  def test_execute_render_filter_with_render_tabs
+    flexmock(self).should_receive(:render_tabs).with(:foo, :bar, [:bat, 'ball']).once
+    execute_render_filter(:render_tabs => [:foo, :bar, [:bat, 'ball']])
+  end
+  
+  def test_execute_render_filter_with_render
+    flexmock(self).should_receive(:render).with(:text => 'hello world').once
+    execute_render_filter(:render => { :text => 'hello world' })
+  end
+  
+  def test_execute_render_filter_with_instance
+    instance = flexmock(:bond => 'the bond')
+    flexmock(self) do |mock|
+      mock.should_receive(:instance).and_return(instance).once
+      mock.should_receive(:render).with('nothing').once
+    end
+    execute_render_filter(:with_instance => :bond, :render => 'nothing')
   end
   
   def pretend_template_exists(exists)
