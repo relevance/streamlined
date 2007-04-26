@@ -4,7 +4,7 @@
 <tr>
   <td class="streamlined_label_cell"><span class="streamlined_label"><%= column.human_name %>:</span></td>
   <td class="streamlined_value_cell">
-    <td><%= !column.render_td(self, streamlined_item).blank? ? column.render_td(self, streamlined_item) : '&nbsp;' %></td>
+    <td><%= !column.render_td(self, @streamlined_item).blank? ? column.render_td(self, @streamlined_item) : '&nbsp;' %></td>
   </td>
 </tr>
 <% end %>
