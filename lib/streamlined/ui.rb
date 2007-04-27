@@ -19,7 +19,6 @@ class Streamlined::UI
     declarative_scalar :model,
                        :default_method => :default_model,
                        :writer => Proc.new{|x| Object.const_get(x.to_s.classify)}
-    declarative_scalar :edit_link_column
     declarative_scalar :pagination, :default=>true
     declarative_scalar :table_row_buttons, :default=>true
     declarative_scalar :table_filter, :default=>true

@@ -34,12 +34,6 @@ class Streamlined::UITest < Test::Unit::TestCase
     assert_equal :some_value, subclass.table_row_buttons
     assert_equal :another_value, @ui.table_row_buttons
   end
-
-  def test_edit_link_column
-    assert_equal nil, @ui.edit_link_column
-    assert_equal "foo", @ui.edit_link_column("foo")
-    assert_equal "foo", @ui.edit_link_column
-  end
   
   def test_read_only
     assert_equal nil, @ui.read_only
