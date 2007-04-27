@@ -3,7 +3,6 @@ require 'streamlined/controller/render_methods'
 
 class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
   include Streamlined::Controller::RenderMethods
-  include FlexMock::TestCase
   attr_accessor :instance, :render_filters
   
   # begin stub methods

@@ -3,7 +3,6 @@ require 'streamlined/view/render_methods'
 
 class Streamlined::View::RenderMethodsTest < Test::Unit::TestCase
   include Streamlined::View::RenderMethods
-  include FlexMock::TestCase
   
   # begin stub methods
   def controller_name

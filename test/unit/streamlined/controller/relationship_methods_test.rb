@@ -9,7 +9,6 @@ end
 
 class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
   include Streamlined::Controller::RelationshipMethods
-  include FlexMock::TestCase
   attr_accessor :params
   
   # begin stub methods

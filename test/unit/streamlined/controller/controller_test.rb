@@ -2,7 +2,6 @@ require File.join(File.dirname(__FILE__), '../../../test_helper')
 require 'streamlined/controller'
 
 class Streamlined::ControllerTest < Test::Unit::TestCase
-  include FlexMock::TestCase
   include Streamlined::Controller::ClassMethods
   
   def test_exception_logging

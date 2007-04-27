@@ -12,7 +12,6 @@ class RelevanceModuleHelpersTest < Test::Unit::TestCase
 end
 
 class Streamlined::UITest < Test::Unit::TestCase
-  include FlexMock::TestCase
   
   def setup
     @ui = Class.new(Streamlined::UI)

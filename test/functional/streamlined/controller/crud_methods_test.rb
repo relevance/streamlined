@@ -3,7 +3,6 @@ require 'streamlined/controller/crud_methods'
 
 class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
   include Streamlined::Controller::CrudMethods
-  include FlexMock::TestCase
   attr_accessor :model, :streamlined_request_context
   delegates *Streamlined::Context::RequestContext::DELEGATES
   

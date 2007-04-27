@@ -2,8 +2,7 @@ require File.join(File.dirname(__FILE__), '../test_helper')
 require 'active_record_extensions'
 
 class ActiveRecordExtensionsTest < Test::Unit::TestCase
-  include FlexMock::TestCase
-
+  
   def setup
     @inst = Object.new
     @cls = Object.new
@@ -29,4 +28,5 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
     end
     assert_equal %w{alpha beta}, @cls.user_columns.map(&:name)
   end
+  
 end

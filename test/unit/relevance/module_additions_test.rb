@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 
 class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
-  include FlexMock::TestCase
+  
   class TestMe
     attr_accessor :helper
     delegates :jump, :to=>:helper
