@@ -84,7 +84,8 @@ module Streamlined::Controller::CrudMethods
   def update
     self.instance = model.find(params[:id])
     if instance.update_attributes(params[model_symbol])
-      get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
+      # TODO: reimplement tag support
+      # get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
       flash[:notice] = "#{model_name} was successfully updated."
       render_or_redirect(:success, "show", :action=>"list")
     else

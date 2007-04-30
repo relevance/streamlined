@@ -8,7 +8,7 @@ module Relevance::ModuleAdditions
   # 
   # Usage
   #   class Foo < ActiveRecord::Base
-  #     delegate :hello, :goodbye, :to => :greeter, :method=>:salutation, :default=>'Cheers'
+  #     delegates :hello, :goodbye, :to => :greeter, :method=>:salutation, :default=>'Cheers'
   #   end
   #
   def delegates(*methods)

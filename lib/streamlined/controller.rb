@@ -52,7 +52,6 @@ module Streamlined::Controller::InstanceMethods
     @streamlined_controller_context.render_filters = self.class.render_filters
     # TODO: why isn't this in the html head?
     @page_title = "Manage #{model_name.pluralize}"
-    @tags = model.tag_list.split(',') if model.respond_to? :tag_list
   end
 
   # rewrite of rails method
