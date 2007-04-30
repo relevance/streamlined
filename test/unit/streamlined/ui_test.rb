@@ -28,11 +28,16 @@ class Streamlined::UITest < Test::Unit::TestCase
   
   def test_declarative_setting_inheritance
     @ui.table_row_buttons = :some_value
+    @ui.quick_delete_button = :some_value    
     subclass = Class.new(@ui)
     assert_equal :some_value, subclass.table_row_buttons
+    assert_equal :some_value, subclass.quick_delete_button
     @ui.table_row_buttons = :another_value
+    @ui.quick_delete_button = :another_value    
     assert_equal :some_value, subclass.table_row_buttons
     assert_equal :another_value, @ui.table_row_buttons
+    assert_equal :some_value, subclass.quick_delete_button
+    assert_equal :another_value, @ui.quick_delete_button
   end
   
   def test_read_only
