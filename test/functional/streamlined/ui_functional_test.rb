@@ -29,13 +29,13 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   def test_read_only_column
     @ui.user_columns :first_name, {:read_only=>true}, :last_name
     assert_equal true, @ui.scalars[:first_name].read_only
-    assert_equal nil, @ui.scalars[:last_name].read_only
+    assert_equal false, @ui.scalars[:last_name].read_only
   end
   
   def test_view_specific_columns
     @ui.user_columns :first_name, :last_name
-    assert_equal nil, @ui.scalars[:first_name].read_only
-    assert_equal nil, @ui.scalars[:last_name].read_only
+    assert_equal false, @ui.scalars[:first_name].read_only
+    assert_equal false, @ui.scalars[:last_name].read_only
     assert_same @ui.show_columns, @ui.user_columns
     @ui.show_columns :first_name, {:read_only=>true}, :last_name, {:read_only=>true}
     assert_not_same @ui.show_columns, @ui.user_columns
