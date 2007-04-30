@@ -63,17 +63,33 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     return results
   end
   
-  # TODO: unobtrusive JavaScript
-  def render_td(view, item)
+  def render_td_show(view, item)
     id = relationship_div_id(name, item, class_name)
     div = div_wrapper(id) do
       view.render(:partial => show_view.partial, 
                   :locals => { :item => item, :relationship => self, 
                   :streamlined_def => show_view })
     end
+  end
+  
+  def render_td_list(view, item)
+    id = relationship_div_id(name, item, class_name)
+    div = render_td_show(view, item)
     div += view.link_to_function("Edit", "Streamlined.Relationships." <<
       "open_relationship('#{id}', this, '/#{view.controller_name}')")
     div
+  end
+  
+  def render_td_edit(view, item)
+    "[TBD]"
+  end
+
+  def render_td(view, item)
+    if read_only
+      render_td_show(view,item)
+    else
+      send "render_td_#{view.crud_context}", view, item
+    end
   end
   
   def div_wrapper(id, &block)
@@ -91,6 +107,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   def render_input(view)
     "[TBD: editable associations in forms]"
   end
+  
   
   
 end

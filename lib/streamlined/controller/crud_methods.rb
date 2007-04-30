@@ -7,6 +7,7 @@ module Streamlined::Controller::CrudMethods
   # If the request came via XHR, the action will render just the list partial,
   # not the entire list view.
   def list
+    self.crud_context = :list
     options = pagination ? {:per_page => 10} : {}
     options.merge! order_options
     if filter?
@@ -46,6 +47,7 @@ module Streamlined::Controller::CrudMethods
 
    # Renders the Show view for a given instance.
    def show
+     self.crud_context = :show
      self.instance = model.find(params[:id])
      render_or_redirect(:success, 'show')
    end
@@ -53,6 +55,7 @@ module Streamlined::Controller::CrudMethods
    # Opens the model form for creating a new instance of the
    # given model class.
    def new
+     self.crud_context = :edit        # For now: this might becaome :new
      self.instance = model.new
      render_or_redirect(:success, 'new')
    end
@@ -73,6 +76,7 @@ module Streamlined::Controller::CrudMethods
 
   # Opens the model form for editing an existing instance.
   def edit
+    self.crud_context = :edit
     self.instance = model.find(params[:id])
     render_or_redirect(:success, 'edit')
   end
@@ -100,6 +104,7 @@ module Streamlined::Controller::CrudMethods
 
   private
   delegates :pagination, :to=>:model_ui, :visibility=>:private
+  attr_accessor :crud_context
   attr_accessor :default_order_options
   # TODO: Dump non_ar_column. 
   # Figure out whether a column is ar or not when using it!

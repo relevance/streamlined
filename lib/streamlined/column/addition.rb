@@ -4,6 +4,7 @@ class Streamlined::Column::Addition < Streamlined::Column::Base
   def initialize(sym)
     @name = sym.to_s
     @human_name = sym.to_s.humanize
+    @read_only = true
   end
 
   # Array#== calls this

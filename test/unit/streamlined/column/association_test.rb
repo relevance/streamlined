@@ -46,9 +46,31 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     view = flexmock(:render => 'render', :controller_name => 'controller_name')
     expected_js = "Streamlined.Relationships.open_relationship('InsetTable::SomeName::123::klass', this, '/controller_name')"
     view.should_receive(:link_to_function).with("Edit", expected_js).and_return('link').once
+    view.should_receive(:crud_context).and_return(:list)
     
     a = Association.new(@ar_assoc, :inset_table, :count)
     expected = "<div id=\"InsetTable::SomeName::123::klass\">render</div>link"
     assert_equal expected, a.render_td(view, flexmock(:id => 123))
   end
+  
+  def test_render_td_with_readonly_true
+    view = flexmock(:render => 'render', :controller_name => 'controller_name')
+    a = Association.new(@ar_assoc, :inset_table, :count)
+    a.read_only = true
+    expected = "<div id=\"InsetTable::SomeName::123::klass\">render</div>"
+    assert_equal expected, a.render_td(view, flexmock(:id => 123))
+  end
+
+  # Here is another way you could do the above test...
+  # def test_render_td_with_readonly_true_another_way
+  #   a = Association.new(@ar_assoc, :inset_table, :count)
+  #   view = flexmock(:crud_context=>'edit')
+  #   flexmock(a) do |ass|
+  #     ass.should_receive(:render_td_edit).and_return('edit').once
+  #     ass.should_receive(:render_td_show).and_return('show').once
+  #   end
+  #   assert_equal 'edit', a.render_td(view,nil)
+  #   a.read_only = true
+  #   assert_equal 'show', a.render_td(view,nil)
+  # end
 end

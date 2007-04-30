@@ -1,6 +1,7 @@
 class Streamlined::Column::Base
   include ERB::Util
-  attr_accessor :read_only, :link_to, :popup
+  attr_accessor :link_to, :popup
+  attr_with_default :read_only, "false"
   
   def set_attributes(hash)
     hash.each do |k,v|
@@ -38,6 +39,10 @@ class Streamlined::Column::Base
       x << human_name
       x << sort_image(context,view)
     }
+  end
+  
+  def is_displayable_in_context?(view)
+    !self.read_only
   end
   
   # TODO: eliminate the helper version of this

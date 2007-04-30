@@ -88,6 +88,7 @@ module Streamlined::Controller::ClassMethods
   def acts_as_streamlined(options = {})
     class_eval do
       attr_reader :streamlined_controller_context, :streamlined_request_context
+      helper_method :crud_context
       # delegated helpers do not appear as routable actions!
       def self.delegate_non_routable(*delegates_args)
         delegates *delegates_args
