@@ -2,6 +2,7 @@ class Streamlined::Column::Base
   include ERB::Util
   attr_accessor :link_to, :popup
   attr_with_default :read_only, "false"
+  attr_with_default :create_only, "false"
   
   def set_attributes(hash)
     hash.each do |k,v|
@@ -42,7 +43,15 @@ class Streamlined::Column::Base
   end
   
   def is_displayable_in_context?(view)
-    !self.read_only
+    # TODO: extract this nastiness into a class?  Only if we see one more need for objectified crud contexts!!!!!!
+    case view.crud_context
+    when :new
+      !self.read_only
+    when :show, :list
+      true
+    when :edit
+      !(self.read_only || self.create_only)
+    end
   end
   
   # TODO: eliminate the helper version of this

@@ -83,6 +83,8 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   def render_td_edit(view, item)
     "[TBD]"
   end
+  
+  alias :render_td_new :render_td_edit
 
   def render_td(view, item)
     if read_only

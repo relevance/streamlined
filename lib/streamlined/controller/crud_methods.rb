@@ -55,7 +55,7 @@ module Streamlined::Controller::CrudMethods
    # Opens the model form for creating a new instance of the
    # given model class.
    def new
-     self.crud_context = :edit        # For now: this might becaome :new
+     self.crud_context = :new
      self.instance = model.new
      render_or_redirect(:success, 'new')
    end
