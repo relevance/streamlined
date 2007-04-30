@@ -49,7 +49,8 @@ module Relevance::RailsAssertions
           if fields
             fields.each do |field|
               field = "#{form_model_name}_#{field}" if form_model_name
-              assert_select("#{type}[id=#{field}]", :count=>1)  
+              form_elements = assert_select("#{type}").map {|x| x["id"]}              
+              assert_select("#{type}[id=#{field}]", { :count => 1 }, "Expected '#{type}' tag, got #{form_elements.inspect}")
             end
           end          
         end

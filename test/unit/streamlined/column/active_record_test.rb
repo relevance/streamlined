@@ -78,34 +78,34 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     assert @ar.show_view.is_a?(Streamlined::View::ShowViews::Enumerable)
   end
   
-  def test_render_input
-    view = flexmock(:model_underscore => 'model')
-    view.should_receive(:input).with('model', 'column').once
-    @ar.render_input(view)
-  end
-  
-  def test_render_input_with_enumeration
+  def test_render_td_edit_with_enumeration
     @ar.enumeration = %w{ foo bar }
-    view = flexmock(:model_underscore => 'model_underscore', :model => 'model')
-    expected_choices = [['Unassigned', nil], ['foo', 'foo'], ['bar', 'bar']]
-    view.should_receive(:select).with('model_underscore', 'column', expected_choices).once
-    @ar.render_input(view)
+    flexmock(@ar) do |mock|
+      mock.should_receive(:render_enumeration_select).with('view', 'item').and_return('select').once
+    end
+    assert_equal 'select', @ar.render_td_edit('view', 'item')
   end
   
-  def test_render_td
+  def test_render_td_as_edit
+    view = flexmock(:model_underscore => 'model', :crud_context => :edit)
+    view.should_receive(:input).with('model', 'column').and_return('input').once
+    assert_equal 'input', @ar.render_td(view, nil)
+  end
+  
+  def test_render_td_as_list
+    view = flexmock(:crud_context => :list)
     item = flexmock(:column => 'value')
-    assert_equal 'value', @ar.render_td(nil, item)
+    assert_equal 'value', @ar.render_td(view, item)
   end
   
   def test_render_td_with_enumeration
     @ar.enumeration = ['foo', 'bar']
-    view = flexmock(:render => 'render', :controller_name => 'controller', :link_to_function => 'link')
+    view = flexmock(:render => 'render', :controller_name => 'controller', :link_to_function => 'link', :crud_context => :list)
     item = flexmock(:id => '123')
     assert_equal <<-END, @ar.render_td(view, item)
     <div id=\"EnumerableSelect::column::123::\">
   \t\trender
     </div>
-    link
 END
   end
   

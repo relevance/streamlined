@@ -7,7 +7,7 @@
   <% model_ui.edit_columns.each do |column| %>
     <% if column.is_displayable_in_context?(self) %>
       <tr><td class="streamlined_label_cell"><label class="streamlined_label" for="#{record}_#{column.name}"><%= column.human_name %></label></td>
-          <td class="streamlined_input_cell"><%= column.render_input(self) %></td>
+          <td class="streamlined_input_cell"><%= column.render_td(self, @streamlined_item) %></td>
       </tr>
     <% end %>
   <% end %>

@@ -28,17 +28,7 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     Streamlined::View::ShowViews.create_summary(:enumerable)
   end
   
-  def render_input(view)
-    if enumeration
-      choices = enumeration.collect { |e| [e, e] }
-      choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, name.to_sym)
-      view.select(view.model_underscore, name, choices)
-    else
-      view.input(view.model_underscore, name)
-    end
-  end
-  
-  def render_td(view, item)
+  def render_td_show(view, item)
     if enumeration
       div = <<-END
     <div id="#{relationship_div_id(name, item)}">
@@ -47,14 +37,31 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
                     :streamlined_def => show_view})}
     </div>
 END
-      div += <<-END unless read_only
-    #{view.link_to_function("Edit", 
-    "Streamlined.Enumerations.open_enumeration('#{relationship_div_id(name, item)}', 
-                                                  this, '/#{view.controller_name}')")}
-END
-      div
     else
-      super
+      render_content(view, item)
     end
   end
+  alias :render_td_list :render_td_show
+  
+  def render_td_edit(view, item)    
+    if enumeration
+      render_enumeration_select(view, item)
+    else
+      view.input(view.model_underscore, name)
+    end
+  end
+  alias :render_td_new :render_td_edit
+  
+  def render_enumeration_select(view, item)
+    choices = enumeration.collect { |e| [e, e] }
+    choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, name.to_sym)      
+    div = view.select(view.model_underscore, name, choices)
+    div += <<-END
+#{view.link_to_function("Edit", 
+"Streamlined.Enumerations.open_enumeration('#{relationship_div_id(name, item)}', 
+                                              this, '/#{view.controller_name}')")}
+END
+    div
+  end
+  
 end

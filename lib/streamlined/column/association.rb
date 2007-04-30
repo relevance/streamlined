@@ -81,18 +81,13 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   end
   
   def render_td_edit(view, item)
+    #choices = []
+    #choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, name.to_sym)
+    #view.select(view.model_underscore, name, choices)
     "[TBD]"
   end
   
   alias :render_td_new :render_td_edit
-
-  def render_td(view, item)
-    if read_only
-      render_td_show(view,item)
-    else
-      send "render_td_#{view.crud_context}", view, item
-    end
-  end
   
   def div_wrapper(id, &block)
     "<div id=\"#{id}\">#{yield}</div>"
@@ -103,13 +98,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     x.th(:scope=>"col") {
       x << human_name
     }
-  end
-  
-  # TODO: wire to render_td?
-  def render_input(view)
-    "[TBD: editable associations in forms]"
-  end
-  
+  end  
   
   
 end

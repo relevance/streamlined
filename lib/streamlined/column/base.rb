@@ -12,6 +12,20 @@ class Streamlined::Column::Base
   end
   
   def render_td(view, item)
+    if read_only
+      render_td_show(view, item)
+    else
+      send "render_td_#{view.crud_context}", view, item
+    end
+  end
+  
+  [:show, :edit, :list, :new].each do |meth|
+    define_method("render_td_#{meth}") do |*args|
+      "[TBD: render_td_#{meth} for #{self.class}]"
+    end
+  end
+  
+  def render_content(view, item)
     content = h(item.send(self.name))
     if link_to
       link_args = link_to.has_key?(:id) ? link_to : link_to.merge(:id=>item)
