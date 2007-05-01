@@ -35,6 +35,17 @@ class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
   end
   # end stub methods
   
+  def test_edit_relationship
+    @params = { :id => '1', :relationship => 'person' }
+    rel_type = flexmock(:edit_view => flexmock(:partial => 'partial'))
+    flexmock(self) do |mock|
+      mock.should_receive(:relationship_for_name).and_return(rel_type).twice
+      mock.should_receive(:set_items_and_all_items).with(rel_type).once
+      mock.should_receive(:render).with(:partial => 'partial').once
+    end
+    edit_relationship
+  end
+  
   def test_update_n_to_one_with_nil_item
     @params = { :id => '1', :rel_name => 'person_id' }
     update_n_to_one

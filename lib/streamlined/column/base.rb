@@ -1,4 +1,8 @@
+require 'streamlined/view'
+require 'streamlined/helper'
+
 class Streamlined::Column::Base
+  include Streamlined::Helpers::FormHelper
   include ERB::Util
   attr_accessor :link_to, :popup
   attr_with_default :read_only, "false"

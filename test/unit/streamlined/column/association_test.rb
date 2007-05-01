@@ -5,26 +5,35 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   include Streamlined::Column
   
   def setup
-    @ar_assoc = flexmock
-    @ar_assoc.should_expect do |o|
-      o.name.returns('SomeName')
-      o.class_name.returns('klass')
+    @ar_assoc = flexmock(:name => 'some_name', :class_name => 'SomeClass')
+    @association = Association.new(@ar_assoc, :inset_table, :count)
+  end
+  
+  # begin stub classes
+  class ::SomeClass
+    def self.find(args)
+      [:item1, :item2, :item3]
     end
   end
+
+  class ::AnotherClass
+    def self.find(args)
+      [:item4, :item5]
+    end
+  end
+  # end stub classes
   
   # This will probably change as more stuff moves from ui into assocation
   def test_initializer
     assert_raise(ArgumentError) { Association.new(@ar_assoc, 'foo', 'bar') }
-    a = Association.new(@ar_assoc, :inset_table, :count)
-    assert_equal 'Somename', a.human_name
-    assert_instance_of(Streamlined::View::ShowViews::Count, a.show_view)
-    assert_instance_of(Streamlined::View::EditViews::InsetTable, a.edit_view)
+    assert_equal 'Some name', @association.human_name
+    assert_instance_of(Streamlined::View::ShowViews::Count, @association.show_view)
+    assert_instance_of(Streamlined::View::EditViews::InsetTable, @association.edit_view)
   end
   
   def test_show_and_edit_view_symbol_args
-    a = Association.new(@ar_assoc, :inset_table, :count)
-    assert_kind_of Streamlined::View::ShowViews::Count, a.show_view
-    assert_kind_of Streamlined::View::EditViews::InsetTable, a.edit_view
+    assert_kind_of Streamlined::View::ShowViews::Count, @association.show_view
+    assert_kind_of Streamlined::View::EditViews::InsetTable, @association.edit_view
   end
   
   def test_show_and_edit_view_array_args
@@ -42,35 +51,60 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     assert_kind_of inset_table_class, a.edit_view
   end
   
+  def test_items_for_select_with_one_associable
+    flexmock(@association).should_receive(:associables).and_return([SomeClass]).once
+    assert_equal [:item1, :item2, :item3], @association.items_for_select
+  end
+  
+  def test_items_for_select_with_many_associables
+    flexmock(@association).should_receive(:associables).and_return([SomeClass, AnotherClass]).twice
+    expected = { 'SomeClass' => [:item1, :item2, :item3], 'AnotherClass' => [:item4, :item5] }
+    assert_equal expected, @association.items_for_select
+  end
+  
   def test_render_td
     view = flexmock(:render => 'render', :controller_name => 'controller_name')
-    expected_js = "Streamlined.Relationships.open_relationship('InsetTable::SomeName::123::klass', this, '/controller_name')"
+    expected_js = "Streamlined.Relationships.open_relationship('InsetTable::some_name::123::SomeClass', this, '/controller_name')"
     view.should_receive(:link_to_function).with("Edit", expected_js).and_return('link').once
     view.should_receive(:crud_context).and_return(:list)
     
-    a = Association.new(@ar_assoc, :inset_table, :count)
-    expected = "<div id=\"InsetTable::SomeName::123::klass\">render</div>link"
-    assert_equal expected, a.render_td(view, flexmock(:id => 123))
+    expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>link"
+    assert_equal expected, @association.render_td(view, flexmock(:id => 123))
   end
   
   def test_render_td_with_readonly_true
     view = flexmock(:render => 'render', :controller_name => 'controller_name')
-    a = Association.new(@ar_assoc, :inset_table, :count)
-    a.read_only = true
-    expected = "<div id=\"InsetTable::SomeName::123::klass\">render</div>"
-    assert_equal expected, a.render_td(view, flexmock(:id => 123))
+    @association.read_only = true
+    expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>"
+    assert_equal expected, @association.render_td(view, flexmock(:id => 123))
   end
 
   # Here is another way you could do the above test...
   # def test_render_td_with_readonly_true_another_way
-  #   a = Association.new(@ar_assoc, :inset_table, :count)
   #   view = flexmock(:crud_context=>'edit')
-  #   flexmock(a) do |ass|
-  #     ass.should_receive(:render_td_edit).and_return('edit').once
-  #     ass.should_receive(:render_td_show).and_return('show').once
+  #   flexmock(@association) do |mock|
+  #     mock.should_receive(:render_td_edit).and_return('edit').once
+  #     mock.should_receive(:render_td_show).and_return('show').once
   #   end
-  #   assert_equal 'edit', a.render_td(view,nil)
-  #   a.read_only = true
-  #   assert_equal 'show', a.render_td(view,nil)
+  #   assert_equal 'edit', @association.render_td(view,nil)
+  #   @association.read_only = true
+  #   assert_equal 'show', @association.render_td(view,nil)
   # end
+  
+  def test_render_td_edit
+    view = flexmock(:model => 'model', :model_underscore => 'model_underscore')
+    item = flexmock(:respond_to? => true, :some_name => nil)
+    view.should_receive(:select).with('model_underscore', 'some_name_id', [["Unassigned", nil], :foo], :selected => nil).once
+    items = flexmock(:collect => [:foo])
+    flexmock(@association).should_receive(:items_for_select).and_return(items).once
+    @association.render_td_edit(view, item)
+  end
+    
+  def test_render_td_edit_when_item_does_not_respond_to_name_id_method
+    assert_equal '[TBD: editable associations]', @association.render_td_edit(nil, nil)
+  end
+  
+  def test_render_th
+    assert_equal "<th scope=\"col\">Some name</th>", @association.render_th(nil, nil)
+  end
 end

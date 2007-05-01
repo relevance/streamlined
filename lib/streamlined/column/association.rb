@@ -63,6 +63,18 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     return results
   end
   
+  # Returns an array of all items that can be selected for this association.
+  def items_for_select
+    klass = Class.class_eval(class_name)
+    if associables.size == 1
+      klass.find(:all)
+    else
+      items = {}
+      associables.each { |klass| items[klass.name] = klass.find(:all) }
+      items
+    end
+  end
+  
   def render_td_show(view, item)
     id = relationship_div_id(name, item, class_name)
     div = div_wrapper(id) do
@@ -75,17 +87,22 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   def render_td_list(view, item)
     id = relationship_div_id(name, item, class_name)
     div = render_td_show(view, item)
-    div += view.link_to_function("Edit", "Streamlined.Relationships." <<
-      "open_relationship('#{id}', this, '/#{view.controller_name}')")
+    div += view.link_to_function("Edit", "Streamlined.Relationships.open_relationship('#{id}', this, '/#{view.controller_name}')")
     div
   end
   
   def render_td_edit(view, item)
-    #choices = []
-    #choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, name.to_sym)
-    #view.select(view.model_underscore, name, choices)
-    "[TBD]"
-  end
+    if item.respond_to?("#{name}_id")
+      choices = items_for_select.collect { |e| [e.streamlined_name(edit_view.fields, edit_view.separator), e.id] }
+      # TODO: this duplicates code in render_enumeration_select in active_record.rb
+      choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, name.to_sym)
+      selected_choice = item.send(name).id if item.send(name)
+      view.select(view.model_underscore, "#{name}_id", choices, :selected => selected_choice)
+    else
+      # TODO: I was only able to implement editable associations for belongs_to (above)
+      "[TBD: editable associations]"
+    end
+  end 
   
   alias :render_td_new :render_td_edit
   
@@ -98,8 +115,6 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     x.th(:scope=>"col") {
       x << human_name
     }
-  end  
-  
-  
+  end
 end
 

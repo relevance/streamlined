@@ -1,9 +1,4 @@
-require 'streamlined/view'
-require 'streamlined/helper'
-
 class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
-  include Streamlined::Helpers::FormHelper
-  
   attr_accessor :ar_column, :human_name, :enumeration
   delegates :name, :to => :ar_column
   
@@ -30,13 +25,12 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   
   def render_td_show(view, item)
     if enumeration
-      div = <<-END
-    <div id="#{relationship_div_id(name, item)}">
-  		#{view.render(:partial => show_view.partial, 
+      id = relationship_div_id(name, item)
+      div = div_wrapper(id) do
+  		  view.render(:partial => show_view.partial, 
                     :locals => {:item => item, :relationship => self, 
-                    :streamlined_def => show_view})}
-    </div>
-END
+                    :streamlined_def => show_view})
+      end
     else
       render_content(view, item)
     end
@@ -53,15 +47,11 @@ END
   alias :render_td_new :render_td_edit
   
   def render_enumeration_select(view, item)
+    id = relationship_div_id(name, item)
     choices = enumeration.collect { |e| [e, e] }
-    choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, name.to_sym)      
+    choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, name.to_sym)
     div = view.select(view.model_underscore, name, choices)
-    div += <<-END
-#{view.link_to_function("Edit", 
-"Streamlined.Enumerations.open_enumeration('#{relationship_div_id(name, item)}', 
-                                              this, '/#{view.controller_name}')")}
-END
+    div += view.link_to_function("Edit", "Streamlined.Enumerations.open_enumeration('#{id}', this, '/#{view.controller_name}')")
     div
   end
-  
 end

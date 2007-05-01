@@ -102,11 +102,8 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     @ar.enumeration = ['foo', 'bar']
     view = flexmock(:render => 'render', :controller_name => 'controller', :link_to_function => 'link', :crud_context => :list)
     item = flexmock(:id => '123')
-    assert_equal <<-END, @ar.render_td(view, item)
-    <div id=\"EnumerableSelect::column::123::\">
-  \t\trender
-    </div>
-END
+    expected = "<div id=\"EnumerableSelect::column::123::\">render</div>"
+    assert_equal expected, @ar.render_td(view, item)
   end
   
   def ar_column(name, human_name)

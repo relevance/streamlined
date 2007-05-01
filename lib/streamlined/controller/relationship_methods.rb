@@ -1,4 +1,5 @@
 module Streamlined::Controller::RelationshipMethods
+  
  # Shows the relationship's configured +Edit+ view, as defined in streamlined_ui 
  # and Streamlined::Column.
  def edit_relationship
@@ -24,7 +25,7 @@ module Streamlined::Controller::RelationshipMethods
     self.instance = model.find(params[:id])
     rel_name = params[:rel_name].to_sym
     klass = Class.class_eval(params[:klass])
-    relationship = model_ui.relationships[rel_name]
+    relationship = relationship_for_name(rel_name)
     
     items = params[:item].collect{|k,v| k if v=='on'}.reject{|i| i==nil}  
     instance.send(rel_name).clear
@@ -66,10 +67,7 @@ module Streamlined::Controller::RelationshipMethods
   render(:nothing => true)
  end
  
- def relationship_for_name(rel_name)
-   model_ui.relationships[rel_name.to_sym]
- end
-
+ private
  def set_items_and_all_items(rel_type, item_filter = nil)
     @items = instance.send(@relationship_name)
     if rel_type.associables.size == 1
@@ -90,6 +88,10 @@ module Streamlined::Controller::RelationshipMethods
         end
       end
     end
+ end
+ 
+ def relationship_for_name(rel_name)
+   model_ui.relationships[rel_name.to_sym]
  end
  
 end
