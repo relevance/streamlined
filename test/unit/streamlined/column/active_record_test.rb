@@ -94,15 +94,15 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
   
   def test_render_td_as_list
     view = flexmock(:crud_context => :list)
-    item = flexmock(:column => 'value')
+    item = flexmock(:column => 'value', :id => 123)
     assert_equal 'value', @ar.render_td(view, item)
   end
   
   def test_render_td_with_enumeration
     @ar.enumeration = ['foo', 'bar']
     view = flexmock(:render => 'render', :controller_name => 'controller', :link_to_function => 'link', :crud_context => :list)
-    item = flexmock(:id => '123')
-    expected = "<div id=\"EnumerableSelect::column::123::\">render</div>"
+    item = flexmock(:id => 123)
+    expected = "<div id=\"EnumerableSelect::column::123::\">render</div>link"
     assert_equal expected, @ar.render_td(view, item)
   end
   

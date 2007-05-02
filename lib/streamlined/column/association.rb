@@ -103,12 +103,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
       "[TBD: editable associations]"
     end
   end 
-  
   alias :render_td_new :render_td_edit
-  
-  def div_wrapper(id, &block)
-    "<div id=\"#{id}\">#{yield}</div>"
-  end
   
   def render_th(context,view)
     x = Builder::XmlMarkup.new

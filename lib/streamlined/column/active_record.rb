@@ -35,7 +35,14 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
       render_content(view, item)
     end
   end
-  alias :render_td_list :render_td_show
+  
+  def render_td_list(view, item)
+    id = relationship_div_id(name, item)
+    div = render_td_show(view, item)
+    div += view.link_to_function("Edit", "Streamlined.Enumerations." <<
+      "open_enumeration('#{id}', this, '/#{view.controller_name}')") if enumeration
+    div
+  end
   
   def render_td_edit(view, item)    
     if enumeration
@@ -50,8 +57,6 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     id = relationship_div_id(name, item)
     choices = enumeration.collect { |e| [e, e] }
     choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, name.to_sym)
-    div = view.select(view.model_underscore, name, choices)
-    div += view.link_to_function("Edit", "Streamlined.Enumerations.open_enumeration('#{id}', this, '/#{view.controller_name}')")
-    div
+    view.select(view.model_underscore, name, choices)
   end
 end
