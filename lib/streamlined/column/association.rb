@@ -88,7 +88,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     id = relationship_div_id(name, item, class_name)
     div = render_td_show(view, item)
     div += view.link_to_function("Edit", "Streamlined.Relationships." <<
-      "open_relationship('#{id}', this, '/#{view.controller_name}')") unless read_only || create_only
+      "open_relationship('#{id}', this, '/#{view.controller_name}')") if editable
     div
   end
   

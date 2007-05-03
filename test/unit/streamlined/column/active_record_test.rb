@@ -79,10 +79,8 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
   end
   
   def test_render_td_edit_with_enumeration
-    @ar.enumeration = %w{ foo bar }
-    flexmock(@ar) do |mock|
-      mock.should_receive(:render_enumeration_select).with('view', 'item').and_return('select').once
-    end
+    @ar.enumeration = ENUM
+    flexmock(@ar).should_receive(:render_enumeration_select).with('view', 'item').and_return('select').once
     assert_equal 'select', @ar.render_td_edit('view', 'item')
   end
   
@@ -99,14 +97,34 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
   end
   
   def test_render_td_with_enumeration
-    @ar.enumeration = ['foo', 'bar']
-    view = flexmock(:render => 'render', :controller_name => 'controller', :link_to_function => 'link', :crud_context => :list)
-    item = flexmock(:id => 123)
+    @ar.enumeration = ENUM
+    view, item = view_and_item_mocks
+    view.should_receive(:crud_context).and_return(:list).once
     expected = "<div id=\"EnumerableSelect::column::123::\">render</div>link"
     assert_equal expected, @ar.render_td(view, item)
   end
   
+  def test_render_td_list_with_create_only_enumeration
+    @ar.enumeration = ENUM
+    @ar.create_only = true
+    expected = "<div id=\"EnumerableSelect::column::123::\">render</div>"
+    assert_equal expected, @ar.render_td_list(*view_and_item_mocks)
+  end
+  
+  def test_render_td_list_with_read_only_enumeration
+    @ar.enumeration = ENUM
+    @ar.read_only = true
+    expected = "<div id=\"EnumerableSelect::column::123::\">render</div>"
+    assert_equal expected, @ar.render_td_list(*view_and_item_mocks)
+  end
+  
   def ar_column(name, human_name)
     flexmock(:name => name, :human_name => human_name)
+  end
+  
+  def view_and_item_mocks
+    view = flexmock(:render => 'render', :controller_name => 'controller_name', :link_to_function => 'link')
+    item = flexmock(:id => 123)
+    [view, item]
   end
 end

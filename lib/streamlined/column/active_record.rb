@@ -40,7 +40,7 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     id = relationship_div_id(name, item)
     div = render_td_show(view, item)
     div += view.link_to_function("Edit", "Streamlined.Enumerations." <<
-      "open_enumeration('#{id}', this, '/#{view.controller_name}')") if enumeration
+      "open_enumeration('#{id}', this, '/#{view.controller_name}')") if enumeration && editable
     div
   end
   

@@ -8,6 +8,10 @@ class Streamlined::Column::Base
   attr_with_default :read_only, "false"
   attr_with_default :create_only, "false"
   
+  def editable
+    !(read_only || create_only)
+  end
+  
   def set_attributes(hash)
     hash.each do |k,v|
       sym = "#{k}="
