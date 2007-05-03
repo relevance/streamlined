@@ -64,19 +64,22 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   
   def test_render_td
     view = flexmock(:render => 'render', :controller_name => 'controller_name')
+    item = flexmock(:id => 123)
+    
     expected_js = "Streamlined.Relationships.open_relationship('InsetTable::some_name::123::SomeClass', this, '/controller_name')"
     view.should_receive(:link_to_function).with("Edit", expected_js).and_return('link').once
     view.should_receive(:crud_context).and_return(:list)
     
     expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>link"
-    assert_equal expected, @association.render_td(view, flexmock(:id => 123))
+    assert_equal expected, @association.render_td(view, item)
   end
   
-  def test_render_td_with_readonly_true
+  def test_render_td_with_read_only_true
     view = flexmock(:render => 'render', :controller_name => 'controller_name')
+    item = flexmock(:id => 123)
     @association.read_only = true
     expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>"
-    assert_equal expected, @association.render_td(view, flexmock(:id => 123))
+    assert_equal expected, @association.render_td(view, item)
   end
 
   # Here is another way you could do the above test...
@@ -99,12 +102,35 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     flexmock(@association).should_receive(:items_for_select).and_return(items).once
     @association.render_td_edit(view, item)
   end
-    
+  
+  def test_render_td_list
+    expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>link"
+    assert_equal expected, @association.render_td_list(*view_and_item_mocks)
+  end
+  
+  def test_render_td_list_with_create_only_true
+    @association.create_only = true
+    expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>"
+    assert_equal expected, @association.render_td_list(*view_and_item_mocks)
+  end
+  
+  def test_render_td_list_with_read_only_true
+    @association.read_only = true
+    expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>"
+    assert_equal expected, @association.render_td_list(*view_and_item_mocks)
+  end
+  
   def test_render_td_edit_when_item_does_not_respond_to_name_id_method
     assert_equal '[TBD: editable associations]', @association.render_td_edit(nil, nil)
   end
   
   def test_render_th
     assert_equal "<th scope=\"col\">Some name</th>", @association.render_th(nil, nil)
+  end
+  
+  def view_and_item_mocks
+    view = flexmock(:render => 'render', :controller_name => 'controller_name', :link_to_function => 'link')
+    item = flexmock(:id => 123)
+    [view, item]
   end
 end
