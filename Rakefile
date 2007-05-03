@@ -55,12 +55,12 @@ require 'rcov/rcovtask'
 namespace 'test' do
   namespace 'coverage' do
     namespace 'all' do
-      Rcov::RcovTask.new do |t|
-        t.name = "test"
-        t.libs << "test"
-        t.test_files = FileList['test/**/*test.rb']   
-        t.verbose = true
-        t.rcov_opts = ['-x', '^config/boot', '--sort', 'coverage']     
+      task :test do
+        rm_f "coverage"
+        rm_f "coverage.data"
+        rcov = "rcov --sort coverage --rails --aggregate coverage.data --text-summary -Ilib"
+        system("#{rcov} --no-html test/unit/**/*_test.rb")
+        system("#{rcov} --html test/functional/**/*_test.rb")  
       end
     end
     task :report => "all:test" do
