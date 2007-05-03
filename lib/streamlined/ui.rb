@@ -77,6 +77,14 @@ class Streamlined::UI
             instance_variable_get(name).last.set_attributes(arg)
           else
             col = column(arg)
+            
+            # look for instance method
+            unless col
+              if model.method_defined?(arg)
+                col = Streamlined::Column::Addition.new(arg)
+              end
+            end
+            
             raise(Streamlined::Error,"No column named #{arg}") unless col
             
             # The line below used to marshal/unmarshal the column like so:

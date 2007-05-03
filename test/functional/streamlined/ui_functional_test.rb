@@ -42,4 +42,14 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_equal true, @ui.show_columns.first.read_only
     assert_equal true, @ui.show_columns.last.read_only
   end
+  
+  def test_can_find_instance_method_when_declared
+    @ui.list_columns :first_name, :last_name, :arbitrary_instance_method
+    assert_equal 3, @ui.list_columns.length
+  end
+  
+  def test_cannot_find_instance_method_when_not_declared
+    assert_raise(Streamlined::Error) {@ui.list_columns :first_name, :last_name, :arbitrary_instance_method_2}
+  end
+  
 end
