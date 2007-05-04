@@ -7,6 +7,7 @@ class Streamlined::Column::Base
   attr_accessor :link_to, :popup
   attr_with_default :read_only, "false"
   attr_with_default :create_only, "false"
+  attr_with_default :allow_html, "false"
   
   def editable
     !(read_only || create_only)
@@ -34,7 +35,8 @@ class Streamlined::Column::Base
   end
   
   def render_content(view, item)
-    content = h(item.send(self.name))
+    content = item.send(self.name)
+    content = h(content) unless allow_html
     if link_to
       link_args = link_to.has_key?(:id) ? link_to : link_to.merge(:id=>item)
       content = view.wrap_with_link(link_args) {content}

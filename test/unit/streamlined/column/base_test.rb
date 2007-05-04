@@ -8,17 +8,24 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   include Streamlined::Context
   
   def setup
-    @ar_assoc = flexmock
-    @ar_assoc.should_expect do |o|
-      o.name.returns('SomeName')
-      o.class_name.returns('klass')
-    end
+    @ar_assoc = flexmock(:name => 'SomeName', :class_name => 'klass')
+    @addition = Addition.new(:test_addition)
+  end
+  
+  def test_render_content
+    (item = flexmock).should_receive(:send).with('test_addition').and_return('<b>content</b>').once
+    assert_equal '&lt;b&gt;content&lt;/b&gt;', @addition.render_content(nil, item)
+  end
+  
+  def test_render_content_with_allow_html_set_to_true
+    @addition.allow_html = true
+    (item = flexmock).should_receive(:send).with('test_addition').and_return('<b>content</b>').once
+    assert_equal '<b>content</b>', @addition.render_content(nil, item)
   end
   
   def test_is_displayable_in_context
     view = flexmock(:crud_context => :edit)
-    addition = Addition.new(:test_addition)
-    assert !addition.is_displayable_in_context?(view)
+    assert !@addition.is_displayable_in_context?(view)
     
     association = Association.new(@ar_assoc, :inset_table, :list)
     assert association.is_displayable_in_context?(view)
@@ -29,11 +36,10 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   end
   
   def test_is_displayable_in_context_with_create_only_set_to_true
-    addition = Addition.new(:test_addition)
-    assert !addition.is_displayable_in_context?(flexmock(:crud_context => :new))
-    assert addition.is_displayable_in_context?(flexmock(:crud_context => :show))
-    assert addition.is_displayable_in_context?(flexmock(:crud_context => :list))
-    assert !addition.is_displayable_in_context?(flexmock(:crud_context => :edit))
+    assert !@addition.is_displayable_in_context?(flexmock(:crud_context => :new))
+    assert @addition.is_displayable_in_context?(flexmock(:crud_context => :show))
+    assert @addition.is_displayable_in_context?(flexmock(:crud_context => :list))
+    assert !@addition.is_displayable_in_context?(flexmock(:crud_context => :edit))
     
     association = Association.new(@ar_assoc, :inset_table, :list)
     association.create_only = true
@@ -49,7 +55,5 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     assert ar.is_displayable_in_context?(flexmock(:crud_context => :show))
     assert ar.is_displayable_in_context?(flexmock(:crud_context => :list))
     assert !ar.is_displayable_in_context?(flexmock(:crud_context => :edit))
-    
   end
-  
 end
