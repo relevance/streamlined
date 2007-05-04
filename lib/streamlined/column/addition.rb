@@ -16,6 +16,5 @@ class Streamlined::Column::Addition < Streamlined::Column::Base
   
   def render_td_show(view, item)
     render_content(view, item)
-  end
-  
+  end  
 end

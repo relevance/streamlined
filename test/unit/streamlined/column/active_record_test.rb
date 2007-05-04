@@ -104,14 +104,21 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     assert_equal expected, @ar.render_td(view, item)
   end
   
-  def test_render_td_list_with_create_only_enumeration
+  def test_render_td_list_with_enumeration_and_create_only_true
     @ar.enumeration = ENUM
-    @ar.create_only = true
+    @ar.edit_in_list = false
     expected = "<div id=\"EnumerableSelect::column::123::\">render</div>"
     assert_equal expected, @ar.render_td_list(*view_and_item_mocks)
   end
   
-  def test_render_td_list_with_read_only_enumeration
+  def test_render_td_list_with_enumeration_and_read_only_true
+    @ar.enumeration = ENUM
+    @ar.read_only = true
+    expected = "<div id=\"EnumerableSelect::column::123::\">render</div>"
+    assert_equal expected, @ar.render_td_list(*view_and_item_mocks)
+  end
+  
+  def test_render_td_list_with_enumeration_and_edit_in_list_false
     @ar.enumeration = ENUM
     @ar.read_only = true
     expected = "<div id=\"EnumerableSelect::column::123::\">render</div>"

@@ -5,12 +5,13 @@ class Streamlined::Column::Base
   include Streamlined::Helpers::FormHelper
   include ERB::Util
   attr_accessor :link_to, :popup
-  attr_with_default :read_only, "false"
-  attr_with_default :create_only, "false"
-  attr_with_default :allow_html, "false"
+  attr_with_default :read_only, 'false'
+  attr_with_default :create_only, 'false'
+  attr_with_default :allow_html, 'false'
+  attr_with_default :edit_in_list, 'true'
   
   def editable
-    !(read_only || create_only)
+    !(read_only || create_only) && edit_in_list
   end
   
   def set_attributes(hash)

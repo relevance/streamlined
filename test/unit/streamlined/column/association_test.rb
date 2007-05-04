@@ -120,6 +120,12 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     assert_equal expected, @association.render_td_list(*view_and_item_mocks)
   end
   
+  def test_render_td_list_with_edit_in_list_false
+    @association.edit_in_list = false
+    expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>"
+    assert_equal expected, @association.render_td_list(*view_and_item_mocks)
+  end
+  
   def test_render_td_edit_when_item_does_not_respond_to_name_id_method
     assert_equal '[TBD: editable associations]', @association.render_td_edit(nil, nil)
   end
@@ -128,7 +134,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     assert_equal "<th scope=\"col\">Some name</th>", @association.render_th(nil, nil)
   end
   
-  def view_and_item_mocks
+  def view_and_item_mocks(view_attrs={})
     view = flexmock(:render => 'render', :controller_name => 'controller_name', :link_to_function => 'link')
     item = flexmock(:id => 123)
     [view, item]
