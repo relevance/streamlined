@@ -39,13 +39,26 @@ module Streamlined::Controller::InstanceMethods
     self.instance = model.find(params[:id])
     render :partial => 'popup'
   end
+
+
+  protected
+  
+  def instance
+    self.instance_variable_get("@#{Inflector.underscore(model_name)}")
+  end
+
+  def instance=(value)
+    self.instance_variable_set("@#{Inflector.underscore(model_name)}", value)
+    @streamlined_item = value
+  end
+  
        
   private
-
+  
   def initialize_request_context
     @streamlined_request_context = Streamlined::Context::RequestContext.new(params[:page_options])
   end
-        
+      
   def initialize_streamlined_values(mod_name = nil)
     @streamlined_controller_context = Streamlined::Context::ControllerContext.new
     @streamlined_controller_context.model_name = mod_name || self.class.model_name || Inflector.classify(self.class.controller_name)
@@ -66,14 +79,6 @@ module Streamlined::Controller::InstanceMethods
     return paginator, collection 
   end
 
-  def instance
-    self.instance_variable_get("@#{Inflector.underscore(model_name)}")
-  end
-
-  def instance=(value)
-    self.instance_variable_set("@#{Inflector.underscore(model_name)}", value)
-    @streamlined_item = value
-  end
 
   def streamlined_logger
     RAILS_DEFAULT_LOGGER

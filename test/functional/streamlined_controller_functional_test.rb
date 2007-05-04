@@ -114,5 +114,19 @@ END
       assert_redirected_to :action => 'list'
     end
   end
+
+  def test_instance_is_accessible
+    # This would fail if it was private
+    @controller.access_instance
+    
+    get :show_special, :id => 1
+    assert_response :success
+    assert_equal people(:justin), assigns(:person)    
+    assert_equal people(:justin), assigns(:streamlined_item)
+  end
   
+  def test_instance_is_not_an_action
+    get :instance
+    assert_response 404
+  end
 end
