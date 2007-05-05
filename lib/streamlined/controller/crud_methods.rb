@@ -65,12 +65,13 @@ module Streamlined::Controller::CrudMethods
    # render the #show view.  If the save was unsuccessful, re-render
    # the #new view so that errors can be fixed.
    def create
-     self.crud_context = :new
      self.instance = model.new(params[model_symbol])
      if instance.save
        flash[:notice] = "#{model_name} was successfully created."
+       self.crud_context = :show
        render_or_redirect(:success, "show", :action=>"list")
      else
+       self.crud_context = :new
        render_or_redirect(:failure, 'new')
      end
    end
@@ -87,14 +88,15 @@ module Streamlined::Controller::CrudMethods
   # render the #show view.  If the save was unsuccessful, re-render
   # the #edit view so that errors can be fixed.
   def update
-    self.crud_context = :edit
     self.instance = model.find(params[:id])
     if instance.update_attributes(params[model_symbol])
       # TODO: reimplement tag support
       # get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
       flash[:notice] = "#{model_name} was successfully updated."
+      self.crud_context = :show
       render_or_redirect(:success, "show", :action=>"list")
     else
+      self.crud_context = :edit
       render_or_redirect(:failure, "edit")
     end
   end
