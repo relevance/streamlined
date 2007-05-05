@@ -12,6 +12,10 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     @addition = Addition.new(:test_addition)
   end
   
+  def test_unassigned_value_receives_default
+    assert_equal 'unassigned', @addition.unassigned_value
+  end
+  
   def test_render_content
     (item = flexmock).should_receive(:send).with('test_addition').and_return('<b>content</b>').once
     assert_equal '&lt;b&gt;content&lt;/b&gt;', @addition.render_content(nil, item)
