@@ -95,8 +95,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   def render_td_edit(view, item)
     if item.respond_to?("#{name}_id")
       choices = items_for_select.collect { |e| [e.streamlined_name(edit_view.fields, edit_view.separator), e.id] }
-      # TODO: this duplicates code in render_enumeration_select in active_record.rb
-      choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, name.to_sym)
+      choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, "#{name}_id".to_sym)
       selected_choice = item.send(name).id if item.send(name)
       view.select(view.model_underscore, "#{name}_id", choices, :selected => selected_choice)
     else

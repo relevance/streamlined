@@ -99,7 +99,10 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     item = flexmock(:respond_to? => true, :some_name => nil)
     view.should_receive(:select).with('model_underscore', 'some_name_id', [["Unassigned", nil], :foo], :selected => nil).once
     items = flexmock(:collect => [:foo])
-    flexmock(@association).should_receive(:items_for_select).and_return(items).once
+    flexmock(@association) do |mock|
+      mock.should_receive(:items_for_select).and_return(items).once
+      mock.should_receive(:column_can_be_unassigned?).with('model', :some_name_id).and_return(true).once
+    end
     @association.render_td_edit(view, item)
   end
   
