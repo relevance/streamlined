@@ -9,6 +9,7 @@ class Streamlined::Column::Base
   attr_with_default :create_only, 'false'
   attr_with_default :allow_html, 'false'
   attr_with_default :edit_in_list, 'true'
+  attr_with_default :unassigned_value, 'unassigned'
   
   def editable
     !(read_only || create_only) && edit_in_list
