@@ -39,6 +39,7 @@ table.streamlined table.streamlined { border: solid 1px gray; width: 150px;}
 .dialog_content         { background-color: #FFFFDC; padding: 5px;}
 
 /* streamlined forms */
+table.sl_list {cellpadding: 0; cellspacing: 0;}
 table.sl_show_form tr td { padding: 2px; }
 table.sl_edit_form tr td { padding: 2px; }
 td.sl_show_label      { font-weight: bold; font-family: Verdana, Arial; font-size: 10pt; text-align: right; width: 100px; vertical-align: top;}
