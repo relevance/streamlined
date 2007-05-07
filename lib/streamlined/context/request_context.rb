@@ -30,7 +30,7 @@ class Streamlined::Context::RequestContext
   end
   
   def sort_column?(column)
-    column.human_name == sort_column
+    column.name.to_s == sort_column
   end
   
   def active_record_order_option

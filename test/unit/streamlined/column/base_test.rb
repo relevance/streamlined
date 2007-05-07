@@ -8,7 +8,7 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   include Streamlined::Context
   
   def setup
-    @ar_assoc = flexmock(:name => 'SomeName', :class_name => 'klass')
+    @ar_assoc = flexmock(:name => 'some_name', :class_name => 'SomeName')
     @addition = Addition.new(:test_addition)
   end
   
@@ -59,5 +59,19 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     assert ar.is_displayable_in_context?(flexmock(:crud_context => :show))
     assert ar.is_displayable_in_context?(flexmock(:crud_context => :list))
     assert !ar.is_displayable_in_context?(flexmock(:crud_context => :edit))
+  end
+  
+  def test_render_th
+    association = Association.new(@ar_assoc, :inset_table, :count)
+    flexmock(association).should_receive(:sort_image => "<img src=\"up.gif\">")
+    assert_equal expected_th, association.render_th(nil, nil)
+  end
+  
+  def expected_th
+    returning Builder::XmlMarkup.new do |xml|
+      xml.th(:class => 'sortSelector', :scope => 'col', :col => 'name') do
+        xml << "Some name<img src=\"up.gif\">"
+      end
+    end
   end
 end

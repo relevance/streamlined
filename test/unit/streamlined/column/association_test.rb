@@ -133,10 +133,6 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     assert_equal '[TBD: editable associations]', @association.render_td_edit(nil, nil)
   end
   
-  def test_render_th
-    assert_equal "<th scope=\"col\">Some name</th>", @association.render_th(nil, nil)
-  end
-  
   def view_and_item_mocks(view_attrs={})
     view = flexmock(:render => 'render', :controller_name => 'controller_name', :link_to_function => 'link')
     item = flexmock(:id => 123)

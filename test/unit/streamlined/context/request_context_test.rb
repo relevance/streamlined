@@ -27,7 +27,7 @@ class Streamlined::Context::RequestContextTest < Test::Unit::TestCase
   
   def test_sort_column
     o = RequestContext.new
-    column = Struct.new(:human_name).new("foo")
+    column = Struct.new(:name).new("foo")
     assert_equal false, o.sort_column?(column)
     o.sort_column = "foo"
     assert_equal true, o.sort_column?(column)

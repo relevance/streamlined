@@ -62,10 +62,10 @@ class Streamlined::Column::Base
   
   def render_th(context,view)
     x = Builder::XmlMarkup.new
-    x.th(:scope=>"col", :class=>"sortSelector") {
+    x.th(:class => "sortSelector", :scope => "col", :col => name) do
       x << human_name
       x << sort_image(context,view)
-    }
+    end
   end
   
   def is_displayable_in_context?(view)

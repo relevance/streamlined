@@ -30,13 +30,13 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   end
   
   def test_sort_image_up
-    options = Streamlined::Context::RequestContext.new(:sort_column=>"First name")
+    options = Streamlined::Context::RequestContext.new(:sort_column=>"first_name")
     assert_equal "<img alt=\"Arrow-up_16\" border=\"0\" height=\"10px\" src=\"/images/streamlined/arrow-up_16.png\" />", 
                  ui.column(:first_name).sort_image(options,@view)
   end
 
   def test_sort_image_down
-    options = Streamlined::Context::RequestContext.new(:sort_column=>"First name", :sort_order=>"DESC")
+    options = Streamlined::Context::RequestContext.new(:sort_column=>"first_name", :sort_order=>"DESC")
     assert_equal "<img alt=\"Arrow-down_16\" border=\"0\" height=\"10px\" src=\"/images/streamlined/arrow-down_16.png\" />", 
                  ui.column(:first_name).sort_image(options,@view)
   end

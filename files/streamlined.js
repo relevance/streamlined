@@ -78,22 +78,23 @@ Streamlined.SortSelector = {
   initialize: function() {
     $$('.' + this.selectorClass).each((function(item) {
       text = item.innerHTML;
+			col = item.getAttribute('col');
       item.innerHTML = "";
-      item.appendChild(this.makeLink(text));
+      item.appendChild(this.makeLink(text, col));
     }).bind(this));
   },
-  makeLink: function(text) {
+  makeLink: function(text, col) {
     var s = document.createElement("a");
     s.href = "javascript:void%200";
     s.onclick = (function() {
-      this.updateForm(text.stripTags());
+      this.updateForm(col);
     }).bind(this);
     s.innerHTML = text;
     return s;
   },
-  updateForm: function(text) {
+  updateForm: function(col) {
     var column = this.sortColumn();
-    column.value = text
+    column.value = col
     var order = this.sortOrder();
     order.value = (order.value == 'ASC' ? 'DESC' : 'ASC')
   }

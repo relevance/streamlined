@@ -21,8 +21,8 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   
   def initialize(assoc, edit, show)
     @underlying_association = assoc
-    self.edit_view=edit
-    self.show_view=show
+    self.edit_view = edit
+    self.show_view = show
     @human_name = name.to_s.humanize
   end
 
@@ -104,12 +104,5 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     end
   end 
   alias :render_td_new :render_td_edit
-  
-  def render_th(context,view)
-    x = Builder::XmlMarkup.new
-    x.th(:scope=>"col") {
-      x << human_name
-    }
-  end
 end
 
