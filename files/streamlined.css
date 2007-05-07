@@ -36,11 +36,16 @@ table.streamlined table.streamlined { border: solid 1px gray; width: 150px;}
 /*----------------------------------*/
 /* JavaWin internal styles */
 /*----------------------------------*/
-.streamlined_label      { font-weight: bold; font-family: Verdana, Arial; font-size: 10pt;}
-.streamlined_label_cell { text-align: right; width: 100px; vertical-align: top;}
-.streamlined_value_cell { font-family: Verdana, Arial; font-size: 10pt; margin-left: 10px;}
 .dialog_content         { background-color: #FFFFDC; padding: 5px;}
-table.streamlined_form tr td { padding: 2px; }
+
+/* streamlined forms */
+table.sl_show_form tr td { padding: 2px; }
+table.sl_edit_form tr td { padding: 2px; }
+td.sl_show_label      { font-weight: bold; font-family: Verdana, Arial; font-size: 10pt; text-align: right; width: 100px; vertical-align: top;}
+td.sl_show_value { font-family: Verdana, Arial; font-size: 10pt; margin-left: 10px;}
+td.sl_edit_label      { font-weight: bold; font-family: Verdana, Arial; font-size: 10pt; text-align: right; width: 100px; vertical-align: top;}
+td.sl_edit_value { font-family: Verdana, Arial; font-size: 10pt; margin-left: 10px;}
+
 /*----------------------------------*/
 
 /*----------------------------------*/

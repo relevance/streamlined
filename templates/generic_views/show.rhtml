@@ -1,9 +1,9 @@
 <div id="content">
-  <table class="streamlined_form">
+  <table class="sl_show_form">
 <% for column in model_ui.show_columns %>
 <tr>
-  <td class="streamlined_label_cell"><span class="streamlined_label"><%= column.human_name %>:</span></td>
-  <td class="streamlined_value_cell">
+  <td class="sl_show_label"><span><%= column.human_name %>:</span></td>
+  <td class="sl_show_value">
     <td><%= !column.render_td(self, @streamlined_item).blank? ? column.render_td(self, @streamlined_item) : '&nbsp;' %></td>
   </td>
 </tr>
