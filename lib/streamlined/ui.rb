@@ -24,6 +24,7 @@ class Streamlined::UI
     declarative_scalar :quick_delete_button, :default=>true    
     declarative_scalar :table_filter, :default=>true
     declarative_scalar :read_only, :default=>false
+    declarative_scalar :new_submit_button, :default => {:ajax => true}
     
     def inherited(subclass) #:nodoc:
       # subclasses inherit some settings from superclass

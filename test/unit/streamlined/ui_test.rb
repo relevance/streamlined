@@ -84,4 +84,10 @@ class Streamlined::UITest < Test::Unit::TestCase
   #   
   # end
     
+  def test_new_submit_button
+    assert_equal true, @ui.new_submit_button[:ajax]
+    assert_equal false, @ui.new_submit_button({:ajax => false})[:ajax]
+    assert_equal false, @ui.new_submit_button[:ajax]
+  end
+    
 end
