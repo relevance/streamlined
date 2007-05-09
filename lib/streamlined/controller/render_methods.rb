@@ -27,6 +27,8 @@ module Streamlined::Controller::RenderMethods
         render_tabs(*options[:render_tabs])
       elsif options[:render]
         render(options[:render])
+      elsif options[:redirect_to]
+        redirect_to(options[:redirect_to])
       end
     end
   end

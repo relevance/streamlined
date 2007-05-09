@@ -70,6 +70,11 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     execute_render_filter(:render => { :text => 'hello world' })
   end
   
+  def test_execute_render_filter_with_redirect
+    flexmock(self).should_receive(:redirect_to).with(:action => 'somewhere').once
+    execute_render_filter(:redirect_to => { :action => 'somewhere'})
+  end
+  
   def test_execute_render_filter_with_instance
     instance = flexmock(:bond => 'the bond')
     flexmock(self) do |mock|
