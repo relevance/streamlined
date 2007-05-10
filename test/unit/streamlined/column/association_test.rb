@@ -6,7 +6,8 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   
   def setup
     @ar_assoc = flexmock(:name => 'some_name', :class_name => 'SomeClass')
-    @association = Association.new(@ar_assoc, :inset_table, :count)
+    @model = flexmock(:name => 'model')
+    @association = Association.new(@ar_assoc, @model, :inset_table, :count)
   end
   
   # begin stub classes
@@ -37,7 +38,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   end
   
   def test_show_and_edit_view_array_args
-    a = Association.new(@ar_assoc, [:inset_table], [:count])
+    a = Association.new(@ar_assoc, nil, [:inset_table], [:count])
     assert_kind_of Streamlined::View::ShowViews::Count, a.show_view
     assert_kind_of Streamlined::View::EditViews::InsetTable, a.edit_view
   end
@@ -46,7 +47,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     inset_table_class = Streamlined::View::EditViews::InsetTable
     count_class = Streamlined::View::ShowViews::Count
     
-    a = Association.new(@ar_assoc, inset_table_class.new, count_class.new)
+    a = Association.new(@ar_assoc, nil, inset_table_class.new, count_class.new)
     assert_kind_of count_class, a.show_view
     assert_kind_of inset_table_class, a.edit_view
   end
@@ -95,13 +96,12 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   # end
   
   def test_render_td_edit
-    view = flexmock(:model => 'model', :model_underscore => 'model_underscore')
     item = flexmock(:respond_to? => true, :some_name => nil)
-    view.should_receive(:select).with('model_underscore', 'some_name_id', [["Unassigned", nil], :foo], :selected => nil).once
+    (view = flexmock).should_receive(:select).with('model', 'some_name_id', [["Unassigned", nil], :foo], :selected => nil).once
     items = flexmock(:collect => [:foo])
     flexmock(@association) do |mock|
       mock.should_receive(:items_for_select).and_return(items).once
-      mock.should_receive(:column_can_be_unassigned?).with('model', :some_name_id).and_return(true).once
+      mock.should_receive(:column_can_be_unassigned?).with(@model, :some_name_id).and_return(true).once
     end
     @association.render_td_edit(view, item)
   end

@@ -19,8 +19,9 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   attr_reader :edit_view, :show_view
   delegates :name, :class_name, :to=>:underlying_association
   
-  def initialize(assoc, edit, show)
+  def initialize(assoc, parent_model, edit, show)
     @underlying_association = assoc
+    @parent_model = parent_model
     self.edit_view = edit
     self.show_view = show
     @human_name = name.to_s.humanize
@@ -95,9 +96,9 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   def render_td_edit(view, item)
     if item.respond_to?("#{name}_id")
       choices = items_for_select.collect { |e| [e.streamlined_name(edit_view.fields, edit_view.separator), e.id] }
-      choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, "#{name}_id".to_sym)
+      choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(parent_model, "#{name}_id".to_sym)
       selected_choice = item.send(name).id if item.send(name)
-      view.select(view.model_underscore, "#{name}_id", choices, :selected => selected_choice)
+      view.select(model_underscore, "#{name}_id", choices, :selected => selected_choice)
     else
       # TODO: I was only able to implement editable associations for belongs_to (above)
       "[TBD: editable associations]"

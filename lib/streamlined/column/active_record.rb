@@ -2,9 +2,10 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   attr_accessor :ar_column, :human_name, :enumeration
   delegates :name, :to => :ar_column
   
-  def initialize(ar_column)
+  def initialize(ar_column, parent_model)
     @ar_column = ar_column
     @human_name = ar_column.human_name if ar_column.respond_to?(:human_name)
+    @parent_model = parent_model
   end
 
   def ==(o)
@@ -48,7 +49,8 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     if enumeration
       render_enumeration_select(view, item)
     else
-      view.input(view.model_underscore, name)
+      RAILS_DEFAULT_LOGGER.debug "MODEL UNDERSCORE: #{model_underscore}"
+      view.input(model_underscore, name)
     end
   end
   alias :render_td_new :render_td_edit
@@ -56,7 +58,7 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   def render_enumeration_select(view, item)
     id = relationship_div_id(name, item)
     choices = enumeration.collect { |e| [e, e] }
-    choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(view.model, name.to_sym)
-    view.select(view.model_underscore, name, choices)
+    choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(parent_model, name.to_sym)
+    view.select(model_underscore, name, choices)
   end
 end

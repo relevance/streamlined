@@ -9,7 +9,7 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   
   def setup
     @ar_assoc = flexmock(:name => 'some_name', :class_name => 'SomeName')
-    @addition = Addition.new(:test_addition)
+    @addition = Addition.new(:test_addition, nil)
   end
   
   def test_unassigned_value_receives_default
@@ -31,11 +31,11 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     view = flexmock(:crud_context => :edit)
     assert !@addition.is_displayable_in_context?(view)
     
-    association = Association.new(@ar_assoc, :inset_table, :list)
+    association = Association.new(@ar_assoc, nil, :inset_table, :list)
     assert association.is_displayable_in_context?(view)
     
     ar_column = flexmock(:name => 'column')
-    ar = ActiveRecord.new(ar_column)
+    ar = ActiveRecord.new(ar_column, nil)
     assert ar.is_displayable_in_context?(view)
   end
   
@@ -45,7 +45,7 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     assert @addition.is_displayable_in_context?(flexmock(:crud_context => :list))
     assert !@addition.is_displayable_in_context?(flexmock(:crud_context => :edit))
     
-    association = Association.new(@ar_assoc, :inset_table, :list)
+    association = Association.new(@ar_assoc, nil, :inset_table, :list)
     association.create_only = true
     assert association.is_displayable_in_context?(flexmock(:crud_context => :new))
     assert association.is_displayable_in_context?(flexmock(:crud_context => :show))
@@ -53,7 +53,7 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     assert !association.is_displayable_in_context?(flexmock(:crud_context => :edit))
     
     ar_column = flexmock(:name => 'column')
-    ar = ActiveRecord.new(ar_column)
+    ar = ActiveRecord.new(ar_column, nil)
     ar.create_only = true
     assert ar.is_displayable_in_context?(flexmock(:crud_context => :new))
     assert ar.is_displayable_in_context?(flexmock(:crud_context => :show))
@@ -62,7 +62,7 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   end
   
   def test_render_th
-    association = Association.new(@ar_assoc, :inset_table, :count)
+    association = Association.new(@ar_assoc, nil, :inset_table, :count)
     flexmock(association).should_receive(:sort_image => "<img src=\"up.gif\">")
     assert_equal expected_th, association.render_th(nil, nil)
   end

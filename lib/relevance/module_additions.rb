@@ -11,11 +11,16 @@ module Relevance::ModuleAdditions
   #     delegates :hello, :goodbye, :to => :greeter, :method=>:salutation, :default=>'Cheers'
   #   end
   #
+  def delegate_targets
+    @delegate_targets ||= []
+  end
+  
   def delegates(*methods)
     options = methods.pop
     unless options.is_a?(Hash) && to = options[:to]
       raise ArgumentError, "Delegation needs a :to option"
     end
+    delegate_targets << to
     method_to, default, visibility = options[:method], options[:default], options[:visibility]
     if default
       methods.each do |method_from|

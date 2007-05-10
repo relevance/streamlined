@@ -4,7 +4,7 @@ require 'streamlined/helper'
 class Streamlined::Column::Base
   include Streamlined::Helpers::FormHelper
   include ERB::Util
-  attr_accessor :link_to, :popup
+  attr_accessor :link_to, :popup, :parent_model
   attr_with_default :read_only, 'false'
   attr_with_default :create_only, 'false'
   attr_with_default :allow_html, 'false'
@@ -13,6 +13,10 @@ class Streamlined::Column::Base
   
   def editable
     !(read_only || create_only) && edit_in_list
+  end
+  
+  def model_underscore
+    parent_model.name.underscore
   end
   
   def set_attributes(hash)

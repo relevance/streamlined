@@ -5,13 +5,13 @@ class Streamlined::Column::AdditionTest < Test::Unit::TestCase
   include Streamlined::Column
   
   def setup
-    @addition = Addition.new(:foo_bar)
+    @addition = Addition.new(:foo_bar, nil)
   end
   
   def test_equal
     a1 = @addition
-    a2 = Addition.new(:foo_bar)
-    a3 = Addition.new(:bar)
+    a2 = Addition.new(:foo_bar, nil)
+    a3 = Addition.new(:bar, nil)
     assert_equal a1, a2
     assert_not_equal a1, a3
   end

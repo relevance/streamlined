@@ -3,7 +3,7 @@ module Streamlined; end
 module Streamlined::Reflection
   def reflect_on_scalars
     scalars = model.columns.inject({}) do |h,v|
-      h[v.name.to_sym] = Streamlined::Column::ActiveRecord.new(v)
+      h[v.name.to_sym] = Streamlined::Column::ActiveRecord.new(v, model)
       h
     end
   end
@@ -12,7 +12,7 @@ module Streamlined::Reflection
     additions = {}
     if Object.const_defined?(model.name + "Additions")
       Class.class_eval(model.name + "Additions").instance_methods(false).each do |meth|
-        additions[meth.to_sym] = Streamlined::Column::Addition.new(meth)
+        additions[meth.to_sym] = Streamlined::Column::Addition.new(meth, model)
       end
     end
     additions
@@ -25,6 +25,18 @@ module Streamlined::Reflection
         relationships[rel] = create_relationship(rel) unless relationships[rel]
       end
     relationships
+  end
+  
+  def reflect_on_delegates
+    delegates = {}
+      if model.respond_to?(:delegate_targets) && model.delegate_targets
+        model.delegate_targets.each do |target|
+          ar_assoc = model.reflect_on_association(target)
+          ui = Streamlined::UI.get_ui(ar_assoc.class_name)
+          ui.all_columns.each {|col| delegates[col.name.to_sym] = col}
+        end
+      end
+    delegates
   end
   
   private
@@ -43,7 +55,7 @@ module Streamlined::Reflection
     association = model.reflect_on_association(rel)
     raise Exception, "STREAMLINED ERROR: No association '#{rel}' on class #{model}." unless association
     options = define_association(association)
-    Streamlined::Column::Association.new(association, *options)
+    Streamlined::Column::Association.new(association, model, *options)
   end
 
   # TODO: move defaults down into association class

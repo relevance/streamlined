@@ -8,28 +8,29 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
   
   def setup
     ar_column = flexmock(:name => 'column')
-    @ar = ActiveRecord.new(ar_column)
+    model = flexmock(:name => 'model')
+    @ar = ActiveRecord.new(ar_column, model)
   end
   
   def test_initialize
-    ar = ActiveRecord.new(:foo)
+    ar = ActiveRecord.new(:foo, nil)
     assert_equal :foo, ar.ar_column
     assert_nil ar.human_name
   end
   
   def test_initialize_with_human_name
-    ar = ActiveRecord.new(flexmock(:human_name => 'Foo'))
+    ar = ActiveRecord.new(flexmock(:human_name => 'Foo'), nil)
     assert_equal 'Foo', ar.human_name
   end
   
   def test_names_delegate_to_ar_column
-    ar = ActiveRecord.new(ar_column('foo_bar', 'Foo bar'))
+    ar = ActiveRecord.new(ar_column('foo_bar', 'Foo bar'), nil)
     assert_equal 'foo_bar', ar.name
     assert_equal 'Foo bar', ar.human_name
   end
   
   def test_human_name_can_be_set_manually
-    ar = ActiveRecord.new(ar_column('foo_bar', 'Foo bar'))
+    ar = ActiveRecord.new(ar_column('foo_bar', 'Foo bar'), nil)
     ar.human_name = 'Bar Foo'
     assert_equal 'Bar Foo', ar.human_name
   end
@@ -41,30 +42,30 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
   end
   
   def test_equal
-    a1 = ActiveRecord.new(:foo)  
-    a2 = ActiveRecord.new(:foo)
-    a3 = ActiveRecord.new(:bar)
-    a4 = ActiveRecord.new(nil)
+    a1 = ActiveRecord.new(:foo, nil)
+    a2 = ActiveRecord.new(:foo, nil)
+    a3 = ActiveRecord.new(:bar, nil)
+    a4 = ActiveRecord.new(nil, nil)
     assert_equal a1, a2
     assert_not_equal a1, a3
     assert_not_equal a4, a1
   end
   
   def test_equal_with_human_name
-    (a1 = ActiveRecord.new(:foo)).human_name = 'Foo'
-    (a2 = ActiveRecord.new(:foo)).human_name = 'Foo'
-    (a3 = ActiveRecord.new(:foo)).human_name = 'Bar'
-    (a4 = ActiveRecord.new(:foo)).human_name = nil
+    (a1 = ActiveRecord.new(:foo, nil)).human_name = 'Foo'
+    (a2 = ActiveRecord.new(:foo, nil)).human_name = 'Foo'
+    (a3 = ActiveRecord.new(:foo, nil)).human_name = 'Bar'
+    (a4 = ActiveRecord.new(:foo, nil)).human_name = nil
     assert_equal a1, a2
     assert_not_equal a1, a3
     assert_not_equal a4, a1
   end
   
   def test_equal_with_enumeration
-    (a1 = ActiveRecord.new(:foo)).enumeration = ['Foo']
-    (a2 = ActiveRecord.new(:foo)).enumeration = ['Foo']
-    (a3 = ActiveRecord.new(:foo)).enumeration = ['Bar']
-    (a4 = ActiveRecord.new(:foo)).human_name = nil
+    (a1 = ActiveRecord.new(:foo, nil)).enumeration = ['Foo']
+    (a2 = ActiveRecord.new(:foo, nil)).enumeration = ['Foo']
+    (a3 = ActiveRecord.new(:foo, nil)).enumeration = ['Bar']
+    (a4 = ActiveRecord.new(:foo, nil)).human_name = nil
     assert_equal a1, a2
     assert_not_equal a1, a3
     assert_not_equal a4, a1

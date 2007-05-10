@@ -82,7 +82,7 @@ class Streamlined::UI
             # look for instance method
             unless col
               if model.method_defined?(arg)
-                col = Streamlined::Column::Addition.new(arg)
+                col = Streamlined::Column::Addition.new(arg, model)
               end
             end
             
@@ -127,9 +127,24 @@ class Streamlined::UI
     def list_columns(*args)
       override_columns(:@list_columns, *args)
     end
+
+    # All mandatory columns as specified by :validates_presence_of
+    def required_columns
+      all_columns.select do |col|
+        if col.is_a?(Streamlined::Column::Association) && col.underlying_association.macro == :belongs_to
+           model.reflect_on_validations_for("#{col.name}_id").find {|e| e.macro == :validates_presence_of }
+        else
+           model.reflect_on_validations_for(col.name).find {|e| e.macro == :validates_presence_of }
+        end
+      end
+    end
+    
+    def quick_add_columns(*args)
+      override_columns(:@quick_add_columns, *args)
+    end
     
     def column(name)
-      scalars[name] || additions[name] || relationships[name]
+      scalars[name] || relationships[name] || delegations[name] || additions[name] 
     end
     
     def scalars
@@ -144,8 +159,12 @@ class Streamlined::UI
       @relationships ||= reflect_on_relationships
     end
     
+    def delegations
+      @delegations ||= reflect_on_delegates
+    end
+    
     def all_columns
-      @all_columns ||= (scalars.values + additions.values + relationships.values)
+      @all_columns ||= (scalars.values + additions.values + relationships.values + delegations.values)
     end
     
     # Returns <tt>Streamlined::UI::Generic</tt>, the generic UI class.
@@ -156,7 +175,9 @@ class Streamlined::UI
     # Returns the UI class for a given class name. If the named class has no associated
     # UI class, the generic_ui class will be returned.
     def get_ui(klass_name)
-      "#{klass_name}UI".to_const || generic_ui
+      "#{klass_name}UI".constantize
+    rescue NameError
+      generic_ui
     end
 
   end

@@ -1,10 +1,11 @@
 class Streamlined::Column::Addition < Streamlined::Column::Base
   attr_accessor :name, :human_name
 
-  def initialize(sym)
+  def initialize(sym, parent_model)
     @name = sym.to_s
     @human_name = sym.to_s.humanize
     @read_only = true
+    @parent_model = parent_model
   end
 
   # Array#== calls this
