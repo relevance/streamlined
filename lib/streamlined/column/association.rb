@@ -26,6 +26,10 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     self.show_view = show
     @human_name = name.to_s.humanize
   end
+  
+  def belongs_to?
+    underlying_association.macro == :belongs_to
+  end
 
   def edit_view=(opts)
     @edit_view = case(opts)
@@ -98,12 +102,19 @@ class Streamlined::Column::Association < Streamlined::Column::Base
       choices = items_for_select.collect { |e| [e.streamlined_name(edit_view.fields, edit_view.separator), e.id] }
       choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(parent_model, "#{name}_id".to_sym)
       selected_choice = item.send(name).id if item.send(name)
-      view.select(model_underscore, "#{name}_id", choices, :selected => selected_choice)
+      result = view.select(model_underscore, "#{name}_id", choices, :selected => selected_choice)
+      result += render_quick_add(view) if belongs_to? && view.params[:action] != 'quick_add'
+      result
     else
       # TODO: I was only able to implement editable associations for belongs_to (above)
       "[TBD: editable associations]"
     end
   end 
   alias :render_td_new :render_td_edit
+  
+  def render_quick_add(view)
+    image = view.image_tag('streamlined/add_16.png', :alt => 'Quick Add', :title => 'Quick Add', :border => '0', :hspace => 2)
+    url = view.url_for(:action => 'quick_add', :quick_add_model_class_name => class_name, :select_id => form_field_id)
+    view.link_to_function(image, "Streamlined.QuickAdd.open('#{url}')")
+  end
 end
-

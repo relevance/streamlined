@@ -49,7 +49,6 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     if enumeration
       render_enumeration_select(view, item)
     else
-      RAILS_DEFAULT_LOGGER.debug "MODEL UNDERSCORE: #{model_underscore}"
       view.input(model_underscore, name)
     end
   end

@@ -1,0 +1,25 @@
+<h1>Quick Add <%= @quick_add_model_name.humanize %></h1>
+
+<div id="quick_add_errors"></div>
+
+<% form_remote_tag :url => { :action => "save_quick_add" } do %>
+	<%= hidden_field_tag :quick_add_model_class_name, params[:quick_add_model_class_name] %>
+	<%= hidden_field_tag :select_id, params[:select_id] %>
+	
+	<table class="streamlined_form">
+
+		<% Streamlined::UI.get_ui(@quick_add_model.class).quick_add_columns.each do |column| %>
+			<tr>
+				<td class="streamlined_label_cell">
+					<label class="streamlined_label" for="producer_<%= column.name %>"><%= column.human_name %></label>
+				</td>
+				<td class="streamlined_input_cell">
+					<%= column.render_td(self, @quick_add_model) %>
+				</td>
+			</tr>
+		<% end %>
+		
+	</table>
+
+	<%= submit_tag "Create" %>
+<% end %>

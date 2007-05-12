@@ -287,6 +287,15 @@ Streamlined.Enumerations = {
 	}
 }
 
+Streamlined.QuickAdd = {
+	open: function(url) {
+		Streamlined.Windows.open_local_window_from_url('', url, 'Quick Add');
+	},
+	close: function() {
+		Windows.close('show_win_Quick Add');
+	}
+}
+
 Streamlined.Popup = {
   initialize: function() {
     $$(".sl-popup").each((function(el) {

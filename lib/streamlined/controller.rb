@@ -23,12 +23,14 @@ require 'streamlined/controller/crud_methods'
 require 'streamlined/controller/enumeration_methods'
 require 'streamlined/controller/relationship_methods'
 require 'streamlined/controller/render_methods'
+require 'streamlined/controller/quick_add_methods'
 
 module Streamlined::Controller::InstanceMethods
   include Streamlined::Controller::CrudMethods
   include Streamlined::Controller::EnumerationMethods
   include Streamlined::Controller::RenderMethods
   include Streamlined::Controller::RelationshipMethods
+  include Streamlined::Controller::QuickAddMethods
   
   def index
     list
@@ -127,15 +129,15 @@ module Streamlined::Controller::ClassMethods
        def initialize_with_streamlined_variables
           begin
             initialize_streamlined_values
-            @managed_views = ['list', 'new', 'show', 'edit']
-            @managed_partials = ['list', 'form', 'popup']                    
+            @managed_views = ['list', 'new', 'show', 'edit', 'quick_add', 'save_quick_add']
+            @managed_partials = ['list', 'form', 'popup', 'quick_add_errors']
             streamlined_logger.info("model NAME: #{model_name}")
             streamlined_logger.info("model: #{model.inspect}")
           rescue Exception => ex
             streamlined_logger.info("Could not instantiate controller: #{self.class.name}")
             raise ex
           end
-        end       
+        end
       alias_method_chain :initialize, :streamlined_variables
     end
   end

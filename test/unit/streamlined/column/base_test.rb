@@ -12,6 +12,10 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     @addition = Addition.new(:test_addition, nil)
   end
   
+  def test_belongs_to
+    assert !@addition.belongs_to?
+  end
+  
   def test_unassigned_value_receives_default
     assert_equal 'unassigned', @addition.unassigned_value
   end

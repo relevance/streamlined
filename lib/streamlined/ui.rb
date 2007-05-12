@@ -18,7 +18,7 @@ class Streamlined::UI
     include Streamlined::Reflection
     declarative_scalar :model,
                        :default_method => :default_model,
-                       :writer => Proc.new{|x| Object.const_get(x.to_s.classify)}
+                       :writer => Proc.new { |x| x.is_a?(Class) ? x : x.to_s.classify.constantize }
     declarative_scalar :pagination, :default=>true
     declarative_scalar :table_row_buttons, :default=>true
     declarative_scalar :quick_delete_button, :default=>true    
@@ -35,7 +35,7 @@ class Streamlined::UI
     # Returns the name of this class minus the "UI" suffix.
     def default_model
       raise ArgumentError, "You must set a model" if name.blank?
-      Object.const_get(self.name.chomp("UI"))
+      self.name.chomp("UI").constantize
     end
 
     # Defines the columns that should be visible to the user at runtime.  Takes an array
@@ -53,16 +53,7 @@ class Streamlined::UI
     # * The "password_hash" field (if using a hashed-password strategy)
     def user_columns(*args)
       if args.size > 0
-        @user_columns = []
-        args.each do |arg|
-          if Hash === arg
-            @user_columns.last.set_attributes(arg)
-          else
-            col = column(arg)
-            raise(Streamlined::Error,"No column named #{arg}") unless col
-            @user_columns << col
-          end
-        end
+        convert_args_to_columns(:@user_columns, *args)
       else
         @user_columns ||= all_columns.reject do |v|
           v.name.to_s.match /(_at|_on|position|lock_version|_id|password_hash|id)$/
@@ -72,32 +63,28 @@ class Streamlined::UI
 
     def override_columns(name, *args) #:nodoc:
       if args.size > 0
-        instance_variable_set(name, [])
-        args.each do |arg|
-          if Hash === arg
-            instance_variable_get(name).last.set_attributes(arg)
-          else
-            col = column(arg)
-            
-            # look for instance method
-            unless col
-              if model.method_defined?(arg)
-                col = Streamlined::Column::Addition.new(arg, model)
-              end
-            end
-            
-            raise(Streamlined::Error,"No column named #{arg}") unless col
-            
-            # The line below used to marshal/unmarshal the column like so:
-            #   instance_variable_get(name) << Marshal.load(Marshal.dump(col))
-            #
-            # Justin explained that this was leftover from a specific case where a Streamlined
-            # user was storing the column in a database. It's not needed anymore.
-            instance_variable_get(name) << col
-          end
-        end
+        convert_args_to_columns(name, *args)
       else
         instance_variable_get(name) || user_columns
+      end
+    end
+    
+    def convert_args_to_columns(name, *args) #:nodoc
+      instance_variable_set(name, [])
+      args.each do |arg|
+        if Hash === arg
+          instance_variable_get(name).last.set_attributes(arg)
+        else
+          col = column(arg)
+          
+          # look for instance method
+          if col.nil? && model.method_defined?(arg)
+            col = Streamlined::Column::Addition.new(arg, model)
+          end
+          
+          raise(Streamlined::Error, "No column named #{arg}") unless col
+          instance_variable_get(name) << col
+        end
       end
     end
     
@@ -131,16 +118,19 @@ class Streamlined::UI
     # All mandatory columns as specified by :validates_presence_of
     def required_columns
       all_columns.select do |col|
-        if col.is_a?(Streamlined::Column::Association) && col.underlying_association.macro == :belongs_to
-           model.reflect_on_validations_for("#{col.name}_id").find {|e| e.macro == :validates_presence_of }
-        else
-           model.reflect_on_validations_for(col.name).find {|e| e.macro == :validates_presence_of }
-        end
+        col_name = col.belongs_to? ? "#{col.name}_id" : col.name
+        model.reflect_on_validations_for(col_name).find {|e| e.macro == :validates_presence_of }
       end
     end
     
     def quick_add_columns(*args)
-      override_columns(:@quick_add_columns, *args)
+      if args.size > 0
+        convert_args_to_columns(:@quick_add_columns, *args)
+      else
+        @quick_add_columns ||= user_columns.reject do |c|
+          c.is_a?(Streamlined::Column::Addition)
+        end
+      end
     end
     
     def column(name)
@@ -172,12 +162,14 @@ class Streamlined::UI
       Streamlined::UI::Generic
     end
     
-    # Returns the UI class for a given class name. If the named class has no associated
+    # Returns the UI class for a given model class name. If the named class has no associated
     # UI class, the generic_ui class will be returned.
-    def get_ui(klass_name)
-      "#{klass_name}UI".constantize
+    def get_ui(model_class)
+      "#{model_class}UI".constantize
     rescue NameError
-      generic_ui
+      ui = generic_ui
+      ui.model = model_class
+      ui
     end
 
   end

@@ -15,6 +15,10 @@ class Streamlined::Context::ControllerContextTest < Test::Unit::TestCase
     assert_not_equal context2.model_ui, @context.model_ui, "every model class gets its own anonymous subclass for ui"
   end
   
+  def test_model_ui_uses_passed_model_class
+    assert_equal String, @context.model_ui.model
+  end
+  
   def test_render_filters
     context = Streamlined::Context::ControllerContext.new
     filters = { :foo => :bar }

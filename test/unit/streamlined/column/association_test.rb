@@ -32,6 +32,16 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     assert_instance_of(Streamlined::View::EditViews::InsetTable, @association.edit_view)
   end
   
+  def test_belongs_to
+    flexmock(@association, :underlying_association => flexmock(:macro => :belongs_to))
+    assert @association.belongs_to?
+  end
+  
+  def test_belongs_to_false
+    flexmock(@association, :underlying_association => flexmock(:macro => :has_many))
+    assert !@association.belongs_to?
+  end
+  
   def test_show_and_edit_view_symbol_args
     assert_kind_of Streamlined::View::ShowViews::Count, @association.show_view
     assert_kind_of Streamlined::View::EditViews::InsetTable, @association.edit_view
@@ -102,6 +112,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     flexmock(@association) do |mock|
       mock.should_receive(:items_for_select).and_return(items).once
       mock.should_receive(:column_can_be_unassigned?).with(@model, :some_name_id).and_return(true).once
+      mock.should_receive(:belongs_to? => false).once
     end
     @association.render_td_edit(view, item)
   end
@@ -131,6 +142,13 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   
   def test_render_td_edit_when_item_does_not_respond_to_name_id_method
     assert_equal '[TBD: editable associations]', @association.render_td_edit(nil, nil)
+  end
+  
+  def test_render_quick_add
+    view = flexmock(:image_tag => '<img src="plus.gif"/>', :url_for => '/people/quick_add')
+    expected_args = [ '<img src="plus.gif"/>', "Streamlined.QuickAdd.open('/people/quick_add')" ]
+    flexmock(view).should_receive(:link_to_function).with(*expected_args).and_return('link').once
+    assert_equal 'link', @association.render_quick_add(view)
   end
   
   def view_and_item_mocks(view_attrs={})

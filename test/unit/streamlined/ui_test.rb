@@ -21,6 +21,10 @@ class Streamlined::UITest < Test::Unit::TestCase
   class TestUI; end
   class TestWithout; end
   
+  def test_generic_ui
+    assert_equal Streamlined::UI::Generic, Streamlined::UI.generic_ui
+  end
+  
   def test_get_ui
     assert_equal TestUI, Streamlined::UI.get_ui(Test.name)
     assert_equal Streamlined::UI::Generic, Streamlined::UI.get_ui(TestWithout.name)

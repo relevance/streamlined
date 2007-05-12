@@ -19,6 +19,14 @@ class Streamlined::Column::Base
     parent_model.name.underscore
   end
   
+  def form_field_id
+    "#{model_underscore}_#{name}_id"
+  end
+  
+  def belongs_to?
+     false
+  end
+  
   def set_attributes(hash)
     hash.each do |k,v|
       sym = "#{k}="
