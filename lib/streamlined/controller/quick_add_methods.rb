@@ -6,6 +6,7 @@ module Streamlined::Controller::QuickAddMethods
     @quick_add_model_class_name = params[:quick_add_model_class_name]
     @quick_add_model_name = @quick_add_model_class_name.underscore
     @quick_add_model = @quick_add_model_class_name.constantize.new
+    @ui = Streamlined::UI.get_ui(@quick_add_model.class)
     instance_variable_set("@#{@quick_add_model_name}", @quick_add_model)
     @quick_add_model.class.delegate_targets.each do |dt| 
       assoc = @quick_add_model.class.reflect_on_association(dt)
@@ -21,6 +22,7 @@ module Streamlined::Controller::QuickAddMethods
     @quick_add_model_class_name = params[:quick_add_model_class_name]
     @quick_add_model_name = @quick_add_model_class_name.underscore
     @quick_add_model = @quick_add_model_class_name.constantize.new(params[@quick_add_model_name.to_sym])
+    @ui = Streamlined::UI.get_ui(@quick_add_model.class)
     instance_variable_set("@#{@quick_add_model_name}", @quick_add_model)
     @success = true
     @quick_add_model.class.delegate_targets.each do |dt| 

@@ -25,6 +25,7 @@ class Streamlined::UI
     declarative_scalar :table_filter, :default=>true
     declarative_scalar :read_only, :default=>false
     declarative_scalar :new_submit_button, :default => {:ajax => true}
+    declarative_scalar :mark_required_fields, :default=>true
     
     def inherited(subclass) #:nodoc:
       # subclasses inherit some settings from superclass
@@ -115,12 +116,9 @@ class Streamlined::UI
       override_columns(:@list_columns, *args)
     end
 
-    # All mandatory columns as specified by :validates_presence_of
+    # All required columns as specified by validation
     def required_columns
-      all_columns.select do |col|
-        col_name = col.belongs_to? ? "#{col.name}_id" : col.name
-        model.reflect_on_validations_for(col_name).find {|e| e.macro == :validates_presence_of }
-      end
+      all_columns.select { |col| col.validates_presence_of? }
     end
     
     def quick_add_columns(*args)

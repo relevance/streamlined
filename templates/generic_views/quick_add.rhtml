@@ -8,10 +8,13 @@
 	
 	<table class="streamlined_form">
 
-		<% Streamlined::UI.get_ui(@quick_add_model.class).quick_add_columns.each do |column| %>
+		<% @ui.quick_add_columns.each do |column| %>
 			<tr>
 				<td class="streamlined_label_cell">
 					<label class="streamlined_label" for="producer_<%= column.name %>"><%= column.human_name %></label>
+					<% if @ui.mark_required_fields && @ui.required_columns.include?(column) %>
+						<span class="required">*</span>
+					<% end %>
 				</td>
 				<td class="streamlined_input_cell">
 					<%= column.render_td(self, @quick_add_model) %>
@@ -22,4 +25,8 @@
 	</table>
 
 	<%= submit_tag "Create" %>
+	
+	<% if @ui.mark_required_fields %>
+		<p class="required">* Required</p>
+	<% end %>
 <% end %>

@@ -27,6 +27,11 @@ class Streamlined::Column::Base
      false
   end
   
+  def validates_presence_of?
+    col_name = belongs_to? ? "#{name}_id" : name
+    parent_model.reflect_on_validations_for(col_name).find {|e| e.macro == :validates_presence_of }
+  end
+  
   def set_attributes(hash)
     hash.each do |k,v|
       sym = "#{k}="
