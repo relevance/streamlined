@@ -17,6 +17,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   attr_reader :underlying_association
   attr_accessor :human_name
   attr_reader :edit_view, :show_view
+  attr_with_default :quick_add, 'true'
   delegates :name, :class_name, :to=>:underlying_association
   
   def initialize(assoc, parent_model, edit, show)
@@ -103,7 +104,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
       choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(parent_model, "#{name}_id".to_sym)
       selected_choice = item.send(name).id if item.send(name)
       result = view.select(model_underscore, "#{name}_id", choices, :selected => selected_choice)
-      result += render_quick_add(view) if belongs_to? && view.params[:action] != 'quick_add'
+      result += render_quick_add(view) if quick_add && belongs_to? && view.params[:action] != 'quick_add'
       result
     else
       # TODO: I was only able to implement editable associations for belongs_to (above)
