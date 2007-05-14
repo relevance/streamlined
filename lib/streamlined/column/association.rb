@@ -115,7 +115,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   
   def render_quick_add(view)
     image = view.image_tag('streamlined/add_16.png', :alt => 'Quick Add', :title => 'Quick Add', :border => '0', :hspace => 2)
-    url = view.url_for(:action => 'quick_add', :quick_add_model_class_name => class_name, :select_id => form_field_id)
+    url = view.url_for(:action => 'quick_add', :model_class_name => class_name, :select_id => form_field_id)
     view.link_to_function(image, "Streamlined.QuickAdd.open('#{url}')")
   end
 end

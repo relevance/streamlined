@@ -1,6 +1,7 @@
 if @success
   select_id = params[:select_id].to_sym
-  page << "$('#{select_id}').options[$('#{select_id}').options.length] = new Option(\"#{@quick_add_model.name}\", \"#{@quick_add_model.id}\")"
+  name = @model.send(params[:model_name_method].blank? ? 'name' : params[:model_name_method])
+  page << "$('#{select_id}').options[$('#{select_id}').options.length] = new Option(\"#{name}\", \"#{@model.id}\")"
   page << "$('#{select_id}').selectedIndex = $('#{select_id}').options.length - 1"
   page[select_id].visual_effect :highlight, :duration => 2, :startcolor => '#114411'
   page << 'Streamlined.QuickAdd.close()'

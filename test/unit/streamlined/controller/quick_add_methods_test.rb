@@ -31,7 +31,7 @@ class Streamlined::Controller::QuickAddMethodsTest < Test::Unit::TestCase
   
   def build_param_and_render_mocks(template)
     flexmock(self) do |mock|
-      mock.should_receive(:params => { :quick_add_model_class_name => 'StubClass' })
+      mock.should_receive(:params => { :model_class_name => 'StubClass' })
       mock.should_receive(:render_or_redirect).with(:success, template).once
     end
   end
