@@ -13,11 +13,7 @@ File.join(Pathname.new(STREAMLINED_ROOT).relative_path_from(Pathname.new(RAILS_R
 STREAMLINED_GENERIC_VIEW_ROOT = "#{STREAMLINED_TEMPLATE_ROOT}/generic_views"
 
 module Streamlined; end
-module Streamlined::Controller 
-  def self.included(base)
-    base.extend(ClassMethods)              
-  end
-end
+module Streamlined::Controller; end
 
 require 'streamlined/controller/crud_methods'
 require 'streamlined/controller/enumeration_methods'
