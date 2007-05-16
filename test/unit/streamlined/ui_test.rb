@@ -93,5 +93,11 @@ class Streamlined::UITest < Test::Unit::TestCase
     assert_equal false, @ui.new_submit_button({:ajax => false})[:ajax]
     assert_equal false, @ui.new_submit_button[:ajax]
   end
-    
+  
+  def test_header_and_footer_partials_have_defaults
+    expected = {}
+    assert_equal expected, @ui.header_partials
+    assert_equal expected, @ui.footer_partials
+  end
+
 end
