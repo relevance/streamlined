@@ -39,7 +39,7 @@ class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
     @params = { :id => '1', :relationship => 'person' }
     rel_type = flexmock(:edit_view => flexmock(:partial => 'partial'))
     flexmock(self) do |mock|
-      mock.should_receive(:relationship_for_name).and_return(rel_type).twice
+      mock.should_receive(:relationship_for_name).and_return(rel_type).once
       mock.should_receive(:set_items_and_all_items).with(rel_type).once
       mock.should_receive(:render).with(:partial => 'partial').once
     end

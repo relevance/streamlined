@@ -5,18 +5,18 @@ module Streamlined::Controller::RelationshipMethods
  def edit_relationship
    self.instance = @root = model.find(params[:id])
    @relationship_name = params[:relationship]
-   rel_type = relationship_for_name(params[:relationship])
-   set_items_and_all_items(relationship_for_name(@relationship_name))
-   render(:partial => rel_type.edit_view.partial)
+   relationship = relationship_for_name(@relationship_name)
+   set_items_and_all_items(relationship)
+   render(:partial => relationship.edit_view.partial)
  end
 
  # Show's the relationship's configured +Show+ view, 
  # as defined in streamlined_ui and Streamlined::Column.
  def show_relationship
    self.instance = @root = model.find(params[:id])
-   rel_type = relationship_for_name(params[:relationship])
-   relationship = instance.class.reflect_on_association(params[:relationship].to_sym)
-   render(:partial => rel_type.show_view.partial, :locals => {:item => instance, :relationship => relationship, :streamlined_def => rel_type.show_view})
+   relationship = relationship_for_name(params[:relationship])
+   render(:partial => relationship.show_view.partial, :locals => {:item => instance,
+     :relationship => relationship, :streamlined_def => relationship.show_view})
  end
 
  # Add new items to the given relationship collection. Used by the #membership view, as 
@@ -68,9 +68,9 @@ module Streamlined::Controller::RelationshipMethods
  end
  
  private
- def set_items_and_all_items(rel_type, item_filter = nil)
+ def set_items_and_all_items(relationship, item_filter = nil)
     @items = instance.send(@relationship_name)
-    if rel_type.associables.size == 1
+    if relationship.associables.size == 1
       @klass = Class.class_eval(params[:klass])
       @klass_ui = Streamlined::UI.get_ui(params[:klass])
       if item_filter
@@ -80,7 +80,7 @@ module Streamlined::Controller::RelationshipMethods
       end
     else
       @all_items = {}
-      rel_type.associables.each do |klass|
+      relationship.associables.each do |klass|
         if item_filter
           @all_items[klass.name] = klass.find(:all, :conditions => klass.conditions_by_like(item_filter))
         else
