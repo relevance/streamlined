@@ -2,7 +2,9 @@
 module Streamlined::RenderMethods
   private
   def generic_view(template)
-    "#{STREAMLINED_GENERIC_VIEW_ROOT}/#{template}"
+    generic_override = File.join(STREAMLINED_GENERIC_OVERRIDE_ROOT, template)
+    puts "GENERIC FILE: #{File.join(RAILS_ROOT, 'app', 'streamlined', 'views', template + '.rhtml')}"
+    File.exist?(File.join(RAILS_ROOT, 'app', 'streamlined', 'views', template + ".rhtml")) ? generic_override : "#{STREAMLINED_GENERIC_VIEW_ROOT}/#{template}"
   end
 
   def managed_views_include?(action)

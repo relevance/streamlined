@@ -11,6 +11,7 @@ STREAMLINED_TEMPLATE_ROOT =
 File.join(Pathname.new(STREAMLINED_ROOT).relative_path_from(Pathname.new(RAILS_ROOT+"/app/views").expand_path),
           "/templates")
 STREAMLINED_GENERIC_VIEW_ROOT = "#{STREAMLINED_TEMPLATE_ROOT}/generic_views"
+STREAMLINED_GENERIC_OVERRIDE_ROOT = File.join('..', 'streamlined', 'views')
 
 module Streamlined; end
 module Streamlined::Controller; end
