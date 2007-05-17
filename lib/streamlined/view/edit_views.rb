@@ -45,10 +45,14 @@ module Streamlined::View::EditViews
   # Like Membership, but with two distinct groups of checkboxes and an autofilter field
   class FilterSelect < Streamlined::View::Base
   
-    def render_on_update(page, rel_name, id)
-      page.replace_html "rel_#{rel_name}_#{id}_unselected", :partial => '/streamlined/relationships/views/filter_select/unselected_items'
-      page.replace_html "rel_#{rel_name}_#{id}_selected", :partial => '/streamlined/relationships/views/filter_select/selected_items'
+    def render_on_update(rel_name, id)
+      @rel_name = rel_name
+      @current_id = id
+      "update_filter_select"
+      # page.replace_html "rel_#{rel_name}_#{id}_unselected", :partial => '../../vendor/plugins/streamlined/templates/relationships/edit_views/filter_select/unselected_items'
+      # page.replace_html "rel_#{rel_name}_#{id}_selected", :partial => '../../vendor/plugins/streamlined/templates/relationships/edit_views/filter_select/selected_items'
     end
+    
   end
   
 end

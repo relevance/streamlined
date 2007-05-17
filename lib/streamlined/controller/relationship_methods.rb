@@ -34,12 +34,13 @@ module Streamlined::Controller::RelationshipMethods
     
     
     if relationship.edit_view.respond_to?(:render_on_update)
-      @relationship_name = rel_name
+      @rel_name = @relationship_name = rel_name
       @root = instance
+      @current_id = instance.id
       set_items_and_all_items(relationship, params[:filter])
-      render :update do |page|
-        relationship.edit_view.render_on_update(page, rel_name, params[:id])
-      end
+      # render :update do |page|
+      render_or_redirect(:success, relationship.edit_view.render_on_update(rel_name, params[:id]))
+      # end
     else
       render(:nothing => true)
     end

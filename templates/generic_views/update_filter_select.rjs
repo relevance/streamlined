@@ -1,0 +1,2 @@
+page.replace_html "rel_#{@rel_name}_#{@current_id}_unselected", :partial => '../../vendor/plugins/streamlined/templates/relationships/edit_views/filter_select/unselected_items'
+page.replace_html "rel_#{@rel_name}_#{@current_id}_selected", :partial => '../../vendor/plugins/streamlined/templates/relationships/edit_views/filter_select/selected_items'
