@@ -89,6 +89,7 @@ module Streamlined::Controller::ClassMethods
   @custom_model_name = nil
 
   def acts_as_streamlined(options = {})
+    @helper_overrides = options[:helpers] || []
     class_eval do
       attr_reader :streamlined_controller_context, :streamlined_request_context
       helper_method :crud_context
@@ -119,10 +120,12 @@ module Streamlined::Controller::ClassMethods
           returning Class.new(ActionView::Base) do |view_class|
             # inject our methods first, so user can override them
             view_class.send(:include, Streamlined::Helper)
+            @helper_overrides.each {|ho| view_class.send(:include, ho) }
             view_class.send(:include, master_helper_module)
           end
       end
-       def initialize_with_streamlined_variables
+      
+      def initialize_with_streamlined_variables
           begin
             initialize_streamlined_values
             @managed_views = ['list', 'new', 'show', 'edit', 'quick_add', 'save_quick_add']
@@ -133,7 +136,7 @@ module Streamlined::Controller::ClassMethods
             streamlined_logger.info("Could not instantiate controller: #{self.class.name}")
             raise ex
           end
-        end
+      end
       alias_method_chain :initialize, :streamlined_variables
     end
   end
