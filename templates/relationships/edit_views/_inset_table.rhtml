@@ -16,7 +16,7 @@
 <% alt = 1 - alt %>
   <tr <%= "class='odd'" if alt == 0 %>>
   <% for column in @klass_ui.user_columns %>
-    <td><%=h item.send(column.name) %></td>
+    <td><%= column.render_td_show(self, item) %></td>
   <% end %>
 
     <td><%= link_to_function image_tag('streamlined/search_16.png', {:alt => 'Show', :title => 'Show', :border => '0'}), "Streamlined.Windows.open_window('Show', '#{url_for(:controller => Inflector.tableize(@klass.name), :action => 'show', :id => item.id)}', #{item.id})" %>
