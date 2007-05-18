@@ -23,6 +23,27 @@ namespace :test do
     t.verbose = true
   end
   
+  require 'test/javascripts/jstest'
+  desc "Runs all the JavaScript unit tests and collects the results"
+  JavaScriptTestTask.new(:javascripts) do |t|
+    tests_to_run     = ENV['TESTS']    && ENV['TESTS'].split(',')
+    browsers_to_test = ENV['BROWSERS'] && ENV['BROWSERS'].split(',')
+
+    t.mount("/test/javascripts")
+    t.mount("/files")
+
+    Dir["test/javascripts/*.html"].sort.each do |test_file|
+      test_file = "/#{test_file}"
+      test_name = test_file[/.*\/(.+?)\.html/, 1]
+      t.run(test_file) unless tests_to_run && !tests_to_run.include?(test_name)
+    end
+
+    %w( safari firefox ie konqueror ).each do |browser|
+      t.browser(browser.to_sym) unless browsers_to_test && !browsers_to_test.include?(browser)
+    end
+  end
+  
+  
   task 'test:functionals'
 
   desc 'Build the MySQL test databases'
