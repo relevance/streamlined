@@ -99,12 +99,12 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   end
   
   def render_td_edit(view, item)
-    if item.respond_to?("#{name}_id")
+    if item.respond_to?(name_as_id)
       choices = items_for_select.collect { |e| [e.streamlined_name(edit_view.fields, edit_view.separator), e.id] }
-      choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(parent_model, "#{name}_id".to_sym)
+      choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name_as_id.to_sym)
       selected_choice = item.send(name).id if item.send(name)
-      result = view.select(model_underscore, "#{name}_id", choices, :selected => selected_choice)
-      result += render_quick_add(view) if quick_add && belongs_to? && view.params[:action] != 'quick_add'
+      result = view.select(model_underscore, name_as_id, choices, :selected => selected_choice)
+      result += render_quick_add(view) if should_render_quick_add?(view)
       result
     else
       # TODO: I was only able to implement editable associations for belongs_to (above)
@@ -117,5 +117,9 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     image = view.image_tag('streamlined/add_16.png', :alt => 'Quick Add', :title => 'Quick Add', :border => '0', :hspace => 2)
     url = view.url_for(:action => 'quick_add', :model_class_name => class_name, :select_id => form_field_id)
     view.link_to_function(image, "Streamlined.QuickAdd.open('#{url}')")
+  end
+  
+  def should_render_quick_add?(view)
+    quick_add && belongs_to? && view.params[:action] != 'quick_add'
   end
 end

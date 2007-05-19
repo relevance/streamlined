@@ -126,6 +126,15 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     assert_equal expected, @ar.render_td_list(*view_and_item_mocks)
   end
   
+  def test_render_enumeration_select
+    @ar.enumeration = ENUM
+    @ar.unassigned_value = 'none'
+    view, item = view_and_item_mocks
+    choices = [['none', nil], ['A', 'A'], ['B', 'B'], ['C', 'C']]
+    view.should_receive(:select).with('model', 'column', choices).once
+    @ar.render_enumeration_select(view, item)
+  end
+  
   def ar_column(name, human_name)
     flexmock(:name => name, :human_name => human_name)
   end

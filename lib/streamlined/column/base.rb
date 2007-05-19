@@ -9,7 +9,7 @@ class Streamlined::Column::Base
   attr_with_default :create_only, 'false'
   attr_with_default :allow_html, 'false'
   attr_with_default :edit_in_list, 'true'
-  attr_with_default :unassigned_value, '"unassigned"'
+  attr_with_default :unassigned_value, '"Unassigned"'
   
   def editable
     !(read_only || create_only) && edit_in_list
@@ -20,15 +20,23 @@ class Streamlined::Column::Base
   end
   
   def form_field_id
-    "#{model_underscore}_#{name}_id"
+    "#{model_underscore}_#{name_as_id}"
+  end
+  
+  def name_as_id
+    "#{name}_id"
   end
   
   def belongs_to?
      false
   end
   
+  def unassigned_option
+    [unassigned_value, nil]
+  end
+  
   def validates_presence_of?
-    col_name = belongs_to? ? "#{name}_id" : name
+    col_name = belongs_to? ? name_as_id : name
     parent_model.reflect_on_validations_for(col_name).find {|e| e.macro == :validates_presence_of }
   end
   

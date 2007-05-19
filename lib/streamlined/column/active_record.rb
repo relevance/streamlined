@@ -57,7 +57,7 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   def render_enumeration_select(view, item)
     id = relationship_div_id(name, item)
     choices = enumeration.collect { |e| [e, e] }
-    choices.unshift(['Unassigned', nil]) if column_can_be_unassigned?(parent_model, name.to_sym)
+    choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name.to_sym)
     view.select(model_underscore, name, choices)
   end
 end

@@ -17,7 +17,7 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   end
   
   def test_unassigned_value_receives_default
-    assert_equal 'unassigned', @addition.unassigned_value
+    assert_equal 'Unassigned', @addition.unassigned_value
   end
   
   def test_render_content
