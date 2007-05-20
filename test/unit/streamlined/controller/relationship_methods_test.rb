@@ -41,7 +41,8 @@ class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
     flexmock(self) do |mock|
       mock.should_receive(:relationship_for_name).and_return(rel_type).once
       mock.should_receive(:set_items_and_all_items).with(rel_type).once
-      mock.should_receive(:render).with(:partial => 'partial').once
+      expected_render_args = { :partial => 'partial', :locals => { :relationship => rel_type }}
+      mock.should_receive(:render).with(expected_render_args).once
     end
     edit_relationship
   end

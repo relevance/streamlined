@@ -6,12 +6,12 @@ module Streamlined::Helpers::FormHelper
     return choice unless model_class.respond_to?('reflect_on_validations_for')
     require 'facet/module/alias_method_chain' unless Module.respond_to?('alias_method_chain')
     return choice unless Module.respond_to?('alias_method_chain')
-    model_class.reflect_on_validations_for(column).collect(&:macro).include?(:validates_presence_of) ? '' : choice
+    model_class.reflect_on_validations_for(column.name).collect(&:macro).include?(:validates_presence_of) ? '' : choice
   end
   
   # Return a boolean based on whether or not the the given column allows for a nil assignment.
-  def column_can_be_unassigned?(model_class, column)
+  def column_can_be_unassigned?(model_class, column_name)
     return true unless model_class.respond_to?('reflect_on_validations_for')
-    !model_class.reflect_on_validations_for(column).collect(&:macro).include?(:validates_presence_of)
+    !model_class.reflect_on_validations_for(column_name).collect(&:macro).include?(:validates_presence_of)
   end
 end

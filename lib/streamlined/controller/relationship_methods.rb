@@ -4,10 +4,10 @@ module Streamlined::Controller::RelationshipMethods
  # and Streamlined::Column.
  def edit_relationship
    self.instance = @root = model.find(params[:id])
-   @relationship_name = params[:relationship]
-   relationship = relationship_for_name(@relationship_name)
+   @rel_name = params[:relationship]
+   relationship = relationship_for_name(@rel_name)
    set_items_and_all_items(relationship)
-   render(:partial => relationship.edit_view.partial)
+   render(:partial => relationship.edit_view.partial, :locals => {:relationship => relationship})
  end
 
  # Show's the relationship's configured +Show+ view, 
@@ -34,7 +34,7 @@ module Streamlined::Controller::RelationshipMethods
     
     
     if relationship.edit_view.respond_to?(:render_on_update)
-      @rel_name = @relationship_name = rel_name
+      @rel_name = rel_name
       @root = instance
       @current_id = instance.id
       set_items_and_all_items(relationship, params[:filter])
@@ -70,7 +70,7 @@ module Streamlined::Controller::RelationshipMethods
  
  private
  def set_items_and_all_items(relationship, item_filter = nil)
-    @items = instance.send(@relationship_name)
+    @items = instance.send(@rel_name)
     if relationship.associables.size == 1
       @klass = Class.class_eval(params[:klass])
       @klass_ui = Streamlined::UI.get_ui(params[:klass])

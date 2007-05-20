@@ -7,7 +7,7 @@ module Streamlined::Controller::EnumerationMethods
     rel_type = model_ui.scalars[@enumeration_name.to_sym]
     @all_items = rel_type.enumeration
     @selected_item = instance.send(@enumeration_name)
-    render(:partial => rel_type.edit_view.partial, :locals => {:item => instance})
+    render(:partial => rel_type.edit_view.partial, :locals => {:item => instance, :relationship => rel_type})
   end
 
   # Show's the enumeration's configured +Show+ view, 

@@ -20,7 +20,7 @@ class Streamlined::Controller::EnumerationMethodsTest < Test::Unit::TestCase
   end
   
   def test_edit_enumeration
-    render_options = { :partial => 'edit_partial', :locals => { :item => @item }}
+    render_options = { :partial => 'edit_partial', :locals => { :item => @item, :relationship => @rel_type }}
     flexmock(self).should_receive(:render).with(render_options).and_return('render_results').once
 
     assert_equal 'render_results', edit_enumeration

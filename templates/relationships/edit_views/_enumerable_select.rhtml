@@ -3,7 +3,7 @@
 	<input type="hidden" name="id" value="<%= item.id %>">
 	<input type="hidden" name="rel_name" value="<%= @enumeration_name %>">
 	<select name="item" id="item">
-	  <%= unassigned_if_allowed(model, @enumeration_name.to_sym, @items) %>	
+	  <%= unassigned_if_allowed(model, relationship, @items) %>	
 <% for an_item in @all_items %>
     <option <%= 'selected' if @selected_item == an_item %> value="<%= an_item %>"><%= an_item %></option>
 <% end %>
