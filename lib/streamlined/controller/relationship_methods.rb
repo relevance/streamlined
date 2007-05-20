@@ -27,11 +27,10 @@ module Streamlined::Controller::RelationshipMethods
     klass = Class.class_eval(params[:klass])
     relationship = relationship_for_name(rel_name)
     
-    items = params[:item].collect{|k,v| k if v=='on'}.reject{|i| i==nil}  
+    items = extract_ids_of_checked_items_from_hash(params[:item])
     instance.send(rel_name).clear
     instance.send(rel_name).push(klass.find(items))
     instance.save
-    
     
     if relationship.edit_view.respond_to?(:render_on_update)
       @rel_name = rel_name
@@ -93,6 +92,10 @@ module Streamlined::Controller::RelationshipMethods
  
  def relationship_for_name(rel_name)
    model_ui.relationships[rel_name.to_sym]
+ end
+ 
+ def extract_ids_of_checked_items_from_hash(items)
+   items ? items.collect{|k,v| k if v=='on'}.reject{|i| i==nil} : []
  end
  
 end

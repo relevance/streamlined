@@ -19,7 +19,7 @@ class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
     instance = flexmock
     instance.should_receive(:person_id=).with(nil)
     instance.should_receive(:person_id=).with('new_item')
-    instance.should_receive(:save).and_return(true)
+    instance.should_receive(:save => true, :rel_name => [])
     instance
   end
   
@@ -47,6 +47,18 @@ class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
     edit_relationship
   end
   
+  def test_update_relationship
+    @params = { :id => '1', :rel_name => 'rel_name', :klass => 'StubClass', :item => { '1' => 'on' }}
+    build_update_relationship_mocks
+    update_relationship
+  end
+  
+  def test_update_relationship_without_item
+    @params = { :id => '1', :rel_name => 'rel_name', :klass => 'StubClass' }
+    build_update_relationship_mocks
+    update_relationship
+  end
+  
   def test_update_n_to_one_with_nil_item
     @params = { :id => '1', :rel_name => 'person_id' }
     update_n_to_one
@@ -60,5 +72,14 @@ class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
   def test_update_n_to_one_with_item_and_class_name
     @params = { :id => '1', :rel_name => 'person_id', :item => '1::StubClass' }
     update_n_to_one
+  end
+  
+  def build_update_relationship_mocks
+    rel_type = flexmock(:edit_view => flexmock(:partial => 'partial'))
+    model_ui = flexmock(:relationships => { :rel_name => rel_type })
+    flexmock(self) do |mock|
+      mock.should_receive(:model_ui => model_ui).once
+      mock.should_receive(:render).with(:nothing => true).once
+    end
   end
 end
