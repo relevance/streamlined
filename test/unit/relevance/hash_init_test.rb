@@ -1,6 +1,6 @@
-require "test/test_helper"
+require File.dirname(__FILE__) + '/../../test_helper'
   
-class HashInitTest < Test::Unit::TestCase
+class Relevance::HashInitTest < Test::Unit::TestCase
   def setup
     @c = Class.new do
       attr_accessor :one, :two

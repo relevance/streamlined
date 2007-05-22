@@ -1,4 +1,4 @@
-require "test/test_helper"
+require File.dirname(__FILE__) + '/../../test_helper'
   
 class EnumerableTest < Test::Unit::TestCase
   

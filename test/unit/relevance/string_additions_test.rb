@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 require 'relevance/string_additions'
 
-class StringAdditionsTest < Test::Unit::TestCase
+class Relevance::StringAdditionsTest < Test::Unit::TestCase
   def test_const_for_name
     assert_equal String, 'String'.to_const
     assert_equal String, '::String'.to_const

@@ -1,6 +1,6 @@
-require "test/test_helper"
+require File.dirname(__FILE__) + '/../../test_helper'
 
-class ModuleExtensionsTest < Test::Unit::TestCase
+class Relevance::ModuleExtensionsTest < Test::Unit::TestCase
   def callme(*args); "foo"; end
     
   def test_wrap_method
