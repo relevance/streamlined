@@ -76,6 +76,7 @@ require 'rcov/rcovtask'
 namespace 'test' do
   namespace 'coverage' do
     namespace 'all' do
+      desc 'Full coverage test'
       task :test do
         rm_f "coverage"
         rm_f "coverage.data"

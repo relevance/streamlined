@@ -4,9 +4,9 @@ end
 
 require 'relevance/string_additions'
 require 'relevance/module_additions'
-require 'implants/module'
-require 'implants/hash_init'
-require 'implants/csv'
+require 'relevance/module'
+require 'relevance/hash_init'
+require 'relevance/csv'
 require 'relevance/active_record_extensions'
 require 'streamlined'
 
