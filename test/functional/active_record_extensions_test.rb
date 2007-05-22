@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__), '../test_functional_helper')
-require 'active_record_extensions'
+require 'relevance/active_record_extensions'
 
 class ActiveRecordExtensionsTest < Test::Unit::TestCase
   fixtures :people, :poets, :poems

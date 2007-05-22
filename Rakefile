@@ -80,8 +80,13 @@ namespace 'test' do
         rm_f "coverage"
         rm_f "coverage.data"
         rcov = "rcov --sort coverage --rails --aggregate coverage.data --text-summary -Ilib"
-        system("#{rcov} --no-html test/unit/**/*_test.rb")
-        system("#{rcov} --html test/functional/**/*_test.rb")  
+        # this is painful, but the rake passthrough isn't working
+        system("#{rcov} --no-html test/unit/*_test.rb")
+        system("#{rcov} --no-html test/unit/*/*_test.rb")
+        system("#{rcov} --no-html test/unit/*/*/*_test.rb")
+        system("#{rcov} --no-html test/functional/*_test.rb")  
+        system("#{rcov} --no-html test/functional/*/*_test.rb")  
+        system("#{rcov} --html test/functional/*/*/*_test.rb")
       end
     end
     task :report => "all:test" do

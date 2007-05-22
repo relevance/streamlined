@@ -7,7 +7,7 @@ require 'relevance/module_additions'
 require 'implants/module'
 require 'implants/hash_init'
 require 'implants/csv'
-require 'active_record_extensions'
+require 'relevance/active_record_extensions'
 require 'streamlined'
 
 # Rails 1.2.2 bug workaround
