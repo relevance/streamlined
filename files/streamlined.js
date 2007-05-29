@@ -157,7 +157,7 @@ Streamlined.Windows = {
 	  	win2.show();		
 	},
 	
-	open_local_window: function(title_prefix, content, model) {
+	open_local_window: function(title_prefix, content, model, callback) {
 	    id= "show_win_" + model;
 	    if($(id)) {
 	        return;
@@ -171,17 +171,18 @@ Streamlined.Windows = {
 		});
 		win2.getContent().innerHTML = content;
 		win2.setDestroyOnClose();
+		if (callback != null) Windows.addObserver( { onDestroy: function(eventName, win){ callback(); } } );
 		win2.show();
 	},
 	
-	open_local_window_from_url: function(title_prefix, url, model) {
+	open_local_window_from_url: function(title_prefix, url, model, callback) {
 	        if (model == null) {
 	            model = "new"
 	        }
 	        new Ajax.Request(url, {
 			method: "get", 
 			onComplete: function(request) {
-			        Streamlined.Windows.open_local_window(title_prefix, request.responseText, model);
+			        Streamlined.Windows.open_local_window(title_prefix, request.responseText, model, callback);
 			}
 		});
 	}
