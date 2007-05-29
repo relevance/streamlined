@@ -99,5 +99,14 @@ class Streamlined::UITest < Test::Unit::TestCase
     assert_equal expected, @ui.header_partials
     assert_equal expected, @ui.footer_partials
   end
+  
+  def test_custom_columns_group
+    first_name = flexmock(:name => :first_name)
+    last_name = flexmock(:name => :last_name)
+    flexmock(Class).should_receive(:columns).and_return([first_name, last_name]).once
+    flexmock(@ui).should_receive(:default_model).and_return(Class).at_least.once
+    @ui.custom_columns_group(:group, :first_name, :last_name)
+    assert_equal 2, @ui.custom_columns_group(:group).size
+  end
 
 end

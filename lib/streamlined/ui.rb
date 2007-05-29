@@ -133,6 +133,26 @@ class Streamlined::UI
       end
     end
     
+    # Creates a custom group of columns that doesn't override any of the standard
+    # sets of columns. The only time this would be useful is if a custom view
+    # needed access to Streamlined's nifty renderers outside of the traditional
+    # list, show, edit, etc. column groups. For example:
+    #
+    #   custom_columns_group :group_name, :first_name, :last_name
+    #
+    # This code would create an instance variable called @group_name that would
+    # contain the first_name and last_name columns. The group could then be
+    # accessed inside a custom view this way:
+    #
+    #   <% for column in custom_columns_group(:group_name) %>
+    #     ...
+    #   <% end %>
+    #
+    def custom_columns_group(name, *args)
+      name = "@#{name}".to_sym
+      args.size > 0 ? convert_args_to_columns(name, *args) : instance_variable_get(name)
+    end
+    
     def column(name)
       scalars[name] || relationships[name] || delegations[name] || additions[name] 
     end
