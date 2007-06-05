@@ -7,6 +7,7 @@ class Streamlined::Column::Base
   attr_accessor :link_to, :link_to_in_list, :popup, :parent_model
   attr_with_default :read_only, 'false'
   attr_with_default :create_only, 'false'
+  attr_with_default :update_only, 'false'
   attr_with_default :allow_html, 'false'
   attr_with_default :edit_in_list, 'true'
   attr_with_default :unassigned_value, '"Unassigned"'
@@ -103,7 +104,7 @@ class Streamlined::Column::Base
     # TODO: extract this nastiness into a class?  Only if we see one more need for objectified crud contexts!!!!!!
     case view.crud_context
     when :new
-      !self.read_only
+      !(self.read_only || self.update_only)
     when :show, :list
       true
     when :edit
