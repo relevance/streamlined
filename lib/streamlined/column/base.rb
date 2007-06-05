@@ -4,7 +4,7 @@ require 'streamlined/helper'
 class Streamlined::Column::Base
   include Streamlined::Helpers::FormHelper
   include ERB::Util
-  attr_accessor :link_to, :popup, :parent_model
+  attr_accessor :link_to, :link_to_in_list, :popup, :parent_model
   attr_with_default :read_only, 'false'
   attr_with_default :create_only, 'false'
   attr_with_default :allow_html, 'false'
@@ -68,6 +68,12 @@ class Streamlined::Column::Base
       link_args = link_to.has_key?(:id) ? link_to : link_to.merge(:id=>item)
       content = view.wrap_with_link(link_args) {content}
     end
+    
+    if link_to_in_list && view.crud_context == :list
+      link_args = link_to_in_list.has_key?(:id) ? link_to_in_list : link_to_in_list.merge(:id=>item)
+      content = view.wrap_with_link(link_args) {content}  
+    end
+    
     if popup
       popup_args = popup.has_key?(:id) ? popup : popup.merge(:id=>item)
       content = "<span class=\"sl-popup\">#{view.invisible_link_to(popup_args)}#{content}</span>"

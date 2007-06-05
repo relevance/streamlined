@@ -1,5 +1,5 @@
 class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
-  attr_accessor :ar_column, :human_name, :enumeration
+  attr_accessor :ar_column, :human_name, :enumeration, :check_box
   delegates :name, :to => :ar_column
   
   def initialize(ar_column, parent_model)
@@ -48,6 +48,8 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   def render_td_edit(view, item)    
     if enumeration
       render_enumeration_select(view, item)
+    elsif check_box
+      view.check_box(model_underscore, name)
     else
       view.input(model_underscore, name)
     end
@@ -56,7 +58,7 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   
   def render_enumeration_select(view, item)
     id = relationship_div_id(name, item)
-    choices = enumeration.collect { |e| [e, e] }
+    choices = enumeration.to_2d_array
     choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name.to_sym)
     view.select(model_underscore, name, choices)
   end

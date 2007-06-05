@@ -5,7 +5,7 @@ module Streamlined::Controller::EnumerationMethods
     self.instance = model.find(params[:id])
     @enumeration_name = params[:enumeration]
     rel_type = model_ui.scalars[@enumeration_name.to_sym]
-    @all_items = rel_type.enumeration
+    @all_items = rel_type.enumeration.to_2d_array
     @selected_item = instance.send(@enumeration_name)
     render(:partial => rel_type.edit_view.partial, :locals => {:item => instance, :relationship => rel_type})
   end

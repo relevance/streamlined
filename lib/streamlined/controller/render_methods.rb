@@ -29,6 +29,8 @@ module Streamlined::Controller::RenderMethods
         render(options[:render])
       elsif options[:redirect_to]
         redirect_to(options[:redirect_to])
+      elsif options[:render_append]
+        render_append(*options[:render_append])
       end
     end
   end
