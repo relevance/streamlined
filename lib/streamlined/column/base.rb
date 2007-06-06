@@ -4,7 +4,7 @@ require 'streamlined/helper'
 class Streamlined::Column::Base
   include Streamlined::Helpers::FormHelper
   include ERB::Util
-  attr_accessor :link_to, :link_to_in_list, :popup, :parent_model
+  attr_accessor :link_to, :link_to_in_list, :popup, :parent_model, :wrapper
   attr_with_default :read_only, 'false'
   attr_with_default :create_only, 'false'
   attr_with_default :update_only, 'false'
@@ -120,5 +120,9 @@ class Streamlined::Column::Base
   
   def div_wrapper(id, &block)
     "<div id=\"#{id}\">#{yield}</div>"
+  end
+  
+  def wrap(content)
+    wrapper && wrapper.respond_to?(:call) ? wrapper.call(content) : content
   end
 end

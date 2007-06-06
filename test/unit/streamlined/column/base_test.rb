@@ -77,6 +77,15 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     assert_equal expected_th, association.render_th(nil, nil)
   end
   
+  def test_wrapper
+    association = Association.new(@ar_assoc, nil, :inset_table, :count)
+    assert_equal 'content', association.wrap('content')
+    association.wrapper = :object_that_does_not_respond_to_call
+    assert_equal 'content', association.wrap('content')
+    association.wrapper = Proc.new { |c| "<<<#{c}>>>" }
+    assert_equal '<<<content>>>', association.wrap('content')
+  end
+  
 private
   def expected_th
     returning Builder::XmlMarkup.new do |xml|

@@ -116,6 +116,11 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     @association.render_td_edit(view, item)
   end
   
+  def test_render_td_edit_with_wrapper_set
+    @association.wrapper = Proc.new { |c| "<<<#{c}>>>" }
+    assert_equal '<<<[TBD: editable associations]>>>', @association.render_td_edit(*view_and_item_mocks)
+  end
+  
   def test_render_td_list
     expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>link"
     assert_equal expected, @association.render_td_list(*view_and_item_mocks)

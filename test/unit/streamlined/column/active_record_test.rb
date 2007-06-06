@@ -77,21 +77,27 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     assert @ar.show_view.is_a?(Streamlined::View::ShowViews::Enumerable)
   end
   
+  def test_render_td_edit
+    (view = flexmock).should_receive(:input).with('model', 'column').once
+    @ar.render_td_edit(view, 'item')
+  end
+  
   def test_render_td_edit_with_enumeration
     @ar.enumeration = %w{ A B C }
     flexmock(@ar).should_receive(:render_enumeration_select).with('view', 'item').and_return('select').once
     assert_equal 'select', @ar.render_td_edit('view', 'item')
   end
   
-  def test_render_td_edit
-    (view = flexmock).should_receive(:input).with('model', 'column').once
-    @ar.render_td_edit(view, 'item')
-  end
-  
   def test_render_td_edit_with_checkbox
     @ar.check_box = true
     (view = flexmock).should_receive(:check_box).with('model', 'column').once
     @ar.render_td_edit(view, 'item')
+  end
+  
+  def test_render_td_with_wrapper
+    @ar.wrapper = Proc.new { |c| "<<<#{c}>>>" }
+    (view = flexmock).should_receive(:input).with('model', 'column').and_return('result').once
+    assert_equal '<<<result>>>', @ar.render_td_edit(view, 'item')
   end
   
   def test_render_td_as_edit

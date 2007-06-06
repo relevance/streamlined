@@ -99,17 +99,16 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   end
   
   def render_td_edit(view, item)
+    # TODO: I was only able to implement editable associations for belongs_to
+    result = "[TBD: editable associations]"
     if item.respond_to?(name_as_id)
       choices = items_for_select.collect { |e| [e.streamlined_name(edit_view.fields, edit_view.separator), e.id] }
       choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name_as_id.to_sym)
       selected_choice = item.send(name).id if item.send(name)
       result = view.select(model_underscore, name_as_id, choices, :selected => selected_choice)
       result += render_quick_add(view) if should_render_quick_add?(view)
-      result
-    else
-      # TODO: I was only able to implement editable associations for belongs_to (above)
-      "[TBD: editable associations]"
     end
+    wrap(result)
   end 
   alias :render_td_new :render_td_edit
   

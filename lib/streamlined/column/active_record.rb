@@ -45,14 +45,15 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     div
   end
   
-  def render_td_edit(view, item)    
+  def render_td_edit(view, item)
     if enumeration
-      render_enumeration_select(view, item)
+      result = render_enumeration_select(view, item)
     elsif check_box
-      view.check_box(model_underscore, name)
+      result = view.check_box(model_underscore, name)
     else
-      view.input(model_underscore, name)
+      result = view.input(model_underscore, name)
     end
+    wrap(result)
   end
   alias :render_td_new :render_td_edit
   
