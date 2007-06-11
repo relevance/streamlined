@@ -40,17 +40,6 @@ module Streamlined::Reflection
   end
   
   private
-  # Enforce parity of options on any relationship declaration.
-  # * use of the :list summary requires a :fields declaration
-  # TODO: move into association
-  def ensure_options_parity(options, association)
-    # RAILS_DEFAULT_LOGGER.debug("ensure_options_parity: #{options.inspect}, #{association.inspect}")
-    return if options == nil || options = {}
-    raise ArgumentError, "STREAMLINED ERROR: Error in #{self.name} : Cannot specify *:summary => :list* without also specifying the :fields option (#{options.inspect})" if options[:summary] && options[:summary][:name] == :list && !options[:summary][:fields]
-    raise ArgumentError, "STREAMLINED ERROR: Error in #{self.name} : Cannot use *:summary => :name* for a #{association.macro} relationship" if options[:summmary] && options[:summary][:name] == :name && [:has_many, :has_and_belongs_to_many].include?(association.macro)  
-    raise ArgumentError, "STREAMLINED ERROR: Error in #{self.name} : Cannot use *:view => :filter_select* for a #{association.macro} relationship" if options[:view] && options[:view][:name] == :filter_select && [:has_one, :belongs_to].include?(association.macro)  
-  end
-     
   def create_relationship(rel)
     association = model.reflect_on_association(rel)
     raise Exception, "STREAMLINED ERROR: No association '#{rel}' on class #{model}." unless association
