@@ -20,8 +20,7 @@ class Streamlined::ReflectionTest < Test::Unit::TestCase
   def test_reflect_on_relationships
     self.model=Poet
     hash = reflect_on_relationships
-    # TODO: why does poet show up here?
-    assert_equal(Set.new([:poems,:poet]), Set.new(hash.keys))
+    assert_equal(Set.new([:poems]), Set.new(hash.keys))
     hash.each do |k,v|
       assert_equal k, v.name
     end

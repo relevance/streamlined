@@ -8,11 +8,11 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   end
   
   def test_all_columns
-    assert_equal_sets([:poet,:id,:first_name,:poems,:last_name],@ui.all_columns.map{|x| x.name.to_sym})
+    assert_equal_sets([:id,:first_name,:poems,:last_name],@ui.all_columns.map{|x| x.name.to_sym})
   end
 
   def test_default_user_columns
-    assert_equal_sets([:poet,:first_name,:poems,:last_name],@ui.user_columns.map{|x| x.name.to_sym})
+    assert_equal_sets([:first_name,:poems,:last_name],@ui.user_columns.map{|x| x.name.to_sym})
   end
   
   def test_user_columns_override

@@ -16,7 +16,7 @@ class ActiveRecordExtensionsTest < Test::Unit::TestCase
   end
   
   def test_has_ones
-    assert_equal 1, Poet.has_ones.size
+    assert_equal 0, Poet.has_ones.size
     assert_equal 0, Person.has_ones.size
   end
   
