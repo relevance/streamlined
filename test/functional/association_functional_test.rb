@@ -8,4 +8,9 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     @association = Association.new(Poet.reflect_on_association(:poems), Poet, :inset_table, :count)
     assert_equal [Poem], @association.associables
   end
+
+  def test_associables_for_polymorphic_association
+    @association = Association.new(Authorship.reflect_on_association(:publication), Author, :inset_table, :count)
+    assert_equal_sets [Book, Article], @association.associables
+  end
 end
