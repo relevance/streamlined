@@ -109,4 +109,14 @@ class Streamlined::UITest < Test::Unit::TestCase
     assert_equal 2, @ui.custom_columns_group(:group).size
   end
 
+  def test_required_columns
+    required_col = flexmock("column")
+    required_col.should_receive(:validates_presence_of?).and_return(true).once
+
+    optional_col = flexmock("column")
+    optional_col.should_receive(:validates_presence_of?).and_return(false).once
+
+    flexmock(@ui).should_receive(:all_columns).and_return([required_col, optional_col]).once
+    assert_equal [required_col], @ui.required_columns
+  end
 end

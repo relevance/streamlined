@@ -61,6 +61,11 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     assert_kind_of count_class, a.show_view
     assert_kind_of inset_table_class, a.edit_view
   end
+
+  def test_show_and_edit_view_bad_args
+    assert_raise(ArgumentError) { a = Association.new(@ar_assoc, nil, [:inset_table], Object.new) }
+    assert_raise(ArgumentError) { a = Association.new(@ar_assoc, nil, Object.new, [:count]) }
+  end
   
   def test_items_for_select_with_one_associable
     flexmock(@association).should_receive(:associables).and_return([SomeClass]).once

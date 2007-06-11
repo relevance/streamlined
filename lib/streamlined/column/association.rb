@@ -61,7 +61,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   # Returns a list of all the classes that can be used to satisfy this relationship.  In a polymorphic relationship, it is the union 
   # of every type that is configured :as the relationship type.  For direct associations, it is the listed type of the relationship.      
   def associables        
-    return [Class.class_eval(@underlying_association.class_name)] unless @underlying_association.options[:polymorphic]
+    return [@underlying_association.class_name.constantize] unless @underlying_association.options[:polymorphic]
     results = []
     ObjectSpace.each_object(Class) do |klass|
       results << klass if klass.ancestors.include?(ActiveRecord::Base) && klass.reflect_on_all_associations.collect {|a| a.options[:as]}.include?(@underlying_association.name)

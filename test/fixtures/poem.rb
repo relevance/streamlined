@@ -1,3 +1,3 @@
-class Poet < ActiveRecord::Base
+class Poem < ActiveRecord::Base
   belongs_to :poet
 end
