@@ -4,5 +4,8 @@ class Author < ActiveRecord::Base
                       :conditions => "authorships.publication_type = 'Article'"
   has_many :books,    :through => :authorships, :source => :book,
                       :conditions => "authorships.publication_type = 'Book'"
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end
 

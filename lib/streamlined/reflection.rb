@@ -29,13 +29,13 @@ module Streamlined::Reflection
   
   def reflect_on_delegates
     delegates = {}
-      if model.respond_to?(:delegate_targets) && model.delegate_targets
-        model.delegate_targets.each do |target|
-          ar_assoc = model.reflect_on_association(target)
-          ui = Streamlined::UI.get_ui(ar_assoc.class_name)
-          ui.all_columns.each {|col| delegates[col.name.to_sym] = col}
-        end
+    if model.respond_to?(:delegate_targets) && model.delegate_targets
+      model.delegate_targets.each do |target|
+        ar_assoc = model.reflect_on_association(target)
+        ui = Streamlined::UI.get_ui(ar_assoc.class_name)
+        ui.all_columns.each {|col| delegates[col.name.to_sym] = col}
       end
+    end
     delegates
   end
   

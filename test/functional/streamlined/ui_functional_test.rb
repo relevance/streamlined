@@ -55,5 +55,18 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   def test_id_fragment
     assert_equal "Count", @ui.id_fragment(Poet.reflect_on_association(:poems), "show")
     assert_equal "Membership", @ui.id_fragment(Poet.reflect_on_association(:poems), "edit")
+  end      
+  
+  def test_reflect_on_model_with_no_delegates
+    assert_equal({}, @ui.reflect_on_delegates)
+  end
+              
+  # TODO: hash storage of name/column pairs will result in name collisions if 
+  # two different delegates have the same column names. Is this intentional?
+  def test_reflect_on_model_with_delegates
+    @ui.model = Authorship
+    delegate_hash = @ui.reflect_on_delegates
+    assert_equal_sets [:articles, :first_name, :authorships, :id, :books, :last_name], delegate_hash.keys
+    assert_equal_sets [Streamlined::Column::Association, Streamlined::Column::ActiveRecord], delegate_hash.values.map(&:class)
   end
 end

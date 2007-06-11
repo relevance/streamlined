@@ -43,15 +43,21 @@ module Streamlined::View::ShowViews
     
   end
   
-  class Graph < Streamlined::View::Base                            
-    def graph_data(item, relationship)
+  class Graph < Streamlined::View::Base
+    def must_have_sparklines!
       raise "STREAMLINED ERROR: Cannot use the Sparklines Graph relationship summary: need to install Sparklines plugin first (requires RMagick, which is not the easiest thing to install, we're just warning you)" unless 'Sparklines'.to_const
+    end
+                                   
+    # TODO: refactor pie calculation into AR helper method
+    # TODO: should invalid chart type raise an error?
+    # TODO: graph demo in sport project                            
+    def graph_data(item, relationship)
+      must_have_sparklines!
       if block_given?
         return yield(item, relationship)
       else
         case @options[:type].to_sym
         when :pie
-          RAILS_DEFAULT_LOGGER.debug("DATA: #{(item.send(relationship.name).size/relationship.klass.count)*100}")
           return [(item.send(relationship.name).size.to_f/relationship.klass.count.to_f)*100]
         else
           return [0]

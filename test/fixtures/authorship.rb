@@ -4,5 +4,6 @@ class Authorship < ActiveRecord::Base
   belongs_to :article,  :class_name => "Article",
                         :foreign_key => "publication_id"
   belongs_to :book,     :class_name => "Book",
-                        :foreign_key => "publication_id"
+                        :foreign_key => "publication_id"  
+  delegates :author_name, :to=>:author, :method=>:full_name
 end
