@@ -122,6 +122,10 @@ class Streamlined::UI
     def required_columns
       all_columns.select { |col| col.validates_presence_of? }
     end
+                  
+    def id_fragment(relationship, crud_type)
+      relationships[relationship.name].send("#{crud_type}_view").id_fragment  
+    end
     
     def quick_add_columns(*args)
       if args.size > 0

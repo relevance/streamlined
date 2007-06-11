@@ -119,4 +119,16 @@ class Streamlined::UITest < Test::Unit::TestCase
     flexmock(@ui).should_receive(:all_columns).and_return([required_col, optional_col]).once
     assert_equal [required_col], @ui.required_columns
   end
+  
+  def test_quick_add_columns_with_args
+    flexmock(@ui).should_receive(:convert_args_to_columns).and_return(:return_val).once
+    assert_equal :return_val, @ui.quick_add_columns(:anything)
+  end
+
+  def test_quick_add_columns_with_no_args
+    addition = flexmock("addition")
+    addition.should_receive(:is_a?).and_return(true).once
+    flexmock(@ui).should_receive(:user_columns).and_return([:anything, addition]).once
+    assert_equal [:anything], @ui.quick_add_columns
+  end
 end
