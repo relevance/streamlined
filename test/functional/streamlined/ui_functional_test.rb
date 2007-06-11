@@ -51,5 +51,9 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   def test_cannot_find_instance_method_when_not_declared
     assert_raise(Streamlined::Error) {@ui.list_columns :first_name, :last_name, :arbitrary_instance_method_2}
   end
-  
+
+  def test_id_fragment
+    assert_equal "Count", @ui.id_fragment(Poet.reflect_on_association(:poems), "show")
+    assert_equal "Membership", @ui.id_fragment(Poet.reflect_on_association(:poems), "edit")
+  end
 end

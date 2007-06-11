@@ -8,9 +8,6 @@ class Streamlined::HelperTest < Test::Unit::TestCase
     @inst.extend Streamlined::Helper
   end
 
-  # def relationship_div_id(relationship, item, in_window = false)
-  #   "#{model_ui.id_fragment(relationships[relationship.name], :edit)}::#{relationship.name}::#{item.id}::#{relationship.class_name}#{'::win' if in_window}"
-  # end
   def test_relationship_div_id
     rel = flexmock(:name => "relationship-name", :class_name => "relationship-class-name")
     item = Class.new {attr_accessor :id}.new
