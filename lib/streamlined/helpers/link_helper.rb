@@ -11,6 +11,11 @@ module Streamlined::Helpers::LinkHelper
         "(unknown)"
     end
   end
+  
+  def link_to_toggler(link, element)
+    link_to(link, "\##{element}", :class=>"sl_toggler")
+  end
+  
   # TODO: add unobtrusive JavaScript for:
   # Streamlined.Windows.open_local_window_from_url('New', '#{url_for(:action => 'new')}'
   def link_to_new_model

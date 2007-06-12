@@ -28,4 +28,9 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
                  @view.wrap_with_link(:action=>"show", :id=>@item.id) {"foo"}
   end
   
+  def test_link_toggle_element
+    assert_equal '<a href="#some_elem" class="sl_toggler">click me</a>',
+                 @view.link_to_toggler('click me', 'some_elem')
+  end
+  
 end

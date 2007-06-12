@@ -117,9 +117,19 @@ Streamlined.Menu = {
 		}
   }
 };
+Streamlined.Toggler = {
+  initialize: function() {
+    $$(".sl_toggler").each((function(el) {
+	    Event.observe(el, "mousedown", (function() {
+        Element.toggle(el.href.replace(/.*#/,""))
+	    }).bind(this));
+    }).bind(this));
+  }
+}
 Event.observe(window, "load", function() {
   Streamlined.SortSelector.initialize();
   Streamlined.Menu.initialize();
+  Streamlined.Toggler.initialize();
   Streamlined.FilterWatcher.initialize();
   Streamlined.Popup.initialize.bind(Streamlined.Popup)();
   if ($('spinner')) {
