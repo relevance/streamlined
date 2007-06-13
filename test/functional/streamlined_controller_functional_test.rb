@@ -2,7 +2,6 @@ require File.join(File.dirname(__FILE__), '../test_functional_helper')
 require 'streamlined/controller'
 require 'streamlined/ui'
 
-# TODO: fold into the two meta-test classes
 class StreamlinedControllerTest < Test::Unit::TestCase
   fixtures :people
   def setup
@@ -33,8 +32,9 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_response :success
     assert_template generic_view("list")
     assert_kind_of(ActionController::Pagination::Paginator, assigns(:streamlined_item_pages))
-    assert_select("\#model_list", true, "should have generic id names")
+    assert_select("\#model_list", true, "should have generic id names for Ajax.Updater to replace")
     assert_select("\#people_list", false, "should not have model-specific id names")
+    assert_select 'table#sl_list_people', true, 'table should have generic id for acceptance testing'
   end
   
   def test_list_with_non_ar_column
@@ -96,8 +96,36 @@ END
     assert_template generic_view("show")
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
+    assert_select '#sl_field_person_first_name' do
+      assert_select 'td.sl_show_label span', 'First name:'
+      assert_select 'td.sl_show_value', 'Justin'
+    end
     # TODO: refactor poke code so this becomes true
     # assert_unobtrusive_javascript
+  end
+  
+  def test_edit
+    get :edit, :id => 1
+    assert_response :success
+    assert_template generic_view("edit")
+    assert_not_nil assigns(:streamlined_item)
+    assert assigns(:streamlined_item).valid?
+    assert_select '#sl_field_person_first_name' do
+      assert_select 'td.sl_edit_label label', 'First name'
+      assert_select 'td.sl_edit_value input', ''  # test value='Justin'?
+    end
+  end
+
+  def test_new
+    get :new
+    assert_response :success
+    assert_template generic_view("new")
+    assert_not_nil assigns(:streamlined_item)
+    assert assigns(:streamlined_item).valid?
+    assert_select '#sl_field_person_first_name' do
+      assert_select 'td.sl_edit_label label', 'First name'
+      assert_select 'td.sl_edit_value input', ''
+    end
   end
   
   def test_create_xhr

@@ -1,3 +1,5 @@
+# Helpers for creating links. Many of these links have additional functionality, implied by
+# CSS classes. Streamlined.js picks up these CSS classes and adds capabilities.
 module Streamlined::Helpers::LinkHelper
   def guess_show_link_for(model)
     case model
@@ -12,6 +14,7 @@ module Streamlined::Helpers::LinkHelper
     end
   end
   
+  # Clicking on the +link+ will toggle visibility of the DOM ID +element+.
   def link_to_toggler(link, element)
     link_to(link, "\##{element}", :class=>"sl_toggler")
   end

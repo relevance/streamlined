@@ -3,15 +3,18 @@
 <!--[form:<%= model_underscore %>]-->
 
 <table class="sl_edit_form">
-
   <% model_ui.edit_columns.each do |column| %>
     <% if column.is_displayable_in_context?(self) %>
-      <tr><td class="sl_edit_label"><label for="<%= model_underscore %>_<%= column.name %>"><%= column.human_name %></label></td>
-          <td class="sl_edit_value"><%= column.render_td(self, @streamlined_item) %></td>
+      <tr id="sl_field_<%= model_underscore %>_<%= column.name %>">
+        <td class="sl_edit_label">
+          <label for="<%= model_underscore %>_<%= column.name %>"><%= column.human_name %></label>
+        </td>
+        <td class="sl_edit_value">
+          <%= column.render_td(self, @streamlined_item) %>
+        </td>
       </tr>
     <% end %>
   <% end %>
-
 </table><!--[eoform:<%= model_underscore %>]-->
 
 
