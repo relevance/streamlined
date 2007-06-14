@@ -10,6 +10,7 @@ class Streamlined::Column::Base
   attr_with_default :update_only, 'false'
   attr_with_default :allow_html, 'false'
   attr_with_default :edit_in_list, 'true'
+  attr_with_default :hide_if_unassigned, 'false'
   attr_with_default :unassigned_value, '"Unassigned"'
   
   def editable
@@ -100,13 +101,22 @@ class Streamlined::Column::Base
     end
   end
   
-  def is_displayable_in_context?(view)
+  def render_id(view, item)
+    case view.crud_context
+    when :list
+      "#{model_underscore}_#{item.id}_#{name}"
+    else
+      "sl_field_#{model_underscore}_#{name}"
+    end
+  end
+  
+  def is_displayable_in_context?(view, item)
     # TODO: extract this nastiness into a class?  Only if we see one more need for objectified crud contexts!!!!!!
     case view.crud_context
     when :new
       !(self.read_only || self.update_only)
     when :show, :list
-      true
+      !(hide_if_unassigned && item.send(self.name).blank?)
     when :edit
       !(self.read_only || self.create_only)
     end

@@ -4,8 +4,8 @@
 
 <table class="sl_edit_form">
   <% model_ui.edit_columns.each do |column| %>
-    <% if column.is_displayable_in_context?(self) %>
-      <tr id="sl_field_<%= model_underscore %>_<%= column.name %>">
+    <% if column.is_displayable_in_context?(self, @streamlined_item) %>
+      <tr id="<%= column.render_id(self, @streamlined_item) %>">
         <td class="sl_edit_label">
           <label for="<%= model_underscore %>_<%= column.name %>"><%= column.human_name %></label>
         </td>

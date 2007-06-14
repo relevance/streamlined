@@ -9,7 +9,8 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   
   def setup
     @ar_assoc = flexmock(:name => 'some_name', :class_name => 'SomeName')
-    @addition = Addition.new(:test_addition, nil)
+    parent_model = flexmock(:name => 'ParentModel')
+    @addition = Addition.new(:test_addition, parent_model)
   end
   
   def test_belongs_to
@@ -33,14 +34,14 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   
   def test_is_displayable_in_context
     view = flexmock(:crud_context => :edit)
-    assert !@addition.is_displayable_in_context?(view)
+    assert !@addition.is_displayable_in_context?(view, :item)
     
     association = Association.new(@ar_assoc, nil, :inset_table, :list)
-    assert association.is_displayable_in_context?(view)
+    assert association.is_displayable_in_context?(view, :item)
     
     ar_column = flexmock(:name => 'column')
     ar = ActiveRecord.new(ar_column, nil)
-    assert ar.is_displayable_in_context?(view)
+    assert ar.is_displayable_in_context?(view, :item)
   end
   
   def test_is_displayable_in_context_with_create_only_set_to_true
@@ -71,10 +72,31 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     assert_displayable_in_contexts ar, :new => false, :show => true, :list => true, :edit => true
   end
   
+  def test_is_displayable_in_context_with_hide_if_unassigned_set_to_true
+    @addition.hide_if_unassigned = true
+    view = flexmock(:crud_context => :show)
+    
+    item = flexmock(:test_addition => nil)
+    assert !@addition.is_displayable_in_context?(view, item)
+    
+    item = flexmock(:test_addition => 'value')
+    assert @addition.is_displayable_in_context?(view, item)
+  end
+  
   def test_render_th
     association = Association.new(@ar_assoc, nil, :inset_table, :count)
     flexmock(association).should_receive(:sort_image => "<img src=\"up.gif\">")
     assert_equal expected_th, association.render_th(nil, nil)
+  end
+  
+  def test_render_id_for_list_view
+    view, item = flexmock(:crud_context => :list), flexmock(:id => 123)
+    assert_equal 'parent_model_123_test_addition', @addition.render_id(view, item)
+  end
+  
+  def test_render_id_for_show_view
+    view, item = flexmock(:crud_context => :show), flexmock(:id => 123)
+    assert_equal 'sl_field_parent_model_test_addition', @addition.render_id(view, item)
   end
   
   def test_wrapper
@@ -96,9 +118,9 @@ private
   end
   
   def assert_displayable_in_contexts(column, expectations={})
-    assert_equal expectations[:new],  column.is_displayable_in_context?(flexmock(:crud_context => :new))
-    assert_equal expectations[:show], column.is_displayable_in_context?(flexmock(:crud_context => :show))
-    assert_equal expectations[:list], column.is_displayable_in_context?(flexmock(:crud_context => :list))
-    assert_equal expectations[:edit], column.is_displayable_in_context?(flexmock(:crud_context => :edit))
+    assert_equal expectations[:new],  column.is_displayable_in_context?(flexmock(:crud_context => :new), :item)
+    assert_equal expectations[:show], column.is_displayable_in_context?(flexmock(:crud_context => :show), :item)
+    assert_equal expectations[:list], column.is_displayable_in_context?(flexmock(:crud_context => :list), :item)
+    assert_equal expectations[:edit], column.is_displayable_in_context?(flexmock(:crud_context => :edit), :item)
   end
 end
