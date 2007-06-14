@@ -11,9 +11,12 @@
   <% odd = false %>
   <% for item in @streamlined_items %>
     <% odd = !odd %>
-    <tr class="<%= odd ? 'odd' : 'even'%>">
+    <tr class="<%= odd ? 'odd' : 'even'%> <%= model_ui.style_class_for(:list, :row, item) %>">
     <% list_columns.each do |column| %>
-      <td><%= !column.render_td(self, item).blank? ? column.render_td(self, item) : '&nbsp;' %></td>
+      <td class="<%= model_ui.style_class_for(:list, :cell, item) %>">
+		<% contents = column.render_td(self, item) %>
+		<%= contents.blank? ? '&nbsp;' : contents %>
+	  </td>
     <% end %>
     <%= streamlined_table_row_buttons(item) %>
     </tr>

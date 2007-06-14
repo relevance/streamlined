@@ -19,15 +19,16 @@ class Streamlined::UI
     declarative_scalar :model,
                        :default_method => :default_model,
                        :writer => Proc.new { |x| x.is_a?(Class) ? x : x.to_s.classify.constantize }
-    declarative_scalar :pagination, :default=>true
-    declarative_scalar :table_row_buttons, :default=>true
-    declarative_scalar :quick_delete_button, :default=>true    
-    declarative_scalar :table_filter, :default=>true
-    declarative_scalar :read_only, :default=>false
+    declarative_scalar :pagination, :default => true
+    declarative_scalar :table_row_buttons, :default => true
+    declarative_scalar :quick_delete_button, :default => true    
+    declarative_scalar :table_filter, :default => true
+    declarative_scalar :read_only, :default => false
     declarative_scalar :new_submit_button, :default => {:ajax => true}
-    declarative_scalar :mark_required_fields, :default=>true
+    declarative_scalar :mark_required_fields, :default => true
     declarative_scalar :header_partials, :default => {}
     declarative_scalar :footer_partials, :default => {}
+    declarative_scalar :style_classes, :default => {}
     
     def inherited(subclass) #:nodoc:
       # subclasses inherit some settings from superclass
@@ -39,6 +40,12 @@ class Streamlined::UI
     def default_model
       raise ArgumentError, "You must set a model" if name.blank?
       self.name.chomp("UI").constantize
+    end
+    
+    def style_class_for(crud_context, table_context, item)
+      crud_classes = style_classes[crud_context]
+      style_class = crud_classes[table_context] if crud_classes
+      style_class.respond_to?(:call) ? style_class.call(item) : style_class
     end
 
     # Defines the columns that should be visible to the user at runtime.  Takes an array

@@ -21,6 +21,23 @@ class Streamlined::UITest < Test::Unit::TestCase
   class TestUI; end
   class TestWithout; end
   
+  def test_style_class_for_with_empty_style_classes_hash
+    assert_equal({}, @ui.style_classes)
+    assert_nil @ui.style_class_for(:list, :cell, nil)
+  end
+  
+  def test_style_class_for_with_string
+    flexmock(@ui).should_receive(:style_classes).and_return(:list => { :cell => "color: red" })
+    assert_equal "color: red", @ui.style_class_for(:list, :cell, nil)
+    assert_nil @ui.style_class_for(:list, :row, nil)
+  end
+  
+  def test_style_class_for_with_proc
+    flexmock(@ui).should_receive(:style_classes).and_return(:list => { :cell => Proc.new { |i| i.style }})
+    item = flexmock(:style => "color: black")
+    assert_equal "color: black", @ui.style_class_for(:list, :cell, item)
+  end
+  
   def test_generic_ui
     assert_equal Streamlined::UI::Generic, Streamlined::UI.generic_ui
   end
@@ -95,9 +112,8 @@ class Streamlined::UITest < Test::Unit::TestCase
   end
   
   def test_header_and_footer_partials_have_defaults
-    expected = {}
-    assert_equal expected, @ui.header_partials
-    assert_equal expected, @ui.footer_partials
+    assert_equal({}, @ui.header_partials)
+    assert_equal({}, @ui.footer_partials)
   end
   
   def test_custom_columns_group
