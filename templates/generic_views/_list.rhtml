@@ -13,11 +13,13 @@
     <% odd = !odd %>
     <tr class="<%= odd ? 'odd' : 'even'%> <%= model_ui.style_class_for(:list, :row, item) %>">
     <% list_columns.each do |column| %>
-      <td class="<%= model_ui.style_class_for(:list, :cell, item) %>">
-		<% contents = column.render_td(self, item) %>
-		<%= contents.blank? ? '&nbsp;' : contents %>
-	  </td>
-    <% end %>
+      <% if column.is_displayable_in_context?(self, item) %>
+        <td class="<%= model_ui.style_class_for(:list, :cell, item) %>">
+		      <% contents = column.render_td(self, item) %>
+		      <%= contents.blank? ? '&nbsp;' : contents %>
+	      </td>
+        <% end %>
+      <% end %>
     <%= streamlined_table_row_buttons(item) %>
     </tr>
   <% end %>

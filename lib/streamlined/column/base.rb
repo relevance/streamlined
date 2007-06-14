@@ -112,7 +112,7 @@ class Streamlined::Column::Base
   
   def is_displayable_in_context?(view, item)
     # TODO: extract this nastiness into a class?  Only if we see one more need for objectified crud contexts!!!!!!
-    case view.crud_context
+    column_answer = case view.crud_context
     when :new
       !(self.read_only || self.update_only)
     when :show, :list
@@ -120,6 +120,9 @@ class Streamlined::Column::Base
     when :edit
       !(self.read_only || self.create_only)
     end
+    instance_answer = item.respond_to?(:should_display_column_in_context?) ?
+                      item.should_display_column_in_context?(self, view) : true
+    column_answer && instance_answer
   end
   
   # TODO: eliminate the helper version of this

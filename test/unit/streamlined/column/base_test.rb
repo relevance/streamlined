@@ -42,6 +42,11 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     ar_column = flexmock(:name => 'column')
     ar = ActiveRecord.new(ar_column, nil)
     assert ar.is_displayable_in_context?(view, :item)
+    
+    item = flexmock(:should_display_column_in_context? => true)
+    assert ar.is_displayable_in_context?(view, item)
+    item = flexmock(:should_display_column_in_context? => false)
+    assert !ar.is_displayable_in_context?(view, item)
   end
   
   def test_is_displayable_in_context_with_create_only_set_to_true
