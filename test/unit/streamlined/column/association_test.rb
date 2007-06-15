@@ -110,12 +110,16 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   #   assert_equal 'show', @association.render_td(view,nil)
   # end
   
-  def test_render_td_edit
+  def test_render_td_edit                     
+    items = flexmock(:collect => [:foo])
+    flexmock(@association).should_receive(:items_for_select).and_return(items).once
     view, item = view_and_item_mocks_for_render_td_edit
     @association.render_td_edit(view, item)
   end
   
   def test_render_td_edit_with_unassigned_value_set
+    items = flexmock(:collect => [:foo])
+    flexmock(@association).should_receive(:items_for_select).and_return(items).once
     view, item = view_and_item_mocks_for_render_td_edit(:unassigned_value => 'none')
     @association.unassigned_value = 'none'
     @association.render_td_edit(view, item)
@@ -124,6 +128,13 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   def test_render_td_edit_with_wrapper_set
     @association.wrapper = Proc.new { |c| "<<<#{c}>>>" }
     assert_equal '<<<[TBD: editable associations]>>>', @association.render_td_edit(*view_and_item_mocks)
+  end
+                                               
+  def test_render_td_edit_with_options_for_select      
+    flexmock(@association).should_receive(:options_for_select).and_return(:some_options_for_select_method) 
+    flexmock(SomeClass).should_receive(:some_options_for_select_method).and_return([:foo])
+    view, item = view_and_item_mocks_for_render_td_edit
+    @association.render_td_edit(view, item)
   end
   
   def test_render_td_list
@@ -165,13 +176,11 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     item = flexmock(:id => 123)
     [view, item]
   end
-  
+
   def view_and_item_mocks_for_render_td_edit(options={:unassigned_value => 'Unassigned'})
     item = flexmock(:respond_to? => true, :some_name => nil)
     (view = flexmock).should_receive(:select).with('model', 'some_name_id', [[options[:unassigned_value], nil], :foo], :selected => nil).once
-    items = flexmock(:collect => [:foo])
     flexmock(@association) do |mock|
-      mock.should_receive(:items_for_select).and_return(items).once
       mock.should_receive(:column_can_be_unassigned?).with(@model, :some_name_id).and_return(true).once
       mock.should_receive(:belongs_to? => false).once
     end

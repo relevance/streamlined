@@ -15,7 +15,8 @@
 # Wrapper around ActiveRecord::Association.  Keeps track of the underlying association, the View definition and the Summary definition.
 class Streamlined::Column::Association < Streamlined::Column::Base
   attr_reader :underlying_association
-  attr_accessor :human_name
+  attr_accessor :human_name                    
+  attr_accessor :options_for_select
   attr_reader :edit_view, :show_view
   attr_with_default :quick_add, 'true'
   delegates :name, :class_name, :to=>:underlying_association
@@ -71,7 +72,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   
   # Returns an array of all items that can be selected for this association.
   def items_for_select
-    klass = Class.class_eval(class_name)
+    klass = class_name.constantize
     if associables.size == 1
       klass.find(:all)
     else
@@ -102,7 +103,11 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     # TODO: I was only able to implement editable associations for belongs_to
     result = "[TBD: editable associations]"
     if item.respond_to?(name_as_id)
-      choices = items_for_select.collect { |e| [e.streamlined_name(edit_view.fields, edit_view.separator), e.id] }
+      if options_for_select
+        choices = class_name.constantize.send(options_for_select)
+      else
+        choices = items_for_select.collect { |e| [e.streamlined_name(edit_view.fields, edit_view.separator), e.id] }
+      end
       choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name_as_id.to_sym)
       selected_choice = item.send(name).id if item.send(name)
       result = view.select(model_underscore, name_as_id, choices, :selected => selected_choice)
