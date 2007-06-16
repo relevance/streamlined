@@ -12,6 +12,7 @@ class Streamlined::Column::Base
   attr_with_default :edit_in_list, 'true'
   attr_with_default :hide_if_unassigned, 'false'
   attr_with_default :unassigned_value, '"Unassigned"'
+  attr_with_default :html_options, '{}'
   
   def editable
     !(read_only || create_only) && edit_in_list

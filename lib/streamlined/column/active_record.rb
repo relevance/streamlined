@@ -49,9 +49,9 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     if enumeration
       result = render_enumeration_select(view, item)
     elsif check_box
-      result = view.check_box(model_underscore, name)
+      result = view.check_box(model_underscore, name, html_options)
     else
-      result = view.input(model_underscore, name)
+      result = view.input(model_underscore, name, html_options)
     end
     wrap(result)
   end
@@ -61,6 +61,6 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     id = relationship_div_id(name, item)
     choices = enumeration.to_2d_array
     choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name.to_sym)
-    view.select(model_underscore, name, choices)
+    view.select(model_underscore, name, choices, nil, html_options)
   end
 end

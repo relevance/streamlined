@@ -110,7 +110,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
       end
       choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name_as_id.to_sym)
       selected_choice = item.send(name).id if item.send(name)
-      result = view.select(model_underscore, name_as_id, choices, :selected => selected_choice)
+      result = view.select(model_underscore, name_as_id, choices, { :selected => selected_choice }, html_options)
       result += render_quick_add(view) if should_render_quick_add?(view)
     end
     wrap(result)

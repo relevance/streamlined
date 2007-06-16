@@ -129,6 +129,11 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     @association.wrapper = Proc.new { |c| "<<<#{c}>>>" }
     assert_equal '<<<[TBD: editable associations]>>>', @association.render_td_edit(*view_and_item_mocks)
   end
+  
+  def test_render_td_edit_with_html_options
+    @association.html_options = { :class => 'foo_class' }
+    assert_equal '[TBD: editable associations]', @association.render_td_edit(*view_and_item_mocks)
+  end
                                                
   def test_render_td_edit_with_options_for_select      
     flexmock(@association).should_receive(:options_for_select).and_return(:some_options_for_select_method) 
@@ -179,7 +184,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
 
   def view_and_item_mocks_for_render_td_edit(options={:unassigned_value => 'Unassigned'})
     item = flexmock(:respond_to? => true, :some_name => nil)
-    (view = flexmock).should_receive(:select).with('model', 'some_name_id', [[options[:unassigned_value], nil], :foo], :selected => nil).once
+    (view = flexmock).should_receive(:select).with('model', 'some_name_id', [[options[:unassigned_value], nil], :foo], { :selected => nil }, {}).once
     flexmock(@association) do |mock|
       mock.should_receive(:column_can_be_unassigned?).with(@model, :some_name_id).and_return(true).once
       mock.should_receive(:belongs_to? => false).once

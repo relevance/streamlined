@@ -78,7 +78,7 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
   end
   
   def test_render_td_edit
-    (view = flexmock).should_receive(:input).with('model', 'column').once
+    (view = flexmock).should_receive(:input).with('model', 'column', {}).once
     @ar.render_td_edit(view, 'item')
   end
   
@@ -90,19 +90,25 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
   
   def test_render_td_edit_with_checkbox
     @ar.check_box = true
-    (view = flexmock).should_receive(:check_box).with('model', 'column').once
+    (view = flexmock).should_receive(:check_box).with('model', 'column', {}).once
     @ar.render_td_edit(view, 'item')
   end
   
-  def test_render_td_with_wrapper
+  def test_render_td_edit_with_wrapper
     @ar.wrapper = Proc.new { |c| "<<<#{c}>>>" }
-    (view = flexmock).should_receive(:input).with('model', 'column').and_return('result').once
+    (view = flexmock).should_receive(:input).with('model', 'column', {}).and_return('result').once
     assert_equal '<<<result>>>', @ar.render_td_edit(view, 'item')
+  end
+  
+  def test_render_td_edit_with_html_options
+    @ar.html_options = { :class => 'foo_class' }
+    (view = flexmock).should_receive(:input).with('model', 'column', { :class => 'foo_class' }).and_return('result').once
+    assert_equal 'result', @ar.render_td_edit(view, 'item')
   end
   
   def test_render_td_as_edit
     view = flexmock(:model_underscore => 'model', :crud_context => :edit)
-    view.should_receive(:input).with('model', 'column').and_return('input').once
+    view.should_receive(:input).with('model', 'column', {}).and_return('input').once
     assert_equal 'input', @ar.render_td(view, nil)
   end
   
@@ -147,21 +153,24 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
   def test_render_enumeration_select
     setup_mocks
     @ar.enumeration = %w{ A B C }
-    select_choices_should_be [['Unassigned', nil], ['A', 'A'], ['B', 'B'], ['C', 'C']]
+    choices = [['Unassigned', nil], ['A', 'A'], ['B', 'B'], ['C', 'C']]
+    @view.should_receive(:select).with('model', 'column', choices, nil, {}).once
     @ar.render_enumeration_select(@view, @item)
   end
   
   def test_render_enumeration_select_with_hash
     setup_mocks
     @ar.enumeration = { 'A' => 1, 'B' => 2, 'C' => 3 }
-    select_choices_should_be [['Unassigned', nil], ['A', 1], ['B', 2], ['C', 3]]
+    choices = [['Unassigned', nil], ['A', 1], ['B', 2], ['C', 3]]
+    @view.should_receive(:select).with('model', 'column', choices, nil, {}).once
     @ar.render_enumeration_select(@view, @item)
   end
   
   def test_render_enumeration_select_with_2d_array
     setup_mocks
     @ar.enumeration = [['A', 1], ['B', 2], ['C', 3]]
-    select_choices_should_be [['Unassigned', nil], ['A', 1], ['B', 2], ['C', 3]]
+    choices = [['Unassigned', nil], ['A', 1], ['B', 2], ['C', 3]]
+    @view.should_receive(:select).with('model', 'column', choices, nil, {}).once
     @ar.render_enumeration_select(@view, @item)
   end
   
@@ -169,7 +178,16 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     setup_mocks
     @ar.enumeration = []
     @ar.unassigned_value = 'none'
-    select_choices_should_be [['none', nil]]
+    choices = [['none', nil]]
+    @view.should_receive(:select).with('model', 'column', choices, nil, {}).once
+    @ar.render_enumeration_select(@view, @item)
+  end
+  
+  def test_render_enumeration_select_with_html_options
+    setup_mocks
+    @ar.enumeration = []
+    @ar.html_options = { :class => 'foo_class' }
+    @view.should_receive(:select).with('model', 'column', [["Unassigned", nil]], nil, { :class => 'foo_class' }).once
     @ar.render_enumeration_select(@view, @item)
   end
   
@@ -181,9 +199,5 @@ private
   def setup_mocks
     @view = flexmock(:render => 'render', :controller_name => 'controller_name', :link_to_function => 'link')
     @item = flexmock(:id => 123)
-  end
-  
-  def select_choices_should_be(choices)
-    @view.should_receive(:select).with('model', 'column', choices).once
   end
 end
