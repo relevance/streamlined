@@ -154,7 +154,7 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     setup_mocks
     @ar.enumeration = %w{ A B C }
     choices = [['Unassigned', nil], ['A', 'A'], ['B', 'B'], ['C', 'C']]
-    @view.should_receive(:select).with('model', 'column', choices, nil, {}).once
+    @view.should_receive(:select).with('model', 'column', choices).once
     @ar.render_enumeration_select(@view, @item)
   end
   
@@ -162,7 +162,7 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     setup_mocks
     @ar.enumeration = { 'A' => 1, 'B' => 2, 'C' => 3 }
     choices = [['Unassigned', nil], ['A', 1], ['B', 2], ['C', 3]]
-    @view.should_receive(:select).with('model', 'column', choices, nil, {}).once
+    @view.should_receive(:select).with('model', 'column', choices).once
     @ar.render_enumeration_select(@view, @item)
   end
   
@@ -170,7 +170,7 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     setup_mocks
     @ar.enumeration = [['A', 1], ['B', 2], ['C', 3]]
     choices = [['Unassigned', nil], ['A', 1], ['B', 2], ['C', 3]]
-    @view.should_receive(:select).with('model', 'column', choices, nil, {}).once
+    @view.should_receive(:select).with('model', 'column', choices).once
     @ar.render_enumeration_select(@view, @item)
   end
   
@@ -179,7 +179,7 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     @ar.enumeration = []
     @ar.unassigned_value = 'none'
     choices = [['none', nil]]
-    @view.should_receive(:select).with('model', 'column', choices, nil, {}).once
+    @view.should_receive(:select).with('model', 'column', choices).once
     @ar.render_enumeration_select(@view, @item)
   end
   
@@ -187,7 +187,7 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     setup_mocks
     @ar.enumeration = []
     @ar.html_options = { :class => 'foo_class' }
-    @view.should_receive(:select).with('model', 'column', [["Unassigned", nil]], nil, { :class => 'foo_class' }).once
+    @view.should_receive(:select).with('model', 'column', [["Unassigned", nil]], {}, { :class => 'foo_class' }).once
     @ar.render_enumeration_select(@view, @item)
   end
   

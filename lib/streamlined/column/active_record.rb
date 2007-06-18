@@ -61,6 +61,8 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     id = relationship_div_id(name, item)
     choices = enumeration.to_2d_array
     choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name.to_sym)
-    view.select(model_underscore, name, choices, nil, html_options)
+    args = [model_underscore, name, choices]
+    args << {} << html_options unless html_options.empty?
+    view.select(*args)
   end
 end
