@@ -2,7 +2,9 @@ require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
 require 'streamlined/controller/render_methods'
 
 class RenderMethodsFunctionalTest < Test::Unit::TestCase
-  FILES_CONTENTS = { 'Foo/_file1' => 'content1', 'Foo/_file2' => 'content2', 'Foo/../shared/dir/_foo' => 'content3', '../shared/dir/foo' => 'content3' }
+  FILES_CONTENTS = { 'file1' => 'content1', 
+                     'file2' => 'content2', 
+                     '../shared/dir/foo' => 'content3'}
 
   class FooController < ActionController::Base
     acts_as_streamlined
@@ -16,7 +18,7 @@ class RenderMethodsFunctionalTest < Test::Unit::TestCase
       @rendered = hash[:text]
     end
     
-    public :render_tabs, :render_partials, :partial_name
+    public :render_tabs, :render_partials
   end
   
   class ::Foo < ActiveRecord::Base
@@ -52,7 +54,7 @@ class RenderMethodsFunctionalTest < Test::Unit::TestCase
     results = assert_raise(ArgumentError) {
       response = @controller.render_tabs({:name => 'tab1'})
     }
-    assert_equal ':partial is required', results.message
+    assert_equal 'render args are required', results.message
     results = assert_raise(ArgumentError) {
       response = @controller.render_tabs({:partial => '../shared/dir/foo'})
     }
@@ -83,10 +85,4 @@ class RenderMethodsFunctionalTest < Test::Unit::TestCase
     
     assert @locals = 'something'
   end
-  
-  def test_partial_name_should_not_change_file_name_when_it_contains_slash
-    file_name = 'Foo/_file2'
-    @controller.partial_name(file_name)
-    assert_equal 'Foo/_file2', file_name
-  end  
 end

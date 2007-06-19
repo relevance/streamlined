@@ -29,8 +29,8 @@ module Streamlined::Controller::RenderMethods
         render(options[:render])
       elsif options[:redirect_to]
         redirect_to(options[:redirect_to])
-      elsif options[:render_append]
-        render_append(*options[:render_append])
+      else
+        raise ArgumentError, "Invalid options for execute_render_filter"
       end
     end
   end
@@ -53,7 +53,10 @@ module Streamlined::Controller::RenderMethods
   end
 
   def render_partials(*args)
-    content = args.collect { |p| render_to_string(:template => partial_name(p), :layout => false) }
+    content = args.collect { |p| 
+      p = {:partial=>p} if String === p
+      render_to_string(p) 
+    }
     render :text => content.join, :layout => true
   end
   
@@ -67,55 +70,14 @@ module Streamlined::Controller::RenderMethods
   end
   
   def render_a_tab(tab)
-    raise ArgumentError, ":name is required" unless tab[:name] != nil
-    raise ArgumentError, ":partial is required" unless tab[:partial] != nil
-    tab_name = tab[:name]
-    param_next_to_tab_name = tab[:partial]
-    
-
+    tab_name = tab.delete(:name)
+    raise ArgumentError, ":name is required" unless tab_name
+    raise ArgumentError, "render args are required" if tab.empty?
     result = ""
-    locals = nil
-    
-    if param_next_to_tab_name.is_a?(Hash)
-      raise ":partial required if tab content is a Hash" unless param_next_to_tab_name[:partial] != nil
-      raise ":locals required if tab content is a Hash" unless param_next_to_tab_name[:locals] != nil
-      file_name = param_next_to_tab_name[:partial]
-      locals = param_next_to_tab_name[:locals]
-    else
-      file_name = partial_name(param_next_to_tab_name)
-    end
- 
     result << "<div class='tabbertab' title='#{tab_name.to_s.tableize.humanize}' id='#{tab_name}'>"
-    
-    if locals
-      result << render_to_string(:partial => file_name, :locals => locals)
-    else
-      result << render_to_string(:template => file_name, :layout => false)
-    end
-    
+    result << render_to_string(tab)
     result << '</div>'
     result
-  end
-  
-  def partial_name(file_name)
-    index = file_name.to_s.rindex('/')
-    if index.nil?
-      file_name = "_#{file_name}"
-    else
-      file_name = file_name.dup.insert(index + 1, '_')
-    end
-    "#{params[:controller]}/#{file_name}"
-  end
-  
-  # Render a full view along with an extra partial underneath it
-  def render_append(*args)
-    full_view = args[0]
-    partial = args[1]
-    content = ''
-    content << render_to_string(:template => full_view, :layout => false)
-    file_name = partial_name(partial)
-    content << render_to_string(:template => file_name, :layout => false)        
-    render :text => content, :layout => true
   end
 end
   
