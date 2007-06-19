@@ -56,7 +56,7 @@ module Streamlined::Controller::RenderMethods
     content = args.collect { |p| 
       p = {:partial=>p} if String === p
       if p[:tabs]
-        render_tabs_to_string(p[:tabs])
+        render_tabs_to_string(*p[:tabs])
       else
         render_to_string(p) 
       end
