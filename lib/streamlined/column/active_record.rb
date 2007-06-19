@@ -26,12 +26,9 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   
   def render_td_show(view, item)
     if enumeration
-      id = relationship_div_id(name, item)
-      div = div_wrapper(id) do
-  		  view.render(:partial => show_view.partial, 
-                    :locals => {:item => item, :relationship => self, 
-                    :streamlined_def => show_view})
-      end
+		  view.render(:partial => show_view.partial, 
+                  :locals => {:item => item, :relationship => self, 
+                  :streamlined_def => show_view})
     else
       render_content(view, item)
     end
@@ -40,6 +37,7 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   def render_td_list(view, item)
     id = relationship_div_id(name, item)
     div = render_td_show(view, item)
+    div = div_wrapper(id) { div } if enumeration
     div += view.link_to_function("Edit", "Streamlined.Enumerations." <<
       "open_enumeration('#{id}', this, '/#{view.controller_name}')") if enumeration && editable
     div

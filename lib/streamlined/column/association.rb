@@ -83,17 +83,14 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   end
   
   def render_td_show(view, item)
-    id = relationship_div_id(name, item, class_name)
-    div = div_wrapper(id) do
-      view.render(:partial => show_view.partial, 
-                  :locals => { :item => item, :relationship => self, 
-                  :streamlined_def => show_view })
-    end
+    view.render(:partial => show_view.partial, 
+                :locals => { :item => item, :relationship => self, 
+                :streamlined_def => show_view })
   end
   
   def render_td_list(view, item)
     id = relationship_div_id(name, item, class_name)
-    div = render_td_show(view, item)
+    div = div_wrapper(id) { render_td_show(view, item) }
     div += view.link_to_function("Edit", "Streamlined.Relationships." <<
       "open_relationship('#{id}', this, '/#{view.controller_name}')") if editable
     div

@@ -94,8 +94,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     view = flexmock(:render => 'render', :controller_name => 'controller_name')
     item = flexmock(:id => 123)
     @association.read_only = true
-    expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>"
-    assert_equal expected, @association.render_td(view, item)
+    assert_equal "render", @association.render_td(view, item)
   end
 
   # Here is another way you could do the above test...
