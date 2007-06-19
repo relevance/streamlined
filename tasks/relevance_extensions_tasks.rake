@@ -7,6 +7,9 @@ namespace :streamlined do
     FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'streamlined.css'), File.join(RAILS_ROOT, 'public', 'stylesheets')
     FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'as_style.css'), File.join(RAILS_ROOT, 'public', 'stylesheets')
     FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'menu.css'), File.join(RAILS_ROOT, 'public', 'stylesheets')
+    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'tabber-minimized.js'), File.join(RAILS_ROOT, 'public', 'javascripts')
+    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'tabber.js'), File.join(RAILS_ROOT, 'public', 'javascripts')
+    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'tabber.css'), File.join(RAILS_ROOT, 'public', 'stylesheets')
     
     unless FileTest.exist? File.join(RAILS_ROOT, 'public', 'overlib')
       FileUtils.mkdir_p(File.join(RAILS_ROOT, 'public', 'overlib'))

@@ -12,14 +12,12 @@ require 'streamlined/helpers/link_helper'
 require 'streamlined/helpers/layout_helper'
 require 'streamlined/helpers/table_helper'
 require 'streamlined/helpers/form_helper'
-require 'streamlined/helpers/render_helper'
   
 module Streamlined::Helper
   include Streamlined::Helpers::TableHelper
   include Streamlined::Helpers::LinkHelper
   include Streamlined::Helpers::LayoutHelper
   include Streamlined::Helpers::FormHelper
-  include Streamlined::Helpers::RenderHelper
   
   # include this last
   include Streamlined::View::RenderMethods
