@@ -55,21 +55,28 @@ module Streamlined::Controller::RenderMethods
   def render_partials(*args)
     content = args.collect { |p| 
       p = {:partial=>p} if String === p
-      render_to_string(p) 
+      if p[:tabs]
+        render_tabs_to_string(p[:tabs])
+      else
+        render_to_string(p) 
+      end
     }
     render :text => content.join, :layout => true
+  end
+
+  def render_tabs(*args)
+    render :text => render_tabs_to_string(*args), :layout => true
   end
   
   # Note that when you pass in a partial and locals, if you are using shared, don't pass in ..
   # Ex: render_tabs :accountants, {:partial => 'shared/persona/display_personas', :locals => {:persona => accountant}}
-  def render_tabs(*args)
+  def render_tabs_to_string(*args)
     content = "<div class='tabber'>"
-    args.each { |tab| content << render_a_tab(tab) }
+    args.each { |tab| content << render_a_tab_to_string(tab) }
     content << "</div>"
-    render :text => content, :layout => true
   end
   
-  def render_a_tab(tab)
+  def render_a_tab_to_string(tab)
     tab_name = tab.delete(:name)
     raise ArgumentError, ":name is required" unless tab_name
     raise ArgumentError, "render args are required" if tab.empty?

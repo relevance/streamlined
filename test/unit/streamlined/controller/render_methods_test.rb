@@ -111,4 +111,20 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     convert_partial_options(options)
     assert_equal({:partial=>"list", :other=>"1"}, options)
   end
+  
+  def test_render_partials_with_tabs
+    flexstub(self) do |stub|
+      stub.should_receive(:render_tabs_to_string).with(:tab_arguments).returns("render_result")
+      stub.should_receive(:render).with(:text=>"render_result", :layout=>true)
+    end
+    render_partials(:tabs=>:tab_arguments)
+  end
+
+  def test_render_partials_without_tabs
+    flexstub(self) do |stub|
+      stub.should_receive(:render_to_string).with({}).returns("render_result")
+      stub.should_receive(:render).with(:text=>"render_result", :layout=>true)
+    end
+    render_partials({})
+  end
 end
