@@ -296,14 +296,14 @@ Streamlined.Enumerations = {
 		link.innerHTML = "Edit";
 		link.onclick = new Function("Streamlined.Enumerations.open_enumeration('" + id + "', this, '" + url + "')");
 	}
-}
+}Å
 
 Streamlined.QuickAdd = {
 	open: function(url) {
-		Streamlined.Windows.open_local_window_from_url('', url, 'Quick Add');
+		Streamlined.Windows.open_local_window_from_url('', url, 'quick_add');
 	},
 	close: function() {
-		Windows.close('show_win_Quick Add');
+		Windows.close('show_win_quick_add');
 	}
 }
 
