@@ -2,31 +2,22 @@ require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
 require 'streamlined/controller/render_methods'
 
 class RenderMethodsFunctionalTest < Test::Unit::TestCase
-  FILES_CONTENTS = { 'file1' => 'content1', 
-                     'file2' => 'content2', 
-                     '../shared/dir/foo' => 'content3'}
-
-  class FooController < ActionController::Base
-    acts_as_streamlined
-    attr_reader :rendered
-    def render_to_string(hash)
-      @locals = hash[:locals]
-      return FILES_CONTENTS[hash[:partial].to_s] if hash[:partial]
-      FILES_CONTENTS[hash[:template].to_s] if hash[:template]
-    end
-    def render(hash)
-      @rendered = hash[:text]
-    end
-    
-    public :render_tabs, :render_partials
-  end
-  
-  class ::Foo < ActiveRecord::Base
-  end
-
   def setup
-    @controller = FooController.new
-    @controller.params = { :controller => 'Foo' }
+    @controller = PeopleController.new
+    # Took a while to find this, setting layout=false was not good enough
+    class <<@controller
+      def active_layout
+        false
+      end
+    end
+    @controller.logger = RAILS_DEFAULT_LOGGER
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+    @controller.send :initialize_template_class, @response
+    @controller.assign_shortcuts(@request, @response)
+    class <<@controller
+      public :render_tabs, :render_partials, :render_a_tab_to_string
+    end
   end
 
   def test_render_partials
@@ -46,7 +37,8 @@ class RenderMethodsFunctionalTest < Test::Unit::TestCase
   end
 
   def test_render_tabs_in_order
-    response = @controller.render_tabs({:name => 'tab1', :partial => :file1}, {:name => 'tab2', :partial => :file2})
+    response = @controller.render_tabs({:name => 'tab1', :partial => "file1"}, 
+                                       {:name => 'tab2', :partial => "file2"})
     assert response =~ /id='tab1'.*id='tab2'/
   end
 
@@ -56,13 +48,13 @@ class RenderMethodsFunctionalTest < Test::Unit::TestCase
     }
     assert_equal 'render args are required', results.message
     results = assert_raise(ArgumentError) {
-      response = @controller.render_tabs({:partial => '../shared/dir/foo'})
+      response = @controller.render_tabs({:partial => 'shared/foo'})
     }
     assert_equal ':name is required', results.message
   end
 
   def test_render_tabs_with_shared_partial
-    response = @controller.render_tabs({:name => 'tab1', :partial => '../shared/dir/foo'})
+    response = @controller.render_tabs({:name => 'tab1', :partial => 'shared/foo'})
 
     assert response =~ /tab1/
     assert response =~ /tabber/
@@ -71,12 +63,12 @@ class RenderMethodsFunctionalTest < Test::Unit::TestCase
   end
   
   def test_render_partials
-   response = @controller.render_partials('../shared/dir/foo')
+   response = @controller.render_partials('shared/foo')
    assert response =~ /^content3/
   end
   
   def test_render_tabs_with_partial_and_locals
-    response = @controller.render_tabs({:name => 'tab1', :partial => '../shared/dir/foo', :locals => 'something'})
+    response = @controller.render_tabs({:name => 'tab1', :partial => 'shared/foo', :locals => {:something=>'something'}})
 
     assert response =~ /tab1/
     assert response =~ /tabber/
@@ -85,4 +77,10 @@ class RenderMethodsFunctionalTest < Test::Unit::TestCase
     
     assert @locals = 'something'
   end
+  
+  def test_render_a_tab_to_string
+    assert_equal "<div class='tabbertab' title='Firsts' id='First'>content1</div>", 
+                 @controller.render_a_tab_to_string(:name=>"First", :partial=>"file1")
+  end
+  
 end

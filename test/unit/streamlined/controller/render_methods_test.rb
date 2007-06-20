@@ -127,4 +127,6 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     end
     render_partials({})
   end
+  
+  
 end
