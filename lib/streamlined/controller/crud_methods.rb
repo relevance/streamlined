@@ -7,9 +7,11 @@ module Streamlined::Controller::CrudMethods
   # If the request came via XHR, the action will render just the list partial,
   # not the entire list view.
   def list
+    
     self.crud_context = :list
     options = pagination ? {:per_page => 10} : {}
     options.merge! order_options
+
     if filter?
       options.merge! :conditions=>model.conditions_by_like(filter) 
       @streamlined_items_count = model.count(:conditions => model.conditions_by_like(filter))
@@ -43,6 +45,7 @@ module Streamlined::Controller::CrudMethods
       format.csv {render :text=> @streamlined_items.to_csv(model.columns.map(&:name))}
       format.xml  {render :xml => @streamlined_items.to_xml }
     end
+    
   end
 
    # Renders the Show view for a given instance.
