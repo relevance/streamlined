@@ -296,7 +296,7 @@ Streamlined.Enumerations = {
 		link.innerHTML = "Edit";
 		link.onclick = new Function("Streamlined.Enumerations.open_enumeration('" + id + "', this, '" + url + "')");
 	}
-}Å
+}
 
 Streamlined.QuickAdd = {
 	open: function(url) {
