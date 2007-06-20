@@ -109,20 +109,18 @@ module Streamlined::Controller::CrudMethods
   private
   delegates :pagination, :to=>:model_ui, :visibility=>:private
   attr_accessor :crud_context
-  attr_accessor :default_order_options
+  
   # TODO: Dump non_ar_column. 
   # Figure out whether a column is ar or not when using it!
   def order_options
-    if order?
-      column,order = sort_column, sort_order
-      if model.column_names.include? column
-        active_record_order_option
-      else
-        {:non_ar_column => column.downcase.tr(" ", "_"), :dir => order}
-      end
+    return @streamlined_controller_context.model_ui.default_order_options unless order?
+
+    if model.column_names.include? sort_column
+      active_record_order_option
     else
-      default_order_options || {}
+      {:non_ar_column => sort_column.downcase.tr(" ", "_"), :dir => sort_order}
     end
+    
   end
   
   def sort_models(models, column)

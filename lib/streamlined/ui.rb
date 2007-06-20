@@ -29,6 +29,7 @@ class Streamlined::UI
     declarative_scalar :header_partials, :default => {}
     declarative_scalar :footer_partials, :default => {}
     declarative_scalar :style_classes, :default => {}
+    declarative_scalar :default_order_options, :default => {}
     
     def inherited(subclass) #:nodoc:
       # subclasses inherit some settings from superclass

@@ -12,11 +12,15 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
   
   def test_default_options
     @streamlined_request_context = Streamlined::Context::RequestContext.new
-    self.default_order_options = {:foo=>:bar}
+    @streamlined_controller_context = Streamlined::Context::ControllerContext.new
+    @streamlined_controller_context.model_name = 'Person'
+    @streamlined_controller_context.model_ui.default_order_options({:foo=>:bar})
     assert_equal({:foo=>:bar}, order_options)
   end
   
   def test_no_options
+    @streamlined_controller_context = Streamlined::Context::ControllerContext.new
+    @streamlined_controller_context.model_name = 'Author'
     @streamlined_request_context = Streamlined::Context::RequestContext.new
     assert_equal({}, order_options)
   end
