@@ -79,8 +79,13 @@ class RenderMethodsFunctionalTest < Test::Unit::TestCase
   end
   
   def test_render_a_tab_to_string
-    assert_equal "<div class='tabbertab' title='Firsts' id='First'>content1</div>", 
-                 @controller.render_a_tab_to_string(:name=>"First", :partial=>"file1")
+    expected = "<div class='tabbertab' title='My Tab' id='my_tab'>content1</div>"
+    assert_equal expected, @controller.render_a_tab_to_string(:name => "My Tab", :partial => "file1")
+  end
+  
+  def test_render_a_tab_to_string_with_id
+    expected = "<div class='tabbertab' title='My Tab' id='foo'>content1</div>"
+    assert_equal expected, @controller.render_a_tab_to_string(:name => "My Tab", :partial => "file1", :id => "foo")
   end
   
 end

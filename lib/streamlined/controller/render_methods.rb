@@ -80,8 +80,9 @@ module Streamlined::Controller::RenderMethods
     tab_name = tab.delete(:name)
     raise ArgumentError, ":name is required" unless tab_name
     raise ArgumentError, "render args are required" if tab.empty?
+    id = tab[:id] || tab_name.gsub(" ", "_").downcase
     result = ""
-    result << "<div class='tabbertab' title='#{tab_name.to_s.tableize.humanize}' id='#{tab_name}'>"
+    result << "<div class='tabbertab' title='#{tab_name}' id='#{id}'>"
     result << render_to_string(tab)
     result << '</div>'
     result
