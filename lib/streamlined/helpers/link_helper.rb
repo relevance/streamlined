@@ -23,19 +23,19 @@ module Streamlined::Helpers::LinkHelper
   # Streamlined.Windows.open_local_window_from_url('New', '#{url_for(:action => 'new')}'
   def link_to_new_model
     link_to(image_tag('streamlined/add_16.png', 
-        {:alt => "New #{model_name}", :title => "New #{model_name}", :border => '0'}),          
+        {:alt => "New #{model_name}", :title => "New #{model_name.titleize}", :border => '0'}),          
         :action => 'new') unless model_ui.read_only
   end
 
   def link_to_show_model(item)
     link_to(image_tag('streamlined/search_16.png', 
-        {:alt => "Show #{model_name}", :title => "Show #{model_name}", :border => '0'}),          
+        {:alt => "Show #{model_name}", :title => "Show #{model_name.titleize}", :border => '0'}),          
         :action => 'show', :id=>item)
   end
 
   def link_to_edit_model(item)
     link_to(image_tag('streamlined/edit_16.png', 
-        {:alt => "Edit #{model_name}", :title => "Edit #{model_name}", :border => '0'}),          
+        {:alt => "Edit #{model_name}", :title => "Edit #{model_name.titleize}", :border => '0'}),          
         :action => 'edit', :id=>item) unless model_ui.read_only
   end
 
