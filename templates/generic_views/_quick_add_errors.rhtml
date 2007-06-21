@@ -1,5 +1,5 @@
 <div class="error">
-	<big>Error updating <%= @model_name %>:</big><br/>
+	<big>Error creating <%= @model_name %>:</big><br/>
 	<%= @model.errors.full_messages.join('<br/>') %>
 	<br/>
 	<% @model.class.delegate_targets.each do |dt| %>

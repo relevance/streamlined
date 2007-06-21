@@ -70,7 +70,7 @@ module Streamlined::Controller::CrudMethods
    def create
      self.instance = model.new(params[model_symbol])
      if instance.save
-       flash[:notice] = "#{model_name} was successfully created."
+       flash[:notice] = "#{model_name.titleize} was successfully created."
        self.crud_context = :show
        render_or_redirect(:success, "show", :action=>"list")
      else
@@ -95,7 +95,7 @@ module Streamlined::Controller::CrudMethods
     if instance.update_attributes(params[model_symbol])
       # TODO: reimplement tag support
       # get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
-      flash[:notice] = "#{model_name} was successfully updated."
+      flash[:notice] = "#{model_name.titleize} was successfully updated."
       self.crud_context = :show
       render_or_redirect(:success, "show", :action=>"list")
     else
