@@ -21,17 +21,10 @@ module Streamlined::Controller::RenderMethods
   def execute_render_filter(options)
     if options.is_a?(Proc)
       self.instance_eval(&options)
+    elsif options.is_a?(Symbol)
+      self.send(options)
     else
-      self.instance = instance.send(options[:with_instance]) if options[:with_instance]    
-      if options[:render_tabs]
-        render_tabs(options[:render_tabs])
-      elsif options[:render]
-        render(options[:render])
-      elsif options[:redirect_to]
-        redirect_to(options[:redirect_to])
-      else
-        raise ArgumentError, "Invalid options for execute_render_filter"
-      end
+      raise ArgumentError, "Invalid options for render_filter"
     end
   end
 

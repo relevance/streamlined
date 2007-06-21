@@ -61,34 +61,13 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     execute_render_filter(proc)
   end
   
-  def test_execute_render_filter_with_render_tabs
-    flexmock(self).should_receive(:render_tabs).with(:bat => 'ball').once
-    execute_render_filter(:render_tabs => { :bat, 'ball' }) 
-  end
-  
-  def test_execute_render_filter_with_render
-    flexmock(self).should_receive(:render).with(:text => 'hello world').once
-    execute_render_filter(:render => { :text => 'hello world' })
-  end
-  
-  def test_execute_render_filter_with_redirect
-    flexmock(self).should_receive(:redirect_to).with(:action => 'somewhere').once
-    execute_render_filter(:redirect_to => { :action => 'somewhere'})
-  end
-  
-  def test_execute_render_filter_with_instance
-    instance = flexmock(:bond => 'the bond')
-    flexmock(self) do |mock|
-      mock.should_receive(:instance).and_return(instance).once
-      mock.should_receive(:render).with('nothing').once
-    end
-    execute_render_filter(:with_instance => :bond, :render => 'nothing')
+  def test_execute_render_filter_with_symbol
+    flexmock(self).should_receive(:method_to_invoke).once
+    execute_render_filter(:method_to_invoke)
   end
   
   def pretend_template_exists(exists)
-    flexstub(self) do |stub|
-      stub.should_receive(:specific_template_exists?).and_return(exists)
-    end
+    flexstub(self).should_receive(:specific_template_exists?).and_return(exists)
   end
   
   def test_convert_partial_options_for_generic
@@ -127,6 +106,5 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     end
     render_partials({})
   end
-  
   
 end
