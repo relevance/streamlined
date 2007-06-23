@@ -48,17 +48,22 @@ class Streamlined::UITest < Test::Unit::TestCase
   end
   
   def test_declarative_setting_inheritance
-    @ui.table_row_buttons = :some_value
-    @ui.quick_delete_button = :some_value    
+    @ui.table_row_buttons = :trb_one
+    @ui.quick_delete_button = :qdb_one
+    @ui.quick_edit_button = :qeb_one
     subclass = Class.new(@ui)
-    assert_equal :some_value, subclass.table_row_buttons
-    assert_equal :some_value, subclass.quick_delete_button
-    @ui.table_row_buttons = :another_value
-    @ui.quick_delete_button = :another_value    
-    assert_equal :some_value, subclass.table_row_buttons
-    assert_equal :another_value, @ui.table_row_buttons
-    assert_equal :some_value, subclass.quick_delete_button
-    assert_equal :another_value, @ui.quick_delete_button
+    assert_equal :trb_one, subclass.table_row_buttons
+    assert_equal :qdb_one, subclass.quick_delete_button
+    assert_equal :qeb_one, subclass.quick_edit_button
+    @ui.table_row_buttons = :trb_two
+    @ui.quick_delete_button = :qdb_two
+    @ui.quick_edit_button = :qeb_two
+    assert_equal :trb_one, subclass.table_row_buttons
+    assert_equal :trb_two, @ui.table_row_buttons
+    assert_equal :qdb_one, subclass.quick_delete_button
+    assert_equal :qdb_two, @ui.quick_delete_button
+    assert_equal :qeb_one, subclass.quick_edit_button
+    assert_equal :qeb_two, @ui.quick_edit_button
   end
   
   def test_read_only

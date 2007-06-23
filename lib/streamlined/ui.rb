@@ -21,7 +21,8 @@ class Streamlined::UI
                        :writer => Proc.new { |x| x.is_a?(Class) ? x : x.to_s.classify.constantize }
     declarative_scalar :pagination, :default => true
     declarative_scalar :table_row_buttons, :default => true
-    declarative_scalar :quick_delete_button, :default => true    
+    declarative_scalar :quick_delete_button, :default => true 
+    declarative_scalar :quick_edit_button, :default => true   
     declarative_scalar :table_filter, :default => true
     declarative_scalar :read_only, :default => false
     declarative_scalar :new_submit_button, :default => {:ajax => true}
@@ -35,7 +36,8 @@ class Streamlined::UI
     def inherited(subclass) #:nodoc:
       # subclasses inherit some settings from superclass
       subclass.table_row_buttons(self.table_row_buttons)
-      subclass.quick_delete_button(self.quick_delete_button)      
+      subclass.quick_delete_button(self.quick_delete_button)
+      subclass.quick_edit_button(self.quick_edit_button)
     end      
     
     # Returns the name of this class minus the "UI" suffix.
