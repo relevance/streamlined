@@ -2,7 +2,7 @@
   <thead>
 	<tr>
   <% for column in @klass_ui.user_columns %>
-    <th scope="col" class="sortSelector"><%= column.human_name %></th>
+    <th scope="col" class="sortSelector"><%= column.human_name.titleize %></th>
   <% end %>
 
 

@@ -97,7 +97,7 @@ END
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
     assert_select '#sl_field_person_first_name' do
-      assert_select 'td.sl_show_label span', 'First name:'
+      assert_select 'td.sl_show_label span', 'First Name:'
       assert_select 'td.sl_show_value', 'Justin'
     end
     # TODO: refactor poke code so this becomes true
