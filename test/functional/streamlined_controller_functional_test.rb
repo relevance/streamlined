@@ -111,7 +111,7 @@ END
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
     assert_select '#sl_field_person_first_name' do
-      assert_select 'td.sl_edit_label label', 'First name'
+      assert_select 'td.sl_edit_label label', 'First Name'
       assert_select 'td.sl_edit_value input', ''  # test value='Justin'?
     end
   end
@@ -123,7 +123,7 @@ END
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
     assert_select '#sl_field_person_first_name' do
-      assert_select 'td.sl_edit_label label', 'First name'
+      assert_select 'td.sl_edit_label label', 'First Name'
       assert_select 'td.sl_edit_value input', ''
     end
   end

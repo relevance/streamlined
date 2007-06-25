@@ -97,7 +97,7 @@ class Streamlined::Column::Base
   def render_th(context,view)
     x = Builder::XmlMarkup.new
     x.th(:class => "sortSelector", :scope => "col", :col => name) do
-      x << human_name
+      x << human_name.titleize
       x << sort_image(context,view)
     end
   end

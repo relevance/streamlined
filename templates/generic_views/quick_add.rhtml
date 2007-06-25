@@ -12,7 +12,7 @@
 		<% @ui.quick_add_columns.each do |column| %>
 			<tr>
 				<td class="streamlined_label_cell">
-					<label class="streamlined_label" for="producer_<%= column.name %>"><%= column.human_name %></label>
+					<label class="streamlined_label" for="producer_<%= column.name %>"><%= column.human_name.titleize %></label>
 					<% if @ui.mark_required_fields && @ui.required_columns.include?(column) %>
 						<span class="required">*</span>
 					<% end %>
