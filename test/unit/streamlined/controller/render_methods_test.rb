@@ -66,6 +66,10 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     execute_render_filter(:method_to_invoke)
   end
   
+  def test_execute_render_filter_with_invalid_args
+    assert_raises(ArgumentError) { execute_render_filter("bad_args")}
+  end
+  
   def pretend_template_exists(exists)
     flexstub(self).should_receive(:specific_template_exists?).and_return(exists)
   end
@@ -106,5 +110,6 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     end
     render_partials({})
   end
+  
   
 end
