@@ -40,7 +40,8 @@ class Streamlined::Column::Base
   
   def validates_presence_of?
     col_name = belongs_to? ? name_as_id : name
-    parent_model.reflect_on_validations_for(col_name).find {|e| e.macro == :validates_presence_of }
+    parent_model.respond_to?(:reflect_on_validations_for) && 
+      parent_model.reflect_on_validations_for(col_name).find {|e| e.macro == :validates_presence_of }
   end
   
   def set_attributes(hash)

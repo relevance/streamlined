@@ -48,6 +48,13 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     item = flexmock(:should_display_column_in_context? => false)
     assert !ar.is_displayable_in_context?(view, item)
   end
+
+  def test_validates_presence_of_returns_false_if_validation_reflection_isnt_available
+    base = Streamlined::Column::Base.new
+    base.parent_model = Object.new
+    flexmock(base).should_receive(:name=>nil)
+    assert_false base.validates_presence_of?
+  end
   
   def test_is_displayable_in_context_with_create_only_set_to_true
     @addition.create_only = true
