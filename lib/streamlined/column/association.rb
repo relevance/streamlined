@@ -115,10 +115,12 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   alias :render_td_new :render_td_edit
   
   def render_quick_add(view)
-    image = view.image_tag('streamlined/add_16.png', 
-                           :id => "sl_qa_#{class_name}_#{name}", :alt => 'Quick Add', :title => 'Quick Add', :border => '0', :hspace => 2)
     url = view.url_for(:action => 'quick_add', :model_class_name => class_name, :select_id => form_field_id)
-    view.link_to_function(image, "Streamlined.QuickAdd.open('#{url}')")
+    image = view.image_tag('streamlined/add_16.png', 
+                           :id => "sl_qa_#{class_name}_#{name}", :alt => 'Quick Add', :title => 'Quick Add', 
+                           :border => '0', :hspace => 2, :class => "sl_quick_add_link")
+    view.link_to image, url
+                          
   end
   
   def should_render_quick_add?(view)

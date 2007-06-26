@@ -18,7 +18,10 @@ class AssociationFunctionalTest < Test::Unit::TestCase
   def test_render_quick_add
     stock_controller_and_view
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
-    assert_match %r{id="sl_qa_Poet_poet"}, @association.render_quick_add(@view)
+    html = @association.render_quick_add(@view)
+    assert_match %r{id="sl_qa_Poet_poet"}, html
+    assert_match %r{class="sl_quick_add_link"}, html
+    assert_match %r{<a href="/people/quick_add\?model_class_name=Poet&amp;select_id=poem_poet_id"}, html
   end
   
 end

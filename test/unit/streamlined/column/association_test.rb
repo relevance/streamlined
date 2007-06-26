@@ -168,13 +168,6 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     assert_equal '[TBD: editable associations]', @association.render_td_edit(nil, nil)
   end
   
-  def test_render_quick_add
-    view = flexmock(:image_tag => '<img src="plus.gif"/>', :url_for => '/people/quick_add')
-    expected_args = [ '<img src="plus.gif"/>', "Streamlined.QuickAdd.open('/people/quick_add')" ]
-    flexmock(view).should_receive(:link_to_function).with(*expected_args).and_return('link').once
-    assert_equal 'link', @association.render_quick_add(view)
-  end
-  
   def view_and_item_mocks(view_attrs={})
     view = flexmock(:render => 'render', :controller_name => 'controller_name', :link_to_function => 'link')
     item = flexmock(:id => 123)
