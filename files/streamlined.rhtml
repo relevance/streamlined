@@ -22,6 +22,9 @@
 	</div>
 	 <div id="left">
 	   <%= render(:partial => "shared/streamlined/side_menu")%>
+	   <% if advanced_filtering %>
+         <%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/filter' %>	   
+       <% end %>
 	 </div>
 	 <div id="center">
 	   <%= image_tag 'streamlined/loading.gif', :id=>'spinner', :style=>"display:none;" %>

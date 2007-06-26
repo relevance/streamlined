@@ -21,7 +21,13 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     html = @association.render_quick_add(@view)
     assert_match %r{id="sl_qa_Poet_poet"}, html
     assert_match %r{class="sl_quick_add_link"}, html
-    assert_match %r{<a href="/people/quick_add\?model_class_name=Poet&amp;select_id=poem_poet_id"}, html
+    
+    # TODO: these next three lines used to be a single assertion, but it was failing on the command line
+    # due to the params being out of order (it ran just fine in TextMate). If the assertion is rewritten
+    # again on one line, it should not be sensetive to the order of the params in the URL. (MJB)
+    assert_match %r{<a href="/people/quick_add\?}, html
+    assert_match %r{model_class_name=Poet}, html
+    assert_match %r{select_id=poem_poet_id}, html
   end
   
 end

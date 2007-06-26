@@ -1,0 +1,31 @@
+<div>
+Filter by value:
+<hr/>
+
+<% filter_columns = filter_by_value_columns %>
+  
+<%= form_remote_tag( :url => { :action => :add_filter }, 
+    :loading => 'Form.disable("add_filter_form")',
+    :complete => 'Form.enable("add_filter_form")',
+    :html => { :id => 'add_filter_form' } ) %>
+     <select name="filter_column" style="width:163px">
+        <%= options_for_select(filter_columns) %>
+     </select>               
+    <input type="text" value="" name="filter_value"/>                    
+    <%= submit_tag "Add Filter" %>
+    <%= submit_to_remote "clear_filters","Clear Filters", :url => {:action => :clear_all_filters} %>  
+<%= end_form_tag %>
+  
+<div id="filter_by_value">
+</div>
+
+<div id="session_expired_msg">
+Session Expired - Please Add Filter
+</div>
+
+</div>
+
+<%= update_page_tag do |page|
+    page.hide "session_expired_msg"
+   end 
+%>
