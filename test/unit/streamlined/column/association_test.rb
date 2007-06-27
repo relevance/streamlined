@@ -42,6 +42,16 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     assert !@association.belongs_to?
   end
   
+  def test_association
+    assert @association.association?
+  end
+  
+  def test_filterable
+    assert !@association.filterable?
+    @association.filter_column = 'foobar'
+    assert @association.filterable?
+  end
+  
   def test_show_and_edit_view_symbol_args
     assert_kind_of Streamlined::View::ShowViews::Count, @association.show_view
     assert_kind_of Streamlined::View::EditViews::InsetTable, @association.edit_view

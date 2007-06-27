@@ -69,4 +69,9 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_equal_sets [:articles, :first_name, :full_name, :authorships, :id, :books, :last_name], delegate_hash.keys
     assert_equal_sets [Streamlined::Column::Addition, Streamlined::Column::Association, Streamlined::Column::ActiveRecord], delegate_hash.values.map(&:class)
   end
+  
+  def test_conditions_by_like_with_associations
+    expected = "poems.text LIKE '%value%' OR poets.first_name LIKE '%value%'"
+    assert_equal expected, PoemUI.conditions_by_like_with_associations("value")
+  end
 end

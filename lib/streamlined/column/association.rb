@@ -14,10 +14,8 @@
 
 # Wrapper around ActiveRecord::Association.  Keeps track of the underlying association, the View definition and the Summary definition.
 class Streamlined::Column::Association < Streamlined::Column::Base
-  attr_reader :underlying_association
-  attr_accessor :human_name                    
-  attr_accessor :options_for_select
-  attr_reader :edit_view, :show_view
+  attr_reader :underlying_association, :edit_view, :show_view
+  attr_accessor :human_name, :options_for_select, :filter_column
   attr_with_default :quick_add, 'true'
   delegates :name, :class_name, :to=>:underlying_association
   
@@ -31,6 +29,14 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   
   def belongs_to?
     underlying_association.macro == :belongs_to
+  end
+  
+  def association?
+    true
+  end
+  
+  def filterable?
+    !filter_column.blank?
   end
 
   def edit_view=(opts)

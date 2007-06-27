@@ -34,6 +34,10 @@ class Streamlined::Column::Base
      false
   end
   
+  def association?
+    false
+  end
+  
   def unassigned_option
     [unassigned_value, nil]
   end

@@ -192,6 +192,19 @@ class Streamlined::UI
       @all_columns ||= (scalars.values + additions.values + relationships.values + delegations.values)
     end
     
+    def conditions_by_like_with_associations(value)
+      column_pairs = model.user_columns.collect { |c| "#{model.name.tableize}.#{c.name}" }
+      filterable_associations.each { |c| column_pairs << "#{c.name.to_s.tableize}.#{c.filter_column}" }
+      conditions = column_pairs.collect { |c| "#{c} LIKE #{ActiveRecord::Base.connection.quote("%#{value}%")}" }
+      conditions.join(" OR ")
+    end
+    
+    # Returns all list columns that can be filtered. A list column is considered
+    # filterable if its :filter_column option is set.
+    def filterable_associations
+      list_columns.select { |c| c.association? && c.filterable? }
+    end
+    
     # Returns <tt>Streamlined::UI::Generic</tt>, the generic UI class.
     def generic_ui
       Streamlined::UI::Generic

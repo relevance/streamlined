@@ -1,11 +1,13 @@
 base = File.dirname(__FILE__)
+
 require File.join(base, 'test_helper')
+require File.join(base, 'ar_helper')
+require 'active_record/fixtures'
+
+# Require sample fixtures, models, and UI classes
 Dir.glob("#{base}/fixtures/*.rb") do |file|
   require file
 end
-
-require File.join(base, 'ar_helper')
-require 'active_record/fixtures'
 
 class Test::Unit::TestCase
   self.fixture_path = File.dirname(__FILE__) + "/fixtures/"
