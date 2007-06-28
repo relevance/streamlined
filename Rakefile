@@ -3,6 +3,10 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'test/ar_helper'
 
+def db_config
+  ActiveRecord::Base.configurations['streamlined_unittest']
+end
+
 task :test => ['test:units', 'test:functionals']
 
 desc 'Default: run tests.'
@@ -10,14 +14,14 @@ task :default => ['test']
 
 namespace :test do
   desc 'Unit test the streamlined plugin.'
-  Rake::TestTask.new('units') do |t|
+  Rake::TestTask.new(:units) do |t|
     t.libs << 'test'
     t.pattern = 'test/unit/**/*_test.rb'
     t.verbose = true
   end
 
   desc 'Functional test the streamlined plugin.'
-  Rake::TestTask.new('functionals') do |t|
+  Rake::TestTask.new(:functionals) do |t|
     t.libs << 'test'
     t.pattern = 'test/functional/**/*_test.rb'
     t.verbose = true
@@ -44,18 +48,17 @@ namespace :test do
   end
   
   
-  task 'test:functionals'
-
+  
   desc 'Build the MySQL test databases'
-  task :build_mysql_databases do 
-    %x( mysqladmin -u root create streamlined_unittest )
-    # %x( mysql -u root -e "grant all on streamlined_unittest.* to root@localhost" )
-    %x( mysql -u root streamlined_unittest < 'test/db/mysql.sql' )
+  task :build_mysql_databases do
+    %x( mysqladmin -u #{db_config['username']} create #{db_config['database']} )
+    # %x( mysql -u #{db_config['username']} -e "grant all on #{db_config['database']}.* to #{db_config['username']}@localhost" )
+    %x( mysql -u #{db_config['username']} #{db_config['database']} < 'test/db/mysql.sql' )
   end
   
   desc 'Drop the MySQL test databases'
-  task :drop_mysql_databases do 
-    %x( mysqladmin -u root -f drop streamlined_unittest )
+  task :drop_mysql_databases do
+    %x( mysqladmin -u #{db_config['username']} -f drop #{db_config['database']} )
   end
   
   desc 'Rebuild the MySQL test databases'
@@ -73,9 +76,9 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
 end
 
 require 'rcov/rcovtask'
-namespace 'test' do
-  namespace 'coverage' do
-    namespace 'all' do
+namespace :test do
+  namespace :coverage do
+    namespace :all do
       desc 'Full coverage test'
       task :test do
         rm_f "coverage"
