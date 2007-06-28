@@ -15,7 +15,7 @@ module Streamlined::Helpers::FilterHelper
         no_name_yet = true
         names.each do |name|
           if no_name_yet && model.reflect_on_association(association_name).klass.column_names.index(name) 
-            filter_columns[Inflector.humanize(association_name.to_s) + " (#{name})"] = "rel__" + association_name.to_s + "__" + "#{name}"
+            filter_columns[Inflector.humanize(association_name.to_s) + " (#{name})"] = "rel::" + association_name.to_s + "::" + "#{name}"
             no_name_yet = false
           end
         end    

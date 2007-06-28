@@ -21,6 +21,7 @@ require 'streamlined/controller/enumeration_methods'
 require 'streamlined/controller/relationship_methods'
 require 'streamlined/controller/render_methods'
 require 'streamlined/controller/quick_add_methods'
+require 'streamlined/controller/filter_methods'
 
 module Streamlined::Controller::InstanceMethods
   include Streamlined::Controller::CrudMethods
@@ -28,6 +29,7 @@ module Streamlined::Controller::InstanceMethods
   include Streamlined::Controller::RenderMethods
   include Streamlined::Controller::RelationshipMethods
   include Streamlined::Controller::QuickAddMethods
+  include Streamlined::Controller::FilterMethods
   
   def index
     list

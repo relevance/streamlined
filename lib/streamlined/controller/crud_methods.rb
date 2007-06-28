@@ -10,11 +10,8 @@ module Streamlined::Controller::CrudMethods
     self.crud_context = :list
     options = pagination ? {:per_page => 10} : {}
     options.merge!(order_options)
+    options.merge!(filter_options)
     
-    if filter?
-      options.merge!(:conditions => model_ui.conditions_by_like_with_associations(filter))
-      options.merge!(:include => model_ui.filterable_associations.collect(&:name))
-    end
     @streamlined_items_count = model.count(:conditions => options[:conditions], :include => options[:include])
     
     if pagination
@@ -38,6 +35,9 @@ module Streamlined::Controller::CrudMethods
     self.instance_variable_set("@#{Inflector.tableize(model_name)}", models)
     @streamlined_items = models
     @streamlined_item_pages = model_pages
+
+    clear_filters unless request.xhr?
+
     respond_to do |format|
       format.html {render :action=> "list"}
       format.js {render :partial => "list"}
@@ -129,5 +129,22 @@ module Streamlined::Controller::CrudMethods
     models.sort! {|a,b| a.send(column.to_sym).to_s <=> b.send(column.to_sym).to_s}
   end
 
+  def filter_options
+    if filter_by_value?
+      return {} if session_expired
+
+      conditions = filter_by_value.split(",")
+      conditions.each_index {|i| conditions[i]=nil if conditions[i] == "nil"}
+      rethash = {:conditions => conditions}
+      rethash.merge! :include => session[:include] unless session[:include].nil?
+      return rethash
+    elsif filter?
+      rethash = {:conditions => model_ui.conditions_by_like_with_associations(filter)}
+      rethash.merge!(:include => model_ui.filterable_associations.collect(&:name))
+      return rethash
+    else
+      {}  
+    end
+  end  
   
 end   

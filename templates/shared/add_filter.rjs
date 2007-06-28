@@ -1,0 +1,8 @@
+if @expired
+  page.replace_html "filter_by_value", :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/new_filter'
+else
+  page.insert_html :bottom, "filter_by_value", :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/new_filter'
+end
+page.form.reset 'add_filter_form'
+page << "$('page_options_filter_by_value').value =  \"#{@conditions}\" "
+page.hide "session_expired_msg"
