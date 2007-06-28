@@ -1,0 +1,5 @@
+<ul id="nav_ul" class="streamlined_menu">
+  <% streamlined_top_menus.each do |text,url_for_options| %>
+  <li><a href="<%= url_for(url_for_options) %>"><%= text %></a></li>
+	<% end %>
+</ul>
