@@ -10,7 +10,6 @@ module Streamlined::Helpers::FilterHelper
         filter_columns[column.human_name] = column.name 
       elsif column.is_a?(Streamlined::Column::Association)
         association_name = column.name
-        rel_model = column.class_name
         names = %w{name title}
         no_name_yet = true
         names.each do |name|
