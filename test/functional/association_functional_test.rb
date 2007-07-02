@@ -14,12 +14,11 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     assert_equal_sets [Book, Article], @association.associables
   end
   
-  # TODO: make QuickAdd JavaScript unobtrusive
   def test_render_quick_add
     stock_controller_and_view
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
     html = @association.render_quick_add(@view)
-    assert_match %r{id="sl_qa_poet_poet"}, html
+    assert_match %r{id="sl_qa_poem_poet"}, html
     assert_match %r{class="sl_quick_add_link"}, html
     
     # TODO: these next three lines used to be a single assertion, but it was failing on the command line
@@ -29,5 +28,4 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     assert_match %r{model_class_name=Poet}, html
     assert_match %r{select_id=poem_poet_id}, html
   end
-  
 end

@@ -123,8 +123,8 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   def render_quick_add(view)
     url = view.url_for(:action => 'quick_add', :model_class_name => class_name, :select_id => form_field_id)
     image = view.image_tag('streamlined/add_16.png', 
-                           :id => "sl_qa_#{class_name.underscore}_#{name}", :alt => 'Quick Add', :title => 'Quick Add', 
-                           :border => '0', :hspace => 2, :class => "sl_quick_add_link")
+                           :id => "sl_qa_#{parent_model.class_name.underscore}_#{name}", :alt => 'Quick Add',
+                           :title => 'Quick Add', :border => '0', :hspace => 2, :class => "sl_quick_add_link")
     view.link_to image, url
   end
   

@@ -142,6 +142,14 @@ END
       assert_redirected_to :action => 'list'
     end
   end
+  
+  def test_quick_add_uses_correct_form_field_labels
+    xhr :get, :quick_add, :select_id => "foo", :model_class_name => "Poet"
+    assert_response :success
+    assert_template "quick_add"
+    assert_match %r{<label class="streamlined_label" for="person_first_name">First Name</label>}, @response.body
+    assert_match %r{<label class="streamlined_label" for="person_last_name">Last Name</label>}, @response.body
+  end
 
   def test_instance_is_accessible
     # This would fail if it was private
