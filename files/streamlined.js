@@ -304,9 +304,10 @@ Streamlined.QuickAdd = {
     $$(".sl_quick_add_link").each((function(el) {
       var link = el.parentNode.attributes["href"];
 	    if (link) {
-		    Event.observe(el, "click", (function() {
-          this.open(link);
-		    }).bind(this));
+				el.onclick = (function() {
+					this.open(link.value);
+					return false;
+				}).bind(this);
   		}
     }).bind(this));
   },

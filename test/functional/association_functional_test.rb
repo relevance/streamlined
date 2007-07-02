@@ -19,7 +19,7 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     stock_controller_and_view
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
     html = @association.render_quick_add(@view)
-    assert_match %r{id="sl_qa_Poet_poet"}, html
+    assert_match %r{id="sl_qa_poet_poet"}, html
     assert_match %r{class="sl_quick_add_link"}, html
     
     # TODO: these next three lines used to be a single assertion, but it was failing on the command line
