@@ -114,38 +114,6 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   #   assert_equal 'show', @association.render_td(view,nil)
   # end
   
-  def test_render_td_edit                     
-    items = flexmock(:collect => [:foo])
-    flexmock(@association).should_receive(:items_for_select).and_return(items).once
-    view, item = view_and_item_mocks_for_render_td_edit
-    @association.render_td_edit(view, item)
-  end
-  
-  def test_render_td_edit_with_unassigned_value_set
-    items = flexmock(:collect => [:foo])
-    flexmock(@association).should_receive(:items_for_select).and_return(items).once
-    view, item = view_and_item_mocks_for_render_td_edit(:unassigned_value => 'none')
-    @association.unassigned_value = 'none'
-    @association.render_td_edit(view, item)
-  end
-  
-  def test_render_td_edit_with_wrapper_set
-    @association.wrapper = Proc.new { |c| "<<<#{c}>>>" }
-    assert_equal '<<<[TBD: editable associations]>>>', @association.render_td_edit(*view_and_item_mocks)
-  end
-  
-  def test_render_td_edit_with_html_options
-    @association.html_options = { :class => 'foo_class' }
-    assert_equal '[TBD: editable associations]', @association.render_td_edit(*view_and_item_mocks)
-  end
-                                               
-  def test_render_td_edit_with_options_for_select      
-    flexmock(@association).should_receive(:options_for_select).and_return(:some_options_for_select_method) 
-    flexmock(SomeClass).should_receive(:some_options_for_select_method).and_return([:foo])
-    view, item = view_and_item_mocks_for_render_td_edit
-    @association.render_td_edit(view, item)
-  end
-  
   def test_render_td_list
     expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>link"
     assert_equal expected, @association.render_td_list(*view_and_item_mocks)
@@ -167,10 +135,6 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     @association.edit_in_list = false
     expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>"
     assert_equal expected, @association.render_td_list(*view_and_item_mocks)
-  end
-  
-  def test_render_td_edit_when_item_does_not_respond_to_name_id_method
-    assert_equal '[TBD: editable associations]', @association.render_td_edit(nil, nil)
   end
   
   def view_and_item_mocks(view_attrs={})

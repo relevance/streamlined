@@ -105,7 +105,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     case
     # when has_many?
     #   "[TBD: editable has_many associations]"
-    when item.respond_to?(name_as_id)
+    when belongs_to?
       if options_for_select
         choices = class_name.constantize.send(options_for_select)
       else
