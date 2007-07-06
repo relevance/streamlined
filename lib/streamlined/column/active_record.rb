@@ -43,6 +43,8 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     div
   end
   
+  # TODO: This method depends on item being in scope under the instance variable name
+  #       :@#model_underscore. Yucky, but Rails' input method expects this. Revisit.
   def render_td_edit(view, item)
     if enumeration
       result = render_enumeration_select(view, item)

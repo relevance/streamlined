@@ -120,6 +120,18 @@ class Streamlined::Column::Base
     end
   end
   
+  def render_edit_tr(view, item)
+    x = Builder::XmlMarkup.new
+    x.tr(:id => render_id(view, item)) do
+      x.td(:class => 'sl_edit_label') do
+        x.label(human_name.titleize, :for => "#{model_underscore}_#{name}")
+      end
+      x.td(:class => 'sl_edit_value') do
+        x << render_td(view, item)
+      end
+    end
+  end
+  
   def is_displayable_in_context?(view, item)
     # TODO: extract this nastiness into a class?  Only if we see one more need for objectified crud contexts!!!!!!
     column_answer = case view.crud_context

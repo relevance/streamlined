@@ -108,10 +108,6 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     assert_equal '[TBD: editable associations]', @association.render_td_edit(nil, poets(:justin))
   end
   
-  def root_node(html) 
-     HTML::Document.new(html).root
-  end           
-  
   def assert_people_quick_add_link(html)
     assert_select root_node(html), "a" do
       assert_select "[href=?]", %r{/people/quick_add\?.*}  

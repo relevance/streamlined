@@ -5,12 +5,7 @@
 <table class="sl_edit_form">
   <% model_ui.edit_columns.each do |column| %>
     <% if column.is_displayable_in_context?(self, @streamlined_item) %>
-      <tr id="<%= column.render_id(self, @streamlined_item) %>">
-        <td class="sl_edit_label"><label for="<%= model_underscore %>_<%= column.name %>"><%= column.human_name.titleize %></label></td>
-        <td class="sl_edit_value">
-          <%= column.render_td(self, @streamlined_item) %>
-        </td>
-      </tr>
+      <%= column.render_edit_tr(self, @streamlined_item) %>
     <% end %>
   <% end %>
 </table><!--[eoform:<%= model_underscore %>]-->
