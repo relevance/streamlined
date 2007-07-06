@@ -64,7 +64,9 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     Person.delete_all
     get :list
     assert_response :success                          
-    assert_select "div[class=sl_list_empty_message]"
+    assert_select "tr[class=odd]", 1, "Should have exactly one tr with odd style only--no row/instance specific styles" do
+      assert_select "div[class=sl_list_empty_message]"
+    end
   end
   
   # TODO: set Content-Disposition? optional?
