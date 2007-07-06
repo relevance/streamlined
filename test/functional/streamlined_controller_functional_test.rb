@@ -59,6 +59,13 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_template generic_view("list")
     assert_equal([], assigns(:streamlined_item_pages))
   end
+              
+  def test_empty_list   
+    Person.delete_all
+    get :list
+    assert_response :success                          
+    assert_select "div[class=sl_list_empty_message]"
+  end
   
   # TODO: set Content-Disposition? optional?
   # @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.csv\""

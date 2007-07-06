@@ -8,6 +8,15 @@
   </tr>
   </thead>
   <tbody>
+  <% if @streamlined_items.empty? %>
+    <tr class="odd <%= model_ui.style_class_for(:list, :row, nil) %>">
+      <td colspan="<%= list_columns.size + 1 %>">
+        <div class="sl_list_empty_message">
+          <%= Streamlined::View::Base.empty_list_content %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
   <% odd = false %>
   <% for item in @streamlined_items %>
     <% odd = !odd %>

@@ -3,6 +3,11 @@ class Streamlined::View::Base
   attr_reader :association
   attr_reader :separator
   
+  class <<self
+    attr_accessor :empty_list_content
+  end
+  @empty_list_content = "No records found"
+  
   # When creating a relationship manager, specify the list of fields that will be 
   # rendered at runtime.
   def initialize(options = {})
