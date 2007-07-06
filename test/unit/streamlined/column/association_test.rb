@@ -32,14 +32,9 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     assert_instance_of(Streamlined::View::EditViews::InsetTable, @association.edit_view)
   end
   
-  def test_belongs_to
-    flexmock(@association, :underlying_association => flexmock(:macro => :belongs_to))
-    assert @association.belongs_to?
-  end
-  
-  def test_belongs_to_false
-    flexmock(@association, :underlying_association => flexmock(:macro => :has_many))
-    assert !@association.belongs_to?
+  def test_belongs_to_delegates_to_underlying_association
+    flexmock(@association, :underlying_association => flexmock(:belongs_to? => :some_result))
+    assert_equal :some_result, @association.belongs_to?
   end
   
   def test_association

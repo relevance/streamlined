@@ -31,7 +31,11 @@ class Streamlined::Column::Base
   end
   
   def belongs_to?
-     false
+    false
+  end
+  
+  def has_many?
+    false
   end
   
   def association?

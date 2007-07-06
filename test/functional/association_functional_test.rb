@@ -14,7 +14,22 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     assert_equal_sets [Book, Article], @association.associables
   end
   
-  def test_render_quick_add
+  def test_render_quick_add_for_belongs_to
+    stock_controller_and_view
+    @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
+    html = @association.render_quick_add(@view)
+    assert_match %r{id="sl_qa_poem_poet"}, html
+    assert_match %r{class="sl_quick_add_link"}, html
+    
+    # TODO: these next three lines used to be a single assertion, but it was failing on the command line
+    # due to the params being out of order (it ran just fine in TextMate). If the assertion is rewritten
+    # again on one line, it should not be sensetive to the order of the params in the URL. (MJB)
+    assert_match %r{<a href="/people/quick_add\?}, html
+    assert_match %r{model_class_name=Poet}, html
+    assert_match %r{select_id=poem_poet_id}, html
+  end
+
+  def test_render_quick_add_for_has_one
     stock_controller_and_view
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
     html = @association.render_quick_add(@view)

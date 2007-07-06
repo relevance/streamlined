@@ -9,6 +9,7 @@ require 'relevance/module'
 require 'relevance/hash_init'
 require 'relevance/csv'
 require 'relevance/active_record_extensions'
+require 'relevance/macro_reflection'
 require 'streamlined'
 
 # Rails 1.2.2 bug workaround

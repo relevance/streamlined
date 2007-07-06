@@ -18,6 +18,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   attr_accessor :human_name, :options_for_select, :filter_column
   attr_with_default :quick_add, 'true'
   delegates :name, :class_name, :to=>:underlying_association
+  delegates :belongs_to?, :has_many?, :to => :underlying_association
   
   def initialize(assoc, parent_model, edit, show)
     @underlying_association = assoc
@@ -25,10 +26,6 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     self.edit_view = edit
     self.show_view = show
     @human_name = name.to_s.humanize
-  end
-  
-  def belongs_to?
-    underlying_association.macro == :belongs_to
   end
   
   def association?
@@ -105,7 +102,10 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   def render_td_edit(view, item)
     # TODO: I was only able to implement editable associations for belongs_to
     result = "[TBD: editable associations]"
-    if item.respond_to?(name_as_id)
+    case
+    # when has_many?
+    #   "[TBD: editable has_many associations]"
+    when item.respond_to?(name_as_id)
       if options_for_select
         choices = class_name.constantize.send(options_for_select)
       else

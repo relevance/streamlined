@@ -46,11 +46,11 @@ module Relevance::ActiveRecordExtensions::ClassMethods
   end
   
   def has_manies
-    self.reflect_on_all_associations.select {|x| x.macro == :has_many || x.macro == :has_and_belongs_to_many}
+    self.reflect_on_all_associations.select {|x| x.has_many? || x.has_and_belongs_to_many?}
   end
   
   def has_ones
-    self.reflect_on_all_associations.select {|x| x.macro == :has_one || x.macro == :belongs_to}
+    self.reflect_on_all_associations.select {|x| x.has_one? || x.belongs_to?}
   end
   
 end
