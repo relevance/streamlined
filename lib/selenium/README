@@ -1,0 +1,3 @@
+6/12/2007
+
+Selenium RC is built from the SVN trunk as of 6/12. This was necessary to work around a Firefox issue that prevents tests from running. http://forums.openqa.org/thread.jspa?messageID=16390&#16390.
