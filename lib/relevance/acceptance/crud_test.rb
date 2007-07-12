@@ -124,7 +124,7 @@ module Relevance::Acceptance::CrudTest
     click_submit "Create"
     user_should_not_see_errors
     user_should_see {
-      header expected_show_header
+      header new_record_header
       # TODO Add flash messages to Streamlined 'create' events
       # flash "#{model_name.to_s.titleize} was successfully created."
       show_table_with new_record_data
@@ -155,10 +155,10 @@ module Relevance::Acceptance::CrudTest
   end
 
   def expected_show_header
-    model_name.to_s.titleize
+    existing_record_link_text
   end
 
   def expected_edit_header
-    "Editing #{model_name.to_s.titleize}"
+    "Editing #{existing_record_link_text}"
   end
 end

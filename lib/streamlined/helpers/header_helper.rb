@@ -1,4 +1,6 @@
-# Helpers for creating headers. 
+# By default, headers are based on the class name (e.g. 'Edit Person')
+# If your model class implements a name method, 
+# you will get that instead (e.g. 'Edit John Doe')
 module Streamlined::Helpers::HeaderHelper
   def render_show_header
     render_header
@@ -13,7 +15,7 @@ module Streamlined::Helpers::HeaderHelper
   end
   
   def render_header(prefix=nil)
-    header_name = model_name.titleize
+    header_name = instance.respond_to?(:name) ? instance.name : model_name.titleize
     header = prefix ? "#{prefix} #{header_name}" : header_name
     html = Builder::XmlMarkup.new
     html.div(:class => "streamlined_header") { html.h2(header) }
