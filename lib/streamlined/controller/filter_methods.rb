@@ -134,7 +134,7 @@ module Streamlined::Controller::FilterMethods
           column = session["filter_column__" + filter.to_s]
           if not column.nil?
             association, table_name, column = association_table_and_column(column)
-            @conditions[0] += @join + table_name + "." + column + " " + session["filter_operand__" + filter.to_s] + " ? "
+            @conditions[0] += @join + table_name + "." + column + " " + session["filter_operand__" + filter.to_s] + " ?"
             @conditions[index] = session["filter_value__" + filter.to_s] 
             index += 1
             @join = " AND "
@@ -202,7 +202,7 @@ module Streamlined::Controller::FilterMethods
 
         # if no operands are passed then default to a like query 
         if op.nil?
-          op = " like "
+          op = "like"
           value = "%" + value + "%"
         elsif op == "is "
           if value.downcase.index("null") || value.downcase.index("nil") || value.downcase.index("empty") || value.downcase.index("blank") || value == ""
