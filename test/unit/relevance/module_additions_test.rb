@@ -5,7 +5,7 @@ class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
   class TestMe
     attr_accessor :helper
     delegates :jump, :to=>:helper
-    delegates :run, :to=>:helper, :default=>''
+    delegates :run, :to=>:helper, :default=>nil
     delegates :fly, :zoom, :to=>:helper, :method=>:soar
     delegates :secret, :hidden, :to=>:helper, :visibility=>:private
   end
@@ -26,7 +26,7 @@ class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
   
   def test_default
     t = TestMe.new
-    assert_equal '', t.run
+    assert_nil t.run
     t.helper = flexmock("helper") 
     t.helper.should_receive(:run).and_return(0)
     assert_equal 0, t.run

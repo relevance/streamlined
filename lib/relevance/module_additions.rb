@@ -22,7 +22,7 @@ module Relevance::ModuleAdditions
     end
     delegate_targets << to
     method_to, default, visibility = options[:method], options[:default], options[:visibility]
-    if default
+    if options.has_key? :default
       methods.each do |method_from|
         method = method_to ? method_to : method_from
         # TODO: how to pass a block?
