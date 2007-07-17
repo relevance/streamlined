@@ -74,4 +74,9 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     expected = "poems.text LIKE '%value%' OR poets.first_name LIKE '%value%'"
     assert_equal expected, PoemUI.conditions_by_like_with_associations("value")
   end
+
+  def test_conditions_by_like_with_associations_for_unconventional_table_names
+    expected = "people.first_name LIKE '%value%' OR people.last_name LIKE '%value%'"
+    assert_equal expected, UnconventionalUI.conditions_by_like_with_associations("value")
+  end
 end

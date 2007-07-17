@@ -193,7 +193,7 @@ class Streamlined::UI
     end
     
     def conditions_by_like_with_associations(value)
-      column_pairs = model.user_columns.collect { |c| "#{model.name.tableize}.#{c.name}" }
+      column_pairs = model.user_columns.collect { |c| "#{model.table_name}.#{c.name}" }
       filterable_associations.each { |c| column_pairs << "#{c.name.to_s.tableize}.#{c.filter_column}" }
       conditions = column_pairs.collect { |c| "#{c} LIKE #{ActiveRecord::Base.connection.quote("%#{value}%")}" }
       conditions.join(" OR ")
