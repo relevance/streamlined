@@ -1,31 +1,34 @@
 require File.join(File.dirname(__FILE__), '../../../test_helper')
 require 'streamlined/helpers/header_helper'
-require 'ostruct'
 
 class HeaderHelperTest < Test::Unit::TestCase
+  
+  class FancyController
+    include Streamlined::Helpers::HeaderHelper
+    attr_accessor :instance, :model_name
+  end
+  
   def setup
-    @obj = OpenStruct.new
-    @obj.extend Streamlined::Helpers::HeaderHelper
-    @obj.model_name = "Fancy Model"
-    @obj.instance = nil
+    @controller = FancyController.new
+    @controller.model_name = "Fancy Model"
   end
   
   def test_render_show_header
-    assert_header_text "Fancy Model", @obj.render_show_header
-  end
-  
-  def test_render_show_header_with_named_instance
-    @obj.instance = flexmock(:name => 'Ishmael')
-    assert_header_text "Ishmael", @obj.render_show_header
+    assert_header_text "Fancy Model", @controller.render_show_header
   end
   
   def test_render_edit_header
-    assert_header_text "Editing Fancy Model", @obj.render_edit_header
-  end  
+    assert_header_text "Edit Fancy Model", @controller.render_edit_header
+  end
 
   def test_render_new_header
-    assert_header_text "New Fancy Model", @obj.render_new_header
-  end  
+    assert_header_text "New Fancy Model", @controller.render_new_header
+  end
+  
+  def test_render_header_without_instance_name
+    @controller.instance = flexmock(:name => "Fancier Model")
+    assert_header_text "New Fancier Model", @controller.render_new_header
+  end
   
   def assert_header_text(expected_header_text, actual_header_html)
     root = HTML::Document.new(actual_header_html).root

@@ -7,7 +7,7 @@ module Streamlined::Helpers::HeaderHelper
   end         
   
   def render_edit_header
-    render_header("Editing")
+    render_header("Edit")
   end
 
   def render_new_header
@@ -15,7 +15,8 @@ module Streamlined::Helpers::HeaderHelper
   end
   
   def render_header(prefix=nil)
-    header_name = instance.respond_to?(:name) ? instance.name : model_name.titleize
+    name_exists = instance.respond_to?(:name) && !instance.name.nil?
+    header_name = name_exists ? instance.name : model_name.titleize
     header = prefix ? "#{prefix} #{header_name}" : header_name
     html = Builder::XmlMarkup.new
     html.div(:class => "streamlined_header") { html.h2(header) }
