@@ -14,6 +14,6 @@ class MyNiftyController < ApplicationController
 end
 
 
-More documentation can be found on the Streamlined wiki at http://streamlinedframework.org:8079/trac/wiki
+More documentation can be found on the Streamlined wiki at http://trac.streamlinedframework.org/
 
 *NOTE: You cannot extend ApplicationController with acts_as_streamlined, only children of ApplicationController.
