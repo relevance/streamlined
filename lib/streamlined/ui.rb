@@ -26,6 +26,7 @@ class Streamlined::UI
     declarative_scalar :table_filter, :default => true
     declarative_scalar :read_only, :default => false
     declarative_scalar :new_submit_button, :default => {:ajax => true}
+    declarative_scalar :edit_submit_button, :default => {:ajax => true}
     declarative_scalar :mark_required_fields, :default => true
     declarative_scalar :header_partials, :default => {}
     declarative_scalar :footer_partials, :default => {}
