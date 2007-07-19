@@ -26,7 +26,7 @@ module Streamlined::Helpers::LayoutHelper
 
   def streamlined_footer
     <<-END
-Brought to you by Streamlined (<a href="http://www.streamlinedframework.org">StreamlinedFramework.org</a>  
+Brought to you by Streamlined (<a href="http://www.streamlinedframework.org">StreamlinedFramework.org</a>)  
 END
   end
 end
