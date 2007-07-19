@@ -1,8 +1,10 @@
 require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
 require 'streamlined/controller/crud_methods'
+require 'streamlined/controller/filter_methods'
 
 class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
   include Streamlined::Controller::CrudMethods
+  include Streamlined::Controller::FilterMethods
   attr_accessor :model, :streamlined_request_context
   delegates *Streamlined::Context::RequestContext::DELEGATES
   
@@ -56,4 +58,84 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
   def build_models(*names)
     names.collect { |n| flexmock(:fname => n) }
   end
+  
+  def test_filter_options_with_no_filter
+    @streamlined_controller_context = Streamlined::Context::ControllerContext.new
+    @streamlined_controller_context.model_name = 'Author'
+    @streamlined_request_context = Streamlined::Context::RequestContext.new
+    assert_equal({}, filter_options)
+  end
+
+  def test_filter_options_with_simple_filter
+    str = "data"
+    @streamlined_controller_context = Streamlined::Context::ControllerContext.new
+    @streamlined_controller_context.model_name = 'Person'
+    @streamlined_request_context = Streamlined::Context::RequestContext.new(:filter=>"#{str}")
+    assert_equal({:conditions=>"people.first_name LIKE '%#{str}%' OR people.last_name LIKE '%#{str}%'", :include=>[]}, filter_options)
+  end
+  
+  def filter_setup(conditions_string)
+    @controller = PeopleController.new
+    # Took a while to find this, setting layout=false was not good enough
+    class <<@controller
+      def active_layout
+        false
+      end
+    end
+    @controller.logger = RAILS_DEFAULT_LOGGER
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+    @controller.send :initialize_template_class, @response
+    @controller.assign_shortcuts(@request, @response)
+
+    @streamlined_controller_context = Streamlined::Context::ControllerContext.new
+    @streamlined_controller_context.model_name = 'Person'
+    @streamlined_request_context = Streamlined::Context::RequestContext.new(:filter_by_value=>"#{conditions_string}")
+
+  end
+
+  def test_filter_options_with_filter_by_value_expired
+    str = "data"
+    conditions_string = "people.first_name like ?,%#{str}%"
+
+    filter_setup(conditions_string)
+    session[:num_filters] = nil
+    assert_equal({}, filter_options)
+  end
+
+  def test_filter_options_with_filter_by_value
+    str = "data"
+    conditions_string = "people.first_name like ?,%#{str}%"
+    conditions        = ["people.first_name like ?", "%#{str}%"]
+
+    filter_setup(conditions_string)
+    session[:num_filters] = 1
+    assert_equal({:conditions=>conditions}, filter_options)
+  end
+
+  def test_filter_options_with_filter_by_value_and_include
+    str = "data"
+    conditions_string = "people.first_name like ?,%#{str}%"
+    conditions        = ["people.first_name like ?", "%#{str}%"]
+
+    filter_setup(conditions_string)
+
+    session[:num_filters] = 1
+    includes = ["people", "others"]
+    session[:include] = includes
+
+    assert_equal({:conditions=>conditions, :include=>includes}, filter_options)
+  end
+
+  def test_filter_options_with_filter_by_value_with_nil
+    str = "data"
+    conditions_string = "people.first_name like ? and people.last_name is ?,%#{str}%,nil"
+    conditions        = ["people.first_name like ? and people.last_name is ?", "%#{str}%", nil]
+
+    filter_setup(conditions_string)
+
+    session[:num_filters] = 1
+    assert_equal({:conditions=>conditions}, filter_options)
+  end
+
 end

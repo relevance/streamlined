@@ -9,6 +9,9 @@ require 'action_controller/test_process'
 require 'active_support/breakpoint'
 require "#{File.dirname(__FILE__)}/flexmock_patch"
 require 'generator'
+# TODO: Stuart - Figure out how to include arts plugin from 
+# http://glu.ttono.us/articles/2006/05/29/guide-test-driven-rjs-with-arts
+# require "#{File.dirname(__FILE__)}/../../arts/lib/arts.rb"
 
 silence_stream(STDERR) do
   RAILS_ROOT = Pathname.new(File.join(File.dirname(__FILE__), '../faux_rails_root')).expand_path.to_s
@@ -23,6 +26,9 @@ require 'relevance/controller_test_support'
 
 class Test::Unit::TestCase
   include Relevance::RailsAssertions
+# TODO: Stuart - Figure out how to include arts plugin from 
+# http://glu.ttono.us/articles/2006/05/29/guide-test-driven-rjs-with-arts
+#  include Arts
   def assert_difference(object, method = nil, difference = 1)
     initial_value = object.send(method)
     yield
