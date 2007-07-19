@@ -1,9 +1,7 @@
 module Streamlined::Controller::FilterMethods
   
       def add_filter
-        if session_expired
-          @expired = true
-        end
+        @expired = session_expired
         @column = params[:filter_column]
         @value = params[:filter_value]
         @conditions = build_filter(:add, nil, @column, @value)
@@ -81,11 +79,7 @@ module Streamlined::Controller::FilterMethods
   private
 
       def session_expired
-        if session[:num_filters].nil?
-          true
-        else
-          false
-        end
+        session[:num_filters].nil?
       end
       
       # handle the new filter input and return the new conditions for the db query
@@ -188,8 +182,9 @@ module Streamlined::Controller::FilterMethods
 
         operands.each do |operand|
           # only use operands at the start of the string
-          if value.index(operand) == 0
-            value = value.gsub(operand,'')
+          if value.downcase.index(operand) == 0
+            value = value.downcase.sub(operand,'')
+            value = value.sub(/^\s+/,'')      # remove any spaces that were after the operand
             if operand == "after "
               op = ">"
             elsif operand == "before "
@@ -206,6 +201,7 @@ module Streamlined::Controller::FilterMethods
           value = "%" + value + "%"
         elsif op == "is "
           if value.downcase.index("null") || value.downcase.index("nil") || value.downcase.index("empty") || value.downcase.index("blank") || value == ""
+            op = "is"
             value = "nil"
           else
             op = "="  
