@@ -6,7 +6,7 @@ module Streamlined::Helpers::FilterHelper
     filter_columns = Hash.new
 
     model_ui.list_columns.each do |column|
-      if database_column?(model, column, column.name)
+      if column.is_a?(Streamlined::Column::ActiveRecord)
         filter_columns[column.human_name] = column.name 
       elsif column.is_a?(Streamlined::Column::Association)
         association_name = column.name
@@ -23,16 +23,4 @@ module Streamlined::Helpers::FilterHelper
     filter_columns.sort 
   end
   
-  # Used for filter by value.  Only allow filtering on real db columns since we have to 
-  # generate a db query
-  def database_column?(model, column, column_name)
-    # exclude calculated columns from the <class>UI
-    unless column.nil?
-      return false if column.is_a?(Streamlined::Column::Addition)
-    end  
-
-    # return true if a real db column.  exclude columns defined in the model.
-    db_columns = model.columns.collect {|c| c.name}
-    !db_columns.index(column_name).nil?
-  end
 end
