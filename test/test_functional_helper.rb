@@ -5,7 +5,9 @@ require File.join(base, 'ar_helper')
 require 'active_record/fixtures'
 
 # Require sample fixtures, models, and UI classes
-Dir.glob("#{base}/fixtures/*.rb") do |file|
+# .sort.each added to ensure that the list is sorted and person.rb is "required"
+# before person_ui.rb; person_ui.rb references the Person class.
+Dir.glob("#{base}/fixtures/*.rb").sort.each do |file|
   require file
 end
 
