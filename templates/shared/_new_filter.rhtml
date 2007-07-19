@@ -10,7 +10,7 @@
         <%= link_to_remote(image_tag("streamlined/delete_16.png", :border => "0", :alt => "Delete" ), :url => {:action => "delete_filter", :id => session[:filter_index]} ) %>
     </div>
     <div><input type='text' name='filter_value__<%= session[:filter_index] %>' value='<%=@value%>'></div>
-<%= end_form_tag %>
+</form>	
 <%= observe_form form_name,  :frequency => 2,
     :update => {},
     :url => {:action => 'update_filter', :id => session[:filter_index]} %>    

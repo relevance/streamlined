@@ -14,7 +14,7 @@ Filter by value:
     <input type="text" value="" name="filter_value"/>                    
     <%= submit_tag "Add Filter" %>
     <%= submit_to_remote "clear_filters","Clear Filters", :url => {:action => :clear_all_filters} %>  
-<%= end_form_tag %>
+</form>	
   
 <div id="filter_by_value">
 </div>
