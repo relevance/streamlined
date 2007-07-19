@@ -134,14 +134,15 @@ module Streamlined::Controller::CrudMethods
       return {} if session_expired
 
       conditions = filter_by_value.split(",")
+      # put nil object in conditions array to generate NULL in sql query
       conditions.each_index {|i| conditions[i]=nil if conditions[i] == "nil"}
       rethash = {:conditions => conditions}
       rethash.merge! :include => session[:include] unless session[:include].nil?
-      return rethash
+      rethash
     elsif filter?
-      rethash = {:conditions => model_ui.conditions_by_like_with_associations(filter)}
-      rethash.merge!(:include => model_ui.filterable_associations.collect(&:name))
-      return rethash
+      rethash = {:conditions =>  @streamlined_controller_context.model_ui.conditions_by_like_with_associations(filter)}
+      rethash.merge!(:include => @streamlined_controller_context.model_ui.filterable_associations.collect(&:name))
+      rethash
     else
       {}  
     end
