@@ -30,7 +30,7 @@ Streamlined comes bundled with a set of unit and functional tests. You must inst
 versions of the following gems to run these tests:
 
 * FlexMock (0.6.2 or higher)
-* Rcov (0.7.0.1 or higher)
+* rcov (0.7.0.1 or higher)
 
 To initialize your local database and run the tests, execute:
 
