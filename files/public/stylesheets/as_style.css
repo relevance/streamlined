@@ -1,0 +1,535 @@
+/* AjaxScaffoldGenerator version 3.1.0 (c) 2006 Richard White <rrwhite@gmail.com>
+
+ AjaxScaffoldGenerator is freely distributable under the terms of an MIT-style license.
+
+ For details, see the AjaxScaffoldGenerator web site: http://www.ajaxscaffold.com/ */
+ 
+/* Holy Grail styling from A List Apart (http://www.alistapart.com/articles/holygrail/) */
+#header
+{
+	height: 100px;
+}
+#left
+{
+	float: left;
+	width: 180px;
+}
+#center
+{
+        float: left;
+	width: 100%;
+	margin-left: 20px;
+	padding: 0 20px;
+	min-width: 640px;
+}
+#footer
+{
+	height: 25px;
+	clear: both; 
+}
+
+ #header, #footer { margin-left: -200px; /* LC fullwidth */ margin-right: -190px; /* RC fullwidth + CC padding */ }
+ #left { width: 180px; /* LC width */ padding: 0 10px; /* LC padding */ right: 240px; /* LC fullwidth + CC padding */ margin-left: -200px; }
+ .column { position: relative; float: left; }
+body { margin: 0; padding-left: 200px; /* LC fullwidth */ padding-right: 190px; /* RC fullwidth + CC padding */ min-width: 240px; /* LC fullwidth + CC padding */ }
+
+ /*** IE Fix ***/ * html #left { left: 150px; /* RC fullwidth */ }
+
+#left {background-color:  white;}
+#footer, #footer a {background-color: #2175bc; color: white; text-align: center; font-style: italic; font-size: 9pt;}
+#footer a:hover {color:  orange;}
+#header { background-color: #2175bc; padding: 8px; height: 30px;}
+ 
+ body {background-color:  white;}
+ 
+ .mac_os_x_content {background-color: #DAFFCD; color: #555555; }
+ .mac_os_x_content table label {font-size: 10px;}
+ .mac_os_x_content table input {font-weight: bold;}
+
+ /*
+  AjaxScaffoldGenerator version 3.1.0
+  (c) 2006 Richard White <rrwhite@gmail.com>
+
+  AjaxScaffoldGenerator is freely distributable under the terms of an MIT-style license.
+
+  For details, see the AjaxScaffoldGenerator web site: http://www.ajaxscaffold.com/
+ */
+
+ .ajax-scaffold form,
+ .ajax-scaffold table,
+ .ajax-scaffold p,
+ .ajax-scaffold div,
+ .ajax-scaffold fieldset {
+ margin: 0;
+ padding: 0;
+ }
+
+ .ajax-scaffold {
+ margin: 5px 0;
+ }
+
+ .ajax-scaffold table {
+ width: 100%;
+ }
+
+ .ajax-scaffold a {
+ color: #06c;
+ text-decoration: none;
+ }
+
+ .ajax-scaffold a:hover {
+ background-color: #ff8;
+ }
+
+ /* Header Styling
+    ======================== */
+
+ .ajax-scaffold-header {
+ background-color: #005CB8;
+ position: relative;
+ }
+
+ .ajax-scaffold-header h2 {
+ color: #fff;
+ padding: 2px 5px 4px 5px;
+ margin: 0;
+ font: normal 17px verdana, sans-serif;
+ }
+
+ .ajax-scaffold-header div.actions a {
+ color: #fff;
+ background: url(../images/add.gif) 1px 50% no-repeat;
+ font: bold 14px arial, sans-serif;
+ letter-spacing: -1px;
+ text-decoration: none;
+ padding: 1px 2px 1px 19px;
+ }
+
+ .ajax-scaffold-header div.actions a:hover {
+ background: #378CDF url(../images/add.gif) 1px 50% no-repeat;
+ }
+
+ .ajax-scaffold-header div.actions {
+ position: absolute;
+ right: 30px;
+ top: 3px;
+ width: 220px;
+ text-align: right;
+ color: white;
+ font-size: 10pt;
+ }
+
+ .ajax-scaffold-header div.actions img {
+ margin-bottom: -3px;
+ }
+
+ /* Header Styling : Nested
+    ======================== */
+
+ .ajax-scaffold .ajax-scaffold {
+ margin: 2px 5px;
+ }
+
+ .ajax-scaffold .ajax-scaffold .ajax-scaffold-header h2 {
+ font-size: 13px;
+ font-weight: bold;
+ }
+
+ .ajax-scaffold .ajax-scaffold .ajax-scaffold-header div.actions a {
+ font: bold 11px verdana, sans-serif;
+ padding: 0 2px 1px 17px;
+ }
+
+ .ajax-scaffold .ajax-scaffold .ajax-scaffold-header div.actions {
+ top: 4px;
+ }
+
+ /* Table Column Headers
+    ============================= */
+
+ .ajax-scaffold th {
+ background-color: #555;
+ text-align: left;
+ white-space: nowrap;
+ font: bold 11px arial, sans-serif;
+ color: white;
+ }
+
+ .ajax-scaffold th a,
+ .ajax-scaffold th p {
+ font: bold 11px arial, sans-serif;
+ display: block;
+ background-color: #555;
+ }
+
+ .ajax-scaffold th a {
+ color: #fff;
+ padding: 2px 15px 2px 5px;
+ }
+
+ .ajax-scaffold th p {
+ color: #eee;
+ padding: 2px 5px;
+ }
+
+ .ajax-scaffold th a:hover {
+ background-color: #000;
+ color: #ff8;
+ }
+
+ .ajax-scaffold th.sorted {
+ background-color: #333;
+ }
+
+ .ajax-scaffold th.asc a,
+ .ajax-scaffold th.asc a:hover {
+ background: #333 url(../images/arrow_up.gif) right 50% no-repeat;
+ }
+
+ .ajax-scaffold th.desc a,
+ .ajax-scaffold th.desc a:hover {
+ background: #333 url(../images/arrow_down.gif) right 50% no-repeat;
+ }
+
+ .ajax-scaffold th.loading a,
+ .ajax-scaffold th.loading a:hover {
+ background: #333 url(../images/indicator-small.gif) right 50% no-repeat;
+ }
+
+ /* Table Body Styling
+    ============================= */
+
+ .ajax-scaffold td {
+ padding: 5px 4px;
+ color: #333;
+ font-family: Verdana, sans-serif;
+ font-size: 11px;
+ background-color: #E6F2FF;
+ border-bottom: solid 1px #C5DBF7;
+ border-left: solid 1px #C5DBF7;
+ }
+
+ .ajax-scaffold td.actions {
+ border-right: solid 1px #ccc;
+ }
+
+ .ajax-scaffold tr.even td {
+ background-color: #fff;
+ border-left: solid 1px #ddd;
+ }
+
+ .ajax-scaffold tr td.sorted {
+ background-color: #B9DCFF;
+ border-bottom: solid 1px #AFD0F5;
+ }
+
+ .ajax-scaffold tr.even td.sorted {
+ background-color: #E6F2FF;
+ border-bottom: solid 1px #AFD0F5;
+ }
+
+ .ajax-scaffold td.empty {
+ color: #999;
+ text-align: center;
+ }
+
+ /* Table Actions (Edit, Delete) Styling
+    ============================= */
+
+ .ajax-scaffold td.actions {
+ padding: 0;
+ width: 1%;
+ }
+
+ .ajax-scaffold td.actions table {
+ float: right;
+ width: auto;
+ margin-right: 5px;
+ }
+
+ .ajax-scaffold td.actions table td {
+ border: none;
+ text-align: right;
+ padding: 0 2px;
+ }
+
+ .ajax-scaffold td.actions a {
+ font: bold 11px verdana, sans-serif;
+ letter-spacing: -1px;
+ padding: 2px;
+ margin: 0 2px;
+ line-height: 16px;
+ }
+
+ /* ajax-scaffold Footer Styling
+    ========================== */
+
+ .ajax-scaffold-totals td {
+ 	border-top: 2px solid #005CB8;
+ 	font: bold 12px arial, sans-serif;
+ }
+
+ .ajax-scaffold .ajax-scaffold-footer {
+ text-align: right;
+ background-color: #005CB8;
+ padding: 3px 5px 2px 5px;
+ border-bottom: none;
+ color: #ccc;
+ font: bold 12px arial, sans-serif;
+ }
+
+ .ajax-scaffold-footer a {
+ color: #fff;
+ text-decoration: none;
+ letter-spacing: 0;
+ padding: 0 2px;
+ margin: 0 -2px;
+ font: bold 12px arial, sans-serif;
+ }
+
+ .ajax-scaffold-footer a:hover {
+ background-color: #378CDF;
+ }
+
+ .ajax-scaffold-footer .next {
+ margin-left: 0;
+ padding-left: 5px;
+ border-left: solid 1px #ccc;
+ }
+
+ .ajax-scaffold-footer .previous {
+ margin-right: 0;
+ padding-right: 5px;
+ border-right: solid 1px #ccc;
+ }
+
+ /* Messages
+    ========================= */
+
+ .ajax-scaffold .messages-container,
+ .ajax-scaffold .ajax-scaffold .messages-container{
+ padding: 0;
+ margin: 0 7px;
+ border: none;
+ }
+
+ .ajax-scaffold .empty-message {
+ background-color: #e8e8e8;
+ padding: 4px;
+ text-align: center;
+ color: #666;
+ }
+
+ .ajax-scaffold .message {
+ font-size: 11px;
+ font-weight: bold;
+ padding: 5px 20px 5px 5px;
+ color: #333;
+ position: relative;
+ margin: 2px 7px;
+ line-height: 12px;
+ }
+
+ .ajax-scaffold .message a {
+ position: absolute;
+ right: 10px;
+ top: 4px;
+ padding: 0;
+ font: bold 11px verdana, sans-serif;
+ letter-spacing: -1px;
+ }
+
+ .ajax-scaffold .messages-container .message {
+ margin: 0;
+ }
+
+ .ajax-scaffold .error-message {
+ border-left: solid 5px #f66;
+ background-color: #fbb;
+ }
+
+ .ajax-scaffold .warning-message {
+ border-left: solid 5px #ff6;
+ background-color: #ffb;
+ }
+
+ .ajax-scaffold .info-message {
+ border-left: solid 5px #66f;
+ background-color: #bbf;
+ }
+
+ /* Error Styling
+    ========================== */
+
+ .ajax-scaffold #errorExplanation {
+ background-color: #fcc;
+ margin: 2px 0;
+ border: solid 1px #f66;
+ float: left;
+ }
+
+ .ajax-scaffold fieldset {
+ clear: both;
+ }
+
+ .ajax-scaffold #errorExplanation h2 {
+ padding: 2px 5px;
+ color: #333;
+ font-size: 11px;
+ margin: 0;
+ letter-spacing: 0;
+ font-family: Verdana;
+ background-color: #f66;
+ }
+
+ .ajax-scaffold #errorExplanation ul {
+ margin: 0;
+ padding: 0 2px 4px 25px;
+ list-style: disc;
+ }
+
+ .ajax-scaffold #errorExplanation p {
+ font-size: 11px;
+ padding: 2px 5px;
+ font-family: Verdana;
+ margin: 0;
+ }
+
+ .ajax-scaffold #errorExplanation ul li {
+ font: bold 11px verdana;
+ letter-spacing: -1px;
+ margin: 0;
+ padding: 0;
+ background-color: transparent;
+ }
+
+ .ajax-scaffold .fieldWithErrors input {
+ border: solid 1px #f00;
+ }
+
+ /* Loading Indicators
+    ============================== */
+
+ .ajax-scaffold .loading-indicator {
+ vertical-align: bottom;
+ margin: 0;
+ }
+
+ .ajax-scaffold .ajax-scaffold-header .loading-indicator,
+ .ajax-scaffold .update .loading-indicator,
+ .ajax-scaffold .create .loading-indicator {
+ vertical-align: bottom;
+ margin-bottom: 3px;
+ }
+
+ /* Form Styling
+    ============================== */
+
+ .ajax-scaffold td.update,
+ .ajax-scaffold td.create {
+ background-color: #DAFFCD;
+ padding: 4px;
+ border: solid 1px #7FcF00;
+ border-top: none;
+ }
+
+ .ajax-scaffold .ajax-scaffold td.update,
+ .ajax-scaffold .ajax-scaffold td.create {
+ background-color: #ffb;
+ border: solid 1px #DDDF37;
+ border-top: none;
+ }
+
+ .ajax-scaffold .submit {
+ font-weight: bold;
+ font-size: 14px;
+ font-family: Arial, sans-serif;
+ letter-spacing: 0;
+ margin: 0;
+ margin-top: 5px;
+ }
+
+ .ajax-scaffold fieldset {
+ border: none;
+ }
+
+ .ajax-scaffold label.required{
+ font-weight: bold;
+ }
+
+ .ajax-scaffold label.example {
+ font-size: 11px;
+ font-family: arial;
+ color: #888;
+ }
+
+ .ajax-scaffold h4 {
+ padding: 2px;
+ margin: 0;
+ text-transform: none;
+ color: #1F7F00;
+ letter-spacing: -1px;
+ font: bold 16px arial;
+ }
+
+ .ajax-scaffold p.form-footer a {
+ font: bold 14px arial, sans-serif;
+ letter-spacing: 0;
+ }
+
+ .ajax-scaffold p {
+ clear: both;
+ }
+
+ .ajax-scaffold div.row {
+ clear: both;
+ float: none;
+ padding: 2px;
+ margin-left: 5px;
+ }
+
+ .ajax-scaffold div.form-element {
+ float: left;
+ margin-right: 10px;
+ margin-bottom: 2px;
+ }
+
+ .ajax-scaffold label {
+ display: block;
+ font-family: Verdana, sans-serif;
+ color: #555;
+ font-size: 11px;
+ padding-bottom: 1px;
+ }
+
+ .ajax-scaffold input.text-input,
+ .ajax-scaffold select {
+ font-size: 16px;
+ font-weight: bold;
+ font-family: Arial, sans-serif;
+ letter-spacing: -1px;
+ border: solid 1px #1F7F00;
+ }
+
+ .ajax-scaffold .form-element input {
+ padding: 1px;
+ }
+
+ .ajax-scaffold textarea {
+ height: 65px;
+ font-family: Arial, sans-serif;
+ font-size: 12px;
+ padding: 1px;
+ border: solid 1px #1F7F00;
+ }
+
+ /* IE hacks
+    ==================================== */
+
+ * html .ajax-scaffold-header {
+ height: 1%;
+ }
+
+ * html .ajax-scaffold td .messages-container {
+ border-top: solid 1px #DAFFCD;
+ }
