@@ -17,15 +17,17 @@ class Streamlined::RakeTasksTest < Test::Unit::TestCase
   end
 
   def test_should_copy_required_javascripts
-    expected_dest = File.join(RAILS_ROOT, "public", "javascripts")
+    public_root = File.join(RAILS_ROOT, "public")
+    js_dest = File.join(RAILS_ROOT, "public", "javascripts")
+    
     Streamlined::Assets.default_javascripts.each do |javascript| 
       flexmock(Streamlined::Assets).should_receive(:copy).once.
-        with(Streamlined::Assets.normalize_asset(javascript), expected_dest).and_return(nil)
+        with(Streamlined::Assets.normalize_asset(javascript), js_dest).and_return(nil)
     end
     flexmock(Streamlined::Assets).should_receive(:copy).once.
-      with(Streamlined::Assets.normalize_asset("overlib"), expected_dest).and_return(nil)
+      with(Streamlined::Assets.normalize_asset("overlib"), public_root).and_return(nil)
     flexmock(Streamlined::Assets).should_receive(:copy).once.
-      with(Streamlined::Assets.normalize_asset("windows_js"), expected_dest).and_return(nil)
+      with(Streamlined::Assets.normalize_asset("windows_js"), public_root).and_return(nil)
       
     Streamlined::Assets.install_javascripts
   end

@@ -26,8 +26,8 @@ module Streamlined
     # copy over streamlined required js and some small js libraries we depend on 
     def self.install_javascripts
       install default_javascripts, "public", "javascripts"
-      install "overlib", "public", "javascripts"
-      install "windows_js", "public", "javascripts"
+      install "overlib", "public"
+      install "windows_js", "public"
     end
     
     def self.install_stylesheets
