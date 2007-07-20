@@ -23,8 +23,7 @@
 	<div class="ajax-scaffold-footer"> 
 		<div id="controls">
 		  <%= link_to_new_model -%>&nbsp;
-		  <%= link_to_xml_export -%>
-		  <%= link_to_csv_export -%>
+		  <%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/export_links' %>
 		  <%= link_to_next_page -%>
 		  <%= link_to_previous_page -%>
 			<br />

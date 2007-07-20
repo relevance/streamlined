@@ -29,12 +29,16 @@ class Test::Unit::TestCase
   include Relevance::RailsAssertions
 # TODO: Stuart - Figure out how to include arts plugin from 
 # http://glu.ttono.us/articles/2006/05/29/guide-test-driven-rjs-with-arts
-#  include Arts
+#  include Arts   
   def assert_difference(object, method = nil, difference = 1)
     initial_value = object.send(method)
     yield
     assert_equal initial_value + difference, object.send(method), "#{object}##{method}"
   end
+  
+  def root_node(html) 
+     HTML::Document.new(html).root
+  end           
 
   def assert_no_difference(object, method, &block)
     assert_difference object, method, 0, &block

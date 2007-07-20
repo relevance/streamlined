@@ -33,4 +33,13 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
                  @view.link_to_toggler('click me', 'some_elem')
   end
   
+  def test_export_links
+    {:csv => :save, :xml => :export, :json => :export}.each do |format, image_type| 
+      html = @view.send("link_to_#{format}_export")
+      title = "Export #{format.to_s.upcase}"
+      assert_select root_node(html), "a[href=#][onclick=\"Streamlined.Exporter.export_to('/people?format=#{format}'); return false;\"]" do
+        assert_select "img[alt=#{title}][border=0][src=/images/streamlined/#{image_type}_16.png][title=#{title}]"
+      end
+    end
+  end  
 end

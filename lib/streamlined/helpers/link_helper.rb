@@ -61,14 +61,13 @@ module Streamlined::Helpers::LinkHelper
   end
   # TODO add :hrefs options like above (dry and generalize...)
   def link_to_xml_export
-    link_to_function(image_tag('streamlined/export_16.png', 
-        {:alt => "Export XML", :title => "Export XML", :border => '0'}),
-        export_link("xml"))    
+    link_to_export(:xml, :export)
+  end
+  def link_to_json_export    
+    link_to_export(:json, :export)
   end
   def link_to_csv_export
-    link_to_function(image_tag('streamlined/save_16.png', 
-        {:alt => "Export CSV", :title => "Export CSV", :border => 0}),
-        export_link("csv"))
+    link_to_export(:csv, :save)
   end
   def link_to_next_page
     link_to_function image_tag('streamlined/control-reverse_16.png', 
@@ -81,9 +80,14 @@ module Streamlined::Helpers::LinkHelper
         "Streamlined.PageOptions.nextPage()"  
   end
   
-  def export_link(format)
+  def link_to_export(format, image_type)
+    title = "Export #{format.to_s.upcase}"
+    link_to_function(image_tag("streamlined/#{image_type}_16.png", 
+        {:alt => title, :title => title, :border => 0}),
+        export_onclick(format))
+  end           
+  
+  def export_onclick(format)
     "Streamlined.Exporter.export_to('#{url_for(:format => format)}')"
   end
 end
-
-
