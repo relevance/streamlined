@@ -91,7 +91,20 @@ id,first_name,last_name
 1,Justin,Gehtland
 2,Stu,Halloway
 END
-  end
+  end       
+
+  def test_list_json
+    @request.env["HTTP_ACCEPT"] = "application/json"
+    get :list
+    assert_response :success
+    assert_template nil
+    assert_equal "application/json", @response.content_type   
+    expected_json =<<-END
+    [{attributes: {id: "1", first_name: "Justin", last_name: "Gehtland"}}, {attributes: {id: "2", first_name: "Stu", last_name: "Halloway"}}]
+END
+    expected_json = expected_json.strip
+    assert_equal(expected_json, @response.body)
+  end       
 
   def test_popup
     get :popup, :id => 1
