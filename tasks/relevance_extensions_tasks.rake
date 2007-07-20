@@ -2,48 +2,15 @@
 # We don't do all this in the rake task to make things easier to test.
 module Streamlined
   class Assets
-    @default_javascripts = ["rico_corner.js", "streamlined.js", "tabber.js", "tabber-minimized.js"]
-    @default_stylesheets = ["streamlined.css", "as_style.css", "menu.css", "tabber.css"]
-    @default_layout = ["streamlined.rhtml"]
-    @asset_dir = File.expand_path(File.join(File.dirname(__FILE__), '..', 'files'))
+    @source = File.expand_path(File.join(File.dirname(__FILE__), '..', 'files'))
+    @destination = RAILS_ROOT
     class << self 
-      attr_accessor :default_javascripts, :default_stylesheets, :default_layout
-      attr_reader :asset_dir, :rails_root
+      attr_accessor :source, :destination
     end
 
-    def self.normalize_asset(path)
-      File.join(asset_dir, path)
-    end
-
-    def self.copy(src, dest)
-      FileUtils.cp_r src, dest
-    end
-    
-    def self.install(files, *dest)
-      files.each { |file| copy(normalize_asset(file), File.join(RAILS_ROOT, dest)) }
-    end
-  
-    # copy over streamlined required js and some small js libraries we depend on 
-    def self.install_javascripts
-      install default_javascripts, "public", "javascripts"
-      install "overlib", "public"
-      install "windows_js", "public"
-    end
-    
-    def self.install_stylesheets
-      install default_stylesheets, "public", "stylesheets"
-    end
-    
-    def self.install_layout
-      install default_layout, "app", "views", "layouts"
-    end
-    
-    def self.install_images
-      install "images", "public", "images", "streamlined"
-    end
-    
-    def self.install_partials
-      install "partials", "app", "views", "shared", "streamlined"
+    def self.install
+      files = Dir.glob("#{source}/**/*")
+      files.each { |file| FileUtils.cp_r(file, destination) }
     end
     
   end  
@@ -53,14 +20,7 @@ namespace :streamlined do
   
   desc 'Install Streamlined required files.'
   task :install_files do  
-    Streamlined::Assets.install_javascripts
-    Streamlined::Assets.install_stylesheets
-    Streamlined::Assets.install_layout
-    
-    Streamlined::Assets.install_overlib
-    Streamlined::Assets.install_windows_js
-    Streamlined::Assets.install_images
-    Streamlined::Assets.install_partials
+    Streamlined::Assets.install
   end
   
   desc 'Create the StreamlinedUI file for one or more models.'
