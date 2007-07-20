@@ -1,53 +1,66 @@
+# Handle copying over the default assets, views, and layout that Streamlined depends on.
+# We don't do all this in the rake task to make things easier to test.
+module Streamlined
+  class Assets
+    @default_javascripts = ["rico_corner.js", "streamlined.js", "tabber.js", "tabber-minimized.js"]
+    @default_stylesheets = ["streamlined.css", "as_style.css", "menu.css", "tabber.css"]
+    @default_layout = ["streamlined.rhtml"]
+    @asset_dir = File.expand_path(File.join(File.dirname(__FILE__), '..', 'files'))
+    class << self 
+      attr_accessor :default_javascripts, :default_stylesheets, :default_layout
+      attr_reader :asset_dir, :rails_root
+    end
+
+    def self.normalize_asset(path)
+      File.join(asset_dir, path)
+    end
+
+    def self.copy(src, dest)
+      FileUtils.cp_r src, dest
+    end
+    
+    def self.install(files, *dest)
+      files.each { |file| copy(normalize_asset(file), File.join(RAILS_ROOT, dest)) }
+    end
+  
+    # copy over streamlined required js and some small js libraries we depend on 
+    def self.install_javascripts
+      install default_javascripts, "public", "javascripts"
+      install "overlib", "public", "javascripts"
+      install "windows_js", "public", "javascripts"
+    end
+    
+    def self.install_stylesheets
+      install default_stylesheets, "public", "stylesheets"
+    end
+    
+    def self.install_layout
+      install default_layout, "app", "views", "layouts"
+    end
+    
+    def self.install_images
+      install "images", "public", "images", "streamlined"
+    end
+    
+    def self.install_partials
+      install "partials", "app", "views", "shared", "streamlined"
+    end
+    
+  end  
+end
+
 namespace :streamlined do
-  desc 'Force install of plugin-related files.'
-  task :install_files do
-    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'rico_corner.js'), File.join(RAILS_ROOT, 'public', 'javascripts')
-    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'streamlined.js'), File.join(RAILS_ROOT, 'public', 'javascripts')
-    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'streamlined.rhtml'), File.join(RAILS_ROOT, 'app', 'views', 'layouts')
-    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'streamlined.css'), File.join(RAILS_ROOT, 'public', 'stylesheets')
-    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'as_style.css'), File.join(RAILS_ROOT, 'public', 'stylesheets')
-    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'menu.css'), File.join(RAILS_ROOT, 'public', 'stylesheets')
-    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'tabber-minimized.js'), File.join(RAILS_ROOT, 'public', 'javascripts')
-    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'tabber.js'), File.join(RAILS_ROOT, 'public', 'javascripts')
-    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'tabber.css'), File.join(RAILS_ROOT, 'public', 'stylesheets')
+  
+  desc 'Install Streamlined required files.'
+  task :install_files do  
+    Streamlined::Assets.install_javascripts
+    Streamlined::Assets.install_stylesheets
+    Streamlined::Assets.install_layout
     
-    unless FileTest.exist? File.join(RAILS_ROOT, 'public', 'overlib')
-      FileUtils.mkdir_p(File.join(RAILS_ROOT, 'public', 'overlib'))
-    end
-    
-    FileUtils.cp  File.join(File.dirname(__FILE__), '..', 'files', 'overlib', 'overlib.js'), File.join(RAILS_ROOT, 'public', 'overlib')
-    
-    unless FileTest.exist? File.join(RAILS_ROOT, 'public', 'windows_js')
-      FileUtils.mkdir_p(File.join(RAILS_ROOT, 'public', 'windows_js'))
-    end    
-
-    unless FileTest.exist? File.join(RAILS_ROOT, 'public', 'images', 'streamlined')
-      FileUtils.mkdir_p( File.join(RAILS_ROOT, 'public', 'images', 'streamlined') )
-    end
-
-    FileUtils.cp( 
-      Dir[File.join(File.dirname(__FILE__), '..', 'files', 'images', '*.png')] + Dir[File.join(File.dirname(__FILE__), '..', 'files', 'images', '*.gif')], 
-      File.join(RAILS_ROOT, 'public', 'images', 'streamlined')
-    )
-
-    unless FileTest.exist? File.join(RAILS_ROOT, 'app', 'views', 'shared', 'streamlined')
-      FileUtils.mkdir_p(File.join(File.join(RAILS_ROOT, 'app', 'views', 'shared', 'streamlined')))
-    end
-
-    FileUtils.cp(
-     Dir[File.join(File.dirname(__FILE__), '..', 'files', 'partials', '*.rhtml')],
-     File.join(RAILS_ROOT, 'app', 'views', 'shared', 'streamlined')
-    )
-    
-    Dir.chdir(File.join(File.dirname(__FILE__), '..', 'files', 'windows_js')) do
-      base = File.join(RAILS_ROOT, 'public', 'windows_js')
-      Dir.glob("**/*").each do |f|
-        unless File.directory?(f)
-          FileUtils.mkdir_p(File.join(base, File.dirname(f)))
-          FileUtils.cp(f,File.join(base,f),:preserve => true)
-        end
-      end 
-    end
+    Streamlined::Assets.install_overlib
+    Streamlined::Assets.install_windows_js
+    Streamlined::Assets.install_images
+    Streamlined::Assets.install_partials
   end
   
   desc 'Create the StreamlinedUI file for one or more models.'
