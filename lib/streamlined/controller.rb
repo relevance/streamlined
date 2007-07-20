@@ -45,11 +45,11 @@ module Streamlined::Controller::InstanceMethods
   protected
   
   def instance
-    self.instance_variable_get("@#{Inflector.underscore(model_name)}")
+    self.instance_variable_get("@#{model_name.variableize}")
   end
 
   def instance=(value)
-    self.instance_variable_set("@#{Inflector.underscore(model_name)}", value)
+    self.instance_variable_set("@#{model_name.variableize}", value)
     @streamlined_item = value
   end
   

@@ -9,4 +9,9 @@ class Relevance::StringAdditionsTest < Test::Unit::TestCase
     assert_equal :custom, 'Flibberty'.to_const(:custom)
     assert_equal false, 'String::Flibberty'.to_const
   end
+  
+  def test_variableize
+    assert_equal "this_works", "this::works".variableize
+    assert_equal "this_works_too", "this/works/too".variableize
+  end
 end

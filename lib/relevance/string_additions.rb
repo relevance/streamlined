@@ -8,6 +8,11 @@ module Relevance::StringAdditions
       c.const_get(n) 
     end
   end
+  
+  # convert anything to a valid Ruby variable name
+  def variableize
+    underscore.gsub('/','_')
+  end
 end
 
 String.class_eval {include Relevance::StringAdditions}

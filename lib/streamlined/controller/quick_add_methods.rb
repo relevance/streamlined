@@ -8,7 +8,7 @@ module Streamlined::Controller::QuickAddMethods
       assoc = @model.class.reflect_on_association(dt)
       target_class = assoc.class_name.constantize
       
-      instance_variable_set("@#{target_class.name.underscore}", target_class.new)
+      instance_variable_set("@#{target_class.name.variableize}", target_class.new)
     end
     self.instance = @model
     render_or_redirect(:success, 'quick_add')
@@ -22,7 +22,7 @@ module Streamlined::Controller::QuickAddMethods
       assoc = @model.class.reflect_on_association(dt)
       target_class = assoc.class_name.constantize
       
-      assoc_name = assoc.class_name.underscore.to_sym
+      assoc_name = assoc.class_name.variableize.to_sym
       assoc_model = target_class.new(params[assoc_name])
       @success = assoc_model.save && @success
       instance_variable_set("@#{assoc_name}", assoc_model)
