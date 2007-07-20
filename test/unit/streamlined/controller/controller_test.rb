@@ -8,18 +8,18 @@ end
 class Streamlined::ControllerTest < Test::Unit::TestCase
   include Streamlined::Controller::ClassMethods
   
-  def test_exception_logging
-    # TBD: something that gets coverage over exception logging in controller
-    # c = Class.new
-    # flexstub(c) {|stub|
-    #   stub.should_receive(:hide_action).and_return(nil)
-    #   stub.should_receive(:before_filter).and_return(nil)
-    #   stub.should_receive(:require_dependencies).and_return(nil)
-    #   stub.should_receive(:verify).and_return(nil)
-    # }
-    # c.send :include, Streamlined::Controller
-    # c.acts_as_streamlined
-    # c.new.initialize_with_streamlined_variables
+  # verify that exception is logged and rethrown
+  def test_initialize_with_streamlined_variables
+    o = Object.new
+    o.extend Streamlined::Controller::InstanceMethods
+    logger = flexmock("logger") do |mock|
+      mock.should_receive(:info).once
+    end 
+    flexmock(o, :streamlined_logger => logger)
+    flexmock(Streamlined::Context::ControllerContext).should_receive(:new).and_raise(RuntimeError,"mocked!")
+    assert_raise(RuntimeError) do
+      o.send :initialize_streamlined_values
+    end
   end
   
   def test_act_as_streamlined

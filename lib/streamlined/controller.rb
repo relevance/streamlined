@@ -55,6 +55,13 @@ module Streamlined::Controller::InstanceMethods
   
        
   private
+  def initialize_with_streamlined_variables
+    initialize_streamlined_values
+    @managed_views = ['list', 'new', 'show', 'edit', 'quick_add', 'save_quick_add', 'update_filter_select']
+    @managed_partials = ['list', 'form', 'popup', 'quick_add_errors']
+    streamlined_logger.info("model NAME: #{model_name}")
+    streamlined_logger.info("model: #{model.inspect}")
+  end
   
   def initialize_request_context
     @streamlined_request_context = Streamlined::Context::RequestContext.new(params[:page_options])
@@ -66,6 +73,9 @@ module Streamlined::Controller::InstanceMethods
     @streamlined_controller_context.render_filters = self.class.render_filters
     # TODO: why isn't this in the html head?
     @page_title = "Manage #{model_name.pluralize}"
+  rescue Exception => ex
+    streamlined_logger.info("Could not instantiate controller: #{self.class.name}")
+    raise ex
   end
 
   # rewrite of rails method
@@ -104,11 +114,6 @@ module Streamlined::Controller::ClassMethods
       delegate_non_routable(*Streamlined::Context::ControllerContext::DELEGATES)
       delegate_non_routable(*Streamlined::Context::RequestContext::DELEGATES)
       include Streamlined::Controller::InstanceMethods
-      # TODO: SDH hates this and would like to see apps have to turn auth in their own controllers
-      if defined? AuthenticatedSystem
-        include AuthenticatedSystem
-        before_filter :login_required  
-      end
       before_filter :initialize_request_context
       require_dependencies :ui, Dir["#{RAILS_ROOT}/app/streamlined/*.rb"].collect {|f| f.gsub(".rb", "")}
       # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
@@ -128,18 +133,6 @@ module Streamlined::Controller::ClassMethods
           end
       end
       
-      def initialize_with_streamlined_variables
-          begin
-            initialize_streamlined_values
-            @managed_views = ['list', 'new', 'show', 'edit', 'quick_add', 'save_quick_add', 'update_filter_select']
-            @managed_partials = ['list', 'form', 'popup', 'quick_add_errors']
-            streamlined_logger.info("model NAME: #{model_name}")
-            streamlined_logger.info("model: #{model.inspect}")
-          rescue Exception => ex
-            streamlined_logger.info("Could not instantiate controller: #{self.class.name}")
-            raise ex
-          end
-      end
       alias_method_chain :initialize, :streamlined_variables
     end
   end
