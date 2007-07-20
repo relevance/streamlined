@@ -8,6 +8,7 @@ module Streamlined
       attr_accessor :source, :destination
     end
 
+    # Copy the files from streamlined into the Rails project
     def self.install
       files = Dir.glob("#{source}/**/*")
       files.each { |file| FileUtils.cp_r(file, destination) }

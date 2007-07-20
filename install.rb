@@ -1,3 +1,4 @@
+require 'rake'
 # Install hook code here
 begin
   puts "======================================================================"
