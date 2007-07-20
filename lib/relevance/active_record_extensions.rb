@@ -33,7 +33,7 @@ module Relevance::ActiveRecordExtensions::ClassMethods
     # the conditions local variable is necessary for rcov to see this as covered
     conditions = columns.map {|c|
       c = c.name if c.kind_of? ActiveRecord::ConnectionAdapters::Column
-      "#{c} LIKE " + ActiveRecord::Base.connection.quote("%#{value}%")
+      "#{c} LIKE " + ActiveRecord::Base.connection.quote("%%#{value}%%")
     }
     conditions.join(" OR ")
   end
@@ -41,7 +41,7 @@ module Relevance::ActiveRecordExtensions::ClassMethods
   def conditions_by_criteria(template)
     attrs = template.class.columns.map &:name
     vals = []
-    attrs.each {|a| vals << "#{a} LIKE " + ActiveRecord::Base.connection.quote("%#{template.send(a)}%") if !template.send(a).blank? && a != 'id' && a != 'lock_version' }
+    attrs.each {|a| vals << "#{a} LIKE " + ActiveRecord::Base.connection.quote("%%#{template.send(a)}%%") if !template.send(a).blank? && a != 'id' && a != 'lock_version' }
     vals.join(" AND ")
   end
   
