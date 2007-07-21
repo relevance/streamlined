@@ -1,5 +1,7 @@
 # Helpers for creating links. Many of these links have additional functionality, implied by
 # CSS classes. Streamlined.js picks up these CSS classes and adds capabilities.
+
+# TODO: This class is almost identical to WindowLinkHelper. The duplication should be refactored out.
 module Streamlined::Helpers::LinkHelper
   def guess_show_link_for(model)
     case model

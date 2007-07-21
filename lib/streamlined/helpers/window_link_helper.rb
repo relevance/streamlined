@@ -6,6 +6,7 @@
 #         acts_as_streamlined :helpers => [Streamlined::Helpers::WindowLinkHelper]
 #     end
 #
+# TODO: This class is almost identical to LinkHelper. The duplication should be refactored out.
 module Streamlined::Helpers::WindowLinkHelper
   def guess_show_link_for(model)
     case model
