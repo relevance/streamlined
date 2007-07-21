@@ -1,3 +1,11 @@
+# This helper provides support for using Prototype Windows to render the edit/show instead of the
+# default, which is to render them as separate HTML pages. To add it, pass it as an option to the 
+# +acts_as_streamlined+ method:
+#
+#     class PeopleController < ApplicationController
+#         acts_as_streamlined :helpers => [Streamlined::Helpers::WindowLinkHelper]
+#     end
+#
 module Streamlined::Helpers::WindowLinkHelper
   def guess_show_link_for(model)
     case model
