@@ -5,6 +5,12 @@ CREATE TABLE `people` (
   PRIMARY KEY  (`id`)
 ) TYPE=InnoDB;
 
+CREATE TABLE `phone_numbers` (
+  `id` int(11) NOT NULL auto_increment,
+  `number` varchar(255) default NULL,
+  PRIMARY KEY  (`id`)
+) TYPE=InnoDB;
+
 CREATE TABLE `poets` (
   `id` int(11) NOT NULL auto_increment,
   `first_name` varchar(255) default NULL,

@@ -13,7 +13,9 @@ module Streamlined::Helpers::WindowLinkHelper
       when Enumerable
         "(multiple)"
       when ActiveRecord::Base
-        link_to model.streamlined_name, :controller=>model.class.name.pluralize, :action=>"show", :id=>model
+        link_to(model.streamlined_name,
+          :controller => model.class.name.underscore.pluralize,
+          :action => "show", :id => model)
       when nil
         "(unassigned)"
       else 
