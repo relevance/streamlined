@@ -1,35 +1,35 @@
 module Streamlined::Controller::FilterMethods
   
       def add_filter
-        @expired = session_expired
+        @expired = filter_session_expired
         @column = params[:filter_column]
         @value = params[:filter_value]
         @conditions = build_filter(:add, nil, @column, @value)
         render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/add_filter.rjs'
-#        if session_expired
+#        if filter_session_expired
 #          render :update do |page|
 #            page.replace_html "filter_by_value", :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/new_filter', :layout => false 
 #            page.form.reset 'add_filter_form'
 #            page << "$('page_options_filter_by_value').value =  \"#{@conditions}\" "
-#            page.hide "session_expired_msg"        
+#            page.hide "filter_session_expired_msg"        
 #          end
 #        else
 #          render :update do |page|
 #            page.insert_html :bottom, "filter_by_value", :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/new_filter', :layout => false 
 #            page.form.reset 'add_filter_form'
 #            page << "$('page_options_filter_by_value').value =  \"#{@conditions}\" "
-#            page.hide "session_expired_msg"        
+#            page.hide "filter_session_expired_msg"        
 #          end
 #        end
       end
       
       def delete_filter
-        if session_expired
-          render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/session_expired.rjs'
+        if filter_session_expired
+          render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/filter_session_expired.rjs'
 #          render :update do |page|
 #            page << "$('page_options_filter_by_value').value =  \"\" "
 #            page.replace_html "filter_by_value", ""
-#            page.show "session_expired_msg"
+#            page.show "filter_session_expired_msg"
 #          end
         else
           @filter_num = params[:id]
@@ -38,19 +38,19 @@ module Streamlined::Controller::FilterMethods
 #          render :update do |page|
 #            page.remove "filter_#{@filter_num}"
 #            page << "$('page_options_filter_by_value').value =  \"#{@conditions}\" "
-#            page.hide "session_expired_msg"
+#            page.hide "filter_session_expired_msg"
 #          end  
         end
       end
 
       # Update a filter in repsonse to it being changed on the screen      
       def update_filter
-        if session_expired
-          render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/session_expired.rjs'
+        if filter_session_expired
+          render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/filter_session_expired.rjs'
 #          render :update do |page|
 #            page << "$('page_options_filter_by_value').value =  \"\" "
 #            page.replace_html "filter_by_value", ""
-#            page.show "session_expired_msg"
+#            page.show "filter_session_expired_msg"
 #          end
         else
           @filter_num = params[:id]
@@ -60,7 +60,7 @@ module Streamlined::Controller::FilterMethods
           render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/update_filter.rjs'
 #          render :update do |page|
 #            page << "$('page_options_filter_by_value').value =  \"#{@conditions}\" "
-#            page.hide "session_expired_msg"
+#            page.hide "filter_session_expired_msg"
 #          end          
         end
       end
@@ -71,14 +71,14 @@ module Streamlined::Controller::FilterMethods
 #        render :update do |page|
 #          page << "$('page_options_filter_by_value').value =  \"\" "
 #          page.replace_html "filter_by_value", ""
-#          page.hide "session_expired_msg"
+#          page.hide "filter_session_expired_msg"
 #        end
       end
       
 
   private
 
-      def session_expired
+      def filter_session_expired
         session[:num_filters].nil?
       end
       

@@ -132,7 +132,7 @@ module Streamlined::Controller::CrudMethods
 
   def filter_options
     if filter_by_value?
-      return {} if session_expired
+      return {} if filter_session_expired
 
       conditions = filter_by_value.split(",")
       # put nil object in conditions array to generate NULL in sql query

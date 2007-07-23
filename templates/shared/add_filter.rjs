@@ -5,4 +5,4 @@ else
 end
 page.form.reset 'add_filter_form'
 page << "$('page_options_filter_by_value').value =  \"#{@conditions}\" "
-page.hide "session_expired_msg"
+page.hide "filter_session_expired_msg"
