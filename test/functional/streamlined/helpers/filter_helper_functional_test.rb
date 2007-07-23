@@ -7,22 +7,22 @@ class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
     stock_controller_and_view
   end
   
-  def test_simple_filter_by_value_columns
-    filter_by_value_columns = @view.filter_by_value_columns
+  def test_simple_advanced_filter_columns
+    advanced_filter_columns = @view.advanced_filter_columns
     assert_equal 3, person_columns = PersonUI.list_columns.length
-    assert_equal 2, filter_by_value_columns.length
-    assert_equal [["First name", "first_name"],["Last name", "last_name"]], filter_by_value_columns
+    assert_equal 2, advanced_filter_columns.length
+    assert_equal [["First name", "first_name"],["Last name", "last_name"]], advanced_filter_columns
   end
 
   # Check that relation columns Articles::title and Books::title get included for filtering
   # and that the UI column "full_name" and relation authorships are excluded
-  def test_complex_filter_by_value_columns
+  def test_complex_advanced_filter_columns
     complex_controller_and_view
-    filter_by_value_columns = @view.filter_by_value_columns
+    advanced_filter_columns = @view.advanced_filter_columns
     author_columns = AuthorUI.list_columns
     assert_equal 6, author_columns = AuthorUI.list_columns.length
-    assert_equal 4, filter_by_value_columns.length
-    assert_equal [["Articles (title)", "rel::articles::title"],["Books (title)", "rel::books::title"],["First name", "first_name"],["Last name", "last_name"]], filter_by_value_columns
+    assert_equal 4, advanced_filter_columns.length
+    assert_equal [["Articles (title)", "rel::articles::title"],["Books (title)", "rel::books::title"],["First name", "first_name"],["Last name", "last_name"]], advanced_filter_columns
   end
   
   def complex_controller_and_view

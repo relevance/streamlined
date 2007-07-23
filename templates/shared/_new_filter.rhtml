@@ -1,4 +1,4 @@
-<% filter_columns = filter_by_value_columns %>
+<% filter_columns = advanced_filter_columns %>
 
 <% form_name = "filter_#{session[:filter_index]}" %>    
 <%= form_remote_tag( :url => { :action => :update_filter, :id => session[:filter_index] }, 

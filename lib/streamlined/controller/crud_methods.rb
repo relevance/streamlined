@@ -131,10 +131,10 @@ module Streamlined::Controller::CrudMethods
   end
 
   def filter_options
-    if filter_by_value?
+    if advanced_filter?
       return {} if filter_session_expired
 
-      conditions = filter_by_value.split(",")
+      conditions = advanced_filter.split(",")
       # put nil object in conditions array to generate NULL in sql query
       conditions.each_index {|i| conditions[i]=nil if conditions[i] == "nil"}
       rethash = {:conditions => conditions}

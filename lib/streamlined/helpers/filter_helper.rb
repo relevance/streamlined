@@ -1,8 +1,8 @@
 module Streamlined::Helpers::FilterHelper
   attr_with_default(:advanced_filtering) {false}
   
-  # return the columns to be used for Filter By Value
-  def filter_by_value_columns
+  # return the columns to be used for Advanced Filter
+  def advanced_filter_columns
     filter_columns = Hash.new
 
     model_ui.list_columns.each do |column|

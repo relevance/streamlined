@@ -318,15 +318,15 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     if filter_index == 1
       assert_true assigns(:expired)
 # TODO: Stuart - enable after arts plugin incorporated
-#      assert_rjs :replace_html, "filter_by_value"
+#      assert_rjs :replace_html, "advanced_filter"
     else
       assert_false assigns(:expired)
 # TODO: Stuart - enable after arts plugin incorporated
-#      assert_rjs :insert_html, :bottom, "filter_by_value"
+#      assert_rjs :insert_html, :bottom, "advanced_filter"
     end
 
 # TODO: Stuart - enable after arts plugin incorporated
-#    check_for = "\$(\'page_options_filter_by_value\')\.value =  \"#{conditions_string}\" "
+#    check_for = "\$(\'page_options_advanced_filter\')\.value =  \"#{conditions_string}\" "
 #    assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
 #    
 #    check_for = "Form\.reset(\"add_filter_form\")"
@@ -368,7 +368,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     assert_equal "like",                  session["filter_operand__#{filter_index}"], "Incorrect operand" + msg_part
 
 # TODO: Stuart - enable after arts plugin incorporated
-#    check_for = "\$(\'page_options_filter_by_value\')\.value =  \"#{conditions_string}\" "
+#    check_for = "\$(\'page_options_advanced_filter\')\.value =  \"#{conditions_string}\" "
 #    assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
 #    assert_rjs :remove, "filter_#{filter_num}"
 #    assert_rjs :hide, "filter_session_expired_msg"
@@ -401,7 +401,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     end
 
 # TODO: Stuart - enable after arts plugin incorporated
-#    check_for = "\$(\'page_options_filter_by_value\')\.value =  \"#{conditions_string}\" "
+#    check_for = "\$(\'page_options_advanced_filter\')\.value =  \"#{conditions_string}\" "
 #    assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
 #    assert_rjs :remove, "filter_#{filter_num}"
 #    assert_rjs :hide, "filter_session_expired_msg"
@@ -432,7 +432,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     assert_template STREAMLINED_TEMPLATE_ROOT + '/shared/update_filter.rjs', "Wrong template rendered"
 
 # TODO: Stuart - enable after arts plugin incorporated
-#    check_for = "\$(\'page_options_filter_by_value\')\.value =  \"#{conditions_string}\" "
+#    check_for = "\$(\'page_options_advanced_filter\')\.value =  \"#{conditions_string}\" "
 #    assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
 #    assert_rjs :hide, "filter_session_expired_msg"
 
@@ -473,7 +473,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     assert_template STREAMLINED_TEMPLATE_ROOT + '/shared/update_filter.rjs', "Wrong template rendered"
 
 # TODO: Stuart - enable after arts plugin incorporated
-#    check_for = "\$(\'page_options_filter_by_value\')\.value =  \"#{conditions_string}\" "
+#    check_for = "\$(\'page_options_advanced_filter\')\.value =  \"#{conditions_string}\" "
 #    assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
 #    assert_rjs :hide, "filter_session_expired_msg"
 
@@ -513,9 +513,9 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
 
 # TODO: Stuart - enable after arts plugin incorporated
 #    conditions_string = ""
-#    check_for = "\$(\'page_options_filter_by_value\')\.value =  \"#{conditions_string}\" "
+#    check_for = "\$(\'page_options_advanced_filter\')\.value =  \"#{conditions_string}\" "
 #    assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
-#    assert_rjs :replace_html, "filter_by_value", ""
+#    assert_rjs :replace_html, "advanced_filter", ""
 #    assert_rjs :hide, "filter_session_expired_msg"
     
   end  
@@ -533,9 +533,9 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
 
 # TODO: Stuart - enable after arts plugin incorporated
 #    conditions_string = ""
-#    check_for = "\$(\'page_options_filter_by_value\')\.value =  \"#{conditions_string}\" "
+#    check_for = "\$(\'page_options_advanced_filter\')\.value =  \"#{conditions_string}\" "
 #    assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
-#    assert_rjs :replace_html, "filter_by_value", ""
+#    assert_rjs :replace_html, "advanced_filter", ""
 #    assert_rjs :show, "filter_session_expired_msg"
 
   end
@@ -550,9 +550,9 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
 
 # TODO: Stuart - enable after arts plugin incorporated
 #    conditions_string = ""
-#    check_for = "\$(\'page_options_filter_by_value\')\.value =  \"#{conditions_string}\" "
+#    check_for = "\$(\'page_options_advanced_filter\')\.value =  \"#{conditions_string}\" "
 #    assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
-#    assert_rjs :replace_html, "filter_by_value", ""
+#    assert_rjs :replace_html, "advanced_filter", ""
 #    assert_rjs :show, "filter_session_expired_msg"
   end  
   

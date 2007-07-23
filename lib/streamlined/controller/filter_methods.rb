@@ -8,16 +8,16 @@ module Streamlined::Controller::FilterMethods
         render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/add_filter.rjs'
 #        if filter_session_expired
 #          render :update do |page|
-#            page.replace_html "filter_by_value", :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/new_filter', :layout => false 
+#            page.replace_html "advanced_filter", :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/new_filter', :layout => false 
 #            page.form.reset 'add_filter_form'
-#            page << "$('page_options_filter_by_value').value =  \"#{@conditions}\" "
+#            page << "$('page_options_advanced_filter').value =  \"#{@conditions}\" "
 #            page.hide "filter_session_expired_msg"        
 #          end
 #        else
 #          render :update do |page|
-#            page.insert_html :bottom, "filter_by_value", :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/new_filter', :layout => false 
+#            page.insert_html :bottom, "advanced_filter", :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/new_filter', :layout => false 
 #            page.form.reset 'add_filter_form'
-#            page << "$('page_options_filter_by_value').value =  \"#{@conditions}\" "
+#            page << "$('page_options_advanced_filter').value =  \"#{@conditions}\" "
 #            page.hide "filter_session_expired_msg"        
 #          end
 #        end
@@ -27,8 +27,8 @@ module Streamlined::Controller::FilterMethods
         if filter_session_expired
           render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/filter_session_expired.rjs'
 #          render :update do |page|
-#            page << "$('page_options_filter_by_value').value =  \"\" "
-#            page.replace_html "filter_by_value", ""
+#            page << "$('page_options_advanced_filter').value =  \"\" "
+#            page.replace_html "advanced_filter", ""
 #            page.show "filter_session_expired_msg"
 #          end
         else
@@ -37,7 +37,7 @@ module Streamlined::Controller::FilterMethods
           render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/delete_filter.rjs'
 #          render :update do |page|
 #            page.remove "filter_#{@filter_num}"
-#            page << "$('page_options_filter_by_value').value =  \"#{@conditions}\" "
+#            page << "$('page_options_advanced_filter').value =  \"#{@conditions}\" "
 #            page.hide "filter_session_expired_msg"
 #          end  
         end
@@ -48,8 +48,8 @@ module Streamlined::Controller::FilterMethods
         if filter_session_expired
           render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/filter_session_expired.rjs'
 #          render :update do |page|
-#            page << "$('page_options_filter_by_value').value =  \"\" "
-#            page.replace_html "filter_by_value", ""
+#            page << "$('page_options_advanced_filter').value =  \"\" "
+#            page.replace_html "advanced_filter", ""
 #            page.show "filter_session_expired_msg"
 #          end
         else
@@ -59,7 +59,7 @@ module Streamlined::Controller::FilterMethods
           @conditions = build_filter(:update, @filter_num, @column, @value)
           render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/update_filter.rjs'
 #          render :update do |page|
-#            page << "$('page_options_filter_by_value').value =  \"#{@conditions}\" "
+#            page << "$('page_options_advanced_filter').value =  \"#{@conditions}\" "
 #            page.hide "filter_session_expired_msg"
 #          end          
         end
@@ -69,8 +69,8 @@ module Streamlined::Controller::FilterMethods
         clear_filters
         render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/clear_all_filters.rjs'
 #        render :update do |page|
-#          page << "$('page_options_filter_by_value').value =  \"\" "
-#          page.replace_html "filter_by_value", ""
+#          page << "$('page_options_advanced_filter').value =  \"\" "
+#          page.replace_html "advanced_filter", ""
 #          page.hide "filter_session_expired_msg"
 #        end
       end

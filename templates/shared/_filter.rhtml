@@ -1,8 +1,8 @@
 <div>
-Filter by value:
+Advanced Filter:
 <hr/>
 
-<% filter_columns = filter_by_value_columns %>
+<% filter_columns = advanced_filter_columns %>
   
 <%= form_remote_tag( :url => { :action => :add_filter }, 
     :loading => 'Form.disable("add_filter_form")',
@@ -16,7 +16,7 @@ Filter by value:
     <%= submit_to_remote "clear_filters","Clear Filters", :url => {:action => :clear_all_filters} %>  
 </form>	
   
-<div id="filter_by_value">
+<div id="advanced_filter">
 </div>
 
 <div id="filter_session_expired_msg">

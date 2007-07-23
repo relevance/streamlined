@@ -90,11 +90,11 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
 
     @streamlined_controller_context = Streamlined::Context::ControllerContext.new
     @streamlined_controller_context.model_name = 'Person'
-    @streamlined_request_context = Streamlined::Context::RequestContext.new(:filter_by_value=>"#{conditions_string}")
+    @streamlined_request_context = Streamlined::Context::RequestContext.new(:advanced_filter=>"#{conditions_string}")
 
   end
 
-  def test_filter_options_with_filter_by_value_expired
+  def test_filter_options_with_advanced_filter_expired
     str = "data"
     conditions_string = "people.first_name like ?,%#{str}%"
 
@@ -103,7 +103,7 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
     assert_equal({}, filter_options)
   end
 
-  def test_filter_options_with_filter_by_value
+  def test_filter_options_with_advanced_filter
     str = "data"
     conditions_string = "people.first_name like ?,%#{str}%"
     conditions        = ["people.first_name like ?", "%#{str}%"]
@@ -113,7 +113,7 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
     assert_equal({:conditions=>conditions}, filter_options)
   end
 
-  def test_filter_options_with_filter_by_value_and_include
+  def test_filter_options_with_advanced_filter_and_include
     str = "data"
     conditions_string = "people.first_name like ?,%#{str}%"
     conditions        = ["people.first_name like ?", "%#{str}%"]
@@ -127,7 +127,7 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
     assert_equal({:conditions=>conditions, :include=>includes}, filter_options)
   end
 
-  def test_filter_options_with_filter_by_value_with_nil
+  def test_filter_options_with_advanced_filter_with_nil
     str = "data"
     conditions_string = "people.first_name like ? and people.last_name is ?,%#{str}%,nil"
     conditions        = ["people.first_name like ? and people.last_name is ?", "%#{str}%", nil]

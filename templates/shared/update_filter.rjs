@@ -1,2 +1,2 @@
-page << "$('page_options_filter_by_value').value =  \"#{@conditions}\" "
+page << "$('page_options_advanced_filter').value =  \"#{@conditions}\" "
 page.hide "filter_session_expired_msg"

@@ -1,13 +1,13 @@
 class Streamlined::Context::RequestContext
-  attr_accessor :filter, :page, :sort_order, :sort_column, :counter, :per_page, :filter_by_value
+  attr_accessor :filter, :page, :sort_order, :sort_column, :counter, :per_page, :advanced_filter
   include HashInit
 
   DELEGATES = [:sort_order, 
                :sort_column, 
                :filter,
                :filter?, 
-               :filter_by_value,
-               :filter_by_value?, 
+               :advanced_filter,
+               :advanced_filter?, 
                :order?, 
                :sort_ascending?, 
                :sort_column?, 
@@ -19,8 +19,8 @@ class Streamlined::Context::RequestContext
     !self.filter.blank?
   end
 
-  def filter_by_value?
-    !self.filter_by_value.blank?
+  def advanced_filter?
+    !self.advanced_filter.blank?
   end
 
   def order?

@@ -3,7 +3,7 @@
             :url => { :action => "list"}, :html=> {:id => :page_options, :style => 'display: none;'} do |form| %>
   <%# TODO: hide this form when JavaScript is available, then use it behind scenes%>
   Filter <%= form.text_field 'filter', {:autocomplete=>"off"} %>
-  Filter By Value <%= form.text_field 'filter_by_value', {:autocomplete=>"off"} %>
+  Advanced Filter <%= form.text_field 'advanced_filter', {:autocomplete=>"off"} %>
   Page <%= form.text_field 'page', {:autocomplete=>"off"} %>
   Sort Order <%= form.text_field 'sort_order', {:autocomplete=>"off"} %>
   Sort Column <%= form.text_field 'sort_column', {:autocomplete=>"off"} %>
