@@ -47,42 +47,58 @@ class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
     end
     edit_relationship
   end
-  
-  # def test_update_relationship
-  #   @params = { :id => '1', :rel_name => 'rel_name', :klass => 'StubClass', :item => { '1' => 'on' }}
-  #   build_update_relationship_mocks
-  #   update_relationship
-  # end
-  # 
-  # def test_update_relationship_without_item
-  #   @params = { :id => '1', :rel_name => 'rel_name', :klass => 'StubClass' }
-  #   build_update_relationship_mocks
-  #   update_relationship
-  # end
-  # 
-  # def test_update_n_to_one_with_nil_item
-  #   @params = { :id => '1', :rel_name => 'person_id' }
-  #   update_n_to_one
-  # end
-  # 
-  # def test_update_n_to_one_with_item_and_klass
-  #   @params = { :id => '1', :rel_name => 'person_id', :item => '1', :klass => 'StubClass' }
-  #   update_n_to_one
-  # end
-  # 
-  # def test_update_n_to_one_with_item_and_class_name
-  #   @params = { :id => '1', :rel_name => 'person_id', :item => '1::StubClass' }
-  #   update_n_to_one
-  # end
-  # 
-  # def build_update_relationship_mocks
-  #   rel_type = flexmock(:edit_view => flexmock(:partial => 'partial'))
-  #   model_ui = flexmock(:relationships => { :rel_name => rel_type })
-  #   flexmock(self) do |mock|
-  #     mock.should_receive(:instance).and_return(flexmock('instance', :save => true, :rel_name => flexmock('rel_name', :clear => nil, :push => nil)))
-  #     mock.should_receive(:model).and_return(flexmock(:find => :instance))
-  #     mock.should_receive(:model_ui => model_ui).once
-  #     mock.should_receive(:render).with(:nothing => true).once
-  #   end
-  # end
+    
+    def test_update_relationship
+      @params = { :id => '1', :rel_name => 'rel_name', :klass => 'StubClass', :item => { '1' => 'on' }}
+      build_update_relationship_mocks
+      update_relationship
+    end
+    
+    def test_update_relationship_without_item
+      @params = { :id => '1', :rel_name => 'rel_name', :klass => 'StubClass' }
+      build_update_relationship_mocks
+      update_relationship
+    end
+    
+    def test_update_n_to_one_with_nil_item
+      @params = { :id => '1', :rel_name => 'rel_name' }
+      build_n_to_one_mocks
+      update_n_to_one
+    end
+    
+    def test_update_n_to_one_with_item_and_klass
+      @params = { :id => '1', :rel_name => 'rel_name', :item => '1', :klass => 'StubClass' }
+      build_n_to_one_mocks
+      update_n_to_one
+    end
+    
+    def test_update_n_to_one_with_item_and_class_name
+      @params = { :id => '1', :rel_name => 'rel_name', :item => '1::StubClass' }
+      build_n_to_one_mocks
+      update_n_to_one
+    end
+    
+    
+    def build_n_to_one_mocks
+      rel_type = flexmock('edit_view', :edit_view => flexmock(:partial => 'partial'))
+      model_ui = flexmock('relationships', :relationships => { :rel_name => rel_type })
+      current_item = flexmock('instance', :save => true, :rel_name= => nil, :rel_name => flexmock('rel_name', :clear => nil, :push => nil, :replace => nil))
+      flexmock(self) do |mock|
+        mock.should_receive(:instance).and_return(current_item)
+        mock.should_receive(:model).and_return(flexmock('model', :find => current_item))
+        mock.should_receive(:render).with(:nothing => true).once
+      end
+    end
+    
+  def build_update_relationship_mocks
+    rel_type = flexmock('edit_view', :edit_view => flexmock(:partial => 'partial'))
+    model_ui = flexmock('relationships', :relationships => { :rel_name => rel_type })
+    current_item = flexmock('instance', :save => true, :rel_name => flexmock('rel_name', :clear => nil, :push => nil, :replace => nil))
+    flexmock(self) do |mock|
+      mock.should_receive(:instance).and_return(current_item)
+      mock.should_receive(:model).and_return(flexmock('model', :find => current_item))
+      mock.should_receive(:model_ui => model_ui).once
+      mock.should_receive(:render).with(:nothing => true).once
+    end
+  end
 end

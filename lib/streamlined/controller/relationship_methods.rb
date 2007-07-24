@@ -19,7 +19,7 @@ module Streamlined::Controller::RelationshipMethods
  end
 
  def render_show_view_partial(relationship, item)
-   render(:partial => relationship.show_view.partial, :locals => {:item => :item, 
+   render(:partial => relationship.show_view.partial, :locals => {:item => item, 
                                             :relationship => relationship, 
                                             :streamlined_def => relationship.show_view})
  end
@@ -27,30 +27,29 @@ module Streamlined::Controller::RelationshipMethods
  # Add new items to the given relationship collection. Used by the #membership view, as 
  # defined in Streamlined::Column.
  def update_relationship
-    self.instance = model.find(params[:id])
-    rel_name = params[:rel_name].to_sym
-    klass = Class.class_eval(params[:klass])
-    relationship = relationship_for_name(rel_name)
+    self.instance = current_row = model.find(params[:id])
+    relationship_name = params[:rel_name].to_sym
+    klass = params[:klass].constantize
+    relationship = relationship_for_name(relationship_name)
     
-    items = extract_ids_of_checked_items_from_hash(params[:item])
-    instance.send(rel_name).clear
-    instance.send(rel_name).push(klass.find(items))
-    instance.save
+    items_to_add = extract_ids_of_checked_items_from_hash(params[:item])
+    current_row.send(relationship_name).replace(klass.find(items_to_add))
     
     if relationship.edit_view.respond_to?(:render_on_update)
-      @rel_name = rel_name
-      @root = instance
-      @current_id = instance.id
-      set_items_and_all_items(relationship, params[:filter])
-      # render :update do |page|
-      render_or_redirect(:success, relationship.edit_view.render_on_update(rel_name, params[:id]))
-      # end
+      render_on_update(relationship_name, current_row, relationship, params[:filter])
     else
       render(:nothing => true)
     end
-    
  end
 
+ def render_on_update(relationship_name, current_row, relationship, filter_param)
+    @rel_name = relationship_name
+    @root = current_row
+    @current_id = current_row.id
+    set_items_and_all_items(relationship, filter_param)
+    render_or_redirect(:success, relationship.edit_view.render_on_update(relationship_name, @current_id))
+ end
+ 
  # Add new items to the given relationship collection. Used by the #membership view, as 
  # defined in Streamlined::Column.
  def update_n_to_one
