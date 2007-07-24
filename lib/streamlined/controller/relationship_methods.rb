@@ -15,8 +15,13 @@ module Streamlined::Controller::RelationshipMethods
  def show_relationship
    self.instance = @root = model.find(params[:id])
    relationship = relationship_for_name(params[:relationship])
-   render(:partial => relationship.show_view.partial, :locals => {:item => instance,
-     :relationship => relationship, :streamlined_def => relationship.show_view})
+   render_show_view_partial(relationship, @root)
+ end
+
+ def render_show_view_partial(relationship, item)
+   render(:partial => relationship.show_view.partial, :locals => {:item => :item, 
+                                            :relationship => relationship, 
+                                            :streamlined_def => relationship.show_view})
  end
 
  # Add new items to the given relationship collection. Used by the #membership view, as 
