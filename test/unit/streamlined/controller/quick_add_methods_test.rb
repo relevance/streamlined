@@ -43,7 +43,7 @@ class Streamlined::Controller::QuickAddMethodsTest < Test::Unit::TestCase
     
     assert_equal 'StubClass', @controller.model_class_name
     assert_equal 'stub_class', @controller.model_name    
-    assert_equal Streamlined::UI::Generic, @controller.ui
+    assert_instance_of Streamlined::UI, @controller.ui
   end
   
   def build_param_and_render_mocks(template)

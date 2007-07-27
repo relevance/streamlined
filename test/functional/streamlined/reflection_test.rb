@@ -5,6 +5,10 @@ class Streamlined::ReflectionTest < Test::Unit::TestCase
   include Streamlined::Reflection
   attr_accessor :model
   
+  def setup
+    Streamlined::Registry.reset
+  end
+  
   def test_reflect_on_scalars
     self.model=Person
     hash = reflect_on_scalars
@@ -26,4 +30,9 @@ class Streamlined::ReflectionTest < Test::Unit::TestCase
     end
   end
   
+  def test_reflect_on_delegates_dups_columns_from_associations
+    self.model = Poem
+    hash = reflect_on_delegates
+    assert_not_same hash[:first_name], Streamlined.ui_for(Poet).column(:first_name)
+  end
 end

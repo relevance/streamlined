@@ -8,8 +8,7 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   def ui
     unless @ui
       stock_controller_and_view
-      @ui = Class.new(Streamlined::UI)
-      @ui.model = Person
+      @ui = Streamlined::UI.new(Person)
     end
     @ui
   end

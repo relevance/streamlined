@@ -9,7 +9,7 @@ class Streamlined::Context::ControllerContextTest < Test::Unit::TestCase
   end
   
   def test_model_ui
-    assert_equal Streamlined::UI::Generic, @context.model_ui.ancestors[1] # anonymous subclass!
+    assert_instance_of Streamlined::UI, @context.model_ui
     context2 = Streamlined::Context::ControllerContext.new
     context2.model_name = "Integer"
     assert_not_equal context2.model_ui, @context.model_ui, "every model class gets its own anonymous subclass for ui"

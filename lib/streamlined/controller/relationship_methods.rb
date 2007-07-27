@@ -76,7 +76,7 @@ module Streamlined::Controller::RelationshipMethods
     @items = instance.send(@rel_name)
     if relationship.associables.size == 1
       @klass = Class.class_eval(params[:klass])
-      @klass_ui = Streamlined::UI.get_ui(params[:klass])
+      @klass_ui = Streamlined.ui_for(params[:klass])
       if item_filter
         @all_items = @klass.find(:all, :conditions => @klass.conditions_by_like(item_filter))
       else            

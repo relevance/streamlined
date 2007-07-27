@@ -13,6 +13,10 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     @addition = Addition.new(:test_addition, parent_model)
   end
   
+  def test_has_many
+    assert_false Streamlined::Column::Base.new.has_many?
+  end
+  
   def test_belongs_to
     assert !@addition.belongs_to?
   end

@@ -29,12 +29,6 @@ class Streamlined::Context::ControllerContext
   end
     
   def model_ui
-    model_ui ||= if Object.const_defined?(model_name + "UI")
-      Class.class_eval(model_name + "UI")
-    else
-      temp = Class.new(Streamlined::UI.generic_ui)
-      temp.model = model
-      temp
-    end
+    Streamlined.ui_for(model_name)
   end
 end

@@ -5,6 +5,7 @@ require 'streamlined/ui'
 class StreamlinedControllerTest < Test::Unit::TestCase
   fixtures :people
   def setup
+    Streamlined::Registry.reset
     @controller = PeopleController.new
     @controller.logger = RAILS_DEFAULT_LOGGER
     @request    = ActionController::TestRequest.new
