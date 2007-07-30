@@ -1,3 +1,5 @@
+require 'find'
+
 # Handle copying over the default assets, views, and layout that Streamlined depends on.
 # We don't do all this in the rake task to make things easier to test.
 module Streamlined
@@ -9,9 +11,26 @@ module Streamlined
     end
 
     # Copy the files from streamlined into the Rails project
+    # Ignores any files or directories that start with a period (so .svn will get ignored),
+    # also will ignore CVS metadata.
     def self.install
-      files = Dir.glob("#{source}/*")
-      files.each { |file| FileUtils.cp_r(file, destination) }
+      paths = []
+      Find.find(source) do |path|
+        Find.prune if path =~ /\/\..+/
+        Find.prune if path =~ /CVS/
+        paths << path
+      end
+      paths.each do |path| 
+        dest_path = path.gsub(source, destination)
+        if File.directory?(path)
+          FileUtils.mkdir_p(dest_path) unless File.exists?(dest_path)
+        else
+          FileUtils.cp(path, dest_path)
+        end
+      end
+    rescue Exception => e
+      puts "Error trying to copy files: #{e.inspect}"
+      raise e
     end
     
   end  

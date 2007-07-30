@@ -1,9 +1,12 @@
 require 'rake'
-# Install hook code here
+
 begin
   puts "======================================================================"
   puts "Attempting to copy Streamlined required files into your application..."
   puts "======================================================================"
+  RAKE_FILE = File.join(File.dirname(__FILE__), '/tasks/relevance_extensions_tasks.rake')
+  load RAKE_FILE
+  
   Rake::Task['streamlined:install_files'].invoke
   puts "======================================================================"
   puts "Success!"
