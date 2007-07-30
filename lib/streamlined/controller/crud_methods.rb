@@ -39,11 +39,11 @@ module Streamlined::Controller::CrudMethods
     clear_filters unless request.xhr?
 
     respond_to do |format|
-      format.html {render :action=> "list"}
-      format.js {render :partial => "list"}
-      format.csv {render :text=> @streamlined_items.to_csv(model.columns.map(&:name))}
-      format.xml  {render :xml => @streamlined_items.to_xml }
-      format.json  {render :json => @streamlined_items.to_json }
+      format.html { render :action=> "list"}
+      format.js { render :partial => "list"}
+      format.csv { render :text => @streamlined_items.to_csv(model.columns.map(&:name))}
+      format.xml { render :xml => @streamlined_items.to_xml }
+      format.json { render :text => @streamlined_items.to_json }
     end
     
   end

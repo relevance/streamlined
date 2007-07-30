@@ -70,6 +70,9 @@ module Streamlined::Helpers::LinkHelper
   def link_to_json_export    
     link_to_export(:json, :export)
   end
+  def link_to_yaml_export    
+    link_to_export(:yaml, :export)
+  end
   def link_to_csv_export
     link_to_export(:csv, :save)
   end
