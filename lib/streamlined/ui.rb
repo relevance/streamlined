@@ -86,13 +86,11 @@ class Streamlined::UI
         instance_variable_get(name).last.set_attributes(arg)
       else
         col = column(arg)
-        
-        # look for instance method
-        if col.nil? && model.method_defined?(arg)
+        if col.nil?
           col = Streamlined::Column::Addition.new(arg, model)
         end
-        
-        raise(Streamlined::Error, "No column named #{arg}") unless col
+        # @user_columns not dup'ed so they act as default for other groups
+        col = col.dup unless name.to_s == "@user_columns"
         instance_variable_get(name) << col
       end
     end
@@ -164,8 +162,14 @@ class Streamlined::UI
     args.size > 0 ? convert_args_to_columns(name, *args) : instance_variable_get(name)
   end
   
-  def column(name)
-    scalars[name] || relationships[name] || delegations[name] || additions[name] 
+  def column(name, options={})
+    if options[:group]
+      # find the column within a specific group
+      send(options[:group]).find {|col| col.name.to_s == name.to_s}
+    else
+      # find the template column used to build the various groups
+      scalars[name] || relationships[name] || delegations[name] || additions[name] 
+    end
   end
   
   def scalars

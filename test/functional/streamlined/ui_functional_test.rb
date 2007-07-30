@@ -20,21 +20,11 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_equal_sets([:first_name,:poems,:last_name],@poet_ui.user_columns.map{|x| x.name.to_sym})
   end
   
-  def test_user_columns_override
-    assert_equal nil, @poet_ui.instance_variable_get(:@user_columns)
-    @poet_ui.user_columns :first_name, :last_name
-    assert_enum_of_same [@poet_ui.scalars[:first_name], @poet_ui.scalars[:last_name]],
-                        @poet_ui.user_columns
-  end
-  
-  def test_nonexistent_column
-    assert_raise(Streamlined::Error) {@poet_ui.user_columns(:nonexistent)}
-  end
-  
-  def test_read_only_column
-    @poet_ui.user_columns :first_name, {:read_only=>true}, :last_name
-    assert_equal true, @poet_ui.scalars[:first_name].read_only
-    assert_equal false, @poet_ui.scalars[:last_name].read_only
+  def test_user_columns_act_as_template_for_other_column_groups
+    @poet_ui.user_columns :first_name, {:read_only => true}, :last_name
+    @poet_ui.list_columns :first_name, :last_name, {:read_only => true}
+    assert_equal true, @poet_ui.scalars[:first_name].read_only, "settings shared from user_columns"
+    assert_equal false, @poet_ui.scalars[:last_name].read_only, "settings not share from other column groups"
   end
   
   def test_view_specific_columns
@@ -48,13 +38,10 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_equal true, @poet_ui.show_columns.last.read_only
   end
   
-  def test_can_find_instance_method_when_declared
-    @poet_ui.list_columns :first_name, :last_name, :arbitrary_instance_method
+  # this allows us to declare ui options for dynamic methods not added yet
+  def test_can_find_instance_method_when_not_declared
+    assert_nothing_raised {@poet_ui.list_columns :first_name, :last_name, :nonexistent_method}
     assert_equal 3, @poet_ui.list_columns.length
-  end
-  
-  def test_cannot_find_instance_method_when_not_declared
-    assert_raise(Streamlined::Error) {@poet_ui.list_columns :first_name, :last_name, :arbitrary_instance_method_2}
   end
 
   def test_id_fragment
@@ -88,5 +75,21 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   def test_columns_not_aliased_between_scalars_and_delegates
     assert_not_nil(poem_first_name = @poem_ui.column(:first_name))
     assert_not_nil(poet_first_name = @poet_ui.column(:first_name))
+  end
+  
+  def test_columns_not_aliased_between_column_groups
+    template_column = @poet_ui.column(:first_name)
+    list_column = @poet_ui.column(:first_name, :group => :list_columns)
+    show_column = @poet_ui.column(:first_name, :group => :show_columns)
+    assert_not_nil template_column
+    assert_same template_column, list_column, "column groups share template until they are set"
+    assert_same show_column, list_column, "column groups share template until they are set"
+    @poet_ui.show_columns :first_name, :last_name
+    assert_not_same show_column, @poet_ui.column(:first_name, :group => :show_columns), 
+                    "show_columns should get its own copy of first_name"
+    assert_same list_column, @poet_ui.column(:first_name, :group => :list_columns),
+                    "list_columns should not be affected by setting show_columns"
+    assert_same template_column, @poet_ui.column(:first_name),
+                    "template columns should not be affected by setting show_columns"
   end
 end
