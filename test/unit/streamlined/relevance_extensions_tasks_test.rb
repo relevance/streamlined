@@ -26,7 +26,7 @@ class Streamlined::RakeTasksTest < Test::Unit::TestCase
 
     create_directory [source, destination]
     create_source_directories
-    # touch the test files 
+    # touch the test files
     (should_be_copied + should_not_be_copied).each { |path| FileUtils.touch "#{source}/#{path}" }
     
     # swap the original and the temp directories we are using for the test
