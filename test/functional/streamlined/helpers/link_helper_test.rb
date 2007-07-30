@@ -50,9 +50,9 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
   end                                                                                                                                                              
 
   def test_declarative_exporters_one
-    @view.send(:model_ui).exporters :csv
-    assert_export_link(:csv)
-    [:xml, :json].each {|format| assert_export_link(format, false)}
+    @view.send(:model_ui).exporters :yaml
+    assert_export_link(:yaml)
+    [:xml, :json, :csv].each {|format| assert_export_link(format, false)}
   end
 
   def test_declarative_exporters_several
