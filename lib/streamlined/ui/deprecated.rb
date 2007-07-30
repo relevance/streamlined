@@ -19,7 +19,8 @@ module Streamlined::DeprecatedUIClassMethods
       :edit_columns,
       :list_columns,
       :override_columns,
-      :style_class_for
+      :style_class_for,
+      :exporters
     ])
   end
   def method_missing(method, *args)

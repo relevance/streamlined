@@ -30,6 +30,7 @@ class Streamlined::UI
   declarative_scalar :style_classes, :default => {}
   declarative_scalar :default_order_options, :default => {},
                      :writer => Proc.new { |x| x.is_a?(Hash) ? x : {:order => x}}
+  declarative_attribute '*args', :exporters, :default => [:csv, :json, :xml]
   
   def initialize(model)
     @model = String === model ? model.constantize : model
@@ -40,6 +41,7 @@ class Streamlined::UI
     subclass.table_row_buttons(self.table_row_buttons)
     subclass.quick_delete_button(self.quick_delete_button)
     subclass.quick_edit_button(self.quick_edit_button)
+    subclass.exporters(*self.exporters)
   end      
   
   def style_class_for(crud_context, table_context, item)
@@ -204,6 +206,13 @@ class Streamlined::UI
   def filterable_associations
     list_columns.select { |c| c.association? && c.filterable? }
   end
-  
+
+  def displays_exporter?(exporter)
+    if exporters.is_a?(Array)
+      exporters.include?(exporter)
+    else
+      exporters == exporter
+    end
+  end 
 end
 require 'streamlined/ui/deprecated'

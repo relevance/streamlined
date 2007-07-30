@@ -88,6 +88,7 @@ module Streamlined::Helpers::LinkHelper
   end
   
   def link_to_export(format, image_type)
+    return '' unless model_ui.displays_exporter?(format)
     title = "Export #{format.to_s.upcase}"
     link_to_function(image_tag("streamlined/#{image_type}_16.png", 
         {:alt => title, :title => title, :border => 0}),

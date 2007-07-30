@@ -34,14 +34,40 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
     assert_equal '<a href="#some_elem" class="sl_toggler">click me</a>',
                  @view.link_to_toggler('click me', 'some_elem')
   end
-  
-  def test_export_links
-    {:csv => :save, :xml => :export, :json => :export, :yaml => :export}.each do |format, image_type| 
-      html = @view.send("link_to_#{format}_export")
-      title = "Export #{format.to_s.upcase}"
-      assert_select root_node(html), "a[href=#][onclick=\"Streamlined.Exporter.export_to('/people?format=#{format}'); return false;\"]" do
-        assert_select "img[alt=#{title}][border=0][src=/images/streamlined/#{image_type}_16.png][title=#{title}]"
-      end
-    end
-  end  
+
+  def test_all_export_links_are_present_by_default
+    [:csv, :xml, :json].each {|format| assert_export_link(format)}                                                                                                 
+  end                                                                                                                                                              
+                                                                                                                                                                   
+  def test_declarative_exporters_none                                                                                                                              
+    @view.send(:model_ui).exporters :none                                                                                                                          
+    [:csv, :xml, :json].each {|format| assert_export_link(format, false)}                                                                                          
+  end                                                                                                                                                              
+                                                                                                                                                                   
+  def test_declarative_exporters_all                                                                                                                               
+    @view.send(:model_ui).exporters :csv, :json, :xml                                                                                                              
+    [:csv, :xml, :json].each {|format| assert_export_link(format)}                                                                                                 
+  end                                                                                                                                                              
+
+  def test_declarative_exporters_one
+    @view.send(:model_ui).exporters :csv
+    assert_export_link(:csv)
+    [:xml, :json].each {|format| assert_export_link(format, false)}
+  end
+
+  def test_declarative_exporters_several
+    @view.send(:model_ui).exporters :csv, :xml
+    [:csv, :xml].each {|format| assert_export_link(format)}
+    assert_export_link(:json, false)
+  end
+
+private
+  def assert_export_link(format, should_be_present = true)
+    image_type = {:csv => :save, :xml => :export, :json => :export, :yaml => :export}[format]
+    html = @view.send("link_to_#{format}_export")
+    title = "Export #{format.to_s.upcase}"
+    assert_select root_node(html), "a[href=#][onclick=\"Streamlined.Exporter.export_to('/people?format=#{format}'); return false;\"]", :count => should_be_present ? 1 : 0 do
+      assert_select "img[alt=#{title}][border=0][src=/images/streamlined/#{image_type}_16.png][title=#{title}]"
+    end  
+  end 
 end
