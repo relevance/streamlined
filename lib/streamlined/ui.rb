@@ -165,9 +165,9 @@ class Streamlined::UI
   end
   
   def column(name, options={})
-    if options[:group]
+    if options[:crud_context]
       # find the column within a specific group
-      send(options[:group]).find {|col| col.name.to_s == name.to_s}
+      send("#{options[:crud_context]}_columns").find {|col| col.name.to_s == name.to_s}
     else
       # find the template column used to build the various groups
       scalars[name] || relationships[name] || delegations[name] || additions[name] 

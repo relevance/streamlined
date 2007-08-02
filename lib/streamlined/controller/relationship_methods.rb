@@ -5,7 +5,7 @@ module Streamlined::Controller::RelationshipMethods
  def edit_relationship
    self.instance = @root = model.find(params[:id])
    @rel_name = params[:relationship]
-   relationship = relationship_for_name(@rel_name)
+   relationship = context_column(@rel_name)
    set_items_and_all_items(relationship)
    render(:partial => relationship.edit_view.partial, :locals => {:relationship => relationship})
  end
@@ -14,7 +14,7 @@ module Streamlined::Controller::RelationshipMethods
  # as defined in streamlined_ui and Streamlined::Column.
  def show_relationship
    self.instance = @root = model.find(params[:id])
-   relationship = relationship_for_name(params[:relationship])
+   relationship = context_column(params[:relationship])
    render_show_view_partial(relationship, @root)
  end
 
@@ -30,7 +30,7 @@ module Streamlined::Controller::RelationshipMethods
     self.instance = current_row = model.find(params[:id])
     relationship_name = params[:rel_name].to_sym
     klass = params[:klass].constantize
-    relationship = relationship_for_name(relationship_name)
+    relationship = context_column(relationship_name)
     
     items_to_add = extract_ids_of_checked_items_from_hash(params[:item])
     current_row.send(relationship_name).replace(klass.find(items_to_add))
@@ -94,8 +94,8 @@ module Streamlined::Controller::RelationshipMethods
     end
  end
  
- def relationship_for_name(rel_name)
-   model_ui.relationships[rel_name.to_sym]
+ def context_column(rel_name)
+   model_ui.column(rel_name, :crud_context => crud_context)
  end
  
  def extract_ids_of_checked_items_from_hash(items)

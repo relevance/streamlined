@@ -25,6 +25,8 @@ require "#{File.dirname(__FILE__)}/../init"
 require 'relevance/rails_assertions'
 require 'relevance/controller_test_support'
 
+(ActiveRecord::Base.logger = RAILS_DEFAULT_LOGGER).level = Logger::DEBUG
+
 class Test::Unit::TestCase
   include Relevance::RailsAssertions
   include Arts   

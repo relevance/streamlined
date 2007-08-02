@@ -79,15 +79,15 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   
   def test_columns_not_aliased_between_column_groups
     template_column = @poet_ui.column(:first_name)
-    list_column = @poet_ui.column(:first_name, :group => :list_columns)
-    show_column = @poet_ui.column(:first_name, :group => :show_columns)
+    list_column = @poet_ui.column(:first_name, :crud_context => :list)
+    show_column = @poet_ui.column(:first_name, :crud_context => :show)
     assert_not_nil template_column
     assert_same template_column, list_column, "column groups share template until they are set"
     assert_same show_column, list_column, "column groups share template until they are set"
     @poet_ui.show_columns :first_name, :last_name
-    assert_not_same show_column, @poet_ui.column(:first_name, :group => :show_columns), 
+    assert_not_same show_column, @poet_ui.column(:first_name, :crud_context => :show), 
                     "show_columns should get its own copy of first_name"
-    assert_same list_column, @poet_ui.column(:first_name, :group => :list_columns),
+    assert_same list_column, @poet_ui.column(:first_name, :crud_context => :list),
                     "list_columns should not be affected by setting show_columns"
     assert_same template_column, @poet_ui.column(:first_name),
                     "template columns should not be affected by setting show_columns"
