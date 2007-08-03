@@ -22,9 +22,6 @@ module Streamlined::Helpers::HeaderHelper
   end
   
   def header_text(prefix=nil)
-    if prefix.nil? && crud_context && crud_context != :show
-      prefix = crud_context.titleize
-    end
     case prefix
       when "New"
         header_name = model_name.titleize
