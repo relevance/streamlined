@@ -108,7 +108,3 @@ namespace :log do
     end
   end
 end
-
-task :cruise do
-  `rake test`
-end
