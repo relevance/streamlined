@@ -22,6 +22,9 @@
 	</div>
 	 <div id="left">
 	   <%= render(:partial => "shared/streamlined/side_menu")%>
+	   <% if breadcrumb %>
+	   	 <%= render_breadcrumb %>
+	   <% end %>
 	   <% if advanced_filtering %>
          <%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/filter' %>	   
        <% end %>

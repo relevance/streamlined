@@ -15,10 +15,23 @@ module Streamlined::Helpers::HeaderHelper
   end
   
   def render_header(prefix=nil)
-    name_exists = instance.respond_to?(:name) && !instance.name.nil?
-    header_name = name_exists ? instance.name : model_name.titleize
-    header = prefix ? "#{prefix} #{header_name}" : header_name
     html = Builder::XmlMarkup.new
-    html.div(:class => "streamlined_header") { html.h2(header) }
+    html.div(:class => "streamlined_header") do
+      html.h2(header_text(prefix))
+    end
+  end
+  
+  def header_text(prefix=nil)
+    if prefix.nil? && crud_context && crud_context != :show
+      prefix = crud_context.titleize
+    end
+    case prefix
+      when "New"
+        header_name = model_name.titleize
+      else
+        name_exists = !instance.nil? && instance.respond_to?(:name) && !instance.name.blank?
+        header_name = name_exists ? instance.name : model_name.titleize
+    end
+    header = prefix ? "#{prefix} #{header_name}" : header_name
   end
 end

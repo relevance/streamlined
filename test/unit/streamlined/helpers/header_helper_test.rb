@@ -14,6 +14,7 @@ class HeaderHelperTest < Test::Unit::TestCase
   end
   
   def test_render_show_header
+    flexmock(@controller).should_receive(:crud_context => :show)
     assert_header_text "Fancy Model", @controller.render_show_header
   end
   
@@ -23,11 +24,6 @@ class HeaderHelperTest < Test::Unit::TestCase
 
   def test_render_new_header
     assert_header_text "New Fancy Model", @controller.render_new_header
-  end
-  
-  def test_render_header_without_instance_name
-    @controller.instance = flexmock(:name => "Fancier Model")
-    assert_header_text "New Fancier Model", @controller.render_new_header
   end
   
   def assert_header_text(expected_header_text, actual_header_html)

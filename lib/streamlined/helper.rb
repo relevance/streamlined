@@ -14,6 +14,7 @@ require 'streamlined/helpers/table_helper'
 require 'streamlined/helpers/form_helper'
 require 'streamlined/helpers/filter_helper'
 require 'streamlined/helpers/header_helper'
+require 'streamlined/helpers/breadcrumb_helper'
   
 module Streamlined::Helper
   include Streamlined::Helpers::TableHelper
@@ -22,6 +23,7 @@ module Streamlined::Helper
   include Streamlined::Helpers::FormHelper
   include Streamlined::Helpers::FilterHelper
   include Streamlined::Helpers::HeaderHelper
+  include Streamlined::Helpers::BreadcrumbHelper
   
   # include this last
   include Streamlined::View::RenderMethods
