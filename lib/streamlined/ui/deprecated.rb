@@ -1,5 +1,8 @@
 module Streamlined::DeprecatedUIClassMethods
   def deprecated_class_methods
+    # TODO: This list may be incomplete. It's designed to catalog methods that can
+    # be called in a block on the UI class. If a method was missed, tests may fail.
+    # Add the method to this list and things should be groovy again.
     @deprecated_class_methods ||= Set.new([
       :user_columns,
       :custom_columns_group,
@@ -18,6 +21,8 @@ module Streamlined::DeprecatedUIClassMethods
       :default_order_options,
       :edit_columns,
       :list_columns,
+      :show_columns,
+      :quick_add_columns,
       :override_columns,
       :style_class_for,
       :exporters
