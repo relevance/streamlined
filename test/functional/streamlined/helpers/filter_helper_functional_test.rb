@@ -53,11 +53,9 @@ class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
                    :articles,
                    :books
     end    
-end
-  
-  # Check that relation columns Authors::last_name and Authors::first_name get included for filtering
-  # and that Authors::full_name does not since it is not a db field, just a define in Author.rb 
-  def test_advanced_filter_columns_with_fields
+  end
+
+  def advanced_controller_and_view
     @controller = ArticlesController.new
     @controller.logger = RAILS_DEFAULT_LOGGER
     @request    = ActionController::TestRequest.new
@@ -65,7 +63,22 @@ end
     @item = Struct.new(:id).new(1)
     get 'index'
     @view = @response.template
+  end
+  
+  def advanced_filter_checking
+    advanced_filter_columns = @view.advanced_filter_columns
+    assert_equal 3, @article_ui.column(:authors, :crud_context => :list).show_view.fields.length, "Testing that there are 3 fields of which 2 will be picked."
+    assert_equal [:first_name, :last_name, :full_name], @article_ui.column(:authors, :crud_context => :list).show_view.fields, "Testing that there are 3 fields of which 2 will be picked."
+    assert_equal 3, advanced_filter_columns.length, "Should have 3 columns to filter on Author-last_name, Author-first_name and Title"
+    assert_equal [["Authors (First name)", "rel::authors::first_name"],["Authors (Last name)", "rel::authors::last_name"],["Title", "title"]], advanced_filter_columns, "Should have 3 columns to filter on Author-last_name, Author-first_name and Title"
+  end
 
+  # Check that relation columns Authors::last_name and Authors::first_name get included for filtering
+  # and that Authors::full_name does not since it is not a db field, just a define in Author.rb 
+  # using user_columns
+  def test_advanced_filter_columns_with_fields_and_user_columns
+    advanced_controller_and_view
+    
     Streamlined::Registry.reset
     @article_ui = Streamlined.ui_for(Article) do
       user_columns :title, 
@@ -75,13 +88,30 @@ end
                      :edit_view => [:select, {:fields => [:first_name, :last_name, :full_name]}]
                    }
     end    
-
-    advanced_filter_columns = @view.advanced_filter_columns
     assert_equal 2, @article_ui.user_columns.length, "Should only have 2 user_columns"
-    assert_equal 3, @article_ui.relationships[:authors].show_view.fields.length, "Testing that there are 3 fields of which 2 will be picked."
-    assert_equal [:first_name, :last_name, :full_name], @article_ui.relationships[:authors].show_view.fields, "Testing that there are 3 fields of which 2 will be picked."
-    assert_equal 3, advanced_filter_columns.length, "Should have 3 columns to filter on Author-last_name, Author-first_name and Title"
-    assert_equal [["Authors (First name)", "rel::authors::first_name"],["Authors (Last name)", "rel::authors::last_name"],["Title", "title"]], advanced_filter_columns, "Should have 3 columns to filter on Author-last_name, Author-first_name and Title"
+
+    advanced_filter_checking
   end
+
+  # Check that relation columns Authors::last_name and Authors::first_name get included for filtering
+  # and that Authors::full_name does not since it is not a db field, just a define in Author.rb 
+  # using list_columns
+  def test_advanced_filter_columns_with_fields_and_list_columns
+    advanced_controller_and_view
+
+    Streamlined::Registry.reset
+    @article_ui = Streamlined.ui_for(Article) do
+      list_columns :title, 
+                   :authors, 
+                   {
+                     :show_view => [:name, {:fields => [:first_name, :last_name, :full_name]}],
+                     :edit_view => [:select, {:fields => [:first_name, :last_name, :full_name]}]
+                   }
+    end    
+    assert_equal 2, @article_ui.list_columns.length, "Should only have 2 list_columns"
+
+    advanced_filter_checking
+  end
+
   
 end
