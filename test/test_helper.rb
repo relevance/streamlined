@@ -49,6 +49,12 @@ class Test::Unit::TestCase
     assert_equal(Set.new(a), Set.new(b))
   end
   
+  # Note that streamlined hashes should be indifferent between keys and strings
+  def assert_key_set(keys, hash)
+    assert_kind_of(HashWithIndifferentAccess, hash)
+    assert_equal(Set.new(keys), Set.new(hash.symbolize_keys.keys))
+  end
+  
   def assert_enum_of_same(expected, actual)
     g = Generator.new(actual)
     expected.each do |e|

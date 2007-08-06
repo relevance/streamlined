@@ -58,7 +58,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   def test_reflect_on_model_with_delegates
     @poet_ui.model = Authorship
     delegate_hash = @poet_ui.reflect_on_delegates
-    assert_equal_sets [:articles, :first_name, :full_name, :authorships, :id, :books, :last_name], delegate_hash.keys
+    assert_key_set [:articles, :first_name, :full_name, :authorships, :id, :books, :last_name], delegate_hash
     assert_equal_sets [Streamlined::Column::Addition, Streamlined::Column::Association, Streamlined::Column::ActiveRecord], delegate_hash.values.map(&:class)
   end
   

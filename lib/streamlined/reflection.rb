@@ -2,39 +2,39 @@ require 'streamlined/view'
 module Streamlined; end
 module Streamlined::Reflection
   def reflect_on_scalars
-    scalars = model.columns.inject({}) do |h,v|
-      h[v.name.to_sym] = Streamlined::Column::ActiveRecord.new(v, model)
+    scalars = model.columns.inject(HashWithIndifferentAccess.new) do |h,v|
+      h[v.name] = Streamlined::Column::ActiveRecord.new(v, model)
       h
     end
   end
 
   def reflect_on_additions
-    additions = {}
+    additions = HashWithIndifferentAccess.new
     if Object.const_defined?(model.name + "Additions")
       Class.class_eval(model.name + "Additions").instance_methods(false).each do |meth|
-        additions[meth.to_sym] = Streamlined::Column::Addition.new(meth, model)
+        additions[meth] = Streamlined::Column::Addition.new(meth, model)
       end
     end
     additions
   end
 
   def reflect_on_relationships
-    relationships = {}
+    relationships = HashWithIndifferentAccess.new
       model.reflect_on_all_associations.each do |assoc|
-        rel = assoc.name.to_sym
+        rel = assoc.name
         relationships[rel] = create_relationship(rel) unless relationships[rel]
       end
     relationships
   end
   
   def reflect_on_delegates
-    delegates = {}
+    delegates = HashWithIndifferentAccess.new
     if model.respond_to?(:delegate_targets) && model.delegate_targets
       model.delegate_targets.each do |target|
         ar_assoc = model.reflect_on_association(target)
         ui = Streamlined.ui_for(ar_assoc.class_name)
         ui.all_columns.each {|col| 
-          delegates[col.name.to_sym] = col.dup
+          delegates[col.name] = col.dup
         }
       end
     end

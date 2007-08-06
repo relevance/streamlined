@@ -12,27 +12,27 @@ class Streamlined::ReflectionTest < Test::Unit::TestCase
   def test_reflect_on_scalars
     self.model=Person
     hash = reflect_on_scalars
-    assert_equal(Set.new([:id,:first_name,:last_name]), Set.new(hash.keys))
+    assert_key_set([:id,:first_name,:last_name], hash)
   end
   
   def test_reflect_on_additions
     self.model=Person
     hash = reflect_on_additions
-    assert_equal(Set.new([:full_name]), Set.new(hash.keys))
+    assert_key_set([:full_name], hash)
   end
   
   def test_reflect_on_relationships
     self.model=Poet
     hash = reflect_on_relationships
-    assert_equal(Set.new([:poems]), Set.new(hash.keys))
+    assert_key_set([:poems], hash)
     hash.each do |k,v|
-      assert_equal k, v.name
+      assert_equal k.to_s, v.name.to_s
     end
   end
   
   def test_reflect_on_delegates_dups_columns_from_associations
     self.model = Poem
     hash = reflect_on_delegates
-    assert_not_same hash[:first_name], Streamlined.ui_for(Poet).column(:first_name)
+    assert_not_same hash["first_name"], Streamlined.ui_for(Poet).column(:first_name)
   end
 end
