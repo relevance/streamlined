@@ -10,6 +10,7 @@ module Streamlined::DeprecatedUIClassMethods
       :table_row_buttons,
       :quick_delete_button,
       :quick_edit_button,
+      :quick_new_button,
       :table_filter,
       :read_only,
       :new_submit_button,
