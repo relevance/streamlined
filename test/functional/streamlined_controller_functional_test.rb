@@ -4,6 +4,7 @@ require 'streamlined/ui'
 
 class StreamlinedControllerTest < Test::Unit::TestCase
   fixtures :people
+  
   def setup
     Streamlined::Registry.reset
     @controller = PeopleController.new

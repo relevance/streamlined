@@ -15,19 +15,22 @@ class Streamlined::BreadcrumbHelperTest < Test::Unit::TestCase
 
   def test_render_breadcrumb_for_edit_context
     assert_render_breadcrumb_for_sub_context(:edit)
+    flexmock(self).should_receive(:prefix_for_crud_context).and_return("Edit").once
     flexmock(self).should_receive(:header_text).with("Edit").and_return("Edit Some Name").once
     assert_select root_node(render_breadcrumb), "div[id=breadcrumb]", "Home < Fancy Models < Edit Some Name" 
   end
 
   def test_render_breadcrumb_for_new_context
     assert_render_breadcrumb_for_sub_context(:new)
+    flexmock(self).should_receive(:prefix_for_crud_context).and_return("New").once
     flexmock(self).should_receive(:header_text).with("New").and_return("New Some Name").once
     assert_select root_node(render_breadcrumb), "div[id=breadcrumb]", "Home < Fancy Models < New Some Name" 
   end
 
   def test_render_breadcrumb_for_other_context
     assert_render_breadcrumb_for_sub_context(:foo)
-    flexmock(self).should_receive(:header_text).with_no_args.and_return("Foo").once
+    flexmock(self).should_receive(:prefix_for_crud_context).and_return(nil).once    
+    flexmock(self).should_receive(:header_text).with(nil).and_return("Foo").once
     assert_select root_node(render_breadcrumb), "div[id=breadcrumb]", "Home < Fancy Models < Foo" 
   end
   

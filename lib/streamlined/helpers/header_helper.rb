@@ -31,4 +31,11 @@ module Streamlined::Helpers::HeaderHelper
     end
     header = prefix ? "#{prefix} #{header_name}" : header_name
   end
+  
+  def prefix_for_crud_context
+    case crud_context
+      when :edit then "Edit"
+      when :new then "New"
+    end
+  end
 end

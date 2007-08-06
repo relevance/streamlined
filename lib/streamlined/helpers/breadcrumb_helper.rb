@@ -10,12 +10,8 @@ module Streamlined::Helpers::BreadcrumbHelper
       html << " #{DELIMETER} " 
       if crud_context != :list
         html << link_to(list_node_text, :action => "list")
-        header = case crud_context
-          when :edit then header_text("Edit")
-          when :new then header_text("New")
-          else header_text
-        end
-        html << " #{DELIMETER} #{header}"
+        html << " #{DELIMETER} "
+        html << header_text(prefix_for_crud_context)
       else
         html << list_node_text
       end
