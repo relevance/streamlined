@@ -28,7 +28,7 @@ module Streamlined::Helpers::LinkHelper
   def link_to_new_model
     link_to(image_tag('streamlined/add_16.png', 
         {:alt => "New #{model_name.titleize}", :title => "New #{model_name.titleize}", :border => '0'}),          
-        :action => 'new') unless model_ui.read_only
+        :action => 'new') unless model_ui.read_only || !model_ui.quick_new_button
   end
 
   def link_to_show_model(item)

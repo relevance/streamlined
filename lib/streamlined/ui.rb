@@ -18,8 +18,9 @@ class Streamlined::UI
   attr_accessor :model
   declarative_scalar :pagination, :default => true
   declarative_scalar :table_row_buttons, :default => true
-  declarative_scalar :quick_delete_button, :default => true 
-  declarative_scalar :quick_edit_button, :default => true   
+  declarative_scalar :quick_delete_button, :default => true
+  declarative_scalar :quick_edit_button, :default => true
+  declarative_scalar :quick_new_button, :default => true
   declarative_scalar :table_filter, :default => true
   declarative_scalar :read_only, :default => false
   declarative_scalar :new_submit_button, :default => {:ajax => true}
@@ -41,6 +42,7 @@ class Streamlined::UI
     subclass.table_row_buttons(self.table_row_buttons)
     subclass.quick_delete_button(self.quick_delete_button)
     subclass.quick_edit_button(self.quick_edit_button)
+    subclass.quick_new_button(self.quick_new_button)
     subclass.exporters(*self.exporters)
   end      
   

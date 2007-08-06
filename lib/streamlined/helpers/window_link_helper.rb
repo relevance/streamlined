@@ -27,7 +27,8 @@ module Streamlined::Helpers::WindowLinkHelper
   def link_to_new_model
     link_to_function(image_tag('streamlined/add_16.png', 
         {:alt => "New #{model_name}", :title => "New #{model_name}", :border => '0'}),          
-        "Streamlined.Windows.open_local_window_from_url('', '#{url_for(:action => 'new')}', null)") unless model_ui.read_only
+        "Streamlined.Windows.open_local_window_from_url('', '#{url_for(:action => 'new')}', null)"
+        ) unless model_ui.read_only || !model_ui.quick_new_button
   end
 
   def link_to_show_model(item)

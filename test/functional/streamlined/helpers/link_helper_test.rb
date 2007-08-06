@@ -20,6 +20,11 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
   def test_link_to_new_model
     assert_equal "<a href=\"/people/new\"><img alt=\"New Person\" border=\"0\" src=\"/images/streamlined/add_16.png\" title=\"New Person\" /></a>", @view.link_to_new_model
   end
+  
+  def test_link_to_new_model_when_quick_new_button_is_false
+    @view.send(:model_ui).quick_new_button false
+    assert_nil @view.link_to_new_model
+  end
 
   def test_link_to_edit_model
     assert_equal "<a href=\"/people/edit/1\"><img alt=\"Edit Person\" border=\"0\" src=\"/images/streamlined/edit_16.png\" title=\"Edit Person\" /></a>", @view.link_to_edit_model(people(:justin))

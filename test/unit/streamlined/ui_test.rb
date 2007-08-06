@@ -60,6 +60,12 @@ class Streamlined::UITest < Test::Unit::TestCase
     # assert_equal Fixnum, @ui.model
   end
   
+  def test_quick_button_defaults
+    assert_equal true, @ui.quick_delete_button
+    assert_equal true, @ui.quick_edit_button
+    assert_equal true, @ui.quick_new_button
+  end
+  
   def test_new_submit_button
     assert_equal true, @ui.new_submit_button[:ajax]
     assert_equal false, @ui.new_submit_button({:ajax => false})[:ajax]

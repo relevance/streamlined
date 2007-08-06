@@ -35,7 +35,7 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
   end
   
   def test_link_to_new_model
-    @model_ui = flexmock(:read_only => false)
+    @model_ui = flexmock(:read_only => false, :quick_new_button => true)
     with_routing do |set|
       set.draw do |map|
         map.connect ':controller/:action/:id'
@@ -44,5 +44,10 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
                      "src=\"//images/streamlined/add_16.png\" title=\"New \" /></a>", link_to_new_model
       end
     end
+  end
+  
+  def test_link_to_new_model_when_quick_new_button_is_false
+    @model_ui = flexmock(:read_only => false, :quick_new_button => false)
+    assert_nil link_to_new_model
   end
 end
