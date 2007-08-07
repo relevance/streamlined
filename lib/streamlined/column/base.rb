@@ -73,6 +73,23 @@ class Streamlined::Column::Base
     end
   end
   
+  def render_tr_show(view, item)
+    if is_displayable_in_context?(view, item)
+      x = Builder::XmlMarkup.new
+      x.tr(:id => render_id(view, item)) do
+        x.td(:class => "sl_show_label") do
+          x.text!("#{human_name.titleize}:") 
+        end
+        x.td(:class => "sl_show_value") do
+          x << render_td(view, item)
+        end
+      end
+      x.target!
+    else
+      ""
+    end
+  end
+  
   def render_content(view, item)
     content = item.send(self.name)
     content = h(content) unless allow_html

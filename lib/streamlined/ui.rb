@@ -167,6 +167,10 @@ class Streamlined::UI
     args.size > 0 ? convert_args_to_columns(name, *args) : instance_variable_get(name)
   end
   
+  def has_columns_group?(name)
+    instance_variable_get("@#{name}")
+  end
+  
   def column(name, options={})
     if options[:crud_context]
       # find the column within a specific group
