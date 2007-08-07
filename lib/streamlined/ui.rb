@@ -27,6 +27,7 @@ class Streamlined::UI
   declarative_scalar :edit_submit_button, :default => {:ajax => true}
   declarative_scalar :mark_required_fields, :default => true
   declarative_scalar :header_partials, :default => {}
+  declarative_scalar :after_header_partials, :default => {}
   declarative_scalar :footer_partials, :default => {}
   declarative_scalar :style_classes, :default => {}
   declarative_scalar :default_order_options, :default => {},

@@ -80,6 +80,7 @@ class Streamlined::UITest < Test::Unit::TestCase
   
   def test_header_and_footer_partials_have_defaults
     assert_equal({}, @ui.header_partials)
+    assert_equal({}, @ui.after_header_partials)
     assert_equal({}, @ui.footer_partials)
   end
   

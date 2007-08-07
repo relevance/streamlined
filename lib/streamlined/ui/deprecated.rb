@@ -17,6 +17,7 @@ module Streamlined::DeprecatedUIClassMethods
       :edit_submit_button,
       :mark_required_fields,
       :header_partials,
+      :after_header_partials,
       :footer_partials,
       :style_classes,
       :default_order_options,
