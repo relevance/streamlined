@@ -10,6 +10,7 @@ end
 
 require 'streamlined/context'
 require 'streamlined/render_methods'
+require 'streamlined/breadcrumb'
 require 'streamlined/column'
 require 'streamlined/ui'
 require 'streamlined/controller'

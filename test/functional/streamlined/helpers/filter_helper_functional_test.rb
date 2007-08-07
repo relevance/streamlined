@@ -3,6 +3,7 @@ require 'streamlined/helpers/filter_helper'
 
 class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
   fixtures :people, :poems
+  
   def setup
     stock_controller_and_view
     Streamlined::Registry.reset

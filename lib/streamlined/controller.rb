@@ -105,7 +105,8 @@ module Streamlined::Controller::ClassMethods
     @helper_overrides = options[:helpers] || []
     class_eval do
       attr_reader :streamlined_controller_context, :streamlined_request_context
-      helper_method :crud_context, :render_tabs, :render_partials, :instance
+      attr_with_default(:breadcrumb_trail) {[]}
+      helper_method :crud_context, :render_tabs, :render_partials, :instance, :breadcrumb_trail
       # delegated helpers do not appear as routable actions!
       def self.delegate_non_routable(*delegates_args)
         delegates *delegates_args
