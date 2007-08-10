@@ -7,7 +7,8 @@ class Streamlined::TableHelperTest < Test::Unit::TestCase
   
   def test_streamlined_filter
     @model_ui = Struct.new(:table_filter).new(true)
-    assert_equal "<form>Filter:  <input type='text' id='streamlined_filter_term'></form>", streamlined_filter
+    assert_equal "<div><form><label for='streamlined_filter_term'>Filter:</label>  <input type='text' id='streamlined_filter_term'></form></div>", 
+                 streamlined_filter
     @model_ui.table_filter = false
     assert_equal "", streamlined_filter
   end

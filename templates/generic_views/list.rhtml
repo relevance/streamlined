@@ -10,18 +10,18 @@
   Counter <%= form.text_field 'counter', {:autocomplete=>"off"} %>
   <%= submit_tag "Show Me" %>
 <% end %>
-<div id="streamlined_list" class="ajax-scaffold">
-	<div class="ajax-scaffold-header">
+<div id="streamlined_list">
+  <div class="actions" id="list-filter">
+    <%= streamlined_filter %>
+  </div>
+	<div class="streamlined_header">
 	  <h2><%= image_tag_if_exists("#{model_table}.png", {:align => 'top'}) %> <%= model_name.titleize.pluralize %></h2>	
-    <div class="actions">
-      <%= streamlined_filter %>
-    </div>
 	</div>
 	<%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/after_header_partials' %>
 	<div id="model_list">
 		<%= render :partial=>'list' %>
 	</div>
-	<div class="ajax-scaffold-footer"> 
+	<div class="#streamlined_list-footer"> 
 		<div id="controls">
 		  <%= link_to_new_model -%>&nbsp;
 		  <%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/export_links' %>

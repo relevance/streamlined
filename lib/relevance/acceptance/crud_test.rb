@@ -151,7 +151,7 @@ module Relevance::Acceptance::CrudTest
   def list_header
     expected_header_text = model_name.to_s.pluralize.titleize  
     message = "Expected list header '#{expected_header_text}' to appear on the page, but it didn't."
-    assert_equal expected_header_text, @selenium.get_text("xpath=//div[@class='ajax-scaffold-header']/h2"), message
+    assert_equal expected_header_text, @selenium.get_text("xpath=//div[@class='streamlined_header']/h2"), message
   end
 
   def expected_show_header
