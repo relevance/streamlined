@@ -46,7 +46,7 @@ class Streamlined::Column::Base
     [unassigned_value, nil]
   end
   
-  def validates_presence_of?
+  def is_required?
     col_name = belongs_to? ? name_as_id : name
     parent_model.respond_to?(:reflect_on_validations_for) && 
       parent_model.reflect_on_validations_for(col_name).find {|e| e.macro == :validates_presence_of }
@@ -141,7 +141,12 @@ class Streamlined::Column::Base
     x = Builder::XmlMarkup.new
     x.tr(:id => render_id(view, item)) do
       x.td(:class => 'sl_edit_label') do
-        x.label(human_name.titleize, :for => "#{model_underscore}_#{name}")
+        x.label(:for => "#{model_underscore}_#{name}") do
+          x.text!(human_name.titleize)
+          if mark_required?(item)
+    				x.span("*", :class => "required")
+    			end
+    		end
       end
       x.td(:class => 'sl_edit_value') do
         x << render_td(view, item)
@@ -169,6 +174,12 @@ class Streamlined::Column::Base
     fragment = edit_view ? edit_view.id_fragment : "temp"
     "#{fragment}::#{name}::#{item.id}::#{class_name}#{'::win' if in_window}"
   end
+  
+  # Should this column be marked required for this item?
+  def mark_required?(item)
+    ui = Streamlined::ui_for(item.class)
+		ui.mark_required_fields && is_required? 
+	end
   
   def div_wrapper(id, &block)
     "<div id=\"#{id}\">#{yield}</div>"

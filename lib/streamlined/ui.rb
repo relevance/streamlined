@@ -128,11 +128,6 @@ class Streamlined::UI
     override_columns(:@list_columns, *args)
   end
 
-  # All required columns as specified by validation
-  def required_columns
-    all_columns.select { |col| col.validates_presence_of? }
-  end
-                
   def id_fragment(relationship, crud_type)
     relationships[relationship.name].send("#{crud_type}_view").id_fragment  
   end

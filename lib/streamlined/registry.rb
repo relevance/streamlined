@@ -1,4 +1,7 @@
 class Streamlined::Registry
+  # unloadable is needed so that we do not lose validation_reflection when
+  # reloading in development mode
+  unloadable
   @ui_by_name = {}
   class <<self
     attr_accessor :ui_by_name

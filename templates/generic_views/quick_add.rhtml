@@ -10,17 +10,7 @@
 	<table class="streamlined_form">
 
 		<% @ui.quick_add_columns.each do |column| %>
-			<tr>
-				<td class="streamlined_label_cell">
-					<label class="streamlined_label" for="<%= model_underscore %>_<%= column.name %>"><%= column.human_name.titleize %></label>
-					<% if @ui.mark_required_fields && @ui.required_columns.include?(column) %>
-						<span class="required">*</span>
-					<% end %>
-				</td>
-				<td class="streamlined_input_cell">
-					<%= column.render_td(self, @model) %>
-				</td>
-			</tr>
+		  <%= column.render_edit_tr(self, @streamlined_item) %>
 		<% end %>
 		
 	</table>

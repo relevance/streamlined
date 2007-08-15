@@ -171,8 +171,8 @@ END
     xhr :get, :quick_add, :select_id => "foo", :model_class_name => "Poet"
     assert_response :success
     assert_template "quick_add"
-    assert_match %r{<label class="streamlined_label" for="person_first_name">First Name</label>}, @response.body
-    assert_match %r{<label class="streamlined_label" for="person_last_name">Last Name</label>}, @response.body
+    assert_match %r{<label for="poet_first_name">First Name</label>}, @response.body
+    assert_match %r{<label for="poet_last_name">Last Name</label>}, @response.body
   end
 
   def test_instance_is_accessible

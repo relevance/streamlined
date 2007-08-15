@@ -61,7 +61,7 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     base = Streamlined::Column::Base.new
     base.parent_model = Object.new
     flexmock(base).should_receive(:name=>nil)
-    assert_false base.validates_presence_of?
+    assert_false base.is_required?
   end
   
   def test_is_displayable_in_context_with_create_only_set_to_true
