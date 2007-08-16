@@ -10,7 +10,7 @@
 	<table class="streamlined_form">
 
 		<% @ui.quick_add_columns.each do |column| %>
-		  <%= column.render_edit_tr(self, @streamlined_item) %>
+		  <%= column.render_tr_edit(self, @streamlined_item) %>
 		<% end %>
 		
 	</table>

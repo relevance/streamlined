@@ -61,13 +61,13 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     assert_equal "<div id=\"123\">contents</div>", result
   end
   
-  def test_render_edit_tr
+  def test_render_tr_edit
     # simulate controller, view, context, and ivar naming convention...
     ui
     @controller.send :crud_context=, :edit
     @view.instance_variable_set(:@person, people(:stu))
     # and then test what we get
-    root = root_node(ui.column(:first_name).render_edit_tr(@view, people(:stu)))
+    root = root_node(ui.column(:first_name).render_tr_edit(@view, people(:stu)))
     assert_select root, "tr[id=sl_field_person_first_name]" do
       assert_select "td[class=sl_edit_label]" do
         assert_select "label[for=person_first_name]", "First Name"

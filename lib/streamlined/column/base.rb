@@ -137,7 +137,7 @@ class Streamlined::Column::Base
     end
   end
   
-  def render_edit_tr(view, item)
+  def render_tr_edit(view, item)
     x = Builder::XmlMarkup.new
     x.tr(:id => render_id(view, item)) do
       x.td(:class => 'sl_edit_label') do
