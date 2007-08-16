@@ -31,6 +31,7 @@ module Streamlined::Helper
   def self.included(includer)
     includer.class_eval do
       attr_reader :streamlined_controller_context, :streamlined_request_context
+      # TODO: should delegate to controller, not controller context. Need to test. --SDH
       delegates *Streamlined::Context::ControllerContext::DELEGATES
       delegates :list_columns, :to=>:model_ui
     end

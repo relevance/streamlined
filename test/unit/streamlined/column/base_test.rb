@@ -33,6 +33,42 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     (item = flexmock).should_receive(:send).with('test_addition').and_return('<b>content</b>').once
     assert_equal '&lt;b&gt;content&lt;/b&gt;', @addition.render_content(nil, item)
   end
+
+  def test_renderers
+    assert_equal_sets Set.new(["render_th",
+                               "render_td_new",
+                               "render_td_edit",
+                               "render_tr_edit",
+                               "render_td_show",
+                               "render_td",
+                               "render_id",
+                               "render_td_list",
+                               "render_content",
+                               "render_tr_show"]),
+                      @addition.renderers,
+                      "The set of render_ methods has changed. Make sure the semantics of renderer= are correct, then fix this test to pass again."
+  end
+  
+  def test_renderer_block_that_does_not_yield
+    @addition.render_wrapper = Proc.new {|old_meth, *args| "#{old_meth.name} rendered!"}
+    @addition.renderers.each do |renderer|
+      assert_equal "#{renderer} rendered!", @addition.send(renderer)
+    end
+  end
+  
+  def test_renderer_block_that_yields
+    @addition.allow_html = true
+    (item = flexmock).should_receive(:send).with('test_addition').and_return('header me').times(2)
+    assert_equal 'header me', @addition.render_content(nil, item)
+    @addition.render_wrapper = Proc.new {|meth, *args| "<h1>#{meth.call(*args)}</h1>"}
+    assert_equal '<h1>header me</h1>', @addition.render_content(nil, item)
+  end
+  
+  def test_renderer_view_method
+    @addition.render_wrapper = :do_that_render
+    (view = flexmock).should_receive(:do_that_render).with(Method, FlexMock, nil).and_return('did render').once
+    assert_equal 'did render', @addition.render_content(view, nil)
+  end
   
   def test_render_content_with_allow_html_set_to_true
     @addition.allow_html = true

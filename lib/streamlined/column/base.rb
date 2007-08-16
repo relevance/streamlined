@@ -46,6 +46,35 @@ class Streamlined::Column::Base
     [unassigned_value, nil]
   end
   
+  def renderers
+    metaclass = class <<self; self; end
+    metaclass.public_instance_methods.grep(/render_/) - ["render_wrapper="]   
+  end
+  
+  def render_wrapper=(block_or_view_method_name)
+    if Proc === block_or_view_method_name
+      wrap_renderers_with_proc(block_or_view_method_name)
+    else
+      wrap_renderers_with_view_method(block_or_view_method_name)
+    end
+  end
+  
+  def wrap_renderers_with_proc(block)
+    metaclass = class <<self; self; end
+    renderers.each do |renderer_name|
+      metaclass.wrap_method(renderer_name, &block)
+    end
+  end
+  
+  def wrap_renderers_with_view_method(method_name)
+    metaclass = class <<self; self; end
+    renderers.each do |renderer_name|
+      metaclass.wrap_method(renderer_name) {|meth,view,*args|
+        view.method(method_name).call(meth,view,*args)
+      }
+    end
+  end
+  
   def is_required?
     col_name = belongs_to? ? name_as_id : name
     parent_model.respond_to?(:reflect_on_validations_for) && 
@@ -120,7 +149,7 @@ class Streamlined::Column::Base
     end
   end
   
-  def render_th(context,view)
+  def render_th(view, context)
     x = Builder::XmlMarkup.new
     x.th(:class => "sortSelector", :scope => "col", :col => name) do
       x << human_name.titleize

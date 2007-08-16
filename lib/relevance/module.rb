@@ -66,11 +66,11 @@ module Relevance
     #     ...
     #   }
     #
-    def wrap_method( sym, &blk )
-      raise ArgumentError, "method does not exist" unless method_defined?( sym ) || private_method_defined?(sym)
-      old = instance_method(sym)
-      undef_method(sym);
-      define_method(sym) { |*args| blk.call(old.bind(self), *args) }
+    def wrap_method( name, &blk )
+      raise ArgumentError, "method does not exist" unless method_defined?( name ) || private_method_defined?(name)
+      old = instance_method(name)
+      undef_method(name);
+      define_method(name) { |*args| blk.call(old.bind(self), *args) }
     end
   end
 end

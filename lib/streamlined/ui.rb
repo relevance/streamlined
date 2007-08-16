@@ -34,8 +34,9 @@ class Streamlined::UI
                      :writer => Proc.new { |x| x.is_a?(Hash) ? x : {:order => x}}
   declarative_attribute '*args', :exporters, :default => [:csv, :json, :xml]
   
-  def initialize(model)
+  def initialize(model, &blk)
     @model = String === model ? model.constantize : model
+    self.instance_eval(&blk) if block_given?
   end
   
   def inherited(subclass) #:nodoc:

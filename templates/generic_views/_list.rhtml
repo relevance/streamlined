@@ -2,7 +2,7 @@
   <thead>
 	<tr>
   <% list_columns.each do |column| %>
-    <%= column.render_th(streamlined_request_context, self )%>
+    <%= column.render_th(self, streamlined_request_context)%>
   <% end %>
   <%= streamlined_table_row_button_header %>
   </tr>

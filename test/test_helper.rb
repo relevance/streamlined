@@ -45,8 +45,8 @@ class Test::Unit::TestCase
     assert_difference object, method, 0, &block
   end
   
-  def assert_equal_sets(a,b)
-    assert_equal(Set.new(a), Set.new(b))
+  def assert_equal_sets(a,b,*args)
+    assert_equal(Set.new(a), Set.new(b),*args)
   end
   
   # Note that streamlined hashes should be indifferent between keys and strings
