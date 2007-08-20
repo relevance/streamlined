@@ -14,6 +14,9 @@ class PeopleController < ApplicationController
     self.instance = Person.find(params[:id])
     render_or_redirect(:success, 'show')    
   end
+  
+  # Re-raise errors caught by the controller
+  def rescue_action(e); raise e; end
 end  
 
 # TODO: this should go away once the UI class is optional

@@ -7,6 +7,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
   
   def setup
     Streamlined::Registry.reset
+    PeopleController.db_action_filters.clear
     @controller = PeopleController.new
     @controller.logger = RAILS_DEFAULT_LOGGER
     @request    = ActionController::TestRequest.new
@@ -167,6 +168,34 @@ END
     end
   end
   
+  def test_create_with_db_action_filter_returning_true
+    instance = setup_db_action_filters_test(true, :save)
+    @controller.class.db_action_filter :create, Proc.new { instance.foo }
+    post :create
+    assert_response :redirect
+  end
+
+  def test_create_with_db_action_filter_returning_false
+    instance = setup_db_action_filters_test(false, :save)
+    @controller.class.db_action_filter :create, Proc.new { instance.foo }
+    post :create
+    assert_response :success
+  end
+
+  def test_update_with_db_action_filter_returning_true
+    instance = setup_db_action_filters_test(true, :update_attributes)
+    @controller.class.db_action_filter :update, Proc.new { instance.foo }
+    post :update, :id => 1 
+    assert_response :redirect
+  end
+
+  def test_update_with_db_action_filter_returning_false
+    instance = setup_db_action_filters_test(false, :update_attributes)
+    @controller.class.db_action_filter :update, Proc.new { instance.foo }
+    post :update, :id => 1
+    assert_response :success
+  end
+  
   def test_quick_add_uses_correct_form_field_labels
     xhr :get, :quick_add, :select_id => "foo", :model_class_name => "Poet"
     assert_response :success
@@ -187,6 +216,18 @@ END
   
   def test_instance_is_not_an_action
     get :instance
-    assert_response 404
+    flunk "Should have thrown an UnknownAction exception"
+  rescue ActionController::UnknownAction => e
+    assert_equal "No action responded to instance", e.message
   end
+  
+  private
+
+  def setup_db_action_filters_test(filter_return_value, default_method)
+    instance = flexmock(@controller.send(:instance))
+    instance.should_receive(:foo).and_return(filter_return_value).once
+    instance.should_receive(default_method).never
+    instance
+  end
+    
 end

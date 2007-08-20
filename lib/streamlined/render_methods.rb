@@ -46,4 +46,7 @@ module Streamlined::RenderMethods
     options = convert_partial_options(options)
   end
   
+  def current_action
+    params[:action].intern
+  end
 end

@@ -1,10 +1,11 @@
 # per controller context, kept for the lifetime of the controller class
 # and made available via delegation to controllers and views
 class Streamlined::Context::ControllerContext
-  attr_accessor :model_name, :render_filters
+  attr_accessor :model_name, :render_filters, :db_action_filters
   
   DELEGATES = [:model_name, 
                :render_filters,
+               :db_action_filters,
                :model, 
                :model_symbol, 
                :model_table, 

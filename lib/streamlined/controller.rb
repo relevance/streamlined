@@ -20,6 +20,7 @@ require 'streamlined/controller/crud_methods'
 require 'streamlined/controller/enumeration_methods'
 require 'streamlined/controller/relationship_methods'
 require 'streamlined/controller/render_methods'
+require 'streamlined/controller/db_action_methods'
 require 'streamlined/controller/quick_add_methods'
 require 'streamlined/controller/filter_methods'
 
@@ -27,6 +28,7 @@ module Streamlined::Controller::InstanceMethods
   include Streamlined::Controller::CrudMethods
   include Streamlined::Controller::EnumerationMethods
   include Streamlined::Controller::RenderMethods
+  include Streamlined::Controller::DbActionMethods
   include Streamlined::Controller::RelationshipMethods
   include Streamlined::Controller::QuickAddMethods
   include Streamlined::Controller::FilterMethods
@@ -71,6 +73,7 @@ module Streamlined::Controller::InstanceMethods
     @streamlined_controller_context = Streamlined::Context::ControllerContext.new
     @streamlined_controller_context.model_name = mod_name || self.class.model_name || Inflector.classify(self.class.controller_name)
     @streamlined_controller_context.render_filters = self.class.render_filters
+    @streamlined_controller_context.db_action_filters = self.class.db_action_filters
     # TODO: why isn't this in the html head?
     @page_title = "Manage #{model_name.pluralize}"
   rescue Exception => ex
@@ -145,6 +148,10 @@ module Streamlined::Controller::ClassMethods
   def render_filters
     @render_filters ||= {}
   end
+  
+  def db_action_filters
+    @db_action_filters ||= {}
+  end
 
   def streamlined_model(mod)
     @custom_model_name = mod.instance_of?(String) ? mod : mod.name
@@ -152,6 +159,10 @@ module Streamlined::Controller::ClassMethods
   
   def render_filter(action, options)
     render_filters[action] = options
+  end
+  
+  def db_action_filter(action, options)
+    db_action_filters[action] = options
   end
   
 end

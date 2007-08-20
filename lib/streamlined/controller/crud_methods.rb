@@ -69,7 +69,8 @@ module Streamlined::Controller::CrudMethods
    # the #new view so that errors can be fixed.
    def create
      self.instance = model.new(params[model_symbol])
-     if instance.save
+     
+     if execute_db_action_with_default { instance.save }
        flash[:notice] = "#{model_name.titleize} was successfully created."
        self.crud_context = :show
        render_or_redirect(:success, "show", :action=>"list")
@@ -92,7 +93,8 @@ module Streamlined::Controller::CrudMethods
   # the #edit view so that errors can be fixed.
   def update
     self.instance = model.find(params[:id])
-    if instance.update_attributes(params[model_symbol])
+
+    if execute_db_action_with_default { instance.update_attributes(params[model_symbol]) }
       # TODO: reimplement tag support
       # get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
       flash[:notice] = "#{model_name.titleize} was successfully updated."
