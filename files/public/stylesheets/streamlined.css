@@ -3,7 +3,6 @@
 /*----------------------------------*/
 body        { margin: 0; font-family: "Lucida Grande", Verdana, Arial;}
 #hd         { background-color: #7594A1; padding: 8px;}
-#breadcrumb, #breadcrumb a:link, #breadcrumb a:visited { color: #FFFFFF; }
 #branding   { font-family: "Lucida Grande", Verdana, Arial; font-size: 14pt; color: white; }
 #main       { background-color: #BAD0CC; padding: 5px; font-family: Verdana, Arial; font-size: 8pt;}
 .yui-b      { }
@@ -47,6 +46,7 @@ td.sl_show_label      { font-weight: bold; font-family: Verdana, Arial; font-siz
 td.sl_show_value { font-family: Verdana, Arial; font-size: 10pt; margin-left: 10px;}
 td.sl_edit_label      { font-weight: bold; font-family: Verdana, Arial; font-size: 10pt; text-align: right; width: 100px; vertical-align: top;}
 td.sl_edit_value { font-family: Verdana, Arial; font-size: 10pt; margin-left: 10px;}
+.required {color: red;}
 
 /*----------------------------------*/
 
