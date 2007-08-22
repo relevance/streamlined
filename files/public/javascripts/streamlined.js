@@ -302,12 +302,12 @@ Streamlined.Enumerations = {
 Streamlined.QuickAdd = {
   initialize: function() {
     $$(".sl_quick_add_link").each((function(el) {
-      var link = el.parentNode.attributes["href"];
+      var link = el.parentNode.href;  // attributes["href"] fails in Safari
 	    if (link) {
-				el.onclick = (function() {
-					this.open(link.value);
-					return false;
-				}).bind(this);
+		    Event.observe(el, "click", (function(event) { 
+          this.open(link);
+          Event.stop(event);
+		    }).bind(this));
   		}
     }).bind(this));
   },
@@ -368,3 +368,4 @@ Streamlined.Form = {
     }
   }
 }
+
