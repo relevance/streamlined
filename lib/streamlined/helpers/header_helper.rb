@@ -15,10 +15,13 @@ module Streamlined::Helpers::HeaderHelper
   end
   
   def render_header(prefix=nil)
+    render_full_header(header_text(prefix))
+  end
+  
+  def render_full_header(text)
     html = Builder::XmlMarkup.new
-    html.div(:class => "streamlined_header") do
-      html.h2(header_text(prefix))
-    end
+    html.div(:class => "streamlined_header") { html.h2(text) }
+    html.target!
   end
   
   def header_text(prefix=nil)

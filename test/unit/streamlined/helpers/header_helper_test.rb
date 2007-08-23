@@ -13,6 +13,14 @@ class HeaderHelperTest < Test::Unit::TestCase
     @controller.model_name = "Fancy Model"
   end
   
+  def test_render_header
+    assert_header_text "Very Fancy Model", @controller.render_header("Very")
+  end
+  
+  def test_render_full_header
+    assert_header_text "Some Text", @controller.render_full_header("Some Text")
+  end
+  
   def test_render_show_header
     flexmock(@controller).should_receive(:crud_context => :show)
     assert_header_text "Fancy Model", @controller.render_show_header
