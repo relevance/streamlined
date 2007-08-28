@@ -22,8 +22,8 @@ module Streamlined::View::EditViews
   
   # Renders an Ajax-enabled table in a JavaScript window.
   class Window < Streamlined::View::Base
-    def partial
-      "/streamlined/relationships/views/inset_table"
+    def partial      
+      "../../vendor/plugins/streamlined/templates/relationships/edit_views/inset_table"
     end
   end
   
