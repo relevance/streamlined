@@ -2,14 +2,18 @@ module Streamlined::Controller::RenderMethods
   include Streamlined::RenderMethods
 
   private
+  def current_render_filter
+    self.class.render_filters[current_action]
+  end
+  
   def render_filter_exists?(name)
-    render_filters[current_action] && render_filters[current_action][name]
+    current_render_filter && current_render_filter[name]
   end
   
   def render_or_redirect(status, action, redirect=nil)
     @id = instance.id
     if render_filter_exists?(status)
-      execute_render_filter(render_filters[current_action][status])
+      execute_render_filter(current_render_filter[status])
     elsif redirect && !request.xhr?
       redirect_to(redirect)
     else

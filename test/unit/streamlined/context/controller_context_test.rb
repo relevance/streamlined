@@ -18,11 +18,4 @@ class Streamlined::Context::ControllerContextTest < Test::Unit::TestCase
   def test_model_ui_uses_passed_model_class
     assert_equal String, @context.model_ui.model
   end
-  
-  def test_render_filters
-    context = Streamlined::Context::ControllerContext.new
-    filters = { :foo => :bar }
-    context.render_filters = filters
-    assert_equal filters, context.render_filters
-  end
 end

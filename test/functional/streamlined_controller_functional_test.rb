@@ -7,7 +7,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
   
   def setup
     Streamlined::Registry.reset
-    PeopleController.db_action_filters.clear
+    PeopleController.filters.clear
     @controller = PeopleController.new
     @controller.logger = RAILS_DEFAULT_LOGGER
     @request    = ActionController::TestRequest.new

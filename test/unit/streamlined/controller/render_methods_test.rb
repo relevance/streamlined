@@ -3,7 +3,7 @@ require 'streamlined/controller/render_methods'
 
 class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
   include Streamlined::Controller::RenderMethods
-  attr_accessor :instance, :render_filters
+  attr_accessor :instance, :filters
   
   # begin stub methods
   def controller_name
@@ -22,8 +22,12 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     { :action => 'edit' }
   end
   
-  def render_filters
-    @render_filters || {}
+  def self.filters
+    @filters ||= {}
+  end
+  
+  def self.render_filters
+    filters[:render] || {}
   end
   # end stub methods
   
@@ -48,7 +52,7 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
   def test_render_or_redirect_with_render_filter_proc
     (@instance = flexmock).should_receive(:id).and_return(123).once
     flexmock(self).should_receive(:instance_eval).at_least.once
-    @render_filters = { :edit => { :success => Proc.new { render :text => 'hello world' }}}
+    self.class.filters[:render] = { :edit => { :success => Proc.new { render :text => 'hello world' }}}
     render_or_redirect(:success, 'show')
     assert_equal 123, @id
   end

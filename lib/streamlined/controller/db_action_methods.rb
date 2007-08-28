@@ -3,7 +3,7 @@ module Streamlined::Controller::DbActionMethods
   
   private
   def current_db_action_filter
-    db_action_filters[current_action]
+    self.class.db_action_filters[current_action]
   end
   
   def execute_db_action_filter

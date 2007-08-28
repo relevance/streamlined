@@ -72,8 +72,6 @@ module Streamlined::Controller::InstanceMethods
   def initialize_streamlined_values(mod_name = nil)
     @streamlined_controller_context = Streamlined::Context::ControllerContext.new
     @streamlined_controller_context.model_name = mod_name || self.class.model_name || Inflector.classify(self.class.controller_name)
-    @streamlined_controller_context.render_filters = self.class.render_filters
-    @streamlined_controller_context.db_action_filters = self.class.db_action_filters
     # TODO: why isn't this in the html head?
     @page_title = "Manage #{model_name.pluralize}"
   rescue Exception => ex
@@ -140,21 +138,25 @@ module Streamlined::Controller::ClassMethods
       alias_method_chain :initialize, :streamlined_variables
     end
   end
-    
-  def model_name 
+  
+  def model_name
     @custom_model_name || nil
   end
   
+  def streamlined_model(mod)
+    @custom_model_name = mod.instance_of?(String) ? mod : mod.name
+  end
+  
+  def filters
+    @filters ||= {}
+  end
+  
   def render_filters
-    @render_filters ||= {}
+    filters[:render] ||= {}
   end
   
   def db_action_filters
-    @db_action_filters ||= {}
-  end
-
-  def streamlined_model(mod)
-    @custom_model_name = mod.instance_of?(String) ? mod : mod.name
+    filters[:db_action] ||= {}
   end
   
   def render_filter(action, options)
