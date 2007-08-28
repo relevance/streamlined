@@ -6,7 +6,7 @@ class Streamlined::ReflectionTest < Test::Unit::TestCase
   attr_accessor :model
   
   def setup
-    Streamlined::Registry.reset
+    Streamlined::ReloadableRegistry.reset
   end
   
   def test_reflect_on_scalars

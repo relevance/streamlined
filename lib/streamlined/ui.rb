@@ -29,7 +29,8 @@ class Streamlined::UI
   declarative_scalar :header_partials, :default => {}
   declarative_scalar :after_header_partials, :default => {}
   declarative_scalar :footer_partials, :default => {}
-  declarative_scalar :style_classes, :default => {}
+  declarative_scalar :style_classes, :default => {}   
+  declarative_scalar :display_formats, :default => {}
   declarative_scalar :default_order_options, :default => {},
                      :writer => Proc.new { |x| x.is_a?(Hash) ? x : {:order => x}}
   declarative_attribute '*args', :exporters, :default => [:csv, :json, :xml]

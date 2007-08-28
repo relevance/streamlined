@@ -119,7 +119,9 @@ module Streamlined::Controller::ClassMethods
       delegate_non_routable(*Streamlined::Context::RequestContext::DELEGATES)
       include Streamlined::Controller::InstanceMethods
       before_filter :initialize_request_context
-      require_dependencies :ui, Dir["#{RAILS_ROOT}/app/streamlined/*.rb"].collect {|f| f.gsub(".rb", "")}
+      Dir["#{RAILS_ROOT}/app/streamlined/*.rb"].each do |name|
+        Dependencies.depend_on name, true
+      end
       # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
       verify :method => :post, :only => [ :destroy, :create, :update ],
             :redirect_to => { :action => :list }

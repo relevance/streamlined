@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), '../test_functional_helper')
 class StreamlinedFunctionalTest < Test::Unit::TestCase
   
   def setup
-    Streamlined::Registry.reset
+    Streamlined::ReloadableRegistry.reset
   end
   
   def test_ui_for

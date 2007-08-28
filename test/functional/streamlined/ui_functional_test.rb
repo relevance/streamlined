@@ -3,7 +3,7 @@ require 'streamlined/reflection'
 
 class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   def setup
-    Streamlined::Registry.reset
+    Streamlined::ReloadableRegistry.reset
     @poet_ui = Streamlined.ui_for(Poet)
     @poem_ui = Streamlined.ui_for(Poem) do
       list_columns :text,

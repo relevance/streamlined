@@ -6,7 +6,7 @@ class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
   
   def setup
     stock_controller_and_view
-    Streamlined::Registry.reset
+    Streamlined::ReloadableRegistry.reset
     @person_ui = Streamlined.ui_for(Person) do
       user_columns :first_name, 
                    :last_name, 
@@ -45,7 +45,7 @@ class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
     get 'index'
     @view = @response.template
 
-    Streamlined::Registry.reset
+    Streamlined::ReloadableRegistry.reset
     @author_ui = Streamlined.ui_for(Author) do
       user_columns :first_name, 
                    :last_name, 
@@ -80,7 +80,7 @@ class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
   def test_advanced_filter_columns_with_fields_and_user_columns
     advanced_controller_and_view
     
-    Streamlined::Registry.reset
+    Streamlined::ReloadableRegistry.reset
     @article_ui = Streamlined.ui_for(Article) do
       user_columns :title, 
                    :authors, 
@@ -100,7 +100,7 @@ class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
   def test_advanced_filter_columns_with_fields_and_list_columns
     advanced_controller_and_view
 
-    Streamlined::Registry.reset
+    Streamlined::ReloadableRegistry.reset
     @article_ui = Streamlined.ui_for(Article) do
       list_columns :title, 
                    :authors, 

@@ -120,7 +120,8 @@ class Streamlined::Column::Base
   end
   
   def render_content(view, item)
-    content = item.send(self.name)
+    content = item.send(self.name)    
+    content = Streamlined.format_for_display(content)
     content = h(content) unless allow_html
     if link_to
       link_args = link_to.has_key?(:id) ? link_to : link_to.merge(:id=>item)

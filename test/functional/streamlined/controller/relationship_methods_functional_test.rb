@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
 
 class RelationshipMethodsFunctionalTest < Test::Unit::TestCase
   def setup
-    Streamlined::Registry.reset
+    Streamlined::ReloadableRegistry.reset
     @controller = PeopleController.new
     class <<@controller
       public :crud_context=, :context_column
