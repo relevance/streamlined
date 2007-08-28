@@ -23,6 +23,7 @@ require 'streamlined/controller/render_methods'
 require 'streamlined/controller/db_action_methods'
 require 'streamlined/controller/quick_add_methods'
 require 'streamlined/controller/filter_methods'
+require 'streamlined/controller/options_methods'
 
 module Streamlined::Controller::InstanceMethods
   include Streamlined::Controller::CrudMethods
@@ -32,6 +33,7 @@ module Streamlined::Controller::InstanceMethods
   include Streamlined::Controller::RelationshipMethods
   include Streamlined::Controller::QuickAddMethods
   include Streamlined::Controller::FilterMethods
+  include Streamlined::Controller::OptionsMethods
   
   def index
     list
@@ -167,4 +169,8 @@ module Streamlined::Controller::ClassMethods
     db_action_filters[action] = options
   end
   
+  def count_or_find_options(options=nil)
+    return @count_or_find_options || {} unless options
+    @count_or_find_options = options
+  end
 end

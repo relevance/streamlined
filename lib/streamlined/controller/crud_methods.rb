@@ -10,7 +10,8 @@ module Streamlined::Controller::CrudMethods
     self.crud_context = :list
     options = pagination ? {:per_page => 10} : {}
     options.merge!(order_options)
-    options.merge!(filter_options)
+    options.merge!(filter_options)    
+    options.merge!(count_or_find_options)
     
     @streamlined_items_count = model.count(:conditions => options[:conditions], :include => options[:include])
     

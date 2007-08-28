@@ -45,7 +45,22 @@ class Streamlined::ControllerTest < Test::Unit::TestCase
     assert_equal options, render_filters[:show]
   end
   
-  def test_render_filters_defaults_to_empty_hash
+  def test_db_action_filter
+    db_action_filter :create, :save_instances
+    assert_equal :save_instances, db_action_filters[:create]
+  end
+  
+  def test_filter_readers_default_to_empty_hash
+    assert_equal({}, filters)
     assert_equal({}, render_filters)
+    assert_equal({}, db_action_filters)
+  end
+  
+  def test_count_or_find_options
+    assert_equal({}, count_or_find_options)
+    count_or_find_options(:foo => :bar)
+    assert_equal({:foo => :bar}, count_or_find_options)
+    count_or_find_options(:abc => :def)
+    assert_equal({:abc => :def}, count_or_find_options)
   end
 end
