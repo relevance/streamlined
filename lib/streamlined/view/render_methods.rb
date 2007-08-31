@@ -3,10 +3,14 @@ module Streamlined::View::RenderMethods
   def controller_name
     controller.controller_name # needed by Streamlined::RenderMethods
   end
+  
+  def controller_path
+    controller.controller_path # needed by Streamlined::RenderMethods
+  end
   def convert_partial_options(options)
     partial = options[:partial]
     if partial && managed_partials_include?(partial)
-      unless specific_template_exists?("#{controller_name}/_#{partial}")
+      unless specific_template_exists?("#{controller_path}/_#{partial}")
         options.delete(:partial)
         options[:file] = generic_view("_#{partial}")
         options[:layout] = false unless options.has_key?(:layout)

@@ -38,7 +38,7 @@ module Streamlined::Controller::RenderMethods
   def convert_partial_options(options)
     partial = options[:partial]
     if partial && managed_partials_include?(partial)
-      unless specific_template_exists?("#{controller_name}/_#{partial}")
+      unless specific_template_exists?("#{controller_path}/_#{partial}")
         options.delete(:partial)
         options[:template] = generic_view("_#{partial}")
         options[:layout] = false unless options.has_key?(:layout)

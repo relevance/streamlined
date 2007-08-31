@@ -32,7 +32,7 @@ module Streamlined::RenderMethods
   def convert_action_options(options)
     action = options[:action]
     if action && managed_views_include?(options[:action])
-      unless specific_template_exists?("#{controller_name}/#{options[:action]}")
+      unless specific_template_exists?("#{controller_path}/#{options[:action]}")
         options.delete(:action)
         options[:template] = generic_view(action)
       end

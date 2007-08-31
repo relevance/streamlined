@@ -9,6 +9,10 @@ class Streamlined::RenderMethodsTest < Test::Unit::TestCase
     "people"
   end
   
+  def controller_path
+    "people"
+  end
+  
   def managed_views_include?(action)
     true
   end
