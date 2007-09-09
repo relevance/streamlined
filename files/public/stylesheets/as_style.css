@@ -33,7 +33,7 @@
  .column { position: relative; float: left; }
 body { margin: 0; padding-left: 200px; /* LC fullwidth */ padding-right: 190px; /* RC fullwidth + CC padding */ min-width: 240px; /* LC fullwidth + CC padding */ }
 
- /*** IE Fix ***/ * html #left { left: 150px; /* RC fullwidth */ }
+/*** IE Fix ***/ * html #left { margin-left: -100px; left: 150px; /* RC fullwidth */ } 
 
 #left {background-color:  white;}
 #footer, #footer a {background-color: #2175bc; color: white; text-align: center; font-style: italic; font-size: 9pt;}
