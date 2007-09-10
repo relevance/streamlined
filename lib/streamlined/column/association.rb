@@ -106,13 +106,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     # when has_many?
     #   "[TBD: editable has_many associations]"
     when belongs_to?
-      if options_for_select
-        assoc_class = class_name.constantize
-        arity = assoc_class.method(options_for_select).arity
-        choices = (arity == 0) ? assoc_class.send(options_for_select) : assoc_class.send(options_for_select, item)
-      else
-        choices = items_for_select.collect { |e| [e.streamlined_name(edit_view.fields, edit_view.separator), e.id] }
-      end
+      choices = options_for_select ? custom_options_for_select(view) : standard_options_for_select
       choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name_as_id.to_sym)
       selected_choice = item.send(name).id if item.send(name)
       result = view.select(model_underscore, name_as_id, choices, { :selected => selected_choice }, html_options)
@@ -132,5 +126,21 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   
   def should_render_quick_add?(view)
     quick_add && belongs_to? && view.params[:action] != 'quick_add'
+  end
+  
+  private
+  def custom_options_for_select(view)
+    assoc_class = class_name.constantize
+    arity = assoc_class.method(options_for_select).arity
+    if arity == 0
+      assoc_class.send(options_for_select)
+    else
+      streamlined_item = view.instance_variable_get("@streamlined_item")
+      assoc_class.send(options_for_select, streamlined_item)
+    end
+  end
+  
+  def standard_options_for_select
+    items_for_select.collect { |e| [e.streamlined_name(edit_view.fields, edit_view.separator), e.id] }
   end
 end

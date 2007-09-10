@@ -145,7 +145,8 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   
   def test_render_td_edit_with_options_for_select_that_accepts_item_arg
     view, item = view_and_item_mocks_for_render_td_edit
-    flexmock(SomeClass).should_receive(:custom_options).with(item).and_return([:foo]).once
+    streamlined_item = view.instance_variable_get("@streamlined_item")
+    flexmock(SomeClass).should_receive(:custom_options).with(streamlined_item).and_return([:foo]).once
     @association.options_for_select = :custom_options
     assert_equal "select", @association.render_td_edit(view, item)
   end
