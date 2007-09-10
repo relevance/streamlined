@@ -107,7 +107,9 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     #   "[TBD: editable has_many associations]"
     when belongs_to?
       if options_for_select
-        choices = class_name.constantize.send(options_for_select)
+        assoc_class = class_name.constantize
+        arity = assoc_class.method(options_for_select).arity
+        choices = (arity == 0) ? assoc_class.send(options_for_select) : assoc_class.send(options_for_select, item)
       else
         choices = items_for_select.collect { |e| [e.streamlined_name(edit_view.fields, edit_view.separator), e.id] }
       end
