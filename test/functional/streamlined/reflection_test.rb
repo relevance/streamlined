@@ -35,4 +35,15 @@ class Streamlined::ReflectionTest < Test::Unit::TestCase
     hash = reflect_on_delegates
     assert_not_same hash["first_name"], Streamlined.ui_for(Poet).column(:first_name)
   end
+  
+  def test_should_only_reflect_on_delegates_to_associations
+    self.model = Poem
+    assert reflect_on_delegates.keys.include?("first_name")
+  end
+  
+  def test_should_not_include_delegates_to_non_associations
+    self.model = Poem
+    assert_false reflect_on_delegates.keys.include?("current_time")
+  end
+  
 end

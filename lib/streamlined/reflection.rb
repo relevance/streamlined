@@ -31,17 +31,24 @@ module Streamlined::Reflection
     delegates = HashWithIndifferentAccess.new
     if model.respond_to?(:delegate_targets) && model.delegate_targets
       model.delegate_targets.each do |target|
-        ar_assoc = model.reflect_on_association(target)
-        ui = Streamlined.ui_for(ar_assoc.class_name)
-        ui.all_columns.each {|col| 
-          delegates[col.name] = col.dup
-        }
+        if has_assocation_or_aggregation?(model, target)
+          ar_assoc = model.reflect_on_association(target)
+          ui = Streamlined.ui_for(ar_assoc.class_name)
+          ui.all_columns.each {|col| 
+            delegates[col.name] = col.dup
+          }
+        end
       end
     end
     delegates
   end
   
   private
+  
+  def has_assocation_or_aggregation?(model, target_name)
+    model.reflections.keys.include?(target_name)
+  end
+  
   def create_relationship(rel)
     association = model.reflect_on_association(rel)
     raise Exception, "STREAMLINED ERROR: No association '#{rel}' on class #{model}." unless association
