@@ -20,7 +20,7 @@ class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
     advanced_filter_columns = @view.advanced_filter_columns
     assert_equal 3, @person_ui.user_columns.length, "Should only have 3 person columns in total"
     assert_equal 2, advanced_filter_columns.length, "Should only have 2 person columns to filter on"
-    assert_equal [["First name", "first_name"],["Last name", "last_name"]], advanced_filter_columns
+    assert_equal [["First Name", "first_name"],["Last Name", "last_name"]], advanced_filter_columns
   end
 
   # Check that relation columns Articles::title and Books::title as well as
@@ -31,7 +31,10 @@ class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
     advanced_filter_columns = @view.advanced_filter_columns
     assert_equal 6, @author_ui.user_columns.length
     assert_equal 4, advanced_filter_columns.length
-    assert_equal [["Articles (Title)", "rel::articles::title"],["Books (Title)", "rel::books::title"],["First name", "first_name"],["Last name", "last_name"]], advanced_filter_columns
+    assert_equal [["Articles (Title)", "rel::articles::title"],
+                  ["Books (Title)", "rel::books::title"],
+                  ["First Name", "first_name"],
+                  ["Last Name", "last_name"]], advanced_filter_columns
   end
   
   def complex_controller_and_view

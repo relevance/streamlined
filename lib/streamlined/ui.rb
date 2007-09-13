@@ -91,6 +91,9 @@ class Streamlined::UI
     args.each do |arg|
       if Hash === arg
         instance_variable_get(name).last.set_attributes(arg)
+        current_column = instance_variable_get(name).last
+        current_column.set_attributes(arg)
+        current_column.human_name_explicitly_set = true if arg[:human_name]
       else
         col = column(arg)
         if col.nil?

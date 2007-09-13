@@ -13,6 +13,16 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     @addition = Addition.new(:test_addition, parent_model)
   end
   
+  def test_human_name
+    assert_equal 'Test Addition', @addition.human_name
+  end
+  
+  def test_human_name_explicitly_set
+    @addition.human_name = 'foo bar'
+    @addition.human_name_explicitly_set = true
+    assert_equal 'foo bar', @addition.human_name
+  end
+  
   def test_has_many
     assert_false Streamlined::Column::Base.new.has_many?
   end

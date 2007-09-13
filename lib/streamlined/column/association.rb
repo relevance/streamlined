@@ -15,9 +15,9 @@
 # Wrapper around ActiveRecord::Association.  Keeps track of the underlying association, the View definition and the Summary definition.
 class Streamlined::Column::Association < Streamlined::Column::Base
   attr_reader :underlying_association, :edit_view, :show_view
-  attr_accessor :human_name, :options_for_select, :filter_column
+  attr_accessor :options_for_select, :filter_column
   attr_with_default :quick_add, 'true'
-  delegates :name, :class_name, :to=>:underlying_association
+  delegates :name, :class_name, :to => :underlying_association
   delegates :belongs_to?, :has_many?, :to => :underlying_association
   
   def initialize(assoc, parent_model, edit, show)

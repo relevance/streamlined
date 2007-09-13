@@ -27,7 +27,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   # This will probably change as more stuff moves from ui into assocation
   def test_initializer
     assert_raise(ArgumentError) { Association.new(@ar_assoc, 'foo', 'bar') }
-    assert_equal 'Some name', @association.human_name
+    assert_equal 'Some Name', @association.human_name
     assert_instance_of(Streamlined::View::ShowViews::Count, @association.show_view)
     assert_instance_of(Streamlined::View::EditViews::InsetTable, @association.edit_view)
   end

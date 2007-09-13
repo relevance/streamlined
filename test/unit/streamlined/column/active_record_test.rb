@@ -24,7 +24,7 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
   def test_names_delegate_to_ar_column
     ar = ActiveRecord.new(ar_column('foo_bar', 'Foo bar'), nil)
     assert_equal 'foo_bar', ar.name
-    assert_equal 'Foo bar', ar.human_name
+    assert_equal 'Foo Bar', ar.human_name
   end
   
   def test_human_name_can_be_set_manually

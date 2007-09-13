@@ -1,5 +1,5 @@
 class Streamlined::Column::Addition < Streamlined::Column::Base
-  attr_accessor :name, :human_name
+  attr_accessor :name
 
   def initialize(sym, parent_model)
     @name = sym.to_s

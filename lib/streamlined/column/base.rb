@@ -4,7 +4,10 @@ require 'streamlined/helper'
 class Streamlined::Column::Base
   include Streamlined::Helpers::FormHelper
   include ERB::Util
-  attr_accessor :link_to, :popup, :parent_model, :wrapper
+  
+  attr_accessor :human_name, :link_to, :popup, :parent_model, :wrapper
+  
+  attr_with_default :human_name_explicitly_set, 'false'
   attr_with_default :read_only, 'false'
   attr_with_default :create_only, 'false'
   attr_with_default :update_only, 'false'
@@ -13,6 +16,10 @@ class Streamlined::Column::Base
   attr_with_default :hide_if_unassigned, 'false'
   attr_with_default :unassigned_value, '"Unassigned"'
   attr_with_default :html_options, '{}'
+  
+  def human_name
+    (@human_name.nil? || human_name_explicitly_set) ? @human_name : @human_name.titleize
+  end
   
   def editable
     !(read_only || create_only) && edit_in_list
@@ -107,7 +114,7 @@ class Streamlined::Column::Base
       x = Builder::XmlMarkup.new
       x.tr(:id => render_id(view, item)) do
         x.td(:class => "sl_show_label") do
-          x.text!("#{human_name.titleize}:") 
+          x.text!("#{human_name}:") 
         end
         x.td(:class => "sl_show_value") do
           x << render_td(view, item)
@@ -147,7 +154,7 @@ class Streamlined::Column::Base
   def render_th(view, context)
     x = Builder::XmlMarkup.new
     x.th(:class => "sortSelector", :scope => "col", :col => name) do
-      x << human_name.titleize
+      x << human_name
       x << sort_image(context,view)
     end
   end
@@ -166,7 +173,7 @@ class Streamlined::Column::Base
     x.tr(:id => render_id(view, item)) do
       x.td(:class => 'sl_edit_label') do
         x.label(:for => "#{model_underscore}_#{name}") do
-          x.text!(human_name.titleize)
+          x.text!(human_name)
           if mark_required?(item)
     				x.span("*", :class => "required")
     			end

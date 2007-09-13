@@ -5,7 +5,7 @@
     <% for column in model_ui.show_columns %>
       <% if column.is_displayable_in_context?(self, @streamlined_item) %>
         <tr id="<%= column.render_id(self, @streamlined_item) %>">
-          <td class="sl_show_label"><%= column.human_name.titleize %>:</td>
+          <td class="sl_show_label"><%= column.human_name %>:</td>
           <td class="sl_show_value"><%= !column.render_td(self, @streamlined_item).blank? ? column.render_td(self, @streamlined_item) : '&nbsp;' %></td>
         </tr>
       <% end %>

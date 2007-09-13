@@ -1,5 +1,5 @@
 class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
-  attr_accessor :ar_column, :human_name, :enumeration, :check_box
+  attr_accessor :ar_column, :enumeration, :check_box
   delegates :name, :to => :ar_column
   
   def initialize(ar_column, parent_model)

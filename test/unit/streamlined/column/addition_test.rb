@@ -20,10 +20,6 @@ class Streamlined::Column::AdditionTest < Test::Unit::TestCase
     assert_equal 'foo_bar', @addition.name
   end
   
-  def test_human_name
-    assert_equal 'Foo bar', @addition.human_name
-  end
-  
   def test_read_only_defaults_to_true
     assert @addition.read_only
   end
