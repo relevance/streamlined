@@ -3,6 +3,7 @@ if defined?(Dependencies)
 end
 
 require 'implants/array_conversions'
+require 'implants/hash_smart_merge'
 require 'relevance/symbol_additions'
 require 'relevance/string_additions'
 require 'relevance/method_additions'
