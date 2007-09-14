@@ -40,7 +40,7 @@ class Streamlined::RenderMethodsTest < Test::Unit::TestCase
     pretend_template_exists(false)
     options = {:action=>"new", :id=>"1"}
     convert_action_options(options)
-    assert_equal({:template=>"../../../templates/generic_views/new", :id=>"1"}, options)
+    assert_equal({:template=>generic_view("new"), :id=>"1"}, options)
   end
 
   def test_convert_action_options_for_specific

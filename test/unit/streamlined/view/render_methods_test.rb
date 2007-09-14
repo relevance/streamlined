@@ -32,14 +32,14 @@ class Streamlined::View::RenderMethodsTest < Test::Unit::TestCase
     pretend_template_exists(false)
     options = {:partial=>"list", :other=>"1"}
     convert_partial_options(options)
-    assert_equal({:layout=>false, :file=>"../../../templates/generic_views/_list", :other=>"1"}, options)
+    assert_equal({:layout=>false, :file=>generic_view("_list"), :other=>"1"}, options)
   end
 
   def test_convert_partial_options_and_layout_for_generic
     pretend_template_exists(false)
     options = {:partial=>"list", :other=>"1", :layout=>true}
     convert_partial_options(options)
-    assert_equal({:layout=>true, :file=>"../../../templates/generic_views/_list", :other=>"1"}, options)
+    assert_equal({:layout=>true, :file=>generic_view("_list"), :other=>"1"}, options)
   end
 
   def test_convert_partial_options_for_specific

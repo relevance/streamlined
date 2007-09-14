@@ -41,7 +41,6 @@ class Test::Unit::TestCase
     get 'index'
     @view = @response.template
   end
-    
 end
 
 # Monkey patching ActionView. This sucks, but I got tired of trying to

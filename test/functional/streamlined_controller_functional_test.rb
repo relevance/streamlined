@@ -19,10 +19,6 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_equal 0, (action_methods & Streamlined::Context::RequestContext::DELEGATES).size
     assert_equal 0, (action_methods & Streamlined::Context::ControllerContext::DELEGATES).size
   end
-
-  def generic_view(template)
-    "../../../templates/generic_views/#{template}"
-  end
   
   def test_index
     get :index

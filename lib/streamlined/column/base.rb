@@ -130,14 +130,8 @@ class Streamlined::Column::Base
     content = item.send(self.name)    
     content = Streamlined.format_for_display(content)
     content = h(content) unless allow_html
-    if link_to
-      link_args = link_to.has_key?(:id) ? link_to : link_to.merge(:id=>item)
-      content = view.wrap_with_link(link_args) {content}
-    end
-    if popup
-      popup_args = popup.has_key?(:id) ? popup : popup.merge(:id=>item)
-      content = "<span class=\"sl-popup\">#{view.invisible_link_to(popup_args)}#{content}</span>"
-    end
+    content = wrap_with_link(content, view, item)
+    content = wrap_with_popup(content, view, item)
     content
   end
   
@@ -218,5 +212,23 @@ class Streamlined::Column::Base
   
   def wrap(content)
     wrapper && wrapper.respond_to?(:call) ? wrapper.call(content) : content
+  end
+  
+  def wrap_with_link(content, view, item)
+    if link_to
+      link_args = link_to.has_key?(:id) ? link_to : link_to.merge(:id => item)
+      view.wrap_with_link(link_args) { content }
+    else
+      content
+    end
+  end
+  
+  def wrap_with_popup(content, view, item)
+    if popup
+      popup_args = popup.has_key?(:id) ? popup : popup.merge(:id => item)
+      "<span class=\"sl-popup\">#{view.invisible_link_to(popup_args)}#{content}</span>"
+    else
+      content
+    end
   end
 end

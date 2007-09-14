@@ -29,6 +29,27 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     # TODO Implement support for quick_add has_many.  (You will write the test first, won't you?)
   end
   
+  def test_render_td_list_with_link_to
+    stock_controller_and_view
+    @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
+    @association.link_to = { :action => "show" }
+    @association.edit_in_list = false
+    flexmock(@association).should_receive(:render_td_show).and_return("render")  # TODO: is there a way to avoid this mocking here?
+    expected = "<div id=\"InsetTable::poet::1::Poet\"><a href=\"/people/show/1\">render</a></div>"
+    assert_equal expected, @association.render_td_list(@view, poems(:haiku))
+  end
+  
+  def test_render_td_list_with_link_to_and_edit_in_list
+    stock_controller_and_view
+    @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
+    @association.link_to = { :action => "show" }
+    @association.edit_in_list = true
+    flexmock(@association).should_receive(:render_td_show).and_return("render")  # TODO: is there a way to avoid this mocking here?
+    expected = "<div id=\"InsetTable::poet::1::Poet\"><a href=\"/people/show/1\">render</a></div>" <<
+               "<a href=\"#\" onclick=\"Streamlined.Relationships.open_relationship('InsetTable::poet::1::Poet', this, 'people'); return false;\">Edit</a>"
+    assert_equal expected, @association.render_td_list(@view, poems(:haiku))
+  end
+  
   def test_render_td_edit      
     stock_controller_and_view              
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
