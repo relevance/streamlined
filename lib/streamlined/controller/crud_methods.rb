@@ -8,7 +8,8 @@ module Streamlined::Controller::CrudMethods
   # not the entire list view.
   def list
     self.crud_context = :list
-    options = pagination ? {:per_page => 10} : {}
+    options = {}
+    options.smart_merge!(pagination_options)
     options.smart_merge!(order_options)
     options.smart_merge!(filter_options)
     merge_count_or_find_options(options)
@@ -116,6 +117,11 @@ module Streamlined::Controller::CrudMethods
   delegates :pagination, :to=>:model_ui, :visibility=>:private
   attr_accessor :crud_context
   
+  def pagination_options
+    return pagination if pagination.is_a?(Hash)
+    pagination ? {:per_page => 10} : {}
+  end
+  
   # TODO: Dump non_ar_column. 
   # Figure out whether a column is ar or not when using it!
   def order_options
@@ -126,7 +132,6 @@ module Streamlined::Controller::CrudMethods
     else
       {:non_ar_column => sort_column.downcase.tr(" ", "_"), :dir => sort_order}
     end
-    
   end
   
   def sort_models(models, column)

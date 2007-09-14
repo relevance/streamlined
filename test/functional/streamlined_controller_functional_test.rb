@@ -40,7 +40,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     get :list, :page_options=>{:sort_column=>"full_name", :sort_order=>"DESC"}
     assert_response :success
     assert_template generic_view("list")
-    assert_equal [people(:stu), people(:justin)], assigns(:streamlined_items)
+    assert_equal [people(:stu), people(:justin), people(:jason), people(:glenn)], assigns(:streamlined_items)
   end
   
   def test_list_with_filter
@@ -54,9 +54,17 @@ class StreamlinedControllerTest < Test::Unit::TestCase
       def pagination; false; end
     end
     get :list
-    assert_response :success
-    assert_template generic_view("list")
-    assert_equal([], assigns(:streamlined_item_pages))
+    assert_equal [], assigns(:streamlined_item_pages)
+  end
+  
+  def test_list_with_pagination_options
+    class <<@controller
+      def pagination; { :per_page => 2 }; end
+    end
+    get :list
+    assert_equal 2, assigns(:streamlined_items).size
+    assert_equal 4, assigns(:streamlined_item_pages).item_count
+    assert_equal 2, assigns(:streamlined_item_pages).page_count
   end
               
   def test_empty_list   
@@ -76,7 +84,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_response :success
     assert_template nil
     assert_equal "application/xml", @response.content_type
-    assert_select("people person", {:count=>2})
+    assert_select("people person", {:count=>4})
   end
 
   def test_list_csv
@@ -89,6 +97,8 @@ class StreamlinedControllerTest < Test::Unit::TestCase
 id,first_name,last_name
 1,Justin,Gehtland
 2,Stu,Halloway
+3,Jason,Rudolph
+4,Glenn,Vanderburg
 END
   end       
 
@@ -99,7 +109,7 @@ END
     assert_template nil
     assert_equal "application/json", @response.content_type   
     expected_json =<<-END
-    [{attributes: {id: "1", first_name: "Justin", last_name: "Gehtland"}}, {attributes: {id: "2", first_name: "Stu", last_name: "Halloway"}}]
+    [{attributes: {id: "1", first_name: "Justin", last_name: "Gehtland"}}, {attributes: {id: "2", first_name: "Stu", last_name: "Halloway"}}, {attributes: {id: "3", first_name: "Jason", last_name: "Rudolph"}}, {attributes: {id: "4", first_name: "Glenn", last_name: "Vanderburg"}}]
 END
     expected_json = expected_json.strip
     assert_equal(expected_json, @response.body)
