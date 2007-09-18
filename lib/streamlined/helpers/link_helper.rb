@@ -54,7 +54,11 @@ module Streamlined::Helpers::LinkHelper
   # 1. Move all the degradable module stuff here
   # 2. Add JavaScript to the page to make links into window creation links
   def wrap_with_link(link_args)
-    link_to(yield,link_args)
+    if link_args.instance_of? Array
+      link_to(yield, *link_args)
+    else
+      link_to(yield,link_args)
+    end
   end
 
   def link_to_delete_model(item)
