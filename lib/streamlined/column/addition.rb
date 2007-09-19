@@ -1,5 +1,5 @@
 class Streamlined::Column::Addition < Streamlined::Column::Base
-  attr_accessor :name
+  attr_accessor :name, :sort_column
 
   def initialize(sym, parent_model)
     @name = sym.to_s
@@ -13,6 +13,10 @@ class Streamlined::Column::Addition < Streamlined::Column::Base
     return true if o.object_id == object_id
     return false unless self.class === o
     return name.eql?(o.name)
+  end
+  
+  def sort_column
+    @sort_column.blank? ? name : @sort_column
   end
   
   def render_td_show(view, item)

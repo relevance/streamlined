@@ -1,3 +1,5 @@
+9/19/07 - Added :sort_column option for Addition columns [Matthew Bass]
+
 9/14/07 - Additional options can now be set with the #pagination declaration [Matthew Bass]
 
 9/14/07 - Created CHANGELOG [Matthew Bass]

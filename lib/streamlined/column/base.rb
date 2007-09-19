@@ -29,6 +29,10 @@ class Streamlined::Column::Base
     parent_model.name.underscore
   end
   
+  def sort_column
+    name
+  end
+  
   def form_field_id
     "#{model_underscore}_#{name_as_id}"
   end
@@ -147,7 +151,7 @@ class Streamlined::Column::Base
   
   def render_th(view, context)
     x = Builder::XmlMarkup.new
-    x.th(:class => "sortSelector", :scope => "col", :col => name) do
+    x.th(:class => "sortSelector", :scope => "col", :col => sort_column) do
       x << human_name
       x << sort_image(context,view)
     end
