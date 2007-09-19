@@ -25,15 +25,23 @@ class Streamlined::Column::AdditionTest < Test::Unit::TestCase
   def test_render_th
     addition = Addition.new(:foo_bar, nil)
     flexmock(addition).should_receive(:sort_image => "<img src=\"up.gif\">")
-    expected = "<th class=\"sortSelector\" col=\"foo_bar\" scope=\"col\">Foo Bar<img src=\"up.gif\"></th>"
-    assert_equal expected, addition.render_th(nil, nil)
+    
+    expected = Builder::XmlMarkup.new
+    expected.th(:class => "sortSelector", :scope => "col", :col => "foo_bar") do
+      expected << "Foo Bar<img src=\"up.gif\">"
+    end
+    assert_equal expected.target!, addition.render_th(nil, nil)
   end
   
   def test_render_th_with_sort_column
     addition = Addition.new(:foo_bar, nil)
     addition.sort_column = :bar_bat
     flexmock(addition).should_receive(:sort_image => "<img src=\"up.gif\">")
-    expected = "<th class=\"sortSelector\" col=\"bar_bat\" scope=\"col\">Foo Bar<img src=\"up.gif\"></th>"
-    assert_equal expected, addition.render_th(nil, nil)
+    
+    expected = Builder::XmlMarkup.new
+    expected.th(:class => "sortSelector", :scope => "col", :col => "bar_bat") do
+      expected << "Foo Bar<img src=\"up.gif\">"
+    end
+    assert_equal expected.target!, addition.render_th(nil, nil)
   end
 end
