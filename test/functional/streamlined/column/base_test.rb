@@ -21,9 +21,10 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     ui
     @view.instance_variable_set(:@person, people(:justin))
     column = ui.column(:first_name)
-    assert_equal "Justin", column.column_value(@view, "person", "first_name")
+    assert_nil column.custom_column_value(@view, "person", "first_name"), 
+               "custom_column value should be nil unless format_for_edit returns something different than the column value after type cast"
     Streamlined.edit_format_for("Justin") {"Off your coastline, mutatin' your villagerz"}
-    assert_equal "Off your coastline, mutatin' your villagerz", column.column_value(@view, "person", "first_name")
+    assert_equal "Off your coastline, mutatin' your villagerz", column.custom_column_value(@view, "person", "first_name")
   end
   
   def test_render_td_edit_with_custom_edit_format_for

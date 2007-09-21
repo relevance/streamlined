@@ -44,12 +44,13 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   end
   
   # helper method to let us apply Streamlined global edit_format_for hook
-  def column_value(view, model_underscore, method_name)                   
+  def custom_column_value(view, model_underscore, method_name)                   
     model_instance = view.instance_variable_get("@#{model_underscore}")                                                                     
     value = unless model_instance.nil?
       model_instance.send(method_name)
     end
-    Streamlined.format_for_edit(value)
+    modified_value = Streamlined.format_for_edit(value)
+    value == modified_value ? nil : modified_value
   end
   
   # TODO: This method depends on item being in scope under the instance variable name
@@ -60,8 +61,8 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     elsif check_box
       result = view.check_box(model_underscore, name, html_options)
     else                                           
-      value = column_value(view, model_underscore, name)   
-      options = value ? html_options.merge(:value => value) : html_options
+      custom_value = custom_column_value(view, model_underscore, name)   
+      options = custom_value ? html_options.merge(:value => custom_value) : html_options
       result = view.input(model_underscore, name, options)
     end
     wrap(result)
