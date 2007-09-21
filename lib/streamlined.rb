@@ -8,7 +8,8 @@ module Streamlined
   end 
                  
   class << self
-    delegates :display_format_for, :format_for_display, :to => "Streamlined::PermanentRegistry"
+    delegates :display_format_for, :format_for_display, :edit_format_for, :format_for_edit,
+              :to => "Streamlined::PermanentRegistry"
   end
 end
 

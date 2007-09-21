@@ -11,6 +11,10 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     @ar_assoc = flexmock(:name => "some_name", :class_name => "SomeName")
     parent_model = flexmock(:name => "ParentModel")
     @addition = Addition.new(:test_addition, parent_model)
+  end                                    
+  
+  def teardown
+    Streamlined::PermanentRegistry.reset
   end
   
   def test_human_name
@@ -42,6 +46,13 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
   def test_render_content
     (item = flexmock).should_receive(:send).with("test_addition").and_return("<b>content</b>").once
     assert_equal "&lt;b&gt;content&lt;/b&gt;", @addition.render_content(nil, item)
+  end
+  
+  def test_render_content_with_custom_display_format_for
+    (item = flexmock).should_receive(:send).with("test_addition").and_return("Voldemort").once
+    assert_equal "Voldemort", @addition.render_content(nil, item)
+    Streamlined.display_format_for("Voldemort") { "He Who Must Not Be Named" }
+    assert_equal "He Who Must Not Be Named", @addition.render_content(nil, item)
   end
 
   def test_renderers

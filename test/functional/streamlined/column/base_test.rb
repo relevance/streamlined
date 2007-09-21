@@ -12,6 +12,30 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     end
     @ui
   end
+                   
+  def teardown
+    Streamlined::PermanentRegistry.reset
+  end
+
+  def test_column_value
+    ui
+    @view.instance_variable_set(:@person, people(:justin))
+    column = ui.column(:first_name)
+    assert_equal "Justin", column.column_value(@view, "person", "first_name")
+    Streamlined.edit_format_for("Justin") {"Off your coastline, mutatin' your villagerz"}
+    assert_equal "Off your coastline, mutatin' your villagerz", column.column_value(@view, "person", "first_name")
+  end
+  
+  def test_render_td_edit_with_custom_edit_format_for
+    ui
+    @view.instance_variable_set(:@person, people(:justin))
+    column = ui.column(:first_name)
+    root = root_node(column.render_td_edit(@view, people(:justin)))
+    assert_select root, "input[id=person_first_name][value=Justin][type=text]"    
+    Streamlined.edit_format_for("Justin") {"Da Man, nay, The Machine"}
+    root = root_node(column.render_td_edit(@view, people(:justin)))
+    assert_select root, "input[id=person_first_name][value=Da Man, nay, The Machine][type=text]"
+  end
   
   def test_render_straight_td
     assert_equal "Justin", ui.column(:first_name).render_td(@view,people(:justin))

@@ -43,6 +43,15 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     div
   end
   
+  # helper method to let us apply Streamlined global edit_format_for hook
+  def column_value(view, model_underscore, method_name)                   
+    model_instance = view.instance_variable_get("@#{model_underscore}")                                                                     
+    value = unless model_instance.nil?
+      model_instance.send(method_name)
+    end
+    Streamlined.format_for_edit(value)
+  end
+  
   # TODO: This method depends on item being in scope under the instance variable name
   #       :@#model_underscore. Yucky, but Rails' input method expects this. Revisit.
   def render_td_edit(view, item)
@@ -50,8 +59,10 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
       result = render_enumeration_select(view, item)
     elsif check_box
       result = view.check_box(model_underscore, name, html_options)
-    else
-      result = view.input(model_underscore, name, html_options)
+    else                                           
+      value = column_value(view, model_underscore, name)   
+      options = value ? html_options.merge(:value => value) : html_options
+      result = view.input(model_underscore, name, options)
     end
     wrap(result)
   end
