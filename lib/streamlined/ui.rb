@@ -7,12 +7,24 @@
 module Streamlined; end
 require 'streamlined/reflection'
 
-# Model-specific UI. Each Model class will have a parallel model_ui.rb 
-# in the app/streamlined directory for managing the views.
-# For example, if your application has two models, <tt>User</tt> and <tt>Role</tt> (in
-# <tt>app/models/user.rb</tt> and <tt>app/models/role.rb)</tt>, your Streamlined application
-# would also have <tt>app/streamlined/user_ui.rb</tt> and <tt>app/streamlined/role_ui.rb</tt>,
-# containing the classes <tt>UserUI</tt> and <tt>RoleUI</tt>.  
+# Model-specific UI. Each Model class will have a parallel model_ui.rb in the app/streamlined
+# directory for managing the views. For example, if your application has two models, <tt>User</tt>
+# and <tt>Role</tt> (in <tt>app/models/user.rb</tt> and <tt>app/models/role.rb)</tt>, your
+# Streamlined application would also have <tt>app/streamlined/user_ui.rb</tt> and
+# <tt>app/streamlined/role_ui.rb</tt>, containing the classes <tt>UserUI</tt> and <tt>RoleUI</tt>.
+#
+# Inside your model_ui.rb file you should specify which model you are defining a UI for and
+# include your column declarations and other view options. The syntax looks like this:
+#
+#   Streamlined.ui_for(Model) do
+#     list_columns ...
+#     pagination ...
+#     ...
+#   end
+#
+# See the Streamlined wiki (http://trac.streamlinedframework.org) for more information about
+# the declarations available to you inside the UI definition.
+#
 class Streamlined::UI
   include Streamlined::Reflection
   attr_accessor :model
