@@ -35,17 +35,15 @@
   </tbody>
 </table>
 
-
-<% if @streamlined_item_pages != [] && @streamlined_item_pages.current.previous %>
-<script type="text/javascript">
-if($('previous_page')) {
-	Element.show('previous_page');
-}
-</script>
-<% else %>
-<script type="text/javascript">
-if($('previous_page')) {
-	Element.hide('previous_page');
-}
-</script>
+<% if @streamlined_item_pages != [] %>
+  <% if @streamlined_item_pages.current.previous %>  
+      <%= javascript_tag "if ($('previous_page')) Element.show('previous_page');" %>
+  <% else %>
+			<%= javascript_tag "if ($('previous_page')) Element.hide('previous_page');" %>
+  <% end %>
+  <% if @streamlined_item_pages.current.next %>
+      <%= javascript_tag "if ($('next_page')) Element.show('next_page');" %>
+  <% else %>
+      <%= javascript_tag "if ($('next_page')) Element.hide('next_page');" %>
+  <% end %>
 <% end %>
