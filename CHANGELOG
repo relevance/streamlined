@@ -1,3 +1,5 @@
+9/22/07 - Updated streamlined:model rake task to use new #ui_for syntax (ticket #92) [Matthew Bass]
+
 9/19/07 - Added :sort_column option for Addition columns [Matthew Bass]
 
 9/14/07 - Additional options can now be set with the #pagination declaration [Matthew Bass]

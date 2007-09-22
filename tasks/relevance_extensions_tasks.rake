@@ -51,9 +51,9 @@ namespace :streamlined do
 module <%= model %>Additions
 
 end
-<%= model %>.class_eval {include <%= model %>Additions}
+<%= model %>.class_eval { include <%= model %>Additions }
 
-class <%= model %>UI < Streamlined::UI
+Streamlined.ui_for(<%= model %>) do
 
 end   
     TEMPLATE
