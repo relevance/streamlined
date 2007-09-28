@@ -94,7 +94,7 @@ Streamlined.SortSelector = {
   },
   updateForm: function(col) {
     var column = this.sortColumn();
-    column.value = col
+    column.value = col;
     var order = this.sortOrder();
     order.value = (order.value == 'ASC' ? 'DESC' : 'ASC')
   }
@@ -312,7 +312,7 @@ Streamlined.QuickAdd = {
     }).bind(this));
   },
 	open: function(url) {
-		Streamlined.Windows.open_local_window_from_url('Quick Add', url, 'quick_add');
+    Streamlined.Windows.open_local_window_from_url('Quick Add', url, 'quick_add');
 	},
 	close: function() {
 		Windows.close('show_win_quick_add');
@@ -368,4 +368,3 @@ Streamlined.Form = {
     }
   }
 }
-
