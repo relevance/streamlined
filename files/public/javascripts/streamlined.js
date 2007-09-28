@@ -158,7 +158,7 @@ Streamlined.Windows = {
 		}
 		win2 = new Window(id, {
 		  className: 'mac_os_x', 
-		  title: title
+		  title: title,
 		  width:500, height:300, top:200, left: 200, 
 		  zIndex:150, opacity:1, resizable: true, 
 		  hideEffect: Effect.Fade,
@@ -175,7 +175,7 @@ Streamlined.Windows = {
 	    }
 		win2 = new Window(id, {
 		  className: 'mac_os_x', 
-		  title: title
+		  title: title,
 		  width:500, height:300, top:200, left: 200, 
 		  zIndex:150, opacity:1, resizable: true, 
 		  hideEffect: Effect.Fade			
