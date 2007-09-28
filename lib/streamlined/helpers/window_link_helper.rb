@@ -27,20 +27,20 @@ module Streamlined::Helpers::WindowLinkHelper
   def link_to_new_model
     link_to_function(image_tag('streamlined/add_16.png', 
         {:alt => "New #{model_name}", :title => "New #{model_name}", :border => '0'}),          
-        "Streamlined.Windows.open_local_window_from_url('', '#{url_for(:action => 'new')}', null)"
+        "Streamlined.Windows.open_local_window_from_url('New', '#{url_for(:action => 'new')}', null)"
         ) unless model_ui.read_only || !model_ui.quick_new_button
   end
 
   def link_to_show_model(item)
     link_to_function(image_tag('streamlined/search_16.png', 
         {:alt => "Show #{model_name}", :title => "Show #{model_name}", :border => '0'}),          
-        "Streamlined.Windows.open_local_window_from_url('', '#{url_for(:action => 'show', :id=>item)}', null)")
+        "Streamlined.Windows.open_local_window_from_url('Show', '#{url_for(:action => 'show', :id=>item.id)}', null)")
   end
 
   def link_to_edit_model(item)
     link_to_function(image_tag('streamlined/edit_16.png', 
         {:alt => "Edit #{model_name}", :title => "Edit #{model_name}", :border => '0'}),          
-        "Streamlined.Windows.open_local_window_from_url('', '#{url_for(:action => 'edit', :id=>item)}', null)") unless model_ui.read_only
+        "Streamlined.Windows.open_local_window_from_url('Edit', '#{url_for(:action => 'edit', :id=>item.id)}', null)") unless model_ui.read_only
   end
 
   # replaced by wrap_with_link, below, and see comment

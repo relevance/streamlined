@@ -148,7 +148,7 @@ Event.observe(window, "load", function() {
 });
 
 Streamlined.Windows = {
-	open_window: function(title_prefix, server_url, model) {
+	open_window: function(title, server_url, model) {
 		if(model == null) {
 			model = '00';
 		}
@@ -158,7 +158,7 @@ Streamlined.Windows = {
 		}
 		win2 = new Window(id, {
 		  className: 'mac_os_x', 
-		  title: title_prefix + " " + model, 
+		  title: title
 		  width:500, height:300, top:200, left: 200, 
 		  zIndex:150, opacity:1, resizable: true, 
 		  hideEffect: Effect.Fade,
@@ -168,14 +168,14 @@ Streamlined.Windows = {
 	  	win2.show();		
 	},
 	
-	open_local_window: function(title_prefix, content, model, callback) {
+	open_local_window: function(title, content, model, callback) {
 	    id= "show_win_" + model;
 	    if($(id)) {
 	        return;
 	    }
 		win2 = new Window(id, {
 		  className: 'mac_os_x', 
-		  title: title_prefix + " " + model, 
+		  title: title
 		  width:500, height:300, top:200, left: 200, 
 		  zIndex:150, opacity:1, resizable: true, 
 		  hideEffect: Effect.Fade			
@@ -186,14 +186,14 @@ Streamlined.Windows = {
 		win2.show();
 	},
 	
-	open_local_window_from_url: function(title_prefix, url, model, callback) {
-	        if (model == null) {
-	            model = "new"
-	        }
-	        new Ajax.Request(url, {
+	open_local_window_from_url: function(title, url, model, callback) {
+	  if (model == null) {
+	    model = "new"
+	  }
+	  new Ajax.Request(url, {
 			method: "get", 
 			onComplete: function(request) {
-			        Streamlined.Windows.open_local_window(title_prefix, request.responseText, model, callback);
+			  Streamlined.Windows.open_local_window(title, request.responseText, model, callback);
 			}
 		});
 	}
@@ -239,7 +239,7 @@ Streamlined.Relationships = {
 	},
 	
 	open_relationship_in_window: function(request) {
-		Streamlined.Windows.open_local_window('', request.responseText, null);
+		Streamlined.Windows.open_local_window('Edit', request.responseText, null);
 	},
 
 	close_relationship: function(id, link, url) {
@@ -283,7 +283,7 @@ Streamlined.Enumerations = {
 	},
 	
 	open_enumeration_in_window: function(request) {
-		Streamlined.Windows.open_local_window('', request.responseText, null);
+		Streamlined.Windows.open_local_window('Edit', request.responseText, null);
 	},
 
 	close_enumeration: function(id, link, url) {
@@ -312,7 +312,7 @@ Streamlined.QuickAdd = {
     }).bind(this));
   },
 	open: function(url) {
-		Streamlined.Windows.open_local_window_from_url('', url, 'quick_add');
+		Streamlined.Windows.open_local_window_from_url('Quick Add', url, 'quick_add');
 	},
 	close: function() {
 		Windows.close('show_win_quick_add');

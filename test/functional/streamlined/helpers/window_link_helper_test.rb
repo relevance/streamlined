@@ -36,12 +36,41 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
   
   def test_link_to_new_model
     @model_ui = flexmock(:read_only => false, :quick_new_button => true)
+    @model_name = "Foo"
     with_routing do |set|
       set.draw do |map|
         map.connect ':controller/:action/:id'
         assert_equal "<a href=\"#\" onclick=\"Streamlined.Windows.open_local_window_from_url" <<
-                     "('', '//foobar/new', null); return false;\"><img alt=\"New \" border=\"0\" " <<
-                     "src=\"//images/streamlined/add_16.png\" title=\"New \" /></a>", link_to_new_model
+                     "('New', '//foobar/new', null); return false;\"><img alt=\"New Foo\" border=\"0\" " <<
+                     "src=\"//images/streamlined/add_16.png\" title=\"New Foo\" /></a>", link_to_new_model
+      end
+    end
+  end
+  
+  def test_link_to_show_model
+    @model_ui = flexmock(:read_only => false, :quick_new_button => true)
+    @model_name = "Foo"
+    item = flexmock(:id => 123)
+    with_routing do |set|
+      set.draw do |map|
+        map.connect ':controller/:action/:id'
+        assert_equal "<a href=\"#\" onclick=\"Streamlined.Windows.open_local_window_from_url" <<
+                     "('Show', '//foobar/show/123', null); return false;\"><img alt=\"Show Foo\" border=\"0\" " <<
+                     "src=\"//images/streamlined/search_16.png\" title=\"Show Foo\" /></a>", link_to_show_model(item)
+      end
+    end
+  end
+  
+  def test_link_to_edit_model
+    @model_ui = flexmock(:read_only => false, :quick_new_button => true)
+    @model_name = "Foo"
+    item = flexmock(:id => 123)
+    with_routing do |set|
+      set.draw do |map|
+        map.connect ':controller/:action/:id'
+        assert_equal "<a href=\"#\" onclick=\"Streamlined.Windows.open_local_window_from_url" <<
+                     "('Edit', '//foobar/edit/123', null); return false;\"><img alt=\"Edit Foo\" border=\"0\" " <<
+                     "src=\"//images/streamlined/edit_16.png\" title=\"Edit Foo\" /></a>", link_to_edit_model(item)
       end
     end
   end
