@@ -73,10 +73,6 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     assert @ar.edit_view.is_a?(Streamlined::View::EditViews::EnumerableSelect)
   end
   
-  def test_show_view
-    assert @ar.show_view.is_a?(Streamlined::View::ShowViews::Enumerable)
-  end
-  
   def test_render_td_edit
     (view = flexmock).should_receive(:input).with('model', 'column', {}).once
     @ar.render_td_edit(view, 'item')
@@ -124,6 +120,15 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     @view.should_receive(:crud_context).and_return(:list).once
     expected = "<div id=\"EnumerableSelect::column::123::\">render</div>link"
     assert_equal expected, @ar.render_td(@view, @item)
+  end
+  
+  def test_render_td_list_with_enumeration_and_link
+    setup_mocks
+    @ar.enumeration = %w{ A B C }
+    @ar.link_to = { :action => "show" }
+    @ar.edit_in_list = false
+    flexmock(@view).should_receive(:wrap_with_link).and_return("render_with_link").once
+    assert_equal "<div id=\"EnumerableSelect::column::123::\">render_with_link</div>", @ar.render_td_list(@view, @item)
   end
   
   def test_render_td_list_with_enumeration_and_create_only_true
@@ -197,7 +202,7 @@ private
   end
   
   def setup_mocks
-    @view = flexmock(:render => 'render', :controller_name => 'controller_name', :link_to_function => 'link')
-    @item = flexmock(:id => 123)
+    @view = flexmock(:controller_name => 'controller_name', :link_to_function => 'link')
+    @item = flexmock(:id => 123, :column => 'render')
   end
 end

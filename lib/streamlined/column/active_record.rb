@@ -20,15 +20,11 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     Streamlined::View::EditViews.create_relationship(:enumerable_select)
   end
   
-  def show_view
-    Streamlined::View::ShowViews.create_summary(:enumerable)
-  end
-  
   def render_td_show(view, item)
     if enumeration
-		  view.render(:partial => show_view.partial, 
-                  :locals => {:item => item, :relationship => self, 
-                  :streamlined_def => show_view})
+      content = item.send(self.name)
+      content && !content.blank? ? content : self.unassigned_value
+      content = wrap_with_link(content, view, item)
     else
       render_content(view, item)
     end

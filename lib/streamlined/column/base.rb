@@ -224,7 +224,7 @@ class Streamlined::Column::Base
         link_to[0] = link_to[0].merge(:id=>item) unless link_to[0].has_key?(:id)
         link_args = link_to
       else
-        link_args = link_to.has_key?(:id) ? link_to : link_to.merge(:id=>item)
+        link_args = link_to.has_key?(:id) ? link_to : link_to.merge(:id=>item.id)
       end
       view.wrap_with_link(link_args) { content }
     else

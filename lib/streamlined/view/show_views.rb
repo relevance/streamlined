@@ -32,14 +32,8 @@ module Streamlined::View::ShowViews
 
   end
   
-  
   # Renders the streamlined_name of the other end of the relationship.  Used for n-to-one relationships.
   class Name < Streamlined::View::Base
-    
-  end
-  
-  # Renders the item as a string.  Used for enumerations.
-  class Enumerable < Streamlined::View::Base
     
   end
   
@@ -68,7 +62,6 @@ module Streamlined::View::ShowViews
     def graph_options
       @options
     end
-    
   end
   
 end
