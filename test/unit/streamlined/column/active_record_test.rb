@@ -114,6 +114,13 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     assert_equal 'value', @ar.render_td(view, item)
   end
   
+  def test_render_td_show_with_enumeration_and_blank_value
+    setup_mocks
+    @ar.enumeration = %w{ A B C }
+    item = flexmock(:column => nil)
+    assert_equal "Unassigned", @ar.render_td_show(@view, item)
+  end
+  
   def test_render_td_with_enumeration
     setup_mocks
     @ar.enumeration = %w{ A B C }

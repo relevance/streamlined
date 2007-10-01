@@ -23,7 +23,7 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   def render_td_show(view, item)
     if enumeration
       content = item.send(self.name)
-      content && !content.blank? ? content : self.unassigned_value
+      content = content && !content.blank? ? content : self.unassigned_value
       content = wrap_with_link(content, view, item)
     else
       render_content(view, item)
