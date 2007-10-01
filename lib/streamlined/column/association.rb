@@ -97,7 +97,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     content = wrap_with_link(content, view, item)
     content = div_wrapper(id) { content }
     content += view.link_to_function("Edit", "Streamlined.Relationships." <<
-      "open_relationship('#{id}', this, '#{view.controller_name}')") if editable
+      "open_relationship('#{id}', this, '#{view.controller_path}')") if editable
     content
   end
   

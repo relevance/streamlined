@@ -84,10 +84,10 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   end
   
   def test_render_td
-    view = flexmock(:render => 'render', :controller_name => 'controller_name')
+    view = flexmock(:render => 'render', :controller_path => 'controller_path')
     item = flexmock(:id => 123)
     
-    expected_js = "Streamlined.Relationships.open_relationship('InsetTable::some_name::123::SomeClass', this, 'controller_name')"
+    expected_js = "Streamlined.Relationships.open_relationship('InsetTable::some_name::123::SomeClass', this, 'controller_path')"
     view.should_receive(:link_to_function).with("Edit", expected_js).and_return('link').once
     view.should_receive(:crud_context).and_return(:list)
     
@@ -96,7 +96,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   end
   
   def test_render_td_with_read_only_true
-    view = flexmock(:render => 'render', :controller_name => 'controller_name')
+    view = flexmock(:render => 'render', :controller_path => 'controller_path')
     item = flexmock(:id => 123)
     @association.read_only = true
     assert_equal "render", @association.render_td(view, item)
@@ -152,7 +152,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   end
   
   def view_and_item_mocks(view_attrs={})
-    view = flexmock(:render => 'render', :controller_name => 'controller_name', :link_to_function => 'link')
+    view = flexmock(:render => 'render', :controller_path => 'controller_path', :link_to_function => 'link')
     item = flexmock(:id => 123)
     [view, item]
   end
