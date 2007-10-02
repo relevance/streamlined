@@ -14,8 +14,6 @@ module Streamlined::Controller::CrudMethods
     options.smart_merge!(filter_options)
     merge_count_or_find_options(options)
     
-    @streamlined_items_count = model.count(:conditions => options[:conditions], :include => options[:include])
-    
     if pagination
        if options[:non_ar_column]
           col = options[:non_ar_column]

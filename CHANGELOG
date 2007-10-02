@@ -1,3 +1,5 @@
+10/02/07 - Removed @streamlined_items_count variable from the list action since it's not being used anywhere [Matthew Bass]
+
 10/01/07 - Fixed bug with incorrect partial look-up for namespaced controller [Jason Rudolph and Stu Halloway]
 
 09/22/07 - Added rdoc for the new #ui_for syntax to the top of ui.rb (ticket #93) [Matthew Bass]
