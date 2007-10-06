@@ -3,7 +3,7 @@
 /*----------------------------------*/
 body        { margin: 0; font-family: "Lucida Grande", Verdana, Arial;}
 #hd         { background-color: #7594A1; padding: 8px;}
-#branding   { font-family: "Lucida Grande", Verdana, Arial; font-size: 14pt; color: white; }
+#branding   { font-family: "Lucida Grande", Verdana, Arial; font-size: 14pt; color: white; display:block; margin-bottom: 0.4em;}
 #main       { background-color: #BAD0CC; padding: 5px; font-family: Verdana, Arial; font-size: 8pt;}
 .yui-b      { }
 #bd         { background-color: #DDDDDD; margin-top: -16px;}
@@ -71,44 +71,62 @@ div.progressBar div.background { background-color: #333; height: 18px; width: 0%
 #spinner                    { position: absolute; padding-top: 50px; top: 2px; right: 5px; height: 20px; }
 /*----------------------------------*/
 
+#filter {
+	padding: 0 0 0 0.5em;
+}
 
+#advanced_filter form {
+	padding-top: 0.5em;
+	border-top: thin solid #999999;
+}
 
+#top_nav {
+	color: white;
+  	background-color: #003399;
+	margin: 0;
+  	padding: 1ex 1ex 1ex 1.5mm;
+	font-size: 8pt;
+}
+
+#top_nav a {
+	color: white;
+	background-color: transparent;
+	text-decoration: none;
+	font-weight: bold;
+	margin: 0;
+	padding: 0 0.75ex 0 0.5ex;
+}
+
+#top_nav a:hover {
+	text-decoration: underline;
+}
 
 #button {
-	width: 12em;
-	border-right: 1px solid #000;
-	padding: 0 0 1em 0;
-	margin-bottom: 1em;
 	font-family: 'Trebuchet MS', 'Lucida Grande', Verdana, Lucida, Geneva, Helvetica, Arial, sans-serif;
-	background-color: #90bade;
 	color: #333;
 	font-size: 10pt;
 	}
 	
 	#button ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		border: none;
-		margin-top: 5px;
+		list-style-type: none;
+  		list-style-position: outside;
+  		margin: 0;
+  		padding: 0 0 1.1em 0;
 		}
 		
 	#button li {
-		border-bottom: 1px solid #90bade;
+		height: 2.2em;
 		margin: 0;
-		list-style: none;
-		list-style-image: none;
+		padding: 0.1ex 0;  /* Circumvents a rendering bug (?) in MSIE 6.0 */
 		}
 	
 	#button li a {
-		display: block;
-		padding: 5px 5px 5px 0.5em;
-		border-left: 10px solid #1958b7;
-		border-right: 10px solid #508fc4;
-		background-color: #2175bc;
-		color: #fff;
-		text-decoration: none;
-		width: 100%;
+		  color: #0066CC;
+		  background-color: transparent;
+		  text-decoration: none;
+		  margin: 0;
+		  padding: 0.75em 1ex 0.75em 5mm;
+		  display: block;		
 		}
 
 	html>body #button li a {
@@ -116,9 +134,10 @@ div.progressBar div.background { background-color: #333; height: 18px; width: 0%
 		}
 
 	#button li a:hover {
-		border-left: 10px solid #1c64d1;
-		border-right: 10px solid #5ba3e0;
-		background-color: #2586d7;
-		color: #fff;
+		color: white;
+	    background-color: #6487DC;
+	    text-decoration: none;
 		}
+		
+		
 

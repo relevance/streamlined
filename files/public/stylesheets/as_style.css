@@ -5,42 +5,44 @@
  For details, see the AjaxScaffoldGenerator web site: http://www.ajaxscaffold.com/ */
  
 /* Holy Grail styling from A List Apart (http://www.alistapart.com/articles/holygrail/) */
-#header
-{
-	height: 100px;
+#header {
+	background-color: #2175bc; 
 }
-#left
-{
+
+#left {
 	float: left;
-	width: 180px;
+	width: 13em;
+	padding-bottom: 0.5em;
+	border-right: 1px solid #999999;
 }
-#center
-{
-        float: left;
+
+#center {
+	color: black;
+	background-color: white;
+	text-align: justify;
+	line-height: 1.5em;
+	margin: 0 0 0 13em;
+	padding: 0.5mm 5mm 0.5em 5mm;
+	border-left: 1px solid #999999;
+}
+
+#content_for_layout {
 	width: 100%;
-	margin-left: 20px;
-	padding: 0 20px;
-	min-width: 640px;
 }
-#footer
-{
+
+#footer {
 	height: 25px;
 	clear: both; 
 }
 
- #header, #footer { margin-left: -200px; /* LC fullwidth */ margin-right: -190px; /* RC fullwidth + CC padding */ }
- #left { width: 180px; /* LC width */ padding: 0 10px; /* LC padding */ right: 240px; /* LC fullwidth + CC padding */ margin-left: -200px; }
  .column { position: relative; float: left; }
-body { margin: 0; padding-left: 200px; /* LC fullwidth */ padding-right: 190px; /* RC fullwidth + CC padding */ min-width: 240px; /* LC fullwidth + CC padding */ }
 
-/*** IE Fix ***/ * html #left { margin-left: -100px; left: 150px; /* RC fullwidth */ } 
-
-#left {background-color:  white;}
 #footer, #footer a {background-color: #2175bc; color: white; text-align: center; font-style: italic; font-size: 9pt;}
 #footer a:hover {color:  orange;}
-#header { background-color: #2175bc; padding: 8px; height: 30px;}
  
- body {background-color:  white;}
+ body {
+	background-color:  #F0F0F0;
+}
  
  .mac_os_x_content {background-color: #DAFFCD; color: #555555; }
  .mac_os_x_content table label {font-size: 10px;}

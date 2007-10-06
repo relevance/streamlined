@@ -1,3 +1,5 @@
+10/06/07 - Applied new styling patch from ticket #114 [Matthew Bass]
+
 10/02/07 - Removed @streamlined_items_count variable from the list action since it's not being used anywhere [Matthew Bass]
 
 10/01/07 - Fixed bug with incorrect partial look-up for namespaced controller [Jason Rudolph and Stu Halloway]

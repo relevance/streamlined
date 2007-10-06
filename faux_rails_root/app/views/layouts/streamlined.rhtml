@@ -18,18 +18,18 @@
 <body>
 	<div id="header">
 		<span id="branding"><%= streamlined_branding %></span>
-	  	<%= render(:partial => 'shared/streamlined/top_menu') %>
+	  	<div id="top_nav"><%= render(:partial => 'shared/streamlined/top_menu') %></div>
 	</div>
 	 <div id="left">
 	   <%= render(:partial => "shared/streamlined/side_menu")%>
-	   <% if breadcrumb %>
-	   	 <%= render_breadcrumb %>
-	   <% end %>
 	   <% if advanced_filtering %>
          <%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/filter' %>	   
        <% end %>
 	 </div>
 	 <div id="center">
+	   <% if breadcrumb %>
+	   	 <%= render_breadcrumb %>
+	   <% end %>
 	   <%= image_tag 'streamlined/loading.gif', :id=>'spinner', :style=>"display:none;" %>
 	   <div id="content_for_layout"><%= @content_for_layout %></div>
 	 </div>
