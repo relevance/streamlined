@@ -32,7 +32,7 @@ module Streamlined::Helpers::LayoutHelper
     # end
   end
   def streamlined_branding
-    "Streamlined"
+    link_to "Streamlined", "/"
   end
 
   def streamlined_footer
