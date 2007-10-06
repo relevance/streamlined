@@ -1,3 +1,5 @@
+10/06/07 - Linked "Streamlined" branding above top menu to the default route [Matthew Bass]
+
 10/06/07 - Applied new styling patch from ticket #114 [Matthew Bass]
 
 10/02/07 - Removed @streamlined_items_count variable from the list action since it's not being used anywhere [Matthew Bass]
