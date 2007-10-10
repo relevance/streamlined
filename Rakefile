@@ -7,9 +7,6 @@ def db_config
   ActiveRecord::Base.configurations['streamlined_unittest']
 end
 
-
-
-
 task :test => ['test:units', 'test:functionals']
 
 desc 'Default: run tests.'
@@ -32,6 +29,7 @@ namespace :test do
     end  
     puts "FLOG passed, with highest score being #{flog} for #{method}."
   end
+  
 end
 
 

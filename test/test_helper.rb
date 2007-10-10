@@ -3,11 +3,7 @@ require 'rubygems'
 require 'test/unit'
 require 'flexmock/test_unit'
 require 'ostruct'
-gem 'rails'
-require 'active_record'
-require 'action_controller'
-require 'action_controller/test_process'
-require 'active_support/breakpoint'
+require 'multi_rails'
 require "#{File.dirname(__FILE__)}/flexmock_patch"
 require 'generator'
 # Arts plugin from http://glu.ttono.us/articles/2006/05/29/guide-test-driven-rjs-with-arts
