@@ -2,6 +2,7 @@
 # You must use gems to install rails 2_0_0 PR if you want to test against that
 # To specifically set the rails version, set the environment variable STREAMLINED_RAILS_VERSION.
 # Valid versions are:
+#
 #  "1_2_3" (the default)
 #  "2_0_0_PR"
 class MultiRails
