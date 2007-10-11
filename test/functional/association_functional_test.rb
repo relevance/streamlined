@@ -46,7 +46,7 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     @association.edit_in_list = true
     flexmock(@association).should_receive(:render_td_show).and_return("render")  # TODO: is there a way to avoid this mocking here?
     expected = "<div id=\"InsetTable::poet::1::Poet\"><a href=\"/people/show/1\">render</a></div>" <<
-               "<a href=\"#\" onclick=\"Streamlined.Relationships.open_relationship('InsetTable::poet::1::Poet', this, 'people'); return false;\">Edit</a>"
+               "<a href=\"#\" onclick=\"Streamlined.Relationships.open_relationship('InsetTable::poet::1::Poet', this, '/people'); return false;\">Edit</a>"
     assert_equal expected, @association.render_td_list(@view, poems(:haiku))
   end
   

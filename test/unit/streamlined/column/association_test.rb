@@ -87,7 +87,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     view = flexmock(:render => 'render', :controller_path => 'controller_path')
     item = flexmock(:id => 123)
     
-    expected_js = "Streamlined.Relationships.open_relationship('InsetTable::some_name::123::SomeClass', this, 'controller_path')"
+    expected_js = "Streamlined.Relationships.open_relationship('InsetTable::some_name::123::SomeClass', this, '/controller_path')"
     view.should_receive(:link_to_function).with("Edit", expected_js).and_return('link').once
     view.should_receive(:crud_context).and_return(:list)
     
