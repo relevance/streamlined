@@ -16,7 +16,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     @controller.send :initialize_template_class, @response
-    @controller.assign_shortcuts(@request, @response)
+    @controller.send :assign_shortcuts, @request, @response
 #    class <<@controller
 #      public :render_tabs, :render_partials, :render_a_tab_to_string
 #    end

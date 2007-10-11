@@ -86,7 +86,7 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     @controller.send :initialize_template_class, @response
-    @controller.assign_shortcuts(@request, @response)
+    @controller.send :assign_shortcuts, @request, @response
 
     @streamlined_controller_context = Streamlined::Context::ControllerContext.new
     @streamlined_controller_context.model_name = 'Person'
