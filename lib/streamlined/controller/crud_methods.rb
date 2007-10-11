@@ -20,11 +20,11 @@ module Streamlined::Controller::CrudMethods
           dir = options[:dir]
           options.delete :non_ar_column
           options.delete :dir
-          model_pages, models = paginate Inflector.pluralize(model).downcase.to_sym, options
+          model_pages, models = paginate model_name.downcase.pluralize, options
           sort_models(models, col)
           models.reverse! if dir == 'DESC'
         else
-          model_pages, models = paginate Inflector.pluralize(model).downcase.to_sym, options
+          model_pages, models = paginate model_name.downcase.pluralize, options
         end
     else
       model_pages = []

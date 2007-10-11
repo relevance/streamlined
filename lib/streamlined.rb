@@ -1,3 +1,14 @@
+require 'streamlined/environment'
+require 'streamlined/context'
+require 'streamlined/render_methods'
+require 'streamlined/breadcrumb'
+require 'streamlined/column'
+require 'streamlined/ui'
+require 'streamlined/controller'
+require 'streamlined/helper'
+require 'streamlined/permanent_registry'
+require 'streamlined/reloadable_registry'
+
 module Streamlined
   class Error < RuntimeError; end
   
@@ -12,16 +23,6 @@ module Streamlined
               :to => "Streamlined::PermanentRegistry"
   end
 end
-
-require 'streamlined/context'
-require 'streamlined/render_methods'
-require 'streamlined/breadcrumb'
-require 'streamlined/column'
-require 'streamlined/ui'
-require 'streamlined/controller'
-require 'streamlined/helper'
-require 'streamlined/permanent_registry'
-require 'streamlined/reloadable_registry'
 
 # have to do this to provide acts_as_streamlined
 ActionController::Base.class_eval do 

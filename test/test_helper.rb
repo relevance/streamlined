@@ -3,12 +3,12 @@ require 'rubygems'
 require 'test/unit'
 require 'flexmock/test_unit'
 require 'ostruct'
-require 'multi_rails'
-require "#{File.dirname(__FILE__)}/flexmock_patch"
+require File.expand_path(File.join(File.dirname(__FILE__), "multi_rails"))
+require File.expand_path(File.join(File.dirname(__FILE__), "flexmock_patch"))
 require 'generator'
 # Arts plugin from http://glu.ttono.us/articles/2006/05/29/guide-test-driven-rjs-with-arts
 # Arts provides an easily understandable syntax for testing RJS templates
-require "#{File.dirname(__FILE__)}/arts"
+require File.expand_path(File.join(File.dirname(__FILE__), "arts"))
 
 silence_stream(STDERR) do
   RAILS_ROOT = Pathname.new(File.join(File.dirname(__FILE__), '../faux_rails_root')).expand_path.to_s
