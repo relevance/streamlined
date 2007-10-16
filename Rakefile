@@ -65,27 +65,18 @@ namespace :test do
     t.verbose = true
   end
   
-  require 'test/javascripts/jstest'
-  desc "Runs all the JavaScript unit tests and collects the results"
-  JavaScriptTestTask.new(:javascripts) do |t|
-    tests_to_run     = ENV['TESTS']    && ENV['TESTS'].split(',')
-    browsers_to_test = ENV['BROWSERS'] && ENV['BROWSERS'].split(',')
-
-    t.mount("/test/javascripts")
-    t.mount("/files")
-
-    Dir["test/javascripts/*.html"].sort.each do |test_file|
-      test_file = "/#{test_file}"
-      test_name = test_file[/.*\/(.+?)\.html/, 1]
-      t.run(test_file) unless tests_to_run && !tests_to_run.include?(test_name)
-    end
-
-    %w( safari firefox ie konqueror ).each do |browser|
-      t.browser(browser.to_sym) unless browsers_to_test && !browsers_to_test.include?(browser)
-    end
+  file 'test/javascripts/crosscheck/crosscheck.jar' do
+    puts "You must install test/javascripts/crosscheck/crosscheck.jar (http://www.thefrontside.net/crosscheck) to run the JavaScript tests"
   end
   
-  
+  desc "Runs all the JavaScript unit tests and collects the results"
+  task :javascripts => "test/javascripts/crosscheck/crosscheck.jar" do
+    if File.exists?('test/javascripts/crosscheck/crosscheck.jar')
+      Dir.chdir("test/javascripts") do
+        raise "Test failures" unless system("java -jar crosscheck/crosscheck.jar -hosts=ie-6 test.js")
+      end
+    end
+  end
   
   desc 'Build the MySQL test databases'
   task :build_mysql_databases do
