@@ -39,6 +39,18 @@ class StreamlinedTest < Test::Unit::TestCase
     assert_equal "Voldemort", Streamlined.format_for_edit("Voldemort")
   end
   
+  def test_should_return_true_for_edge_rails_if_edge_rails_features_are_present
+    ActionController::Base.expects(:respond_to?).with(:view_paths=).returns(true)
+    assert Streamlined.edge_rails?
+  end
+  
+  def test_should_return_false_for_edge_rails_if_edge_rails_features_are_present
+    ActionController::Base.expects(:respond_to?).with(:view_paths=).returns(false)
+    assert_false Streamlined.edge_rails?
+  end
+  
+  private 
+  
   def format_gandalf_for_display
     assert_equal "Gandalf", Streamlined.format_for_display("Gandalf")
     Streamlined.display_format_for("Gandalf") do |obj|
@@ -62,4 +74,6 @@ class StreamlinedTest < Test::Unit::TestCase
     end
     assert_equal "He Who Must Not Be Named", Streamlined.format_for_edit("Voldermort")
   end
+  
+  
 end

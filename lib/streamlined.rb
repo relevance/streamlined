@@ -17,7 +17,12 @@ module Streamlined
     ui.instance_eval(&blk) if block_given?
     ui
   end 
-                 
+   
+  # There might be a better way to test for Edge Rails, but this is good for now.
+  def self.edge_rails?
+    ActionController::Base.respond_to? :view_paths=
+  end
+     
   class << self
     delegates :display_format_for, :format_for_display, :edit_format_for, :format_for_edit,
               :to => "Streamlined::PermanentRegistry"

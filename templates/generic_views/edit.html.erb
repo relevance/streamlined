@@ -6,6 +6,6 @@
 <% end %>
 
 <% form_for model_underscore.to_sym, @streamlined_item, options do |form| %>
-  <%= render :partial => 'form', :locals=>{:form=>form} %>
+  <%= render :partial => 'generic_views/form', :locals=>{:form=>form} %>
   <%= submit_tag 'Save' %>
 <% end %>

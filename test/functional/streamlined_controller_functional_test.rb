@@ -38,6 +38,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
   
   def test_list_with_non_ar_column
     get :list, :page_options=>{:sort_column=>"full_name", :sort_order=>"DESC"}
+    
     assert_response :success
     assert_template generic_view("list")
     assert_equal [people(:stu), people(:justin), people(:jason), people(:glenn)], assigns(:streamlined_items)

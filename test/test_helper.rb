@@ -1,9 +1,12 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'rubygems'
 require 'test/unit'
+require 'test/spec'
+require 'mocha'
 require 'flexmock/test_unit'
 require 'ostruct'
 require File.expand_path(File.join(File.dirname(__FILE__), "multi_rails"))
+require File.expand_path(File.join(File.dirname(__FILE__), "edge_rails_test_helper"))
 require File.expand_path(File.join(File.dirname(__FILE__), "flexmock_patch"))
 require 'generator'
 require 'redgreen' unless Object.const_defined?("TextMate") rescue LoadError nil # dont depend on redgreen
@@ -24,20 +27,7 @@ require 'relevance/controller_test_support'
 
 (ActiveRecord::Base.logger = RAILS_DEFAULT_LOGGER).level = Logger::DEBUG
 
-if ActionController::Base.respond_to? :view_paths=
- ActionView::Base.send(:include, Streamlined::Helper)  
- ActionController::Base.view_paths = [File.join(RAILS_ROOT, 'app', 'views')]
-  
- %W(#{RAILS_ROOT}/vendor/plugins/streamlined/templates
-    #{RAILS_ROOT}/vendor/plugins/streamlined/templates/shared
-    #{RAILS_ROOT}/vendor/plugins/streamlined/templates/generic_views
-    #{RAILS_ROOT}/vendor/plugins/streamlined/templates/relationships/edit_views
-    #{RAILS_ROOT}/vendor/plugins/streamlined/templates/relationships/edit_views/filter_select
-    #{RAILS_ROOT}/vendor/plugins/streamlined/templates/relationships/show_views
-  ).each do |path|
-    ActionController::Base.append_view_path(path)
-  end
-end
+EdgeRailsTestHelper.bootstrap_test_environment_for_edge if Streamlined.edge_rails?
 
 class Test::Unit::TestCase
   include Relevance::RailsAssertions
