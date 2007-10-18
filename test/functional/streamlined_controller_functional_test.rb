@@ -16,8 +16,8 @@ class StreamlinedControllerTest < Test::Unit::TestCase
 
   def test_delegated_methods_are_not_routable
     action_methods = PeopleController.action_methods.map(&:to_sym)
-    assert_equal 0, (action_methods & Streamlined::Context::RequestContext::DELEGATES).size
-    assert_equal 0, (action_methods & Streamlined::Context::ControllerContext::DELEGATES).size
+    (action_methods & Streamlined::Context::RequestContext::DELEGATES).size.should == 0
+    (action_methods & Streamlined::Context::ControllerContext::DELEGATES).size.should == 0
   end
   
   def test_index
