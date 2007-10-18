@@ -6,6 +6,7 @@ require 'ostruct'
 require File.expand_path(File.join(File.dirname(__FILE__), "multi_rails"))
 require File.expand_path(File.join(File.dirname(__FILE__), "flexmock_patch"))
 require 'generator'
+require 'redgreen' unless Object.const_defined?("TextMate") rescue LoadError nil # dont depend on redgreen
 # Arts plugin from http://glu.ttono.us/articles/2006/05/29/guide-test-driven-rjs-with-arts
 # Arts provides an easily understandable syntax for testing RJS templates
 require File.expand_path(File.join(File.dirname(__FILE__), "arts"))
