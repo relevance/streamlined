@@ -19,7 +19,8 @@ class MultiRails
   end
   
   def self.load_2_0_0_PR
-    gem 'rails', "1.2.4.7794"
+    # gem 'rails', "1.2.4.7794"
+    gem 'rails', "1.2.5.7919"
     require 'active_record'
     require 'action_controller'
     require 'action_controller/test_process'

@@ -23,6 +23,21 @@ require 'relevance/controller_test_support'
 
 (ActiveRecord::Base.logger = RAILS_DEFAULT_LOGGER).level = Logger::DEBUG
 
+if ActionController::Base.respond_to? :view_paths=
+ ActionView::Base.send(:include, Streamlined::Helper)  
+ ActionController::Base.view_paths = [File.join(RAILS_ROOT, 'app', 'views')]
+  
+ %W(#{RAILS_ROOT}/vendor/plugins/streamlined/templates
+    #{RAILS_ROOT}/vendor/plugins/streamlined/templates/shared
+    #{RAILS_ROOT}/vendor/plugins/streamlined/templates/generic_views
+    #{RAILS_ROOT}/vendor/plugins/streamlined/templates/relationships/edit_views
+    #{RAILS_ROOT}/vendor/plugins/streamlined/templates/relationships/edit_views/filter_select
+    #{RAILS_ROOT}/vendor/plugins/streamlined/templates/relationships/show_views
+  ).each do |path|
+    ActionController::Base.append_view_path(path)
+  end
+end
+
 class Test::Unit::TestCase
   include Relevance::RailsAssertions
   include Arts

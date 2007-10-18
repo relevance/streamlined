@@ -1,0 +1,34 @@
+<%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/header_partials' %>
+<% form_for :page_options, @page_options, 
+            :url => { :action => "list"}, :html=> {:id => :page_options, :style => 'display: none;'} do |form| %>
+  <%# TODO: hide this form when JavaScript is available, then use it behind scenes%>
+  Filter <%= form.text_field 'filter', {:autocomplete=>"off"} %>
+  Advanced Filter <%= form.text_field 'advanced_filter', {:autocomplete=>"off"} %>
+  Page <%= form.text_field 'page', {:autocomplete=>"off"} %>
+  Sort Order <%= form.text_field 'sort_order', {:autocomplete=>"off"} %>
+  Sort Column <%= form.text_field 'sort_column', {:autocomplete=>"off"} %>
+  Counter <%= form.text_field 'counter', {:autocomplete=>"off"} %>
+  <%= submit_tag "Show Me" %>
+<% end %>
+<div id="streamlined_list">
+  <div class="actions" id="list-filter">
+    <%= streamlined_filter %>
+  </div>
+	<div class="streamlined_header">
+	  <h2><%= image_tag_if_exists("#{model_table}.png", {:align => 'top'}) %> <%= model_name.titleize.pluralize %></h2>	
+	</div>
+	<%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/after_header_partials' %>
+	<div id="model_list">
+		<%= render :partial=>'list' %>
+	</div>
+	<div class="#streamlined_list-footer"> 
+		<div id="controls">
+		  <%= link_to_new_model -%>&nbsp;
+		  <%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/export_links' %>
+		  <%= link_to_previous_page -%>
+		  <%= link_to_next_page -%>
+			<br />
+		</div>
+	</div>
+</div>
+<%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/footer_partials' %>
