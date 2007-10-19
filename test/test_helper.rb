@@ -1,4 +1,4 @@
-RAILS_ENV = "test"
+RAILS_ENV = "test" unless Object.const_defined?("RAILS_ENV")
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'rubygems'
 require 'test/unit'

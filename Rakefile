@@ -2,6 +2,7 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 require 'test/ar_helper'
+load 'test/multi_rails/tasks/multi_rails.rake'
 
 def db_config
   ActiveRecord::Base.configurations['streamlined_unittest']
@@ -33,18 +34,6 @@ namespace :test do
       raise "FLOG failed for #{method} with score of #{flog} (threshold is #{threshold})."
     end  
     puts "FLOG passed, with highest score being #{flog} for #{method}."
-  end
-  
-  desc "Run all tests against all versions of Rails multirails supports."
-  task :all_rails do
-    puts "running tests against Rails 123"
-    ENV["STREAMLINED_RAILS_VERSION"] = "1_2_3"
-    Rake::Task[:test].invoke
-    Rake::Task[:test].already_invoked = false
-    Rake::Task[:test].prerequisites.each {|p| Rake::Task[p].already_invoked = false}
-    puts "running tests against Rails 2_0_0_PR"
-    ENV["STREAMLINED_RAILS_VERSION"] = "2_0_0_PR"
-    Rake::Task[:test].invoke 
   end
   
 end
