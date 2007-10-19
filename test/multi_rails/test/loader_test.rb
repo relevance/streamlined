@@ -14,8 +14,7 @@ describe "loader" do
   end
   
   it "should fail fast if we are missing a requested gem version" do
-    e = lambda { MultiRails::Loader.require_rails("9.9.9") }.should.raise(MultiRailsError)
-    e.message.should == "Cannot find gem for Rails version: '9.9.9'!\nInstall the missing gem with:\ngem install -v=9.9.9 rails"
+    lambda { MultiRails::Loader.require_rails("9.9.9") }.should.raise(MultiRailsError)
   end
   
   it "should gem the specified version" do

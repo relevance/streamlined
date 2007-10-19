@@ -12,10 +12,15 @@ module MultiRails
     class << self
       attr_accessor :default_rails_version, :weird_versions, :rails_requires
       def version_lookup(version = nil)
-        if version
-          return @weird_versions[version] || version
-        end
-        ENV["RAILS_VERSION"] || default_rails_version
+        return named_version_lookup(version) if version
+        return named_version_lookup(ENV["RAILS_VERSION"]) if ENV['RAILS_VERSION']
+        default_rails_version
+      end
+      
+      def named_version_lookup(pretty_version)
+        version = @weird_versions[pretty_version] || pretty_version
+        raise MultiRailsError if !Loader.all_rails_versions.include? version
+        version
       end
     end
   end

@@ -9,7 +9,7 @@ module MultiRails
     
     # Create a loader for a specified version
     # Will use a default version if none is supplied
-    def self.require_rails(rails_version = MultiRails::Config.default_rails_version)
+    def self.require_rails(rails_version = nil)
       rails_version = MultiRails::Config.version_lookup(rails_version)
       Loader.new(rails_version).load_rails
     end
