@@ -1,5 +1,14 @@
 # Add some nice to haves from ActiveSupport
 
+module Kernel
+  def silence_warnings
+    old_verbose, $VERBOSE = $VERBOSE, nil
+    yield
+  ensure
+    $VERBOSE = old_verbose
+  end
+end
+
 module HashExtensions
   def reverse_merge(other_hash)
     other_hash.merge(self)
