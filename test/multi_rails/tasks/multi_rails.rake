@@ -10,13 +10,11 @@ end
 namespace :test do
   namespace :multi_rails do
 
-  BAR = "=" * 80
-  
     desc "Run against all versions of Rails"
     task :all do
       MultiRails::Loader.all_rails_versions.each_with_index do |version, index|
-        puts "\n#{BAR}\nRunning tests against version: #{version}\n#{BAR}"
         silence_warnings { ENV["RAILS_VERSION"] = version }
+        print_rails_version
         reset_rake_task unless index == 0
         Rake::Task[:test].invoke
       end
@@ -24,7 +22,13 @@ namespace :test do
     
     desc "Run against one verison of Rails specified as 'rails_version'"
     task :one do
+      print_rails_version
       Rake::Task[:test].invoke
+    end
+
+    BAR = "=" * 80
+    def print_rails_version
+      puts "\n#{BAR}\nRequiring rails version: #{MultiRails::Config.version_lookup}\n#{BAR}"
     end
     
     def reset_rake_task

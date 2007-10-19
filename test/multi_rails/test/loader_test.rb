@@ -5,6 +5,7 @@ describe "loader" do
   
   setup do
     never_really_require_rails
+    never_puts
   end
   
   it "should fall back to a default verison to try" do
@@ -43,6 +44,10 @@ describe "loader" do
   
   def never_really_require_rails
     MultiRails::Loader.any_instance.expects(:require).never
+  end
+  
+  def never_puts
+    MultiRails::Loader.stubs(:puts)
   end
 end
 
