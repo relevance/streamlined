@@ -7,4 +7,8 @@ end
 
 module MultiRails
   VERSION = '0.0.1'
+  
+  def self.require_rails
+    Loader.require_rails
+  end
 end

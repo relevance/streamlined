@@ -1,3 +1,4 @@
+RAILS_ENV = "test"
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'rubygems'
 require 'test/unit'
@@ -5,7 +6,7 @@ require 'test/spec'
 require 'mocha'
 require 'flexmock/test_unit'
 require 'ostruct'
-require File.expand_path(File.join(File.dirname(__FILE__), "/multi_rails/lib/multi_rails"))
+require File.expand_path(File.join(File.dirname(__FILE__), "/multi_rails/init"))
 require File.expand_path(File.join(File.dirname(__FILE__), "edge_rails_test_helper"))
 require File.expand_path(File.join(File.dirname(__FILE__), "flexmock_patch"))
 require 'generator'
