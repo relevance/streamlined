@@ -40,39 +40,67 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
                  @view.link_to_toggler('click me', 'some_elem')
   end
 
-  def test_all_export_links_are_present_by_default
-    [:csv, :xml, :json].each {|format| assert_export_link(format)}                                                                                                 
-  end                                                                                                                                                              
-                                                                                                                                                                   
-  def test_declarative_exporters_none                                                                                                                              
-    @view.send(:model_ui).exporters :none                                                                                                                          
-    [:csv, :xml, :json].each {|format| assert_export_link(format, false)}                                                                                          
-  end                                                                                                                                                              
-                                                                                                                                                                   
-  def test_declarative_exporters_all                                                                                                                               
-    @view.send(:model_ui).exporters :csv, :json, :xml                                                                                                              
-    [:csv, :xml, :json].each {|format| assert_export_link(format)}                                                                                                 
-  end                                                                                                                                                              
-
-  def test_declarative_exporters_one
-    @view.send(:model_ui).exporters :yaml
-    assert_export_link(:yaml)
-    [:xml, :json, :csv].each {|format| assert_export_link(format, false)}
-  end
-
-  def test_declarative_exporters_several
-    @view.send(:model_ui).exporters :csv, :xml
-    [:csv, :xml].each {|format| assert_export_link(format)}
-    assert_export_link(:json, false)
-  end
-
-private
-  def assert_export_link(format, should_be_present = true)
-    image_type = {:csv => :save, :xml => :export, :json => :export, :yaml => :export}[format]
-    html = @view.send("link_to_#{format}_export")
-    title = "Export #{format.to_s.upcase}"
-    assert_select root_node(html), "a[href=#][onclick=\"Streamlined.Exporter.export_to('/people?format=#{format}'); return false;\"]", :count => should_be_present ? 1 : 0 do
-      assert_select "img[alt=#{title}][border=0][src=/images/streamlined/#{image_type}_16.png][title=#{title}]"
+  def test_link_to_toggle_export
+    html = @view.send("link_to_toggle_export")
+    title = "Export People"
+    look_for   = "a[href=#][onclick=\"Element.toggle('show_export'); return false;\"]"
+    look_for_2 = "img[alt=#{title}][border=0][src=/images/streamlined/export_16.png][title=#{title}]"
+    count = 1
+    error_msg   = "Did not find #{look_for  } with count=#{count} in #{html}"
+    error_msg_2 = "Did not find #{look_for_2} with count=#{count} in #{html}"
+    assert_select root_node(html), look_for, {:count => count}, error_msg do
+      assert_select look_for_2, {:count => count}, error_msg_2
     end  
-  end 
+  end
+
+  def test_link_to_toggle_export_with_none
+    @view.send(:model_ui).exporters :none                                                                                                                          
+    assert_equal :none, @view.send(:model_ui).exporters
+    html = @view.send("link_to_toggle_export")
+    assert html.blank?, "html=#{html}.  It should be empty"
+  end
+
+  def test_link_to_submit_export
+    html = @view.send("link_to_submit_export", {:action => :list})
+    look_for = "a[href=#][onclick=\"Streamlined.Exporter.submit_export('/people/list'); return false;\"]"
+    text = "Export"
+    count = 1
+    error_msg = "Did not find #{look_for} with count=#{count} and text=#{text} in #{html}"
+    assert_select root_node(html), look_for, {:count => count, :text => text}, error_msg
+  end
+
+  def test_link_to_hide_export
+    html = @view.send("link_to_hide_export")
+    look_for = "a[href=#][onclick=\"Element.hide('show_export'); return false;\"]"
+    text = "Cancel"
+    count = 1
+    error_msg = "Did not find #{look_for} with count=#{count} and text=#{text} in #{html}"
+    assert_select root_node(html), look_for, {:count => count, :text => text}, error_msg
+  end
+
+  def test_show_columns_to_export_is_true_for_default
+    formats = :csv, :json, :xml, :enhanced_xml_file, :xml_stylesheet, :enhanced_xml, :yaml
+    @view.send(:model_ui).exporters formats
+    assert_equal formats, @view.send(:model_ui).exporters
+    assert_true @view.send("show_columns_to_export")
+  end
+
+  def test_show_columns_to_export_is_true
+    formats = :enhanced_xml, :enhanced_xml_file, :xml_stylesheet
+    formats.each do |format|
+      @view.send(:model_ui).exporters format
+      assert_equal format, @view.send(:model_ui).exporters
+      assert_true @view.send("show_columns_to_export")
+    end
+  end
+
+  def test_show_columns_to_export_is_false
+    formats = :csv, :json, :xml, :yaml
+    formats.each do |format|
+      @view.send(:model_ui).exporters format
+      assert_equal format, @view.send(:model_ui).exporters
+      assert_false @view.send("show_columns_to_export")
+    end
+  end
+
 end

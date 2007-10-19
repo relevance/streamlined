@@ -18,13 +18,16 @@
 	  <h2><%= image_tag_if_exists("#{model_table}.png", {:align => 'top'}) %> <%= model_name.titleize.pluralize %></h2>	
 	</div>
 	<%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/after_header_partials' %>
+	<div id="show_export">
+		<%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/generic_views/show_export' %>	
+	</div>
 	<div id="model_list">
 		<%= render :partial=>'list' %>
 	</div>
 	<div class="#streamlined_list-footer"> 
 		<div id="controls">
 		  <%= link_to_new_model -%>&nbsp;
-		  <%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/export_links' %>
+		  <%= link_to_toggle_export -%>&nbsp;
 		  <%= link_to_previous_page -%>
 		  <%= link_to_next_page -%>
 			<br />
@@ -32,3 +35,7 @@
 	</div>
 </div>
 <%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/footer_partials' %>
+<%= update_page_tag do |page|
+    page.hide 'show_export'
+  end 
+%>

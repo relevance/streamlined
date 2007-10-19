@@ -8,42 +8,54 @@ module Streamlined::Controller::CrudMethods
   # not the entire list view.
   def list
     self.crud_context = :list
-    options = {}
-    options.smart_merge!(pagination_options)
-    options.smart_merge!(order_options)
-    options.smart_merge!(filter_options)
-    merge_count_or_find_options(options)
+    @options = {}
+    unless exporting_a_full_download
+      @options.smart_merge!(pagination_options)
+    end
+    @options.smart_merge!(order_options)
+    @options.smart_merge!(filter_options)
+    merge_count_or_find_options(@options)
     
-    if pagination
-       if options[:non_ar_column]
-          col = options[:non_ar_column]
-          dir = options[:dir]
-          options.delete :non_ar_column
-          options.delete :dir
-          model_pages, models = paginate model_name.downcase.pluralize, options
+    if pagination && !exporting_a_full_download
+       if @options[:non_ar_column]
+          col = @options[:non_ar_column]
+          dir = @options[:dir]
+          @options.delete :non_ar_column
+          @options.delete :dir
+          model_pages, models = paginate model_name.downcase.pluralize, @options
           sort_models(models, col)
           models.reverse! if dir == 'DESC'
         else
-          model_pages, models = paginate model_name.downcase.pluralize, options
+          model_pages, models = paginate model_name.downcase.pluralize, @options
         end
     else
       model_pages = []
-      models = model.find(:all, options)
+      models = model.find(:all, @options)
     end
 
     self.instance_variable_set("@#{model_name.variableize}_pages", model_pages)
     self.instance_variable_set("@#{Inflector.tableize(model_name)}", models)
     @streamlined_items = models
     @streamlined_item_pages = model_pages
+    find_columns_for_export if exporting
 
     clear_filters unless request.xhr?
-
-    respond_to do |format|
-      format.html { render :action=> "list"}
-      format.js { render :partial => "list"}
-      format.csv { render :text => @streamlined_items.to_csv(model.columns.map(&:name))}
-      format.xml { render :xml => @streamlined_items.to_xml }
-      format.json { render :text => @streamlined_items.to_json }
+    
+    if params[:format] == "EnhancedXMLToFile"
+      export_xml_file
+    elsif params[:format] == "XMLStylesheet"
+      export_xml_stylesheet
+    elsif params[:format] == "EnhancedXML"
+      export_xml
+    else
+      respond_to do |format|
+        format.html { render :action=> "list"}
+        format.js { render :partial => "list"}
+        format.csv { render :text => @streamlined_items.to_csv(model.columns.map(&:name),{:header => @header, :separator => @separator})}
+        format.xml { export_xml }
+        format.json { render :text => @streamlined_items.to_json }
+        format.yaml { render :text => @streamlined_items.to_yaml }
+      end
     end
     
   end
@@ -155,4 +167,44 @@ module Streamlined::Controller::CrudMethods
     end
   end  
   
-end   
+  def export_xml
+    if params[:format] == "EnhancedXML"
+      @xml_file = false
+      render :template => STREAMLINED_TEMPLATE_ROOT + '/generic_views/list.rxml', :layout => false
+    else
+      render :xml => @streamlined_items.to_xml
+    end
+  end
+
+  def export_xml_file 
+    @xml_file = true
+    headers["Content-Type"] = "text/xml"
+    headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.xml\""
+    render :template => STREAMLINED_TEMPLATE_ROOT + '/generic_views/list.rxml', :layout => false
+  end
+
+  def export_xml_stylesheet
+    headers["Content-Type"] = "text/xml"
+    headers["Content-Disposition"] = "attachment; filename=\"#{model_underscore}.xsl\""
+    render :template => STREAMLINED_TEMPLATE_ROOT + '/generic_views/stylesheet.rxml', :layout => false
+  end
+  
+  def exporting
+    params[:format] == "xml" || params[:format] == "EnhancedXML" || params[:format] == "EnhancedXMLToFile" || params[:format] == "csv" || params[:format] == "XMLStylesheet" || params[:format] == "json" || params[:format] == "yaml"
+  end
+  
+  def exporting_a_full_download
+    exporting && params[:full_download] == "true"
+  end
+  
+  def find_columns_for_export
+    @header    = params[:skip_header].nil? ? true : false
+    @separator = params[:separator].nil?   ? ','  : params[:separator]
+    if params[:export_columns].nil?
+      @export_columns = model_ui.list_columns
+    else    
+      @export_columns = model_ui.list_columns.reject { |col| params[:export_columns][col.name.to_sym].nil? }
+    end  
+  end
+  
+end     

@@ -45,7 +45,14 @@ class Streamlined::UI
   declarative_scalar :display_formats, :default => {}
   declarative_scalar :default_order_options, :default => {},
                      :writer => Proc.new { |x| x.is_a?(Hash) ? x : {:order => x}}
-  declarative_attribute '*args', :exporters, :default => [:csv, :json, :xml]
+  # Export definitions
+  declarative_attribute '*args', :exporters, :default => [:enhanced_xml_file, :xml_stylesheet, :enhanced_xml, :xml, :csv, :json, :yaml]
+  declarative_scalar              :allow_full_download,        :default => true
+  declarative_scalar              :default_full_download,      :default => true
+  declarative_scalar              :default_separator,          :default => ','
+  declarative_scalar              :default_skip_header,        :default => false
+  declarative_scalar              :default_exporter,           :default => :enhanced_xml_file
+  declarative_attribute '*args',  :default_deselected_columns, :default => []
   
   def initialize(model, &blk)
     @model = String === model ? model.constantize : model
@@ -233,5 +240,30 @@ class Streamlined::UI
       exporters == exporter
     end
   end 
+
+  def default_deselected_column?(column)
+    if default_deselected_columns.is_a?(Array)
+      default_deselected_columns.include?(column)
+    else
+      default_deselected_columns == column
+    end
+  end 
+
+  def default_exporter?(exporter)
+      default = displays_exporter?(default_exporter) ? default_exporter : Array(exporters).first
+      default == exporter
+  end 
+
+  # Used as the form labels as well as the parameters passed to Streamlined::Controller::CrudMethods
+  def export_labels
+    @export_labels ||= {:enhanced_xml_file  => '&nbsp;Enhanced&nbsp;XML&nbsp;To&nbsp;File',
+                        :xml_stylesheet     => '&nbsp;XML&nbsp;Stylesheet',
+                        :enhanced_xml       => '&nbsp;Enhanced&nbsp;XML',
+                        :xml                => '&nbsp;xml',
+                        :csv                => '&nbsp;csv',
+                        :json               => '&nbsp;json',
+                        :yaml               => '&nbsp;yaml'
+                       }
+  end
 end
 require 'streamlined/ui/deprecated'

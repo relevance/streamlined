@@ -103,4 +103,74 @@ class Streamlined::UITest < Test::Unit::TestCase
     flexmock(@ui).should_receive(:user_columns).and_return([:anything, addition]).once
     assert_equal [:anything], @ui.quick_add_columns
   end
+
+  def test_export_defaults
+    assert_equal true, @ui.allow_full_download
+    assert_equal true, @ui.default_full_download
+    assert_equal ',',  @ui.default_separator
+    assert_equal nil,  @ui.default_skip_header
+    assert_equal :enhanced_xml_file, @ui.default_exporter
+    assert_equal [],   @ui.default_deselected_columns
+  end
+  
+  def test_default_deselected_column_with_symbol
+    @ui.default_deselected_columns :a_column
+    assert_true  @ui.default_deselected_column?(:a_column)
+    assert_false @ui.default_deselected_column?(:not_there)
+  end
+
+  def test_default_deselected_column_with_array
+    columns = :a_column, :b_column, :c_column
+    @ui.default_deselected_columns columns
+    columns.each {|column| assert_true @ui.default_deselected_column?(column) }
+    assert_false @ui.default_deselected_column?(:not_there)
+  end
+
+  def test_displays_exporter_with_symbol
+    @ui.exporters :none
+    assert_true  @ui.displays_exporter?(:none)
+    assert_false @ui.displays_exporter?(:not_there)
+  end
+
+  def test_displays_exporter_with_array
+    formats = :csv, :xml, :yaml
+    @ui.exporters formats
+    formats.each {|format| assert_true @ui.displays_exporter?(format) }
+    assert_false @ui.displays_exporter?(:not_there)
+  end
+
+  def test_default_exporter_with_defaults
+    assert_true @ui.default_exporter?(@ui.default_exporter)
+  end
+
+  def test_default_exporter_with_one
+    exporter = :csv
+    @ui.exporters exporter
+    assert_true @ui.default_exporter?(exporter)
+  end
+
+  def test_default_exporter_with_several_including_default
+    exporters = :yaml, @ui.default_exporter, :json
+    @ui.exporters exporters
+    assert_true @ui.default_exporter?(@ui.default_exporter)
+  end
+
+  def test_default_exporter_with_several_excluding_default
+    exporters = :xml, :yaml, :json
+    @ui.exporters exporters
+    assert_true @ui.default_exporter?(:xml)
+  end
+
+  def test_export_labels
+    export_labels =    {:enhanced_xml_file  => '&nbsp;Enhanced&nbsp;XML&nbsp;To&nbsp;File',
+                        :xml_stylesheet     => '&nbsp;XML&nbsp;Stylesheet',
+                        :enhanced_xml       => '&nbsp;Enhanced&nbsp;XML',
+                        :xml                => '&nbsp;xml',
+                        :csv                => '&nbsp;csv',
+                        :json               => '&nbsp;json',
+                        :yaml               => '&nbsp;yaml'
+                       }
+    assert_equal export_labels, @ui.export_labels                       
+  end
+
 end

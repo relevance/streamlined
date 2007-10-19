@@ -67,39 +67,49 @@ module Streamlined::Helpers::LinkHelper
         {:action => 'destroy', :id => item }, 
         :confirm => 'Are you sure?', :method => "post"    
   end
-  # TODO add :hrefs options like above (dry and generalize...)
-  def link_to_xml_export
-    link_to_export(:xml, :export)
-  end
-  def link_to_json_export    
-    link_to_export(:json, :export)
-  end
-  def link_to_yaml_export    
-    link_to_export(:yaml, :export)
-  end
-  def link_to_csv_export
-    link_to_export(:csv, :save)
-  end
+
   def link_to_next_page
     link_to_function image_tag('streamlined/control-forward_16.png', 
         {:id => 'next_page', :alt => 'Next Page', :style => @streamlined_item_pages != [] && @streamlined_item_pages.current.next ? "" : "display: none;", :title => 'Next Page', :border => '0'}),   
         "Streamlined.PageOptions.nextPage()"
   end
+
   def link_to_previous_page
     link_to_function image_tag('streamlined/control-reverse_16.png', 
         {:id => 'previous_page', :alt => 'Previous Page', :style => @streamlined_item_pages != [] && @streamlined_item_pages.current.previous ? "" : "display: none;", :title => 'Previous Page', :border => '0'}), 
         "Streamlined.PageOptions.previousPage()"
   end
-  
-  def link_to_export(format, image_type)
-    return '' unless model_ui.displays_exporter?(format)
-    title = "Export #{format.to_s.upcase}"
-    link_to_function(image_tag("streamlined/#{image_type}_16.png", 
-        {:alt => title, :title => title, :border => 0}),
-        export_onclick(format))
-  end           
-  
-  def export_onclick(format)
-    "Streamlined.Exporter.export_to('#{url_for(:format => format)}')"
+
+  def link_to_toggle_export
+    return '' if model_ui.displays_exporter?(:none)
+    link_to_function(image_tag('streamlined/export_16.png', 
+        {:alt => "Export #{model_name.titleize.pluralize}", :title => "Export #{model_name.titleize.pluralize}", :border => '0'}),          
+        "Element.toggle('show_export')")
   end
+
+  def link_to_submit_export(url_options)
+    link_to_function("Export",          
+        "Streamlined.Exporter.submit_export('#{url_for(url_options)}')")
+  end
+
+  def link_to_hide_export
+    link_to_function("Cancel",          
+    "Element.hide('show_export')")
+  end
+
+  def show_columns_to_export
+    model_ui.displays_exporter?(:enhanced_xml_file) || 
+    model_ui.displays_exporter?(:xml_stylesheet)    || 
+    model_ui.displays_exporter?(:enhanced_xml)
+  end  
+
+  def export_formats
+    content = ""
+    Array(model_ui.exporters).each do |format|
+      labeltext = model_ui.export_labels[format].nil? ? "" : model_ui.export_labels[format]
+      content += content_tag(:label, radio_button_tag('format', labeltext.gsub("&nbsp;",""), model_ui.default_exporter?(format)) + labeltext)
+    end
+    content
+  end
+  
 end

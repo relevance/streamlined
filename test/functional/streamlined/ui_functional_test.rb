@@ -92,4 +92,394 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_same template_column, @poet_ui.column(:first_name),
                     "template columns should not be affected by setting show_columns"
   end
+
+  def setup_export_tests
+    stock_controller_and_view
+    @all_export_formats = [:enhanced_xml_file, :xml_stylesheet, :enhanced_xml, :xml, :csv, :json, :yaml]
+    @columns_to_export_formats = [:enhanced_xml, :enhanced_xml_file, :xml_stylesheet]
+  end
+
+  def test_all_export_links_are_present_by_default
+    setup_export_tests
+    export_links = @all_export_formats
+    assert_equal export_links, @view.send(:model_ui).exporters
+    export_links.each {|format| assert_export_link(format, @view.send(:model_ui).default_exporter?(format))}    
+  end                                                                                                                                                              
+
+  def test_declarative_exporters_none                                                                                                                              
+    setup_export_tests
+    export_links = @all_export_formats
+    @view.send(:model_ui).exporters :none                                                                                                                          
+    # Need to get the response again with the new model_ui settings
+    get 'index'
+    assert_equal :none, @view.send(:model_ui).exporters
+    export_links.each {|format| assert_export_link(format, @view.send(:model_ui).default_exporter?(format), false)}
+    
+    # Also make sure there is no export link on the page
+    look_for   = "div[id=controls] a[href=#][onclick=\"Element.toggle('show_export'); return false;\"]"
+    count = 0
+    error_msg = "Did not find #{look_for} with count=#{count} in @response.body"
+    assert_select look_for, {:count => count}, error_msg
+  end                                                                                                                                                              
+                                                                                                                                                                   
+  def test_declarative_exporters_all                                                                                                                               
+    setup_export_tests
+    export_links = @all_export_formats
+    @view.send(:model_ui).exporters export_links
+    get 'index'
+    assert_equal export_links, @view.send(:model_ui).exporters
+    export_links.each {|format| assert_export_link(format, @view.send(:model_ui).default_exporter?(format))}    
+  end                                                                                                                                                              
+
+  def test_declarative_exporters_one
+    setup_export_tests
+    one_format = :yaml
+    other_export_links = @all_export_formats - Array(one_format)
+    @view.send(:model_ui).exporters one_format
+    get 'index'
+    assert_equal one_format, @view.send(:model_ui).exporters
+    assert_export_link(one_format, @view.send(:model_ui).default_exporter?(one_format))
+    other_export_links.each {|format| assert_export_link(format, @view.send(:model_ui).default_exporter?(format), false)}
+  end
+
+  def test_declarative_exporters_several
+    setup_export_tests
+    several_formats = :csv, :xml
+    other_export_links = @all_export_formats - several_formats
+    @view.send(:model_ui).exporters several_formats
+    get 'index'
+    assert_equal several_formats, @view.send(:model_ui).exporters
+    several_formats.each    {|format| assert_export_link(format, @view.send(:model_ui).default_exporter?(format))}
+    other_export_links.each {|format| assert_export_link(format, @view.send(:model_ui).default_exporter?(format), false)}
+  end
+
+  def test_export_defaults
+    setup_export_tests
+    assert_equal true, @view.send(:model_ui).allow_full_download
+    assert_equal true, @view.send(:model_ui).default_full_download
+    assert_equal ',',  @view.send(:model_ui).default_separator
+    assert_equal nil,  @view.send(:model_ui).default_skip_header
+    assert_equal :enhanced_xml_file, @view.send(:model_ui).default_exporter
+    assert_equal [],   @view.send(:model_ui).default_deselected_columns
+  end
+
+  def test_allow_full_download_true_and_default_full_download_true
+    setup_export_tests
+    @view.send(:model_ui).allow_full_download   true
+    @view.send(:model_ui).default_full_download true
+    get 'index'
+    assert_equal true, @view.send(:model_ui).allow_full_download
+    assert_equal true, @view.send(:model_ui).default_full_download
+    assert_full_download(false, !@view.send(:model_ui).default_full_download)  
+    assert_full_download(true,   @view.send(:model_ui).default_full_download)  
+  end
+
+  def test_allow_full_download_true_and_default_full_download_false
+    setup_export_tests
+    @view.send(:model_ui).allow_full_download   true
+    @view.send(:model_ui).default_full_download false
+    get 'index'
+    assert_equal true, @view.send(:model_ui).allow_full_download
+    assert_equal false, @view.send(:model_ui).default_full_download
+    assert_full_download(false, !@view.send(:model_ui).default_full_download)  
+    assert_full_download(true,   @view.send(:model_ui).default_full_download)  
+  end
+
+  def test_not_visible_when_allow_full_download_false
+    setup_export_tests
+    @view.send(:model_ui).allow_full_download   false
+    @view.send(:model_ui).default_full_download true
+    get 'index'
+    assert_equal false, @view.send(:model_ui).allow_full_download
+    assert_equal true, @view.send(:model_ui).default_full_download
+    assert_full_download(false, !@view.send(:model_ui).default_full_download, false)  
+    assert_full_download(true,   @view.send(:model_ui).default_full_download, false)  
+  end
+
+  def test_default_separator
+    setup_export_tests
+    separator = ';'
+    @view.send(:model_ui).default_separator separator
+    get 'index'
+    assert_equal separator, @view.send(:model_ui).default_separator
+    look_for = "div[id=show_export] form[id=export] p label input[id=separator][type=text][value=#{separator}][name=separator][size=1][maxlength=1]"
+    count = 1
+    error_msg = "Did not find #{look_for} with count=#{count} in @response.body"
+    assert_select look_for, {:count => count}, error_msg
+  end
+
+  def test_default_separator_visible_for_csv
+    setup_export_tests
+    separator = ','
+    @view.send(:model_ui).exporters :csv
+    get 'index'
+    assert_equal :csv, @view.send(:model_ui).exporters
+    look_for = "div[id=show_export] form[id=export] p label input[id=separator][type=text][value=#{separator}][name=separator][size=1][maxlength=1]"
+    count = 1
+    error_msg = "Did not find #{look_for} with count=#{count} in @response.body"
+    assert_select look_for, {:count => count}, error_msg
+  end
+
+  def test_default_separator_not_visible_for_other_formats
+    setup_export_tests
+    separator = ','
+    formats = @all_export_formats - Array(:csv)
+    @view.send(:model_ui).exporters formats
+    get 'index'
+    assert_equal formats, @view.send(:model_ui).exporters
+    look_for = "div[id=show_export] form[id=export] p label input[id=separator][type=text][value=#{separator}][name=separator][size=1][maxlength=1]"
+    count = 0
+    error_msg = "Did not find #{look_for} with count=#{count} in @response.body"
+    assert_select look_for, {:count => count}, error_msg
+  end
+
+  def test_default_skip_header_true
+    skip_header_setup(true)
+    assert_default_skip_header(true)
+  end
+
+  def test_default_skip_header_false
+    skip_header_setup(false)
+    assert_default_skip_header(false)
+    # and confirm its not showing up as checked
+    assert_default_skip_header(true, false)
+  end
+
+  def test_skip_header_visible_for_csv
+    setup_export_tests
+    @view.send(:model_ui).exporters :csv
+    get 'index'
+    assert_equal :csv, @view.send(:model_ui).exporters
+    assert_default_skip_header(false)
+  end
+
+  def test_skip_header_not_visible_for_other_formats
+    setup_export_tests
+    formats = @all_export_formats - Array(:csv)
+    @view.send(:model_ui).exporters formats
+    get 'index'
+    assert_equal formats, @view.send(:model_ui).exporters
+    assert_default_skip_header(false, false)
+  end
+
+  def test_default_deselected_columns_with_symbol
+    setup_export_tests
+    column = :last_name
+    @view.send(:model_ui).default_deselected_columns column
+    get 'index'
+    assert_equal column, @view.send(:model_ui).default_deselected_columns
+    selected = false
+    assert_selected_column(column, selected)
+
+    # and confirm its not showing up as checked
+    selected = true
+    assert_selected_column(column, selected, false)
+
+    other_columns = :first_name, :full_name
+    selected = true
+    other_columns.each {|column| assert_selected_column(column, selected)}
+  end
+
+  def test_default_deselected_columns_with_array
+    setup_export_tests
+    columns = :first_name, :full_name
+    @view.send(:model_ui).default_deselected_columns columns
+    get 'index'
+    assert_equal columns, @view.send(:model_ui).default_deselected_columns
+    selected = false
+    columns.each {|column| assert_selected_column(column, selected)}
+    # and confirm they're not showing up as checked
+    selected = true
+    columns.each {|column| assert_selected_column(column, selected, false)}
+
+    other_column = :last_name
+    selected = true
+    assert_selected_column(other_column, selected)
+  end
+  
+  def test_columns_to_export_not_visible_for_other_formats
+    setup_export_tests
+    formats = @all_export_formats - @columns_to_export_formats
+    @view.send(:model_ui).exporters formats
+    get 'index'
+    assert_equal formats, @view.send(:model_ui).exporters
+    
+    columns = :first_name, :last_name, :full_name
+    selected = false
+    columns.each {|column| assert_selected_column(column, selected, false)}
+  end
+
+  def test_columns_to_export_header_visible
+    setup_export_tests
+    formats = @columns_to_export_formats
+    look_for = "div[id=show_export] form[id=export] h4"
+    count = 1
+    text="Columns to export&nbsp;&nbsp;(Enhanced XML and XML Stylesheet)"
+    formats.each do |format|
+      @view.send(:model_ui).exporters format
+      get 'index'
+      assert_equal format, @view.send(:model_ui).exporters
+      error_msg = "Did not find #{look_for} with count=#{count} and text=#{text} for format=#{format} in @response.body"
+      assert_select look_for, {:count => count, :text => text}, error_msg
+    end
+    # and check all formats together
+    @view.send(:model_ui).exporters @all_export_formats
+    get 'index'
+    assert_equal @all_export_formats, @view.send(:model_ui).exporters
+    error_msg = "Did not find #{look_for} with count=#{count} and text=#{text} for format=#{@all_export_formats} in @response.body"
+    assert_select look_for, {:count => count, :text => text}, error_msg
+  end
+
+  def test_columns_to_export_header_not_visible
+    setup_export_tests
+    formats = @all_export_formats - @columns_to_export_formats
+    look_for = "div[id=show_export] form[id=export] h4"
+    count = 0
+    text="Columns to export&nbsp;&nbsp;(Enhanced XML and XML Stylesheet)"
+    formats.each do |format|
+      @view.send(:model_ui).exporters format
+      get 'index'
+      assert_equal format, @view.send(:model_ui).exporters
+      error_msg = "Did not find #{look_for} with count=#{count} and text=#{text} for format=#{format} in @response.body"
+      assert_select look_for, {:count => count, :text => text}, error_msg
+    end
+    # and check all formats together
+    @view.send(:model_ui).exporters formats
+    get 'index'
+    assert_equal formats, @view.send(:model_ui).exporters
+    error_msg = "Did not find #{look_for} with count=#{count} and text=#{text} for format=#{formats} in @response.body"
+    assert_select look_for, {:count => count, :text => text}, error_msg
+  end
+
+  def test_options_header_visible_for_csv
+    setup_export_tests
+    @view.send(:model_ui).exporters :csv
+    get 'index'
+    assert_equal :csv, @view.send(:model_ui).exporters
+    look_for = "div[id=show_export] form[id=export] h4"
+    count = 1
+    text="Options"
+    error_msg = "Did not find #{look_for} with count=#{count} and text=#{text} in @response.body"
+    assert_select look_for, {:count => count, :text => text}, error_msg
+  end
+
+  def test_options_header_visible_for_allow_full_download
+    setup_export_tests
+    @view.send(:model_ui).allow_full_download true
+    get 'index'
+    assert_equal true, @view.send(:model_ui).allow_full_download
+    look_for = "div[id=show_export] form[id=export] h4"
+    count = 1
+    text="Options"
+    error_msg = "Did not find #{look_for} with count=#{count} and text=#{text} in @response.body"
+    assert_select look_for, {:count => count, :text => text}, error_msg
+  end
+
+  def test_options_header_not_visible_when_no_options
+    setup_export_tests
+    @view.send(:model_ui).allow_full_download false
+    @view.send(:model_ui).exporters :xml
+    get 'index'
+    assert_equal false, @view.send(:model_ui).allow_full_download
+    assert_equal :xml, @view.send(:model_ui).exporters
+    look_for = "div[id=show_export] form[id=export] h4"
+    count = 0
+    text="Options"
+    error_msg = "Did not find #{look_for} with count=#{count} and text=#{text} in @response.body"
+    assert_select look_for, {:count => count, :text => text}, error_msg
+  end
+
+  def test_the_default_exporter_is_checked 
+    setup_export_tests
+    default = @view.send(:model_ui).default_exporter
+    other_export_links = @all_export_formats - Array(default)
+    assert_equal true, @view.send(:model_ui).default_exporter?(default)
+    assert_export_link(default, true)
+    # and check that the others are there
+    other_export_links.each {|format| assert_export_link(format, false)}    
+    # but that we do not find them there as checked
+    other_export_links.each {|format| assert_export_link(format, true, false)}    
+  end
+
+  def test_default_exporter_with_one_exporter
+    setup_export_tests
+    exporter = :csv
+    @view.send(:model_ui).exporters exporter
+    get 'index'
+    assert_equal true, @view.send(:model_ui).default_exporter?(exporter)
+    assert_equal exporter, @view.send(:model_ui).exporters
+    other_export_links = @all_export_formats - Array(exporter)
+    assert_export_link(exporter, true)
+    # and check that the others are not there
+    other_export_links.each {|format| assert_export_link(format, false, false)}    
+  end
+
+  def test_default_exporter_with_several_including_default
+    setup_export_tests
+    default = @view.send(:model_ui).default_exporter
+    exporters = :yaml, default, :json
+    @view.send(:model_ui).exporters exporters
+    get 'index'
+    assert_true @view.send(:model_ui).default_exporter?(default)
+    assert_equal exporters, @view.send(:model_ui).exporters
+    other_export_links = exporters - Array(default)
+    assert_export_link(default, true)
+    # and check that the others are there
+    other_export_links.each {|format| assert_export_link(format, false)}    
+    # but that we do not find them there as checked
+    other_export_links.each {|format| assert_export_link(format, true, false)}    
+  end
+
+  def test_default_exporter_with_several_excluding_default
+    setup_export_tests
+    exporters = :xml, :yaml, :json
+    default = exporters.first
+    @view.send(:model_ui).exporters exporters
+    get 'index'
+    assert_true @view.send(:model_ui).default_exporter?(default)
+    assert_equal exporters, @view.send(:model_ui).exporters
+    other_export_links = exporters - Array(default)
+    assert_export_link(default, true)
+    # and check that the others are there
+    other_export_links.each {|format| assert_export_link(format, false)}    
+    # but that we do not find them there as checked
+    other_export_links.each {|format| assert_export_link(format, true, false)}    
+  end
+
+private
+
+  def assert_export_link(format, check, should_be_present = true)
+    link_text = {:csv => :csv, :xml => :xml, :json => :json, :yaml => :yaml, :enhanced_xml_file => :EnhancedXMLToFile, :xml_stylesheet => :XMLStylesheet ,:enhanced_xml => :EnhancedXML }[format]
+    checked = check ? "[checked=checked]" : ""
+    assert_select "div[id=show_export] form[id=export] p label input[id=format_#{link_text.to_s.downcase}][type=radio][value=#{link_text}][name=format]#{checked}", :count => should_be_present ? 1 : 0
+  end 
+
+  def assert_full_download(name, check, should_be_present = true)
+    checked = check == true ? "[checked=checked]" : ""
+    assert_select "div[id=show_export] form[id=export] p label input[id=full_download_#{name}][type=radio][value=#{name}][name=full_download]#{checked}", :count => should_be_present ? 1 : 0  
+  end
+
+  def assert_default_skip_header(flag, should_be_present = true)
+    checked = flag == true ? "[checked=checked]" : ""
+    look_for = "div[id=show_export] form[id=export] p label input[id=skip_header][type=checkbox][value=1][name=skip_header]#{checked}"
+    count = should_be_present ? 1 : 0
+    error_msg = "Did not find #{look_for} with count=#{count} in @response.body"
+    assert_select look_for, {:count => count}, error_msg
+  end
+  
+  def assert_selected_column(name, selected, should_be_present = true)
+    checked = selected == true ? "[checked=checked]" : ""
+    look_for = "div[id=show_export] form[id=export] p label input[id*=export_columns][id*=#{name}][type=checkbox][value=1][name*=export_columns][name*=#{name}]#{checked}"
+    count = should_be_present ? 1 : 0
+    error_msg = "Did not find #{look_for} with count=#{count} in @response.body"
+    assert_select look_for, {:count => count}, error_msg
+  end
+
+  def skip_header_setup(flag)
+    setup_export_tests
+    @view.send(:model_ui).default_skip_header flag
+    get 'index'
+    assert_equal flag, @view.send(:model_ui).default_skip_header
+  end
+
 end

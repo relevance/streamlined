@@ -200,14 +200,14 @@ Streamlined.Windows = {
 }
 
 Streamlined.Exporter = {
-	export_to: function(url) {
+	submit_export: function(url) {
 	  var delimiter;
 	  if (url.match(/\?/)) {
 	    delimiter = '&'
 	  } else {
 	    delimiter = '?'
 	  }
-		window.location = url + delimiter + Form.serialize('page_options');
+		window.location = url + delimiter + Form.serialize('page_options') + '&' + Form.serialize('export');
 	}
 }
 

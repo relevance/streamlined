@@ -1,3 +1,6 @@
+10/19/07 - Added export form with options and column selector. Removed icons. [Kerry Foley and Michael Anton]
+         - Added xml and stylesheet exports that match the list.  Added yaml.
+
 10/06/07 - Linked "Streamlined" branding above top menu to the default route [Matthew Bass]
 
 10/06/07 - Applied new styling patch from ticket #114 [Matthew Bass]
