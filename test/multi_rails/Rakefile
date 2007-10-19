@@ -1,0 +1,14 @@
+require 'rubygems'
+require 'hoe'
+require File.expand_path(File.join(File.dirname(__FILE__), "/lib/multi_rails"))
+load File.expand_path(File.join(File.dirname(__FILE__), "/tasks/multi_rails.rake"))
+
+Hoe.new('MultiRails', MultiRails::VERSION) do |p|
+  p.rubyforge_name = 'multi_rails'
+  p.author = 'Relevance'
+  p.email = ''
+  p.summary = 'Testing tool to easily test agaist multiple gemmed versions of Rails.'
+  # p.description = p.paragraphs_of('README.txt', 2..5).join("\n\n")
+  # p.url = p.paragraphs_of('README.txt', 0).first.split(/\n/)[1..-1]
+  p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
+end

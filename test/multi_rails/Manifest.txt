@@ -1,0 +1,7 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/multi_rails
+lib/multi_rails.rb
+test/test_multi_rails.rb
