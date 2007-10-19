@@ -11,8 +11,11 @@ module MultiRails
     
     class << self
       attr_accessor :default_rails_version, :weird_versions, :rails_requires
-      def version_lookup(version)
-        @weird_versions[version] || version
+      def version_lookup(version = nil)
+        if version
+          return @weird_versions[version] || version
+        end
+        ENV["RAILS_VERSION"] || default_rails_version
       end
     end
   end

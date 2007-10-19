@@ -11,4 +11,17 @@ Hoe.new('MultiRails', MultiRails::VERSION) do |p|
   # p.description = p.paragraphs_of('README.txt', 2..5).join("\n\n")
   # p.url = p.paragraphs_of('README.txt', 0).first.split(/\n/)[1..-1]
   p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
+  p.test_globs = 'test/**/*_test.rb'
 end
+
+# namespace :test do
+#   desc 'Run all tests for MultiRails'
+#   Rake::TestTask.new do |t|
+#     t.libs << 'lib'
+#     t.pattern = 'test/**/*_test.rb'
+#     t.verbose = true
+#   end
+# end
+# 
+# desc 'Default: run tests.'
+# task :default => ['test']

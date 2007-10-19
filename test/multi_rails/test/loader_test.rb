@@ -3,7 +3,12 @@ require File.expand_path(File.join(File.dirname(__FILE__), "../lib/multi_rails")
 
 describe "loader" do
   
+  setup do
+    never_really_require_rails
+  end
+  
   it "should fall back to a default verison to try" do
+    stub_rails_requires
     MultiRails::Loader.any_instance.expects(:gem).with("rails", MultiRails::Config.default_rails_version)
     MultiRails::Loader.require_rails
   end
@@ -14,11 +19,13 @@ describe "loader" do
   end
   
   it "should gem the specified version" do
+    stub_rails_requires
     MultiRails::Loader.any_instance.expects(:gem).with("rails", "1.2.5").returns(true)
     MultiRails::Loader.require_rails("1.2.5")
   end
   
   it "should allow using a better name for weird gem version numbers, like 2.0.0 PR => 1.2.4.7794" do
+    stub_rails_requires
     MultiRails::Loader.any_instance.expects(:gem).with("rails", MultiRails::Config.weird_versions["2.0.0.PR"]).returns(true)
     MultiRails::Loader.require_rails("2.0.0.PR")
   end
@@ -29,6 +36,14 @@ describe "loader" do
       MultiRails::Loader.any_instance.expects(:require).with(file)
     end
     MultiRails::Loader.require_rails
+  end
+  
+  def stub_rails_requires
+    MultiRails::Loader.any_instance.stubs(:require).returns(true)
+  end
+  
+  def never_really_require_rails
+    MultiRails::Loader.any_instance.expects(:require).never
   end
 end
 
