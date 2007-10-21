@@ -44,7 +44,7 @@ class StreamlinedTest < Test::Unit::TestCase
     assert Streamlined.edge_rails?
   end
   
-  def test_should_return_false_for_edge_rails_if_edge_rails_features_are_present
+  def test_should_return_false_for_edge_rails_if_edge_rails_features_are_not_present
     ActionController::Base.expects(:respond_to?).with(:view_paths=).returns(false)
     assert_false Streamlined.edge_rails?
   end
