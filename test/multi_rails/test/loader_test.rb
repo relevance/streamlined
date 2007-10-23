@@ -53,14 +53,14 @@ end
 
 describe "finding all gems of rails available" do
   
-  it "should search the gem cache for rails" do
-    Gem::cache.expects(:search).with("rails").returns([])
+  it "should find rails by name when retrieving all rails versions, in order to avoid false positives with other gems with rails in the name" do
+    Gem::cache.expects(:find_name).with("rails").returns([])
     MultiRails::Loader.all_rails_versions
   end
   
   it "should return all Rails versions it finds sorted with the earliest versions first" do
     specs = [stub(:version => stub(:to_s => "1.2.4")), stub(:version => stub(:to_s => "1.2.3"))]
-    Gem::cache.expects(:search).with("rails").returns(specs)
+    Gem::cache.expects(:find_name).with("rails").returns(specs)
     MultiRails::Loader.all_rails_versions.should == ["1.2.3", "1.2.4"]
   end
   
