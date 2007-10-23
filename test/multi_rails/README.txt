@@ -1,16 +1,21 @@
 MultiRails
-    by Relevance
-	http://thinkrelevance.com
+    by Relevance, http://thinkrelevance.com
 
 == DESCRIPTION:
   
-MultiRails easily allows testing against multiple versions of Rails.  
+MultiRails easily allows testing against multiple versions of Rails.
+
+MultiRails was initially developed by members of Relevance while developing Streamlined 
+against edge Rails.  To see how Streamlined uses MultiRails, go to http://streamlinedframework.org.
 
 == FEATURES/PROBLEMS:
-  
 
-== SYNOPSIS:
+* easily test plugins/extensions to Rails using a one line require from your test_helper.rb
+* rake tasks to test against a specific version of Rails, or all versions of Rails available locally as Gems
 
+== TODOs:
+
+* enable multi_rails testing in a plain ole' Rails app -- this is difficult right now because of the Rails boot process
 
 == REQUIREMENTS:
 
@@ -21,7 +26,11 @@ MultiRails easily allows testing against multiple versions of Rails.
 
 == INSTALL:
 
-* (sudo gem install, anything else)
+* sudo gem install multi_rails
+* in your test_helper.rb, require the multi_rails init file -- your specific path may differ
+    require File.expand_path(File.join(File.dirname(__FILE__), "/multi_rails/init"))
+* IMPORTANT: you _must_ require multi_rails before you require any Rails files
+
 
 == LICENSE:
 

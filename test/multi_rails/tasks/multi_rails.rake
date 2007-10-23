@@ -20,7 +20,7 @@ namespace :test do
       end
     end
     
-    desc "Run against one verison of Rails specified as 'rails_version'"
+    desc "Run against one verison of Rails specified as 'RAILS_VERSION' - for example 'rake test:multi_rails:one RAILS_VERSION=1.2.3'"
     task :one do
       print_rails_version
       Rake::Task[:test].invoke

@@ -7,17 +7,21 @@ module MultiRails
       @logger ||= Logger.new(STDOUT)
     end
     
-    # Create a loader for a specified version
+    # Require and gem rails
     # Will use a default version if none is supplied
-    def self.require_rails(rails_version = nil)
+    def self.gem_and_require_rails(rails_version = nil)
       rails_version = MultiRails::Config.version_lookup(rails_version)
-      Loader.new(rails_version).load_rails
+      Loader.new(rails_version).gem_and_require_rails
     end
     
     # Returns a list of all Rails versions available, oldest first
     def self.all_rails_versions
-      specs = Gem::cache.search("rails")
+      specs = Gem::cache.find_name("rails")
       specs.map {|spec| spec.version.to_s }.sort
+    end
+    
+    def self.latest_stable_version
+      all_rails_versions.sort.reverse.detect {|version| version.count(".") < 3 }
     end
     
     # A version of the loader is created to gem and require one version of Rails
@@ -25,7 +29,8 @@ module MultiRails
       @version = version
     end
     
-    def load_rails
+    # Gem a version of Rails, and require appropriate files
+    def gem_and_require_rails
       gem_rails
       require_rails
     end

@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__), "test_helper"))
+require File.expand_path(File.join(File.dirname(__FILE__), "multi_rails_test_helper"))
 require File.expand_path(File.join(File.dirname(__FILE__), "../lib/multi_rails"))
 
 describe "loader" do
@@ -10,24 +10,24 @@ describe "loader" do
   
   it "should fall back to a default verison to try" do
     stub_rails_requires
-    MultiRails::Loader.any_instance.expects(:gem).with("rails", MultiRails::Config.default_rails_version)
-    MultiRails::Loader.require_rails
+    MultiRails::Loader.any_instance.expects(:gem).with("rails", MultiRails::Loader.latest_stable_version)
+    MultiRails::Loader.gem_and_require_rails
   end
   
   it "should fail fast if we are missing a requested gem version" do
-    lambda { MultiRails::Loader.require_rails("9.9.9") }.should.raise(MultiRailsError)
+    lambda { MultiRails::Loader.gem_and_require_rails("9.9.9") }.should.raise(MultiRailsError)
   end
   
   it "should gem the specified version" do
     stub_rails_requires
     MultiRails::Loader.any_instance.expects(:gem).with("rails", "1.2.5").returns(true)
-    MultiRails::Loader.require_rails("1.2.5")
+    MultiRails::Loader.gem_and_require_rails("1.2.5")
   end
   
   it "should allow using a better name for weird gem version numbers, like 2.0.0 PR => 1.2.4.7794" do
     stub_rails_requires
     MultiRails::Loader.any_instance.expects(:gem).with("rails", MultiRails::Config.weird_versions["2.0.0.PR"]).returns(true)
-    MultiRails::Loader.require_rails("2.0.0.PR")
+    MultiRails::Loader.gem_and_require_rails("2.0.0.PR")
   end
 
   it "should require the needed dependancies" do
@@ -35,7 +35,7 @@ describe "loader" do
     MultiRails::Config.rails_requires.each do |file|
       MultiRails::Loader.any_instance.expects(:require).with(file)
     end
-    MultiRails::Loader.require_rails
+    MultiRails::Loader.gem_and_require_rails
   end
   
   def stub_rails_requires
@@ -63,5 +63,18 @@ describe "finding all gems of rails available" do
     Gem::cache.expects(:search).with("rails").returns(specs)
     MultiRails::Loader.all_rails_versions.should == ["1.2.3", "1.2.4"]
   end
+  
+end
+
+describe "finding latest stable version" do
+  it "should find the latest stable rails gem" do
+    MultiRails::Loader.stubs(:all_rails_versions).returns(["1.2.3", "1.2.5", "1.2.5.1343"])
+    MultiRails::Loader.latest_stable_version.should == "1.2.5"
+  end  
+  
+  it "should find 2.0.0 when its released" do
+    MultiRails::Loader.stubs(:all_rails_versions).returns(["1.2.3", "1.2.5", "1.2.5.1343", "2.0.0", "1.2.7"])
+    MultiRails::Loader.latest_stable_version.should == "2.0.0"
+  end  
   
 end

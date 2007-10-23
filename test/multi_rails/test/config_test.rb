@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__), "test_helper"))
+require File.expand_path(File.join(File.dirname(__FILE__), "multi_rails_test_helper"))
 require File.expand_path(File.join(File.dirname(__FILE__), "../lib/multi_rails"))
 
 describe "Version Lookup in config" do
@@ -26,9 +26,7 @@ describe "Version Lookup in config" do
     end
   end
   
-  
-  
-  it "should use default version if there is no argumnt or env var" do
-    MultiRails::Config.version_lookup.should == MultiRails::Config.default_rails_version
+  it "should use latest stable version if there is no argumnt or env var" do
+    MultiRails::Config.version_lookup.should == MultiRails::Loader.latest_stable_version
   end
 end
