@@ -25,5 +25,9 @@ class EnumerableTest < Test::Unit::TestCase
   def test_boolean_header_with_different_separator
     assert_equal("upcase;to_str\nA;a\nB;b\n", ['a','b'].to_csv([:upcase, :to_str], {:header=>true, :separator=>";"} ))
   end
+  
+  def test_breaking_the_build
+    raise "OH YEAH"
+  end
 
 end
