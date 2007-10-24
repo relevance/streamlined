@@ -49,6 +49,10 @@ class Streamlined::Column::Base
     false
   end
   
+  def active_record?
+    false
+  end
+  
   def association?
     false
   end

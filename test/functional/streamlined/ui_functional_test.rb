@@ -63,13 +63,20 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   end
   
   def test_conditions_by_like_with_associations
-    expected = "poems.text LIKE '%value%' OR poets.first_name LIKE '%value%'"
+    expected = "poems.text LIKE '%value%' OR poems.first_name LIKE '%value%' " <<
+               "OR poems.last_name LIKE '%value%' OR poets.first_name LIKE '%value%'"
     assert_equal expected, @poem_ui.conditions_by_like_with_associations("value")
   end
 
   def test_conditions_by_like_with_associations_for_unconventional_table_names
     expected = "people.first_name LIKE '%value%' OR people.last_name LIKE '%value%'"
     assert_equal expected, Streamlined.ui_for(Unconventional).conditions_by_like_with_associations("value")
+  end
+  
+  def test_conditions_by_like_with_non_filterable_columns
+    expected = "people.first_name LIKE '%value%'"
+    ui = Streamlined.ui_for(Person) { user_columns :first_name, :last_name, { :filterable => false }}
+    assert_equal expected, ui.conditions_by_like_with_associations("value")
   end
   
   def test_columns_not_aliased_between_scalars_and_delegates

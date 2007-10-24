@@ -221,10 +221,14 @@ class Streamlined::UI
   end
   
   def conditions_by_like_with_associations(value)
-    column_pairs = model.user_columns.collect { |c| "#{model.table_name}.#{c.name}" }
-    filterable_associations.each { |c| column_pairs << "#{c.name.to_s.tableize}.#{c.filter_column}" }
+    column_pairs = filterable_columns.collect { |c| "#{model.table_name}.#{c.name}" }
+    column_pairs += filterable_associations.collect { |c| "#{c.name.to_s.tableize}.#{c.filter_column}" }
     conditions = column_pairs.collect { |c| "#{c} LIKE #{ActiveRecord::Base.connection.quote("%#{value}%")}" }
     conditions.join(" OR ")
+  end
+  
+  def filterable_columns
+    user_columns.select { |c| c.active_record? && c.filterable? }
   end
   
   # Returns all list columns that can be filtered. A list column is considered
