@@ -14,13 +14,4 @@ class AuthorsController < ApplicationController
 #    self.instance = Poem.find(params[:id])
 #    render_or_redirect(:success, 'show')    
 #  end
-end  
-
-## TODO: this should go away once the UI class is optional
-#class PersonUI < Streamlined::UI
-#end
-#
-#ActionController::Routing::Routes.draw do |map|
-#  map.connect ':controller/:action/:id'
-#end
-
+end

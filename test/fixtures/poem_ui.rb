@@ -6,7 +6,7 @@ end
 
 Poem.class_eval { include PoemAdditions }
 
-class PoemUI < Streamlined::UI
+Streamlined.ui_for(Poem) do
   list_columns :text,
                :text_with_div,
                :poet, { :filter_column => "first_name" }

@@ -17,13 +17,4 @@ class PeopleController < ApplicationController
   
   # Re-raise errors caught by the controller
   def rescue_action(e); raise e; end
-end  
-
-# TODO: this should go away once the UI class is optional
-class PersonUI < Streamlined::UI
 end
-
-ActionController::Routing::Routes.draw do |map|
-  map.connect ':controller/:action/:id'
-end
-

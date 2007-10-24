@@ -21,6 +21,10 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     assert_equal 'Foo', ar.human_name
   end
   
+  def test_filterable_defaults_to_true
+    assert ActiveRecord.new(:foo, nil).filterable
+  end
+  
   def test_names_delegate_to_ar_column
     ar = ActiveRecord.new(ar_column('foo_bar', 'Foo bar'), nil)
     assert_equal 'foo_bar', ar.name

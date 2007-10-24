@@ -7,6 +7,3 @@ module PersonAdditions
 end
 
 Person.class_eval { include PersonAdditions }
-
-class PersonUI < Streamlined::UI
-end
