@@ -28,6 +28,10 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     @human_name = name.to_s.humanize
   end
   
+  def table_name
+    name.to_s.tableize
+  end
+  
   def association?
     true
   end

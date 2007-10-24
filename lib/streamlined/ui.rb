@@ -221,8 +221,8 @@ class Streamlined::UI
   end
   
   def conditions_by_like_with_associations(value)
-    column_pairs = filterable_columns.collect { |c| "#{model.table_name}.#{c.name}" }
-    column_pairs += filterable_associations.collect { |c| "#{c.name.to_s.tableize}.#{c.filter_column}" }
+    column_pairs = filterable_columns.collect { |c| "#{c.table_name}.#{c.name}" }
+    column_pairs += filterable_associations.collect { |c| "#{c.table_name}.#{c.filter_column}" }
     column_pairs += columns_with_additional_column_pairs.collect(&:additional_column_pairs)
     conditions = column_pairs.collect { |c| "#{c} LIKE #{ActiveRecord::Base.connection.quote("%#{value}%")}" }
     conditions.join(" OR ")

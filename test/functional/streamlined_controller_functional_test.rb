@@ -6,6 +6,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
   fixtures :people
 
   def setup
+    setup_routes
     Streamlined::ReloadableRegistry.reset
     PeopleController.filters.clear
     @controller = PeopleController.new

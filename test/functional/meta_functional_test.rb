@@ -7,6 +7,7 @@ class MetaFunctionalTest < Test::Unit::TestCase
   fixtures :people
   include Streamlined::FunctionalTests
   def setup
+    setup_routes
     @controller = PeopleController.new
     @controller.logger = RAILS_DEFAULT_LOGGER
     @request    = ActionController::TestRequest.new

@@ -2,6 +2,7 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   attr_accessor :ar_column, :enumeration, :check_box
   attr_with_default :filterable, 'true'
   delegates :name, :to => :ar_column
+  delegates :table_name, :to => :parent_model
   
   def initialize(ar_column, parent_model)
     @ar_column = ar_column
@@ -16,7 +17,7 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   def filterable?
     filterable
   end
-
+  
   def ==(o)
     return true if o.object_id == object_id
     return false unless self.class == o.class

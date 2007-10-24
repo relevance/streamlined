@@ -21,6 +21,11 @@ class Streamlined::Column::ActiveRecordTest < Test::Unit::TestCase
     assert_equal 'Foo', ar.human_name
   end
   
+  def test_table_name
+    ar = ActiveRecord.new(nil, flexmock(:table_name => 'Foo'))
+    assert_equal 'Foo', ar.table_name
+  end
+  
   def test_filterable_defaults_to_true
     assert ActiveRecord.new(:foo, nil).filterable
   end

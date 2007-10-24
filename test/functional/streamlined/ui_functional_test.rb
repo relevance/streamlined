@@ -63,8 +63,8 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   end
   
   def test_conditions_by_like_with_associations
-    expected = "poems.text LIKE '%value%' OR poems.first_name LIKE '%value%' " <<
-               "OR poems.last_name LIKE '%value%' OR poets.first_name LIKE '%value%'"
+    expected = "poems.text LIKE '%value%' OR poets.first_name LIKE '%value%' " <<
+               "OR poets.last_name LIKE '%value%' OR poets.first_name LIKE '%value%'"
     assert_equal expected, @poem_ui.conditions_by_like_with_associations("value")
   end
 
