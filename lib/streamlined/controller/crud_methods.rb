@@ -135,7 +135,7 @@ module Streamlined::Controller::CrudMethods
   # TODO: Dump non_ar_column. 
   # Figure out whether a column is ar or not when using it!
   def order_options
-    return @streamlined_controller_context.model_ui.default_order_options unless order?
+    return model_ui.default_order_options unless order?
 
     if model.column_names.include? sort_column
       active_record_order_option
@@ -159,8 +159,8 @@ module Streamlined::Controller::CrudMethods
       rethash.merge! :include => session[:include] unless session[:include].nil?
       rethash
     elsif filter?
-      rethash = {:conditions =>  @streamlined_controller_context.model_ui.conditions_by_like_with_associations(filter)}
-      rethash.merge!(:include => @streamlined_controller_context.model_ui.filterable_associations.collect(&:name))
+      rethash = {:conditions =>  model_ui.conditions_by_like_with_associations(filter)}
+      rethash.merge!(:include => model_ui.filterable_associations.collect(&:name) + model_ui.additional_includes)
       rethash
     else
       {}  

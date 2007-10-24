@@ -5,7 +5,7 @@ require 'streamlined/controller/filter_methods'
 class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
   include Streamlined::Controller::CrudMethods
   include Streamlined::Controller::FilterMethods
-  attr_accessor :model, :streamlined_request_context
+  attr_accessor :model, :model_ui, :streamlined_request_context
   delegates *Streamlined::Context::RequestContext::DELEGATES
   
   def test_helper_delegates_are_private
@@ -14,30 +14,26 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
   
   def test_default_options
     @streamlined_request_context = Streamlined::Context::RequestContext.new
-    @streamlined_controller_context = Streamlined::Context::ControllerContext.new
-    @streamlined_controller_context.model_name = 'Person'
-    @streamlined_controller_context.model_ui.default_order_options('first_name ASC')
+    @model_ui = Streamlined.ui_for(Person)
+    @model_ui.default_order_options('first_name ASC')
     assert_equal({:order => 'first_name ASC'}, order_options)
   end
   
   def test_no_options
-    @streamlined_controller_context = Streamlined::Context::ControllerContext.new
-    @streamlined_controller_context.model_name = 'Author'
     @streamlined_request_context = Streamlined::Context::RequestContext.new
+    @model_ui = Streamlined.ui_for(Author)
     assert_equal({}, order_options)
   end
   
   def test_ar_options
-    @streamlined_request_context = Streamlined::Context::RequestContext.new(:sort_order=>"ASC",
-    :sort_column=>"first_name")
+    @streamlined_request_context = Streamlined::Context::RequestContext.new(:sort_order=>"ASC", :sort_column=>"first_name")
     self.model = Person
     assert_equal({:order=>"first_name ASC"}, order_options)
   end
 
   # TODO: non ar_options should go away
   def test_non_ar_options
-    @streamlined_request_context = Streamlined::Context::RequestContext.new(:sort_order=>"ASC",
-    :sort_column=>"widget")
+    @streamlined_request_context = Streamlined::Context::RequestContext.new(:sort_order=>"ASC", :sort_column=>"widget")
     self.model = Person
     # assert_equal({:order=>"widget ASC"}, order_options)
     assert_equal({:dir=>"ASC", :non_ar_column=>"widget"}, order_options)
@@ -60,17 +56,15 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
   end
   
   def test_filter_options_with_no_filter
-    @streamlined_controller_context = Streamlined::Context::ControllerContext.new
-    @streamlined_controller_context.model_name = 'Author'
     @streamlined_request_context = Streamlined::Context::RequestContext.new
+    @model_ui = Streamlined.ui_for(Author)
     assert_equal({}, filter_options)
   end
 
   def test_filter_options_with_simple_filter
     str = "data"
-    @streamlined_controller_context = Streamlined::Context::ControllerContext.new
-    @streamlined_controller_context.model_name = 'Person'
     @streamlined_request_context = Streamlined::Context::RequestContext.new(:filter=>"#{str}")
+    @model_ui = Streamlined.ui_for(Person)
     assert_equal({:conditions=>"people.first_name LIKE '%#{str}%' OR people.last_name LIKE '%#{str}%'", :include=>[]}, filter_options)
   end
   
@@ -87,11 +81,9 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
     @response   = ActionController::TestResponse.new
     @controller.send :initialize_template_class, @response
     @controller.send :assign_shortcuts, @request, @response
-
-    @streamlined_controller_context = Streamlined::Context::ControllerContext.new
-    @streamlined_controller_context.model_name = 'Person'
+    
     @streamlined_request_context = Streamlined::Context::RequestContext.new(:advanced_filter=>"#{conditions_string}")
-
+    @model_ui = Streamlined.ui_for(Person)
   end
 
   def test_filter_options_with_advanced_filter_expired

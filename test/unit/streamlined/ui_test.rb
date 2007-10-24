@@ -103,7 +103,35 @@ class Streamlined::UITest < Test::Unit::TestCase
     flexmock(@ui).should_receive(:user_columns).and_return([:anything, addition]).once
     assert_equal [:anything], @ui.quick_add_columns
   end
-
+  
+  def test_columns_with_additional_column_pairs_with_no_columns
+    flexmock(@ui).should_receive(:list_columns).and_return([])
+    assert_equal [], @ui.columns_with_additional_column_pairs
+  end
+  
+  def test_columns_with_additional_column_pairs
+    contact_column = flexmock("list_column")
+    contact_column.should_receive(:additional_column_pairs).and_return([:first_name])    
+    flexmock(@ui).should_receive(:list_columns).and_return([contact_column])
+    assert_equal [contact_column], @ui.columns_with_additional_column_pairs
+  end
+  
+  def test_additional_includes_with_no_columns
+    flexmock(@ui).should_receive(:list_columns).and_return([])
+    assert_equal [], @ui.additional_includes
+  end
+  
+  def test_additional_includes
+    column = flexmock("list_column")
+    column.should_receive(:additional_includes).and_return([:addresses])    
+    column2 = flexmock("list_column2")
+    column2.should_receive(:additional_includes).and_return([:dogs, :cats])    
+    column3 = flexmock("list_column3")
+    column3.should_receive(:additional_includes).and_return([:doctor => [:contact]])    
+    flexmock(@ui).should_receive(:list_columns).and_return([column, column2, column3])
+    assert_equal [:addresses, :dogs, :cats, {:doctor => [:contact]}], @ui.additional_includes
+  end
+  
   def test_export_defaults
     assert_equal true, @ui.allow_full_download
     assert_equal true, @ui.default_full_download

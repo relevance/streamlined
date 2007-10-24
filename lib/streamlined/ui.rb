@@ -223,6 +223,7 @@ class Streamlined::UI
   def conditions_by_like_with_associations(value)
     column_pairs = filterable_columns.collect { |c| "#{model.table_name}.#{c.name}" }
     column_pairs += filterable_associations.collect { |c| "#{c.name.to_s.tableize}.#{c.filter_column}" }
+    column_pairs += columns_with_additional_column_pairs.collect(&:additional_column_pairs)
     conditions = column_pairs.collect { |c| "#{c} LIKE #{ActiveRecord::Base.connection.quote("%#{value}%")}" }
     conditions.join(" OR ")
   end
@@ -235,6 +236,14 @@ class Streamlined::UI
   # filterable if its :filter_column option is set.
   def filterable_associations
     list_columns.select { |c| c.association? && c.filterable? }
+  end
+  
+  def columns_with_additional_column_pairs
+    list_columns.select { |c| c.additional_column_pairs != nil }
+  end
+  
+  def additional_includes
+    list_columns.select { |c| c.additional_includes != nil }.collect(&:additional_includes).flatten
   end
 
   def displays_exporter?(exporter)
