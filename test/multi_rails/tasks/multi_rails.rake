@@ -42,7 +42,7 @@ namespace :test do
     
     # Clean up the temp file we need for 
     def clean_up_rails_gem_version_file
-      FileUtils.rm(rails_gem_version_file) if within_rails_app && File.exist?(rails_gem_version_file)
+      FileUtils.rm(rails_gem_version_file) if within_rails_app? && File.exist?(rails_gem_version_file)
     end
     
     # This is a hack we have to do to properly set the RAILS_GEM_VERSION before environment.rb and boot.rb run
