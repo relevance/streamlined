@@ -180,12 +180,20 @@ END
     assert_response :success
     assert_template nil
     assert_equal "application/json", @response.content_type   
-    expected_json =<<-END
+    # JSON formatting changed between Rails 1.x and Rails 2
+    # http://blog.codefront.net/2007/10/10/new-on-edge-rails-json-serialization-of-activerecord-objects-reaches-maturity/
+    if Streamlined.edge_rails?
+      expected_json =<<-END
+    [{"id": 1, "first_name": "Justin", "last_name": "Gehtland"}, {"id": 2, "first_name": "Stu", "last_name": "Halloway"}, {"id": 3, "first_name": "Jason", "last_name": "Rudolph"}, {"id": 4, "first_name": "Glenn", "last_name": "Vanderburg"}]
+END
+    else
+      expected_json =<<-END
     [{attributes: {id: "1", first_name: "Justin", last_name: "Gehtland"}}, {attributes: {id: "2", first_name: "Stu", last_name: "Halloway"}}, {attributes: {id: "3", first_name: "Jason", last_name: "Rudolph"}}, {attributes: {id: "4", first_name: "Glenn", last_name: "Vanderburg"}}]
 END
+    end
     expected_json = expected_json.strip
     assert_equal(expected_json, @response.body)
-    assert_equal nil, assigns(:options)[:per_page]
+    assert_nil assigns(:options)[:per_page]
   end       
 
   def test_list_yaml
