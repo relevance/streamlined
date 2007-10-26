@@ -4,6 +4,4 @@ def require_streamlined_plugin(plugin)
   require File.join(plugin_path, "init.rb")
 end
 
-unless defined?(ActionController::Pagination)
-  require_streamlined_plugin(:classic_pagination)
-end
+require_streamlined_plugin(:classic_pagination)
