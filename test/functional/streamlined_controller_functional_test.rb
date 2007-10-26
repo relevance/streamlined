@@ -196,24 +196,20 @@ END
     assert_equal "application/x-yaml", @response.content_type   
     expected_yaml =<<-END
 --- 
-- !ruby/object:Person 
-  attributes: 
-    id: "1"
+- Person: 
+    id: 1
     first_name: Justin
     last_name: Gehtland
-- !ruby/object:Person 
-  attributes: 
-    id: "2"
+- Person: 
+    id: 2
     first_name: Stu
     last_name: Halloway
-- !ruby/object:Person 
-  attributes: 
-    id: "3"
+- Person: 
+    id: 3
     first_name: Jason
     last_name: Rudolph
-- !ruby/object:Person 
-  attributes: 
-    id: "4"
+- Person: 
+    id: 4
     first_name: Glenn
     last_name: Vanderburg
 END

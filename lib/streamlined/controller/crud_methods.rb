@@ -54,7 +54,7 @@ module Streamlined::Controller::CrudMethods
         format.csv { render :text => @streamlined_items.to_csv(model.columns.map(&:name),{:header => @header, :separator => @separator})}
         format.xml { export_xml }
         format.json { render :text => @streamlined_items.to_json }
-        format.yaml { render :text => @streamlined_items.to_yaml }
+        format.yaml { render :text => @streamlined_items.collect { |it| {it.class.name.to_s, it.attributes} }.to_yaml }
       end
     end
     
