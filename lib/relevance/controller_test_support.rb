@@ -51,7 +51,7 @@ module Relevance::ControllerTestSupport
       assert_not_nil(object_for_edit)
       @object_for_create = object_for_edit.class.new
       attributes_for_create = object_for_edit.attributes
-      attributes_for_create.delete(:id) 
+      attributes_for_create.delete('id')
       @object_for_create.attributes = @object_for_create.attributes.merge(attributes_for_create)      
     end
     @object_for_create

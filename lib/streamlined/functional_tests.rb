@@ -9,7 +9,7 @@ module Streamlined::FunctionalTests
   end
   def post_create_form
     assert_not_nil(form_model_name)
-    post :create, form_model_name=>object_for_create.attributes
+    post :create, form_model_name => object_for_create.attributes
   end
 
   def post_update_form(ajax = nil)
