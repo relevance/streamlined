@@ -19,8 +19,8 @@
 <p>
 <%= content_tag(:label, check_box_tag('skip_header', 1, export_config.default_skip_header) + '&nbsp;Without&nbsp;header&nbsp;(csv)') 			  if export_config.displays_exporter?(:csv) %>
 <%= content_tag(:label, text_field_tag('separator', export_config.default_separator, :size => 1, :maxlength => 1) + '&nbsp;Separator&nbsp;(csv)') if export_config.displays_exporter?(:csv) %>
-<%= content_tag(:label, radio_button_tag('full_download', false, !export_config.default_full_download) + '&nbsp;This&nbsp;Page') if export_config.allow_full_download %>
-<%= content_tag(:label, radio_button_tag('full_download', true, export_config.default_full_download) + '&nbsp;All&nbsp;Pages')   if export_config.allow_full_download %>
+<%= content_tag(:label, radio_button_tag('full_download', "false", !export_config.default_full_download) + '&nbsp;This&nbsp;Page') if export_config.allow_full_download %>
+<%= content_tag(:label, radio_button_tag('full_download', "true", export_config.default_full_download) + '&nbsp;All&nbsp;Pages')   if export_config.allow_full_download %>
 </p>
 <h4>Format</h4>
 <p>
