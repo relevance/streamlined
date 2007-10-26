@@ -4,4 +4,6 @@ def require_streamlined_plugin(plugin)
   require File.join(plugin_path, "init.rb")
 end
 
+# Streamlined depends on classic pagination, so we just require the plugin itself
+# to avoid deprecation warnings in 1.2.x or errors in 2.x.
 require_streamlined_plugin(:classic_pagination)

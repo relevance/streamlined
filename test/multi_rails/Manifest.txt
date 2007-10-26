@@ -9,6 +9,7 @@ lib/multi_rails/core_extensions.rb
 lib/multi_rails/loader.rb
 lib/multi_rails/multi_rails_error.rb
 lib/multi_rails_init.rb
+tasks/load_multi_rails_rake_tasks.rb
 tasks/multi_rails.rake
 test/config_test.rb
 test/core_extensions_test.rb

@@ -1,21 +1,27 @@
 MultiRails
     by Relevance, http://thinkrelevance.com
+       Rob Sanheim - MultiRails lead
 
 == DESCRIPTION:
   
-MultiRails easily allows testing against multiple versions of Rails.
+MultiRails allows easy testing against multiple versions of Rails for your Rails specific gem or plugin.
+
+Use MultiRails to hook in Rails 2.0 testing in your continuous integration.  Still working on Rails 2.0 support?  
+Use MultiRails to see where your test suite falls down against the 2.0 preview releases of Rails.
 
 MultiRails was initially developed by members of Relevance while developing Streamlined 
-against edge Rails.  To see how Streamlined uses MultiRails, go to http://streamlinedframework.org.
+against edge Rails.  To see how Streamlined uses MultiRails, go to http://trac.streamlinedframework.org.
 
-== FEATURES/PROBLEMS:
+== FEATURES:
 
-* easily test plugins/extensions to Rails using a one line require from your test_helper.rb
+* easily test plugins/extensions using a require from your test_helper.rb and a require in your RakeFile
 * rake tasks to test against a specific version of Rails, or all versions of Rails available locally as Gems
 
 == TODOs:
 
-* enable multi_rails testing in a plain ole' Rails app -- this is difficult right now because of the Rails boot process
+* enable multi_rails testing in a plain ol' Rails app -- this is difficult right now because of the Rails boot process
+* improve docs on how to override what files are required by multi_rails
+* test against Rails versions that are just checked out, and not installed via Gems
 
 == REQUIREMENTS:
 
@@ -26,11 +32,43 @@ against edge Rails.  To see how Streamlined uses MultiRails, go to http://stream
 
 == INSTALL:
 
+NOTE - for multi_rails to work at all, you *must* remove any of your own requires of the Rails
+       framework in any sort of test_helper you have.  MultiRails handles requiring Rails on its own,
+       immediately after it uses gem to activate the correct version under test.
+       
 * sudo gem install multi_rails
-* in your test_helper.rb, require the multi_rails init file -- your specific path may differ
-    require File.expand_path(File.join(File.dirname(__FILE__), "/multi_rails/init"))
-* IMPORTANT: you _must_ require multi_rails before you require any Rails files
+    
+* in your projects Rakefile, require a simple rb file which just loads the multi_rails rake tasks.
 
+  require "load_multi_rails_rake_tasks"
+  
+* run rake -T in your root, verify that you see two new rake tasks.
+
+  rake test:multi_rails:all
+  rake test:multi_rails:one
+  
+* In your plugins test_helper, remove any rails specific requires (activerecord, actioncontroller, activesupport, etc), 
+  and require multi_rails_init instead.  
+
+  require multi_rails_init
+
+* Run the multi_rails:all rake task to run your test suite against all versions of Rails you have installed via gems.  Install
+  other versions of Rails using rubygems to add them to your test suite.
+  
+* For changing the Rails version under test, set the environment variable MULTIRAILS_RAILS_VERSION to version you want, and run
+  the multi_rails:one task or just run a test class directly.
+
+== HELP
+
+* Are you trying to use MultiRails in a plain rails application?  Right now there isn't a good way to do this, without hacking
+  up your boot.rb.  If you have any ideas please do contribute.
+  
+* Getting gem activation errors?  Are you sure you removed your rails requires and are just using multi rails?
+  
+* Join the mailing list!  
+  http://groups.google.com/group/multi_rails
+  multi_rails@googlegroups.com
+  
 
 == LICENSE:
 

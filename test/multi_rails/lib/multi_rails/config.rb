@@ -3,16 +3,16 @@ module MultiRails
   # Simple config object
   class Config
     @weird_versions = { "2.0.0.PR" => "1.2.4.7794" }
-    @rails_requires = %w[active_record 
+    @rails_requires = %w[active_support
+                         active_record 
                          action_controller 
-                         action_controller/test_process 
-                         active_support]
+                         action_controller/test_process]
     
     class << self
       attr_accessor :weird_versions, :rails_requires
       def version_lookup(version = nil)
         return named_version_lookup(version) if version
-        return named_version_lookup(ENV["RAILS_VERSION"]) if ENV['RAILS_VERSION']
+        return named_version_lookup(ENV["MULTIRAILS_RAILS_VERSION"]) if ENV['MULTIRAILS_RAILS_VERSION']
         Loader.latest_stable_version
       end
       

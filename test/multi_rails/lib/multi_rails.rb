@@ -6,7 +6,7 @@ files.each do |file|
 end
 
 module MultiRails
-  VERSION = '0.0.1'
+  VERSION = '0.0.2'
   
   def self.gem_and_require_rails
     Loader.gem_and_require_rails

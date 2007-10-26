@@ -38,7 +38,7 @@ module MultiRails
     def gem_rails
       gem 'rails', version
     rescue LoadError => e
-      msg = %Q[Cannot find gem for Rails version: '#{version}'!\nInstall the missing gem with:\ngem install -v=#{version} rails]
+      msg = %Q[Cannot find gem for Rails version: '#{version}'!\nInstall the missing gem with:\nsudo gem install -v=#{version} rails]
       raise MultiRailsError, msg
     end
     
