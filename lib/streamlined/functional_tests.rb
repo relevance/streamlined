@@ -14,7 +14,9 @@ module Streamlined::FunctionalTests
 
   def post_update_form(ajax = nil)
     assert_not_nil(form_model_name)
-    args = [:update, {:id=>object_for_edit.id, form_model_name=>object_for_edit.attributes}]
+    object_attributes = object_for_edit.attributes
+    object_attributes.delete('id')
+    args = [:update, {:id=>object_for_edit.id, form_model_name=>object_attributes}]
     if ajax == :xhr
       xhr :post, *args
     else
