@@ -1,7 +1,7 @@
 base = File.dirname(__FILE__)
 
 require File.join(base, 'test_helper')
-require File.join(base, 'ar_helper')
+require File.join(base, "lib", 'ar_helper')
 require 'active_record/fixtures'
 
 # getting messy: Poet needed by Poem

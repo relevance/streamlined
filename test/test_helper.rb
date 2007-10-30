@@ -6,9 +6,9 @@ require 'test/spec'
 require 'mocha'
 require 'flexmock/test_unit'
 require 'ostruct'
-require File.expand_path(File.join(File.dirname(__FILE__), "/vendor/multi_rails/lib/multi_rails_init"))
+require File.expand_path(File.join(File.dirname(__FILE__), "/lib/multi_rails/lib/multi_rails_init"))
+require File.expand_path(File.join(File.dirname(__FILE__), "/lib/flexmock_patch"))
 require File.expand_path(File.join(File.dirname(__FILE__), "edge_rails_test_helper"))
-require File.expand_path(File.join(File.dirname(__FILE__), "flexmock_patch"))
 require 'generator'
 begin # dont depend on redgreen
   require 'redgreen' unless Object.const_defined?("TextMate") 
@@ -17,7 +17,7 @@ rescue LoadError
 end 
 # Arts plugin from http://glu.ttono.us/articles/2006/05/29/guide-test-driven-rjs-with-arts
 # Arts provides an easily understandable syntax for testing RJS templates
-require File.expand_path(File.join(File.dirname(__FILE__), "/vendor/arts"))
+require File.expand_path(File.join(File.dirname(__FILE__), "/lib/arts"))
 
 silence_stream(STDERR) do
   RAILS_ROOT = Pathname.new(File.join(File.dirname(__FILE__), '../faux_rails_root')).expand_path.to_s

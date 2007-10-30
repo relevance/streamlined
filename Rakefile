@@ -1,8 +1,8 @@
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
-require 'test/ar_helper'
-load 'test/vendor/multi_rails/tasks/multi_rails.rake'
+require 'test/lib/ar_helper'
+load 'test/lib/multi_rails/tasks/multi_rails.rake'
 
 def db_config
   ActiveRecord::Base.configurations['streamlined_unittest']
