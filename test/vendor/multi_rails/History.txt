@@ -1,0 +1,11 @@
+== 0.0.2 / Tuesday; October 23, 2007
+
+* first public release!
+* add link to email group
+* improve docs
+* add hook file to load rake tasks when used as a gem
+* change the env var for specifying the rails version under test to avoid name conflicts
+
+== 0.0.1 / Sunday; October 21, 2007
+
+* initial release, no public announcment

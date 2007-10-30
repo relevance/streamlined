@@ -1,7 +1,7 @@
 require 'flexmock'
 class FlexMock
   class StubProxy
-    # any_instance is a short cut method for overriding the behavior of any 
+    # new_instances is a short cut method for overriding the behavior of any 
     # instance created via a stubbed class object.
     def new_instances(*allocators, &block)
       @allocators = [:allocate, :new] if allocators.empty?
