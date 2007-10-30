@@ -1,7 +1,7 @@
 # Streamlined
-# (c) 2005-6 Relevance, LLC. (www.relevancellc.com)
+# (c) 2005-7 Relevance, LLC. (http://thinkrelevance.com)
 # Streamlined is freely distributable under the terms of an MIT-style license.
-# For details, see http://streamlined.relevancellc.com
+# For details, see http://streamlinedframework.org/
 
 # TODO: Arguably belongs to Streamlined::Controller::Context
 module Streamlined; end

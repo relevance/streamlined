@@ -1,19 +1,7 @@
 # Streamlined
-# (c) 2005-6 Relevance, LLC. (www.relevancellc.com)
+# (c) 2005-7 Relevance, LLC. (http://thinkrelevance.com)
 # Streamlined is freely distributable under the terms of an MIT-style license.
-# For details, see http://streamlined.relevancellc.com
-
-# This is not in init.rb because constants created there seem to get blown away! Yuck.
-raise "Must have a RAILS_ROOT" unless RAILS_ROOT
-# Using all? absolute paths to deal with Ruby/JRuby launch differences!
-STREAMLINED_ROOT = Pathname.new(File.join(File.dirname(__FILE__), "../..")).expand_path.to_s
-STREAMLINED_TEMPLATE_ROOT = 
-File.join(Pathname.new(STREAMLINED_ROOT).relative_path_from(Pathname.new(RAILS_ROOT+"/app/views").expand_path),
-          "/templates")
-STREAMLINED_GENERIC_VIEW_ROOT = "#{STREAMLINED_TEMPLATE_ROOT}/generic_views"
-STREAMLINED_GENERIC_OVERRIDE_ROOT = File.join('..', 'streamlined', 'views')
-
-module Streamlined; end
+# For details, see http://streamlinedframework.org/
 module Streamlined::Controller; end
 
 require 'streamlined/controller/crud_methods'

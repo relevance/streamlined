@@ -1,3 +1,6 @@
+# The module must be defined before we start adding in functionality
+module Streamlined; end;
+
 require 'streamlined/environment'
 require 'streamlined/context'
 require 'streamlined/render_methods'
