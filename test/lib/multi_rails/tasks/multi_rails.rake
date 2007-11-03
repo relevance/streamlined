@@ -11,7 +11,7 @@ end
 namespace :test do
   namespace :multi_rails do
 
-    desc "Run against all versions of rubygem installed versions of Rails"
+    desc "Run against all installed versions of Rails.  Local versions found: [#{MultiRails::Loader.all_rails_versions.to_sentence}]."
     task :all do
       begin
         MultiRails::Loader.all_rails_versions.each_with_index do |version, index|
@@ -28,6 +28,13 @@ namespace :test do
     
     desc "Run against one verison of Rails specified as 'MULTIRAILS_RAILS_VERSION' - for example 'rake test:multi_rails:one MULTIRAILS_RAILS_VERSION=1.2.3'"
     task :one do
+      print_rails_version
+      Rake::Task[:test].invoke
+    end
+    
+    desc "Run against the most recent version of Rails installed.  Most recent found: [#{MultiRails::Loader.latest_version}]."
+    task :latest do
+      ENV["MULTIRAILS_RAILS_VERSION"] = MultiRails::Loader.latest_version
       print_rails_version
       Rake::Task[:test].invoke
     end

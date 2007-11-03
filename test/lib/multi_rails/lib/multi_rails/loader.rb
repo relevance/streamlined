@@ -24,6 +24,10 @@ module MultiRails
       all_rails_versions.sort.reverse.detect {|version| version.count(".") < 3 }
     end
     
+    def self.latest_version
+      all_rails_versions.sort.last
+    end
+    
     # A version of the loader is created to gem and require one version of Rails
     def initialize(version)
       @version = version

@@ -78,3 +78,16 @@ describe "finding latest stable version" do
   end  
   
 end
+
+describe "finding latest version" do
+  it "should find the most recent version, regardless of edge or non edge versions" do
+    MultiRails::Loader.stubs(:all_rails_versions).returns(["1.2.3", "1.2.5", "1.2.5.1343"])
+    MultiRails::Loader.latest_version.should == "1.2.5.1343"
+  end
+
+  it "should return the only version you have if there is only one installed" do
+    MultiRails::Loader.stubs(:all_rails_versions).returns(["1.2.3"])
+    MultiRails::Loader.latest_version.should == "1.2.3"
+  end
+  
+end
