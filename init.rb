@@ -2,8 +2,8 @@ if defined?(Dependencies)
   Dependencies.load_paths.unshift("#{RAILS_ROOT}/app/streamlined")
 end
 
-require 'implants/array_conversions'
-require 'implants/hash_smart_merge'
+require 'extensions/array_conversions'
+require 'extensions/hash_smart_merge'
 require 'relevance/symbol_additions'
 require 'relevance/string_additions'
 require 'relevance/method_additions'
