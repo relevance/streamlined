@@ -10,18 +10,6 @@ class Streamlined::Controller::OptionsMethodsTest < Test::Unit::TestCase
     assert_equal({ :conditions => "foo=1" }, options)
   end
   
-  def test_merge_count_or_find_options_with_merge_set_to_true
-    mock_count_or_find_options(:conditions => "foo=1", :merge => true)
-    merge_count_or_find_options(options = { :conditions => "bar=2 OR bat=3" })
-    assert_equal({ :conditions => "(bar=2 OR bat=3) AND foo=1" }, options)
-  end
-  
-  def test_merge_count_or_find_options_with_empty_conditions_and_merge_set_to_true
-    mock_count_or_find_options(:conditions => "foo=1", :merge => true)
-    merge_count_or_find_options(options = {})
-    assert_equal({ :conditions => "foo=1" }, options)
-  end
-  
   def test_count_or_find_options_with_empty_hash
     mock_count_or_find_options({})
     assert_equal({}, count_or_find_options)

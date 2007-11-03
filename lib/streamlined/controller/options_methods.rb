@@ -1,12 +1,7 @@
 module Streamlined::Controller::OptionsMethods
   private
   def merge_count_or_find_options(target)
-    options = count_or_find_options
-    if options.delete(:merge) && !target[:conditions].blank?
-      target[:conditions] = "(#{target[:conditions]}) AND #{options[:conditions]}"
-    else
-      target.merge!(options)
-    end
+    target.merge!(count_or_find_options)
   end
   
   def count_or_find_options
