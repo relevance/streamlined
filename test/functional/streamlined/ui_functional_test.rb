@@ -63,9 +63,11 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   end
   
   def test_conditions_by_like_with_associations
-    expected = "poems.text LIKE '%value%' OR poets.first_name LIKE '%value%' " <<
-               "OR poets.last_name LIKE '%value%' OR poets.first_name LIKE '%value%'"
-    assert_equal expected, @poem_ui.conditions_by_like_with_associations("value")
+    ui = Streamlined.ui_for(Poet) do
+      list_columns :first_name, :last_name, :poems, { :filter_column => :text }
+    end
+    expected = "poets.first_name LIKE '%value%' OR poets.last_name LIKE '%value%' OR poems.text LIKE '%value%'"
+    assert_equal expected, ui.conditions_by_like_with_associations("value")
   end
 
   def test_conditions_by_like_with_associations_for_unconventional_table_names
@@ -76,6 +78,15 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   def test_conditions_by_like_with_non_filterable_columns
     expected = "people.first_name LIKE '%value%'"
     ui = Streamlined.ui_for(Person) { user_columns :first_name, :last_name, { :filterable => false }}
+    assert_equal expected, ui.conditions_by_like_with_associations("value")
+  end
+  
+  def test_conditions_by_like_uses_list_columns
+    ui = Streamlined.ui_for(Person) do
+      user_columns :first_name
+      list_columns :first_name, :last_name
+    end
+    expected = "people.first_name LIKE '%value%' OR people.last_name LIKE '%value%'"
     assert_equal expected, ui.conditions_by_like_with_associations("value")
   end
   

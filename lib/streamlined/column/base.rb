@@ -5,7 +5,8 @@ class Streamlined::Column::Base
   include Streamlined::Helpers::FormHelper
   include ERB::Util
   
-  attr_accessor :human_name, :link_to, :popup, :parent_model, :wrapper, :additional_column_pairs, :additional_includes
+  attr_accessor :human_name, :link_to, :popup, :parent_model, :wrapper, :additional_column_pairs,
+                :additional_includes, :filter_column
   
   attr_with_default :human_name_explicitly_set, 'false'
   attr_with_default :read_only, 'false'
@@ -54,6 +55,10 @@ class Streamlined::Column::Base
   end
   
   def association?
+    false
+  end
+  
+  def addition?
     false
   end
   

@@ -7,6 +7,10 @@ class Streamlined::Column::Addition < Streamlined::Column::Base
     @read_only = true
     @parent_model = parent_model
   end
+  
+  def addition?
+    true
+  end
 
   # Array#== calls this
   def ==(o)

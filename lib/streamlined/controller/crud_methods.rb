@@ -160,7 +160,7 @@ module Streamlined::Controller::CrudMethods
       rethash
     elsif filter?
       rethash = {:conditions =>  model_ui.conditions_by_like_with_associations(filter)}
-      rethash.merge!(:include => model_ui.filterable_associations.collect(&:name) + model_ui.additional_includes)
+      rethash.merge!(:include => model_ui.filterable_associations + model_ui.additional_includes)
       rethash
     else
       {}  

@@ -18,6 +18,10 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     filterable
   end
   
+  def filter_column
+    name
+  end
+  
   def ==(o)
     return true if o.object_id == object_id
     return false unless self.class == o.class

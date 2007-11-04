@@ -221,21 +221,18 @@ class Streamlined::UI
   end
   
   def conditions_by_like_with_associations(value)
-    column_pairs = filterable_columns.collect { |c| "#{c.table_name}.#{c.name}" }
-    column_pairs += filterable_associations.collect { |c| "#{c.table_name}.#{c.filter_column}" }
+    column_pairs = filterable_columns.collect { |c| "#{c.table_name}.#{c.filter_column}" }
     column_pairs += columns_with_additional_column_pairs.collect(&:additional_column_pairs)
     conditions = column_pairs.collect { |c| "#{c} LIKE #{ActiveRecord::Base.connection.quote("%#{value}%")}" }
     conditions.join(" OR ")
   end
   
   def filterable_columns
-    user_columns.select { |c| c.active_record? && c.filterable? }
+    list_columns.select { |c| !c.addition? && c.filterable? }
   end
   
-  # Returns all list columns that can be filtered. A list column is considered
-  # filterable if its :filter_column option is set.
   def filterable_associations
-    list_columns.select { |c| c.association? && c.filterable? }
+    list_columns.select { |c| c.association? && c.filterable? }.collect(&:name)
   end
   
   def columns_with_additional_column_pairs
@@ -263,8 +260,8 @@ class Streamlined::UI
   end 
 
   def default_exporter?(exporter)
-      default = displays_exporter?(default_exporter) ? default_exporter : Array(exporters).first
-      default == exporter
+    default = displays_exporter?(default_exporter) ? default_exporter : Array(exporters).first
+    default == exporter
   end 
 
   # Used as the form labels as well as the parameters passed to Streamlined::Controller::CrudMethods
