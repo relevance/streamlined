@@ -63,21 +63,20 @@ module Streamlined::Helpers::WindowLinkHelper
   end
 
   def link_to_delete_model(item)
-    id = item.id
     link_to image_tag('streamlined/delete_16.png', {:alt => 'Destroy', :title => 'Destroy', :border => '0'}), 
-        {:action => 'destroy', :id => item }, 
+        {:action => 'destroy', :id => item.id}, 
         :confirm => 'Are you sure?', :method => "post"    
   end
 
   def link_to_next_page
     link_to_function image_tag('streamlined/control-forward_16.png', 
-        {:id => 'next_page', :alt => 'Next Page', :style => @streamlined_item_pages != [] && @streamlined_item_pages.current.next ? "" : "display: none;", :title => 'Next Page', :border => '0'}),   
+        {:id => 'next_page', :alt => 'Next Page', :style => @streamlined_item_pages != [] && @streamlined_item_pages.current.next ? "" : "display: none;", :title => 'Next Page', :border => '0'}),
         "Streamlined.PageOptions.nextPage()"
   end
 
   def link_to_previous_page
     link_to_function image_tag('streamlined/control-reverse_16.png', 
-        {:id => 'previous_page', :alt => 'Previous Page', :style => @streamlined_item_pages != [] && @streamlined_item_pages.current.previous ? "" : "display: none;", :title => 'Previous Page', :border => '0'}), 
+        {:id => 'previous_page', :alt => 'Previous Page', :style => @streamlined_item_pages != [] && @streamlined_item_pages.current.previous ? "" : "display: none;", :title => 'Previous Page', :border => '0'}),
         "Streamlined.PageOptions.previousPage()"
   end
 end

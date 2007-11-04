@@ -79,4 +79,24 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     @model_ui = flexmock(:read_only => false, :quick_new_button => false)
     assert_nil link_to_new_model
   end
+  
+  def test_wrap_with_link
+    result = wrap_with_link("foo") { "bar" }
+    assert_select root_node(result), "a[href=foo]", "bar"
+  end
+  
+  def test_wrap_with_link_with_empty_block
+    result = wrap_with_link("foo") {}
+    assert_select root_node(result), "a[href=foo]", "foo"
+  end
+  
+  def test_wrap_with_link_with_array
+    result = wrap_with_link(["foo", {:action => "bar"}]) { "bat" }
+    assert_select root_node(result), "a[href=foo][action=bar]", "bat"
+  end
+  
+  def test_wrap_with_link_with_array_and_empty_block
+    result = wrap_with_link(["foo", {:action => "bar"}]) {}
+    assert_select root_node(result), "a[href=foo][action=bar]", "foo"
+  end
 end

@@ -2,15 +2,15 @@ module Streamlined; end
 module Streamlined::Breadcrumb
   DELIMETER = "<"
   
-  def self.node_for(crud_context, instance)
+  def node_for(crud_context, instance)
     class_name = instance.class.to_s
     case crud_context
       when :list
-        Proc.new { link_to class_name.titleize.pluralize, :controller => class_name.pluralize,
+        Proc.new { link_to class_name.titleize.pluralize, :controller => class_name.underscore.pluralize,
           :action => "list" }
       when :show
-        Proc.new { link_to instance.name, :controller => class_name.pluralize,
-          :action => "show", :id => instance }
+        Proc.new { link_to instance.name, :controller => class_name.underscore.pluralize,
+          :action => "show", :id => instance.id }
     end
   end
   
