@@ -5,7 +5,7 @@ class HeaderHelperTest < Test::Unit::TestCase
   
   class FancyController
     include Streamlined::Helpers::HeaderHelper
-    attr_accessor :instance, :model_name
+    attr_accessor :instance, :model_name, :crud_context
   end
   
   def setup
@@ -32,6 +32,21 @@ class HeaderHelperTest < Test::Unit::TestCase
 
   def test_render_new_header
     assert_header_text "New Fancy Model", @controller.render_new_header
+  end
+  
+  def test_prefix_for_crud_context_edit
+    @controller.crud_context = :edit
+    assert_equal "Edit", @controller.prefix_for_crud_context
+  end
+  
+  def test_prefix_for_crud_context_new
+    @controller.crud_context = :new
+    assert_equal "New", @controller.prefix_for_crud_context
+  end
+  
+  def test_prefix_for_crud_context_with_bogus_context
+    @controller.crud_context = :bogus
+    assert_nil @controller.prefix_for_crud_context
   end
 
   private

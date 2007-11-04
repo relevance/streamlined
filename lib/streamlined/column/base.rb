@@ -182,9 +182,9 @@ class Streamlined::Column::Base
         x.label(:for => "#{model_underscore}_#{name}") do
           x.text!(human_name)
           if mark_required?(item)
-    				x.span("*", :class => "required")
-    			end
-    		end
+            x.span("*", :class => "required")
+          end
+        end
       end
       x.td(:class => 'sl_edit_value') do
         x << render_td(view, item)

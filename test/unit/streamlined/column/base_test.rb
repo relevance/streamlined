@@ -35,8 +35,12 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     assert !@addition.belongs_to?
   end
   
-  def test_association
+  def test_association?
     assert !@addition.association?
+  end
+  
+  def test_active_record?
+    assert !@addition.active_record?
   end
   
   def test_unassigned_value_receives_default
