@@ -155,6 +155,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     assert_equal "select", @association.render_td_edit(view, item)
   end
   
+  private
   def view_and_item_mocks(view_attrs={})
     view = flexmock(:render => 'render', :controller_path => 'controller_path', :link_to_function => 'link')
     item = flexmock(:id => 123)

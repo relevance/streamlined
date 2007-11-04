@@ -27,23 +27,22 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
   end
   
   def test_guess_show_link_for
-    assert_equal "(multiple)", guess_show_link_for([])
-    assert_equal "(unassigned)", guess_show_link_for(nil)
-    assert_equal "(unknown)", guess_show_link_for(1)
-    assert_equal "<a href=\"//people/show/1\">1</a>", guess_show_link_for(people(:justin))
-    assert_equal "<a href=\"//phone_numbers/show/1\">1</a>", guess_show_link_for(phone_numbers(:number1))
+    with_default_route do
+      assert_equal "(multiple)", guess_show_link_for([])
+      assert_equal "(unassigned)", guess_show_link_for(nil)
+      assert_equal "(unknown)", guess_show_link_for(1)
+      assert_equal "<a href=\"//people/show/1\">1</a>", guess_show_link_for(people(:justin))
+      assert_equal "<a href=\"//phone_numbers/show/1\">1</a>", guess_show_link_for(phone_numbers(:number1))
+    end
   end
   
   def test_link_to_new_model
     @model_ui = flexmock(:read_only => false, :quick_new_button => true)
     @model_name = "Foo"
-    with_routing do |set|
-      set.draw do |map|
-        map.connect ':controller/:action/:id'
-        assert_equal "<a href=\"#\" onclick=\"Streamlined.Windows.open_local_window_from_url" <<
-                     "('New', '//foobar/new', null); return false;\"><img alt=\"New Foo\" border=\"0\" " <<
-                     "src=\"//images/streamlined/add_16.png\" title=\"New Foo\" /></a>", link_to_new_model
-      end
+    with_default_route do
+      assert_equal "<a href=\"#\" onclick=\"Streamlined.Windows.open_local_window_from_url" <<
+                   "('New', '//foobar/new', null); return false;\"><img alt=\"New Foo\" border=\"0\" " <<
+                   "src=\"//images/streamlined/add_16.png\" title=\"New Foo\" /></a>", link_to_new_model
     end
   end
   
@@ -51,13 +50,10 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     @model_ui = flexmock(:read_only => false, :quick_new_button => true)
     @model_name = "Foo"
     item = flexmock(:id => 123)
-    with_routing do |set|
-      set.draw do |map|
-        map.connect ':controller/:action/:id'
-        assert_equal "<a href=\"#\" onclick=\"Streamlined.Windows.open_local_window_from_url" <<
-                     "('Show', '//foobar/show/123', null); return false;\"><img alt=\"Show Foo\" border=\"0\" " <<
-                     "src=\"//images/streamlined/search_16.png\" title=\"Show Foo\" /></a>", link_to_show_model(item)
-      end
+    with_default_route do
+      assert_equal "<a href=\"#\" onclick=\"Streamlined.Windows.open_local_window_from_url" <<
+                   "('Show', '//foobar/show/123', null); return false;\"><img alt=\"Show Foo\" border=\"0\" " <<
+                   "src=\"//images/streamlined/search_16.png\" title=\"Show Foo\" /></a>", link_to_show_model(item)
     end
   end
   
@@ -65,14 +61,60 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     @model_ui = flexmock(:read_only => false, :quick_new_button => true)
     @model_name = "Foo"
     item = flexmock(:id => 123)
-    with_routing do |set|
-      set.draw do |map|
-        map.connect ':controller/:action/:id'
-        assert_equal "<a href=\"#\" onclick=\"Streamlined.Windows.open_local_window_from_url" <<
-                     "('Edit', '//foobar/edit/123', null); return false;\"><img alt=\"Edit Foo\" border=\"0\" " <<
-                     "src=\"//images/streamlined/edit_16.png\" title=\"Edit Foo\" /></a>", link_to_edit_model(item)
-      end
+    with_default_route do
+      assert_equal "<a href=\"#\" onclick=\"Streamlined.Windows.open_local_window_from_url" <<
+                   "('Edit', '//foobar/edit/123', null); return false;\"><img alt=\"Edit Foo\" border=\"0\" " <<
+                   "src=\"//images/streamlined/edit_16.png\" title=\"Edit Foo\" /></a>", link_to_edit_model(item)
     end
+  end
+  
+  def test_link_to_delete_model
+    item = flexmock(:id => 123)
+    with_default_route do
+      assert_equal "<a href=\"//foobar/destroy/123\" onclick=\"if (confirm('Are you sure?')) { " <<
+                   "var f = document.createElement('form'); f.style.display = 'none'; " <<
+                   "this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;" <<
+                   "var m = document.createElement('input'); m.setAttribute('type', 'hidden'); " <<
+                   "m.setAttribute('name', '_method'); m.setAttribute('value', 'post'); " <<
+                   "f.appendChild(m);f.submit(); };return false;\"><img alt=\"Destroy\" " <<
+                   "border=\"0\" src=\"//images/streamlined/delete_16.png\" " <<
+                   "title=\"Destroy\" /></a>", link_to_delete_model(item)
+    end
+  end
+  
+  def test_link_to_next_page
+    flexmock(self).should_receive(:page_link_style).and_return("").once
+    with_default_route do
+      assert_equal "<a href=\"#\" onclick=\"Streamlined.PageOptions.nextPage(); return false;\">" <<
+                   "<img alt=\"Next Page\" border=\"0\" id=\"next_page\" " <<
+                   "src=\"//images/streamlined/control-forward_16.png\" style=\"\" " <<
+                   "title=\"Next Page\" /></a>", link_to_next_page
+    end
+  end
+  
+  def test_link_to_previous_page
+    flexmock(self).should_receive(:page_link_style).and_return("").once
+    with_default_route do
+      assert_equal "<a href=\"#\" onclick=\"Streamlined.PageOptions.previousPage(); return false;\">" <<
+                   "<img alt=\"Previous Page\" border=\"0\" id=\"previous_page\" " <<
+                   "src=\"//images/streamlined/control-reverse_16.png\" style=\"\" " <<
+                   "title=\"Previous Page\" /></a>", link_to_previous_page
+    end
+  end
+  
+  def test_page_link_style_without_pages
+    @streamlined_item_pages = []
+    assert_equal "display: none;", page_link_style
+  end
+  
+  def test_page_link_style_with_previous_page
+    @streamlined_item_pages = flexmock(:empty? => false, :current => flexmock(:previous => true))
+    assert_equal "", page_link_style
+  end
+  
+  def test_page_link_style_without_previous_page
+    @streamlined_item_pages = flexmock(:empty? => false, :current => flexmock(:previous => false))
+    assert_equal "display: none;", page_link_style
   end
   
   def test_link_to_new_model_when_quick_new_button_is_false
@@ -98,5 +140,15 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
   def test_wrap_with_link_with_array_and_empty_block
     result = wrap_with_link(["foo", {:action => "bar"}]) {}
     assert_select root_node(result), "a[href=foo][action=bar]", "foo"
+  end
+  
+  private
+  def with_default_route
+    with_routing do |set|
+      set.draw do |map|
+        map.connect ':controller/:action/:id'
+        yield
+      end
+    end
   end
 end

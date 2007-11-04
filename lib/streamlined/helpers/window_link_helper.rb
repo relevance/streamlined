@@ -70,14 +70,19 @@ module Streamlined::Helpers::WindowLinkHelper
 
   def link_to_next_page
     link_to_function image_tag('streamlined/control-forward_16.png', 
-        {:id => 'next_page', :alt => 'Next Page', :style => @streamlined_item_pages != [] && @streamlined_item_pages.current.next ? "" : "display: none;", :title => 'Next Page', :border => '0'}),
+        {:id => 'next_page', :alt => 'Next Page', :style => page_link_style, :title => 'Next Page', :border => '0'}),
         "Streamlined.PageOptions.nextPage()"
   end
 
   def link_to_previous_page
     link_to_function image_tag('streamlined/control-reverse_16.png', 
-        {:id => 'previous_page', :alt => 'Previous Page', :style => @streamlined_item_pages != [] && @streamlined_item_pages.current.previous ? "" : "display: none;", :title => 'Previous Page', :border => '0'}),
+        {:id => 'previous_page', :alt => 'Previous Page', :style => page_link_style, :title => 'Previous Page', :border => '0'}),
         "Streamlined.PageOptions.previousPage()"
+  end
+  
+  private
+  def page_link_style
+    !@streamlined_item_pages.empty? && @streamlined_item_pages.current.previous ? "" : "display: none;"
   end
 end
 

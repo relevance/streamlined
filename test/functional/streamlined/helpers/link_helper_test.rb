@@ -18,7 +18,10 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
   
   # TODO: make link JavaScript unobtrusive!
   def test_link_to_new_model
-    assert_equal "<a href=\"/people/new\"><img alt=\"New Person\" border=\"0\" src=\"/images/streamlined/add_16.png\" title=\"New Person\" /></a>", @view.link_to_new_model
+    result = @view.link_to_new_model
+    assert_select root_node(result), "a[href=/people/new]" do
+      assert_select "img[alt=New Person][border=0][src=/images/streamlined/add_16.png][title=New Person]"
+    end
   end
   
   def test_link_to_new_model_when_quick_new_button_is_false
@@ -27,12 +30,30 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
   end
 
   def test_link_to_edit_model
-    assert_equal "<a href=\"/people/edit/1\"><img alt=\"Edit Person\" border=\"0\" src=\"/images/streamlined/edit_16.png\" title=\"Edit Person\" /></a>", @view.link_to_edit_model(people(:justin))
+    result = @view.link_to_edit_model(people(:justin))
+    assert_select root_node(result), "a[href=/people/edit/1]" do
+      assert_select "img[alt=Edit Person][border=0][src=/images/streamlined/edit_16.png][title=Edit Person]"
+    end
   end
   
   def test_wrap_with_link
-    assert_equal '<a href="/people/show/1">foo</a>', 
-                 @view.wrap_with_link(:action=>"show", :id=>@item.id) {"foo"}
+    result = @view.wrap_with_link("show") {"foo"}
+    assert_select root_node(result), "a[href=show]", "foo"
+  end
+  
+  def test_wrap_with_link_with_empty_block
+    result = @view.wrap_with_link("show") {}
+    assert_select root_node(result), "a[href=show]", "show"
+  end
+  
+  def test_wrap_with_link_with_array
+    result = @view.wrap_with_link(["foo", {:action => "show", :id => "1"}]) {"bar"}
+    assert_select root_node(result), "a[href=foo][action=show][id=1]", "bar"
+  end
+  
+  def test_wrap_with_link_with_array_and_empty_block
+    result = @view.wrap_with_link(["foo", {:action => "show", :id => "1"}]) {}
+    assert_select root_node(result), "a[href=foo][action=show][id=1]", "foo"
   end
   
   def test_link_toggle_element
@@ -102,5 +123,4 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
       assert_false @view.send("show_columns_to_export")
     end
   end
-
 end
