@@ -15,6 +15,11 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
   
   fixtures :people, :phone_numbers
   
+  # Stubbed to make Rails 2.x happy
+  def protect_against_forgery?
+    false
+  end
+  
   def setup 
     @controller = FoobarController.new
     request = ActionController::TestRequest.new

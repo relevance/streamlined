@@ -25,9 +25,6 @@ module Streamlined::Helper
   include Streamlined::Helpers::HeaderHelper
   include Streamlined::Helpers::BreadcrumbHelper
   
-  # include this last
-  include Streamlined::View::RenderMethods
-  
   def self.included(includer)
     includer.class_eval do
       attr_reader :streamlined_controller_context, :streamlined_request_context

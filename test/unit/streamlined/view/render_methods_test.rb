@@ -2,6 +2,10 @@ require File.join(File.dirname(__FILE__), '../../../test_helper')
 require 'streamlined/view/render_methods'
 
 class Streamlined::View::RenderMethodsTest < Test::Unit::TestCase
+  def render(*args)
+    nil
+  end
+  
   include Streamlined::View::RenderMethods
   
   def test_controller_name

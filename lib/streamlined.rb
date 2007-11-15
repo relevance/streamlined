@@ -36,3 +36,12 @@ end
 ActionController::Base.class_eval do 
   extend Streamlined::Controller::ClassMethods
 end
+
+# TODO: move as many helper methods as possible out of here and into UI classes
+#       or registry, reducing chance of name collision with non-streamlined code.
+ActionView::Base.send :include, Streamlined::Helper
+
+# This changes Rails rendering to check the streamlined templates if no actual
+# template is provided
+ActionView::Base.send :include, Streamlined::View::RenderMethods
+

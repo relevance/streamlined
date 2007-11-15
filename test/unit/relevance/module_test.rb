@@ -2,6 +2,9 @@ require File.dirname(__FILE__) + '/../../test_helper'
 
 class Relevance::ModuleExtensionsTest < Test::Unit::TestCase
   def callme(*args); "foo"; end
+  def callme_with_block
+    yield
+  end
     
   def test_wrap_method
     assert_equal "foo", self.callme
@@ -13,4 +16,5 @@ class Relevance::ModuleExtensionsTest < Test::Unit::TestCase
     assert_equal "foo", self.callme
     assert_equal 1, self.callme(1)
   end
+
 end

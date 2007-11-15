@@ -18,9 +18,17 @@ module Streamlined::View::RenderMethods
     end
     options
   end
-  def render(options = {}, old_local_assigns = {}, &block)
+  def render_with_streamlined(options = {}, old_local_assigns = {}, &block)
     options = convert_all_options(options)
-    super(options, old_local_assigns, &block)
+    render_without_streamlined(options, old_local_assigns, &block)
   end
+  def self.included(base)
+    base.alias_method_chain :render, :streamlined
+  end
+  
 end
+
+
+
+
   

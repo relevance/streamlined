@@ -93,7 +93,7 @@ module Streamlined::Controller::ClassMethods
   @custom_model_name = nil
 
   def acts_as_streamlined(options = {})
-    @helper_overrides = options[:helpers] || []
+    raise ArgumentError, "options[:helpers] is deprecated" if options[:helpers]
     class_eval do
       attr_reader :streamlined_controller_context, :streamlined_request_context
       attr_with_default(:breadcrumb_trail) {[]}
@@ -113,20 +113,6 @@ module Streamlined::Controller::ClassMethods
       # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
       verify :method => :post, :only => [ :destroy, :create, :update ],
             :redirect_to => { :action => :list }
-      # stick streamlined's render overrides onto the view
-      # This is fragile because it duplicates Rails code
-      # Have to in order to inject methods at the right time!
-      def self.view_class
-        @view_class ||=
-          # create a new class based on the default template class and include helper methods
-          returning Class.new(ActionView::Base) do |view_class|
-            # inject our methods first, so user can override them
-            view_class.send(:include, Streamlined::Helper)
-            @helper_overrides.each {|ho| view_class.send(:include, ho) }
-            view_class.send(:include, master_helper_module)
-          end
-      end
-      
       alias_method_chain :initialize, :streamlined_variables
     end
   end

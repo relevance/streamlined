@@ -22,12 +22,13 @@ class Streamlined::ControllerTest < Test::Unit::TestCase
     end
   end
   
-  def test_act_as_streamlined
+  def test_deprecation_of_helper_overrides
     c = FooController
     c.acts_as_streamlined
-    assert_equal [], c.send(:instance_variable_get, :@helper_overrides)
-    c.acts_as_streamlined :helpers => ["NEW HELPER"]
-    assert_equal ["NEW HELPER"], c.send(:instance_variable_get, :@helper_overrides)
+    assert_nil c.send(:instance_variable_get, :@helper_overrides)
+    assert_raises(ArgumentError) do
+      c.acts_as_streamlined :helpers => ["NEW HELPER"]
+    end
   end
   
   def test_streamlined_model
