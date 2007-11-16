@@ -11,13 +11,21 @@ module Streamlined::RenderMethods
   end
 
   def managed_views_include?(action)
-    @managed_views.include?(action)
+    managed_views.include?(action)
   end
-
+  
   def managed_partials_include?(action)
-    @managed_partials.include?(action)
+    managed_partials.include?(action)
   end
-
+  
+  def managed_partials
+    @managed_partials ||= []
+  end
+  
+  def managed_views
+    @managed_views ||= []
+  end  
+  
   # Returns true if the given template exists under <tt>app/views</tt>.
   # The template name can optionally include an extension.  If an extension
   # is not provided, <tt>rhtml</tt> will be used by default.

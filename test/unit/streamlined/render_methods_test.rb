@@ -12,21 +12,7 @@ class Streamlined::RenderMethodsTest < Test::Unit::TestCase
   def controller_path
     "people"
   end
-  
-  def managed_views_include?(action)
-    true
-  end
-
-  def managed_partials_include?(action)
-    true
-  end
   # end stub methods
-  
-  def pretend_template_exists(exists)
-    flexstub(self) do |stub|
-      stub.should_receive(:specific_template_exists?).and_return(exists)
-    end
-  end
   
   def test_specific_template_exists?
     assert specific_template_exists?("templates/template")
@@ -37,20 +23,19 @@ class Streamlined::RenderMethodsTest < Test::Unit::TestCase
   end
   
   def test_convert_action_options_for_generic
-    pretend_template_exists(false)
+    @managed_views = ['new']
     options = {:action=>"new", :id=>"1"}
     convert_action_options(options)
     assert_equal({:template=>generic_view("new"), :id=>"1"}, options)
   end
 
   def test_convert_action_options_for_specific
-    pretend_template_exists(true)
+    @managed_partials = ['new']
     options = {:action=>"new", :id=>"1"}
     convert_action_options(options)
     assert_equal({:action=>"new", :id=>"1"}, options)
   end
   
   # partials are view/controller specific and are tested separately
-
 
 end
