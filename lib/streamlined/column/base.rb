@@ -42,6 +42,10 @@ class Streamlined::Column::Base
     "#{name}_id"
   end
   
+  def name_as_ids
+    "#{name.to_s.singularize}_ids"
+  end
+  
   def belongs_to?
     false
   end

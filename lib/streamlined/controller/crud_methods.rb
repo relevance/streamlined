@@ -106,7 +106,7 @@ module Streamlined::Controller::CrudMethods
   def update
     self.instance = model.find(params[:id])
 
-    if execute_db_action_with_default { instance.update_attributes(params[model_symbol]) }
+    if execute_db_action_with_default { update_relationships(params[model_symbol]) }
       # TODO: reimplement tag support
       # get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
       flash[:notice] = "#{model_name.titleize} was successfully updated."
@@ -207,4 +207,16 @@ module Streamlined::Controller::CrudMethods
     end  
   end
   
+  private
+  
+  def update_relationships(params)
+    instance.class.has_manies.each do |assoc|
+      param = params.delete(assoc.name)
+      if param
+        instance.send("#{assoc.name.to_s.singularize}_ids=".to_sym, param)
+      end
+    end
+    
+    instance.update_attributes(params)
+  end
 end     
