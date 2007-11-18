@@ -124,10 +124,10 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     assert_people_quick_add_link(html)                          
   end
 
-  def test_render_td_edit_for_unsupported_association_type
-    @association = Association.new(Poet.reflect_on_association(:poems), Poet, :inset_table, :count)
-    assert_equal '[TBD: editable associations]', @association.render_td_edit(nil, poets(:justin))
-  end
+  # def test_render_td_edit_for_unsupported_association_type
+  #   @association = Association.new(Poet.reflect_on_association(:poems), Poet, :inset_table, :count)
+  #   assert_equal '[TBD: editable associations]', @association.render_td_edit(nil, poets(:justin))
+  # end
   
   def assert_people_quick_add_link(html)
     assert_select root_node(html), "a" do

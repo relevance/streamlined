@@ -167,6 +167,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     (view = flexmock).should_receive(:select).with('model', 'some_name_id', [[options[:unassigned_value], nil], :foo], { :selected => nil }, {}).and_return("select").once
     flexmock(@association) do |mock|
       mock.should_receive(:column_can_be_unassigned?).with(@model, :some_name_id).and_return(true).once
+      mock.should_receive(:has_many? => false).once
       mock.should_receive(:belongs_to? => true).once
       mock.should_receive(:should_render_quick_add? => false).once
     end
