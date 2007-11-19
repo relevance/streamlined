@@ -110,8 +110,10 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     case
     when has_many?
       choices = options_for_select ? custom_options_for_select(view) : standard_options_for_select
-      # TODO: need to get this to mark the associated items as selected
-      result = view.select(model_underscore, name, choices, {}, {:size => 5, :multiple => true} )
+      selected_choices = item.send(name).collect {|e| e.id} if item.send(name)
+      result = view.select(model_underscore, name, choices,
+                           {:selected => selected_choices }, 
+                           {:size => 5, :multiple => true} )  
     when belongs_to?
       choices = options_for_select ? custom_options_for_select(view) : standard_options_for_select
       choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name_as_id.to_sym)
