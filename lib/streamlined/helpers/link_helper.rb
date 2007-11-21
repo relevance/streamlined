@@ -10,7 +10,7 @@ module Streamlined::Helpers::LinkHelper
       when ActiveRecord::Base
         link_to(model.streamlined_name,
           :controller => model.class.name.underscore.pluralize,
-          :action => "show", :id => model)
+          :action => "show", :id => model.id)
       when nil
         "(unassigned)"
       else 
@@ -20,7 +20,7 @@ module Streamlined::Helpers::LinkHelper
   
   # Clicking on the +link+ will toggle visibility of the DOM ID +element+.
   def link_to_toggler(link, element)
-    link_to(link, "\##{element}", :class=>"sl_toggler")
+    link_to(link, "\##{element}", :class => "sl_toggler")
   end
   
   # TODO: add unobtrusive JavaScript for:
@@ -34,13 +34,13 @@ module Streamlined::Helpers::LinkHelper
   def link_to_show_model(item)
     link_to(image_tag('streamlined/search_16.png', 
         {:alt => "Show #{model_name.titleize}", :title => "Show #{model_name.titleize}", :border => '0'}),          
-        :action => 'show', :id=>item)
+        :action => 'show', :id => item.id )
   end
 
   def link_to_edit_model(item)
     link_to(image_tag('streamlined/edit_16.png', 
         {:alt => "Edit #{model_name.titleize}", :title => "Edit #{model_name.titleize}", :border => '0'}),          
-        :action => 'edit', :id=>item) unless model_ui.read_only
+        :action => 'edit', :id => item.id ) unless model_ui.read_only
   end
 
   # replaced by wrap_with_link, below, and see comment
@@ -64,7 +64,7 @@ module Streamlined::Helpers::LinkHelper
   def link_to_delete_model(item)
     id = item.id
     link_to image_tag('streamlined/delete_16.png', {:alt => 'Destroy', :title => 'Destroy', :border => '0'}), 
-        {:action => 'destroy', :id => item }, 
+        {:action => 'destroy', :id => item.id }, 
         :confirm => 'Are you sure?', :method => "post"    
   end
 

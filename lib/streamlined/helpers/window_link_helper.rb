@@ -15,7 +15,7 @@ module Streamlined::Helpers::WindowLinkHelper
       when ActiveRecord::Base
         link_to(model.streamlined_name,
           :controller => model.class.name.underscore.pluralize,
-          :action => "show", :id => model)
+          :action => "show", :id => model.id)
       when nil
         "(unassigned)"
       else 
@@ -34,13 +34,13 @@ module Streamlined::Helpers::WindowLinkHelper
   def link_to_show_model(item)
     link_to_function(image_tag('streamlined/search_16.png', 
         {:alt => "Show #{model_name}", :title => "Show #{model_name}", :border => '0'}),          
-        "Streamlined.Windows.open_local_window_from_url('Show', '#{url_for(:action => 'show', :id=>item.id)}', null)")
+        "Streamlined.Windows.open_local_window_from_url('Show', '#{url_for(:action => 'show', :id => item.id)}', null)")
   end
 
   def link_to_edit_model(item)
     link_to_function(image_tag('streamlined/edit_16.png', 
         {:alt => "Edit #{model_name}", :title => "Edit #{model_name}", :border => '0'}),          
-        "Streamlined.Windows.open_local_window_from_url('Edit', '#{url_for(:action => 'edit', :id=>item.id)}', null)") unless model_ui.read_only
+        "Streamlined.Windows.open_local_window_from_url('Edit', '#{url_for(:action => 'edit', :id => item.id)}', null)") unless model_ui.read_only
   end
 
   # replaced by wrap_with_link, below, and see comment

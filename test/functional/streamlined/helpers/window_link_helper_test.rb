@@ -40,7 +40,15 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
       assert_equal "<a href=\"//phone_numbers/show/1\">1</a>", guess_show_link_for(phone_numbers(:number1))
     end
   end
-  
+
+  def test_guess_show_link_for_model_with_to_param_override
+    item = people(:justin)
+    flexmock(item).stubs(:to_param).returns("some_seo_slug")
+    with_default_route do
+      assert_equal "<a href=\"//people/show/1\">1</a>", guess_show_link_for(item)
+    end
+  end
+      
   def test_link_to_new_model
     @model_ui = flexmock(:read_only => false, :quick_new_button => true)
     @model_name = "Foo"
@@ -61,6 +69,17 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
                    "src=\"//images/streamlined/search_16.png\" title=\"Show Foo\" /></a>", link_to_show_model(item)
     end
   end
+
+  def test_link_to_show_model_with_to_param_override
+    @model_ui = flexmock(:read_only => false)
+    @model_name = "Foo"
+    item = flexmock(:id => 123, :to_param => "some_seo_param")
+    with_default_route do
+      assert_equal "<a href=\"#\" onclick=\"Streamlined.Windows.open_local_window_from_url" <<
+                    "('Show', '//foobar/show/123', null); return false;\"><img alt=\"Show Foo\" border=\"0\" "<<
+                    "src=\"//images/streamlined/search_16.png\" title=\"Show Foo\" /></a>", link_to_show_model(item)
+    end
+  end
   
   def test_link_to_edit_model
     @model_ui = flexmock(:read_only => false, :quick_new_button => true)
@@ -72,9 +91,34 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
                    "src=\"//images/streamlined/edit_16.png\" title=\"Edit Foo\" /></a>", link_to_edit_model(item)
     end
   end
+
+  def test_link_to_edit_model_with_to_param
+    @model_ui = flexmock(:read_only => false, :quick_new_button => true)
+    @model_name = "Foo"
+    item = flexmock(:id => 123, :to_param => "some_seo_slug")
+    with_default_route do
+      assert_equal "<a href=\"#\" onclick=\"Streamlined.Windows.open_local_window_from_url" <<
+                   "('Edit', '//foobar/edit/123', null); return false;\"><img alt=\"Edit Foo\" border=\"0\" " <<
+                   "src=\"//images/streamlined/edit_16.png\" title=\"Edit Foo\" /></a>", link_to_edit_model(item)
+    end
+  end
   
   def test_link_to_delete_model
     item = flexmock(:id => 123)
+    with_default_route do
+      assert_equal "<a href=\"//foobar/destroy/123\" onclick=\"if (confirm('Are you sure?')) { " <<
+                   "var f = document.createElement('form'); f.style.display = 'none'; " <<
+                   "this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;" <<
+                   "var m = document.createElement('input'); m.setAttribute('type', 'hidden'); " <<
+                   "m.setAttribute('name', '_method'); m.setAttribute('value', 'post'); " <<
+                   "f.appendChild(m);f.submit(); };return false;\"><img alt=\"Destroy\" " <<
+                   "border=\"0\" src=\"//images/streamlined/delete_16.png\" " <<
+                   "title=\"Destroy\" /></a>", link_to_delete_model(item)
+    end
+  end
+  
+  def test_link_to_delete_model
+    item = flexmock(:id => 123, :to_param => "some_seo_slug")
     with_default_route do
       assert_equal "<a href=\"//foobar/destroy/123\" onclick=\"if (confirm('Are you sure?')) { " <<
                    "var f = document.createElement('form'); f.style.display = 'none'; " <<

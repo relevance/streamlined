@@ -12,8 +12,14 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
     assert_equal "(multiple)", @view.guess_show_link_for([])
     assert_equal "(unassigned)", @view.guess_show_link_for(nil)
     assert_equal "(unknown)", @view.guess_show_link_for(1)
-    assert_equal "<a href=\"/people/show/1\">1</a>", @view.guess_show_link_for(people(:justin))
-    assert_equal "<a href=\"/phone_numbers/show/1\">1</a>", @view.guess_show_link_for(phone_numbers(:number1))
+    assert_equal %[<a href="/people/show/1">1</a>], @view.guess_show_link_for(people(:justin))
+    assert_equal %[<a href="/phone_numbers/show/1">1</a>], @view.guess_show_link_for(phone_numbers(:number1))
+  end
+  
+  def test_guess_show_link_for_model_with_to_param_override
+    model = people(:justin)
+    flexmock(model).stubs(:to_param).returns("some_seo_slug")
+    assert_equal %[<a href="/people/show/1">1</a>], @view.guess_show_link_for(model)
   end
   
   # TODO: make link JavaScript unobtrusive!
@@ -36,6 +42,43 @@ class Streamlined::Helpers::LinkHelperTest < Test::Unit::TestCase
     end
   end
   
+  def test_link_to_edit_model_with_to_param_override
+    model = people(:justin)
+    flexmock(model).stubs(:to_param).returns("some_seo_param")
+    
+    result = @view.link_to_edit_model(model)
+    assert_select root_node(result), "a[href=/people/edit/1]" do
+      assert_select "img[alt=Edit Person][border=0][src=/images/streamlined/edit_16.png][title=Edit Person]"
+    end
+  end
+  
+  def test_link_to_show_model
+    model = flexmock(:id => 1)
+    assert_equal %[<a href="/people/show/1"><img alt="Show Person" border="0" src="/images/streamlined/search_16.png" title="Show Person" /></a>], @view.link_to_show_model(model)
+  end
+  
+  def test_link_to_show_model_with_to_param_override
+    model = flexmock(:id => 1, :to_param => "some_seo_param")
+    assert_equal %[<a href="/people/show/1"><img alt="Show Person" border="0" src="/images/streamlined/search_16.png" title="Show Person" /></a>], @view.link_to_show_model(model)
+  end
+  
+  def test_link_to_delete_model
+    model = people(:justin)
+    assert_equal "<a href=\"/people/destroy/1\" onclick=\"if (confirm('Are you sure?')) { var f = document.createElement('form'); f.style.display = 'none';" <<
+                 " this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;var m = document.createElement('input'); m.setAttribute('type', 'hidden');" <<
+                 " m.setAttribute('name', '_method'); m.setAttribute('value', 'post'); f.appendChild(m);f.submit(); };return false;\"><img alt=\"Destroy\" " << 
+                 "border=\"0\" src=\"/images/streamlined/delete_16.png\" title=\"Destroy\" /></a>", @view.link_to_delete_model(model)
+  end
+  
+  def test_link_to_delete_model_with_to_param
+    model = people(:justin)
+    flexmock(model).stubs(:to_param).returns("some_seo_param")
+    assert_equal "<a href=\"/people/destroy/1\" onclick=\"if (confirm('Are you sure?')) { var f = document.createElement('form'); f.style.display = 'none';" <<
+                 " this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;var m = document.createElement('input'); m.setAttribute('type', 'hidden');" <<
+                 " m.setAttribute('name', '_method'); m.setAttribute('value', 'post'); f.appendChild(m);f.submit(); };return false;\"><img alt=\"Destroy\" " << 
+                 "border=\"0\" src=\"/images/streamlined/delete_16.png\" title=\"Destroy\" /></a>", @view.link_to_delete_model(model)
+  end
+
   def test_wrap_with_link
     result = @view.wrap_with_link("show") {"foo"}
     assert_select root_node(result), "a[href=show]", "foo"
