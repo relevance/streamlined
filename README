@@ -29,8 +29,10 @@ NOTE: You cannot extend ApplicationController with acts_as_streamlined, only chi
 Streamlined comes bundled with a set of unit and functional tests. You must install the latest
 versions of the following gems to run these tests:
 
-* FlexMock (0.6.2 or higher)
+* flexmock (0.6.2 or higher)
 * rcov (0.7.0.1 or higher)
+* mocha (0.5.5)
+* test-spec (0.4.0 or higher)
 
 To initialize your local database and run the tests, execute:
 
