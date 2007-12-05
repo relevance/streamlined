@@ -27,8 +27,6 @@ class Streamlined::View::Base
     mod = self.class.name.split("::")[-2]
 "../../vendor/plugins/streamlined/templates/relationships/#{mod.underscore}/#{Inflector.underscore(Inflector.demodulize(self.class.name))}"
   end
-  
-  private
-  
+    
 end
 
