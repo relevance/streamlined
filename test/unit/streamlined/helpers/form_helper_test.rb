@@ -22,17 +22,26 @@ class Streamlined::FormHelperTest < Test::Unit::TestCase
     assert column_can_be_unassigned?(nil, nil)
   end
   
-  def test_column_can_be_unassigned_with_model_that_has_no_validations
-    model_class, column = flexmock, flexmock
-    model_class.should_receive(:respond_to?).with('reflect_on_validations_for').and_return(true).once
-    model_class.should_receive(:reflect_on_validations_for).with(column).and_return([])
-    assert column_can_be_unassigned?(model_class, column)
+  def test_column_required_returns_false_if_validation_reflection_isnt_available
+    assert_false column_required?(stub, "column_name")
   end
   
-  def test_column_can_be_unassigned_with_model_that_has_validations
-    model_class, column = flexmock, flexmock
-    model_class.should_receive(:respond_to?).with('reflect_on_validations_for').and_return(true).once
-    model_class.should_receive(:reflect_on_validations_for).with(column).and_return([flexmock(:macro => :validates_presence_of)])
-    assert !column_can_be_unassigned?(model_class, column)
+  def test_column_required_returns_false_if_validates_presence_of_is_not_present
+    ar_model = stub
+    ar_model.stubs(:reflect_on_validations_for).returns([])    
+    assert_false column_required?(ar_model, "column_name")
+  end
+
+  def test_column_required_returns_true_if_validates_presence_of_is_present
+    ar_model = stub
+    ar_model.stubs(:reflect_on_validations_for).with("column_name").returns([stub(:macro => :validates_presence_of)])
+    assert_true column_required?(ar_model, "column_name")
+  end
+
+  def test_column_required_returns_true_if_validates_presence_of_column_id_is_present
+    ar_model = stub
+    ar_model.stubs(:reflect_on_validations_for).with("column_name").returns([])
+    ar_model.stubs(:reflect_on_validations_for).with("column_name_id").returns([stub(:macro => :validates_presence_of)])
+    assert_true column_required?(ar_model, "column_name")
   end
 end

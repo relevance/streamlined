@@ -10,8 +10,14 @@ module Streamlined::Helpers::FormHelper
   end
   
   # Return a boolean based on whether or not the the given column allows for a nil assignment.
-  def column_can_be_unassigned?(model_class, column_name)
-    return true unless model_class.respond_to?('reflect_on_validations_for')
-    !model_class.reflect_on_validations_for(column_name).collect(&:macro).include?(:validates_presence_of)
+  def column_can_be_unassigned?(model, column_name)
+    !column_required?(model, column_name)
+  end
+  
+  def column_required?(model, column_name)
+    return false unless model.respond_to?(:reflect_on_validations_for)
+    return true if model.reflect_on_validations_for(column_name).find {|e| e.macro == :validates_presence_of }
+    return true if model.reflect_on_validations_for("#{column_name}_id").find {|e| e.macro == :validates_presence_of }
+    false
   end
 end

@@ -100,10 +100,7 @@ class Streamlined::Column::Base
   end
   
   def is_required?
-    return false unless parent_model.respond_to?(:reflect_on_validations_for)
-    return true if parent_model.reflect_on_validations_for(name).find {|e| e.macro == :validates_presence_of }
-    return true if parent_model.reflect_on_validations_for(name_as_id).find {|e| e.macro == :validates_presence_of }
-    false
+    column_required?(parent_model, name)
   end
   
   def set_attributes(hash)

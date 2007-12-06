@@ -117,47 +117,6 @@ class Streamlined::Column::BaseTest < Test::Unit::TestCase
     item = flexmock(:should_display_column_in_context? => false)
     assert !ar.is_displayable_in_context?(view, item)
   end
-
-  def test_is_required_returns_false_if_validation_reflection_isnt_available
-    base = Streamlined::Column::Base.new
-    base.parent_model = stub
-    base.stubs(:name).returns(:name=>"column")
-    assert_false base.is_required?
-  end
-  
-  def test_is_required_returns_false_if_validates_presence_of_is_not_present
-    base = Streamlined::Column::Base.new
-    base.stubs(:name).returns("column")
-
-    ar_model = stub
-    ar_model.stubs(:reflect_on_validations_for).returns([])
-    
-    base.parent_model = ar_model
-    assert_false base.is_required?    
-  end
-
-  def test_is_required_returns_true_if_validates_presence_of_is_present
-    base = Streamlined::Column::Base.new
-    base.stubs(:name).returns("column")
-
-    ar_model = stub
-    ar_model.stubs(:reflect_on_validations_for).with("column").returns([stub(:macro => :validates_presence_of)])
-    
-    base.parent_model = ar_model
-    assert_true base.is_required?
-  end
-
-  def test_is_required_returns_true_if_validates_presence_of_column_id_is_present
-    base = Streamlined::Column::Base.new
-    base.stubs(:name).returns("column")
-
-    ar_model = stub
-    ar_model.stubs(:reflect_on_validations_for).with("column").returns([])
-    ar_model.stubs(:reflect_on_validations_for).with("column_id").returns([stub(:macro => :validates_presence_of)])
-    
-    base.parent_model = ar_model
-    assert_true base.is_required?
-  end
   
   def test_is_displayable_in_context_with_create_only_set_to_true
     @addition.create_only = true
