@@ -100,9 +100,10 @@ class Streamlined::Column::Base
   end
   
   def is_required?
-    col_name = belongs_to? ? name_as_id : name
-    parent_model.respond_to?(:reflect_on_validations_for) && 
-      parent_model.reflect_on_validations_for(col_name).find {|e| e.macro == :validates_presence_of }
+    return false unless parent_model.respond_to?(:reflect_on_validations_for)
+    return true if parent_model.reflect_on_validations_for(name).find {|e| e.macro == :validates_presence_of }
+    return true if parent_model.reflect_on_validations_for(name_as_id).find {|e| e.macro == :validates_presence_of }
+    false
   end
   
   def set_attributes(hash)
@@ -220,7 +221,7 @@ class Streamlined::Column::Base
   # Should this column be marked required for this item?
   def mark_required?(item)
     ui = Streamlined::ui_for(item.class)
-		ui.mark_required_fields && is_required? 
+		ui.mark_required_fields && is_required?
 	end
   
   def div_wrapper(id, &block)
