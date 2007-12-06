@@ -116,7 +116,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
                            {:size => 5, :multiple => true} )  
     when belongs_to?
       choices = options_for_select ? custom_options_for_select(view) : standard_options_for_select
-      choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name_as_id.to_sym)
+      choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name)
       selected_choice = item.send(name).id if item.send(name)
       result = view.select(model_underscore, name_as_id, choices, { :selected => selected_choice }, html_options)
       result += render_quick_add(view) if should_render_quick_add?(view)
