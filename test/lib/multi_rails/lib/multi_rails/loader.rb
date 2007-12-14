@@ -20,10 +20,13 @@ module MultiRails
       specs.map {|spec| spec.version.to_s }.sort
     end
     
+    # Try to detech the latest stable by finding the most recent version with less then 4 version parts
+    #  -- not sure if there is a better way?
     def self.latest_stable_version
       all_rails_versions.sort.reverse.detect {|version| version.count(".") < 3 }
     end
     
+    # Find the most recent version
     def self.latest_version
       all_rails_versions.sort.last
     end
@@ -37,6 +40,12 @@ module MultiRails
     def gem_and_require_rails
       gem_rails
       require_rails
+      display_rails_gem_used
+    end
+    
+    # Display the rails gem from the laod path, as a sanity check to make sure we are getting the rails version we expect
+    def display_rails_gem_used
+      puts %[#{MultiRails::BAR}\nUsing rails gem: #{Config.rails_load_path}\n]
     end
     
     def gem_rails

@@ -1,7 +1,8 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "multi_rails_test_helper"))
-require File.expand_path(File.join(File.dirname(__FILE__), "../lib/multi_rails"))
 
 describe "Rubygem test helper init" do
+  setup { never_puts }
+  
   it "should call gem and require rails" do
     MultiRails.expects(:gem_and_require_rails).once
     load File.expand_path(File.join(File.dirname(__FILE__), "../lib/multi_rails_init.rb"))

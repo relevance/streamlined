@@ -15,3 +15,14 @@ Hoe.new('multi_rails', MultiRails::VERSION) do |p|
   p.test_globs = 'test/**/*_test.rb' # we use the foo_test convention
   p.spec_extras[:require_paths] = ['lib', 'tasks']
 end
+
+desc "Copy trunk to stable tag in SVN to make things easy for Rails plugin installation."
+task :copy_stable do
+  trunk_dir  = "~/src/opensource/robsanheim/trunk/multi_rails/"
+  stable_dir = "~/src/opensource/robsanheim/tags/stable/multi_rails/"
+  puts %x[rsync --exclude='.svn' -r #{trunk_dir} #{stable_dir}]
+  puts %x[svn ci #{stable_dir} -m 'Release to stable from trunk.']
+end
+
+desc "Do a full release of the multi_rails."
+task :full_release => [:release, :publish_docs]

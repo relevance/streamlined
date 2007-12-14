@@ -16,50 +16,62 @@ namespace :test do
       begin
         MultiRails::Loader.all_rails_versions.each_with_index do |version, index|
           silence_warnings { ENV["MULTIRAILS_RAILS_VERSION"] = version }
-          write_rails_gem_version_file(version) if within_rails_app?
+          init_for_rails_app(version) if within_rails_app?
           print_rails_version
           reset_test_tasks unless index == 0
-          Rake::Task[:test].invoke
+          begin
+            Rake::Task[:test].invoke
+          rescue RuntimeError => e
+            puts e.message
+          end        
         end
       ensure
-        clean_up_rails_gem_version_file
+        clean_up
       end
     end
     
     desc "Run against one verison of Rails specified as 'MULTIRAILS_RAILS_VERSION' - for example 'rake test:multi_rails:one MULTIRAILS_RAILS_VERSION=1.2.3'"
     task :one do
-      print_rails_version
-      Rake::Task[:test].invoke
+      begin
+        version = ENV["MULTIRAILS_RAILS_VERSION"]
+        raise "Must give a version number" unless version
+        init_for_rails_app(version) if within_rails_app?
+        print_rails_version
+        Rake::Task[:test].invoke
+      ensure
+        clean_up
+      end
     end
     
     desc "Run against the most recent version of Rails installed.  Most recent found: [#{MultiRails::Loader.latest_version}]."
     task :latest do
-      ENV["MULTIRAILS_RAILS_VERSION"] = MultiRails::Loader.latest_version
-      print_rails_version
-      Rake::Task[:test].invoke
+      begin
+        version = MultiRails::Loader.latest_version
+        ENV["MULTIRAILS_RAILS_VERSION"] = version
+        init_for_rails_app(version) if within_rails_app?
+        print_rails_version
+        Rake::Task[:test].invoke
+      ensure
+        clean_up
+      end
+    end
+    
+    def init_for_rails_app(version)
+      MultiRails::RailsAppHelper.init_for_rails_app(version)
+      load "Rakefile"
     end
     
     def within_rails_app?
-      Object.const_defined?("Rails") && Object.const_defined?("RAILS_ROOT")
+      ENV["MULTIRAILS_FOR_RAILS_APP"] == "true"
     end
     
-    def rails_gem_version_file
-      "#{RAILS_ROOT}/config/rails_version.rb"
+    # clean up after ourselves, reverting to clean state if needed
+    def clean_up
+      MultiRails::RailsAppHelper.clean_up if within_rails_app?
     end
     
-    # Clean up the temp file we need for 
-    def clean_up_rails_gem_version_file
-      FileUtils.rm(rails_gem_version_file) if within_rails_app? && File.exist?(rails_gem_version_file)
-    end
-    
-    # This is a hack we have to do to properly set the RAILS_GEM_VERSION before environment.rb and boot.rb run
-    def write_rails_gem_version_file(version)
-      `echo RAILS_GEM_VERSION=\\"#{version}\\" > #{rails_gem_version_file}`
-    end
-
-    BAR = "=" * 80
     def print_rails_version
-      puts "\n#{BAR}\nRequiring rails version: #{MultiRails::Config.version_lookup}\n#{BAR}"
+      puts "\n#{MultiRails::BAR}\nTesting with Rails #{MultiRails::Config.version_lookup}\n#{MultiRails::BAR}"
     end
     
     # Need to hack the Rake test task a bit, otherwise it will only run once and never repeat.
