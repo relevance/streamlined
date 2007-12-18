@@ -14,6 +14,7 @@ namespace :test do
     desc "Run against all installed versions of Rails.  Local versions found: [#{MultiRails::Loader.all_rails_versions.to_sentence}]."
     task :all do
       begin
+        failed_versions = []
         MultiRails::Loader.all_rails_versions.each_with_index do |version, index|
           silence_warnings { ENV["MULTIRAILS_RAILS_VERSION"] = version }
           init_for_rails_app(version) if within_rails_app?
@@ -23,8 +24,10 @@ namespace :test do
             Rake::Task[:test].invoke
           rescue RuntimeError => e
             puts e.message
-          end        
+            failed_versions << version
+          end
         end
+        abort("Build failed with Rails versions: [#{failed_versions.to_sentence}].") if failed_versions.any?
       ensure
         clean_up
       end
