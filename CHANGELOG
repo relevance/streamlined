@@ -1,3 +1,5 @@
+12/21/07 - Moved all tests to test-spec [SDH, JNR]
+
 10/30/07 - Moved the init code setting up various path constants (STREAMLINED_ROOT, etc) from controller to the Streamlined:Environment module [Rob Sanheim]
 
 10/30/07 - update copyrights, urls, various other little cleanups [Rob Sanheim]
