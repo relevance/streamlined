@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 
-class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
+describe "Relevance::ModuleAdditions" do
   
   class TestMe
     attr_accessor :helper
@@ -10,13 +10,13 @@ class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
     delegates :secret, :hidden, :to=>:helper, :visibility=>:private
   end
   
-  def test_visibility
+  it "visibility" do
     t = TestMe.new
     assert_has_public_methods(t, :jump, :run, :fly)
     assert_has_private_methods(t, :secret, :hidden)
   end
   
-  def test_bad_options
+  it "bad options" do
     assert_raise(ArgumentError) do 
       Class.new do
         delegates :oops
@@ -24,7 +24,7 @@ class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
     end
   end
   
-  def test_default
+  it "default" do
     t = TestMe.new
     assert_nil t.run
     t.helper = flexmock("helper") 
@@ -32,7 +32,7 @@ class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
     assert_equal 0, t.run
   end
   
-  def test_method
+  it "method" do
     t = TestMe.new
     t.helper = flexmock("helper")
     t.helper.should_receive(:soar).and_return(:done)
@@ -40,7 +40,7 @@ class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
     assert_equal(:done, t.zoom)
   end
   
-  def test_plain
+  it "plain" do
     t = TestMe.new
     assert_raise(NoMethodError) {t.jump}
     t.helper = flexmock("helper")
@@ -53,7 +53,7 @@ class Relevance::ModuleAdditionsTest < Test::Unit::TestCase
     attr_with_default(:b) {:beta}
   end
   
-  def test_attr_with_default
+  it "attr with default" do
     t = TestModuleAdditions.new
     assert_equal :alpha, t.a
     assert_equal :beta, t.b

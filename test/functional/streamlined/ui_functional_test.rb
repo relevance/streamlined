@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '../../test_functional_helper')
 require 'streamlined/reflection'
 
-class Streamlined::UIFunctionalTest < Test::Unit::TestCase
+describe "Streamlined::UIFunctional" do
   def setup
     Streamlined::ReloadableRegistry.reset
     @poet_ui = Streamlined.ui_for(Poet)
@@ -12,22 +12,22 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     end
   end
   
-  def test_all_columns
+  it "all columns" do
     assert_equal_sets([:id,:first_name,:poems,:last_name],@poet_ui.all_columns.map{|x| x.name.to_sym})
   end
 
-  def test_default_user_columns
+  it "default user columns" do
     assert_equal_sets([:first_name,:poems,:last_name],@poet_ui.user_columns.map{|x| x.name.to_sym})
   end
   
-  def test_user_columns_act_as_template_for_other_column_groups
+  it "user columns act as template for other column groups" do
     @poet_ui.user_columns :first_name, {:read_only => true}, :last_name
     @poet_ui.list_columns :first_name, :last_name, {:read_only => true}
     assert_equal true, @poet_ui.scalars[:first_name].read_only, "settings shared from user_columns"
     assert_equal false, @poet_ui.scalars[:last_name].read_only, "settings not share from other column groups"
   end
   
-  def test_view_specific_columns
+  it "view specific columns" do
     @poet_ui.user_columns :first_name, :last_name
     assert_equal false, @poet_ui.scalars[:first_name].read_only
     assert_equal false, @poet_ui.scalars[:last_name].read_only
@@ -39,30 +39,30 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
   end
   
   # this allows us to declare ui options for dynamic methods not added yet
-  def test_can_find_instance_method_when_not_declared
+  it "can find instance method when not declared" do
     assert_nothing_raised {@poet_ui.list_columns :first_name, :last_name, :nonexistent_method}
     assert_equal 3, @poet_ui.list_columns.length
   end
 
-  def test_id_fragment
+  it "id fragment" do
     assert_equal "Count", @poet_ui.id_fragment(Poet.reflect_on_association(:poems), "show")
     assert_equal "Membership", @poet_ui.id_fragment(Poet.reflect_on_association(:poems), "edit")
   end      
   
-  def test_reflect_on_model_with_no_delegates
+  it "reflect on model with no delegates" do
     assert_equal({}, @poet_ui.reflect_on_delegates)
   end
               
   # TODO: hash storage of name/column pairs will result in name collisions if 
   # two different delegates have the same column names. Is this intentional?
-  def test_reflect_on_model_with_delegates
+  it "reflect on model with delegates" do
     @poet_ui.model = Authorship
     delegate_hash = @poet_ui.reflect_on_delegates
     assert_key_set [:articles, :first_name, :full_name, :authorships, :id, :books, :last_name], delegate_hash
     assert_equal_sets [Streamlined::Column::Addition, Streamlined::Column::Association, Streamlined::Column::ActiveRecord], delegate_hash.values.map(&:class)
   end
   
-  def test_conditions_by_like_with_associations
+  it "conditions by like with associations" do
     ui = Streamlined.ui_for(Poet) do
       list_columns :first_name, :last_name, :poems, { :filter_column => :text }
     end
@@ -70,18 +70,18 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_equal expected, ui.conditions_by_like_with_associations("value")
   end
 
-  def test_conditions_by_like_with_associations_for_unconventional_table_names
+  it "conditions by like with associations for unconventional table names" do
     expected = "people.first_name LIKE '%value%' OR people.last_name LIKE '%value%'"
     assert_equal expected, Streamlined.ui_for(Unconventional).conditions_by_like_with_associations("value")
   end
   
-  def test_conditions_by_like_with_non_filterable_columns
+  it "conditions by like with non filterable columns" do
     expected = "people.first_name LIKE '%value%'"
     ui = Streamlined.ui_for(Person) { user_columns :first_name, :last_name, { :filterable => false }}
     assert_equal expected, ui.conditions_by_like_with_associations("value")
   end
   
-  def test_conditions_by_like_uses_list_columns
+  it "conditions by like uses list columns" do
     ui = Streamlined.ui_for(Person) do
       user_columns :first_name
       list_columns :first_name, :last_name
@@ -90,12 +90,12 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_equal expected, ui.conditions_by_like_with_associations("value")
   end
   
-  def test_columns_not_aliased_between_scalars_and_delegates
+  it "columns not aliased between scalars and delegates" do
     assert_not_nil(poem_first_name = @poem_ui.column(:first_name))
     assert_not_nil(poet_first_name = @poet_ui.column(:first_name))
   end
   
-  def test_columns_not_aliased_between_column_groups
+  it "columns not aliased between column groups" do
     template_column = @poet_ui.column(:first_name)
     list_column = @poet_ui.column(:first_name, :crud_context => :list)
     show_column = @poet_ui.column(:first_name, :crud_context => :show)
@@ -117,14 +117,14 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     @columns_to_export_formats = [:enhanced_xml, :enhanced_xml_file, :xml_stylesheet]
   end
 
-  def test_all_export_links_are_present_by_default
+  it "all export links are present by default" do
     setup_export_tests
     export_links = @all_export_formats
     assert_equal export_links, @view.send(:model_ui).exporters
     export_links.each {|format| assert_export_link(format, @view.send(:model_ui).default_exporter?(format))}    
   end                                                                                                                                                              
 
-  def test_declarative_exporters_none                                                                                                                              
+  it "declarative exporters none" do                                                                                                                              
     setup_export_tests
     export_links = @all_export_formats
     @view.send(:model_ui).exporters :none                                                                                                                          
@@ -140,7 +140,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_select look_for, {:count => count}, error_msg
   end                                                                                                                                                              
                                                                                                                                                                    
-  def test_declarative_exporters_all                                                                                                                               
+  it "declarative exporters all" do                                                                                                                               
     setup_export_tests
     export_links = @all_export_formats
     @view.send(:model_ui).exporters export_links
@@ -149,7 +149,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     export_links.each {|format| assert_export_link(format, @view.send(:model_ui).default_exporter?(format))}    
   end                                                                                                                                                              
 
-  def test_declarative_exporters_one
+  it "declarative exporters one" do
     setup_export_tests
     one_format = :yaml
     other_export_links = @all_export_formats - Array(one_format)
@@ -160,7 +160,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     other_export_links.each {|format| assert_export_link(format, @view.send(:model_ui).default_exporter?(format), false)}
   end
 
-  def test_declarative_exporters_several
+  it "declarative exporters several" do
     setup_export_tests
     several_formats = :csv, :xml
     other_export_links = @all_export_formats - several_formats
@@ -171,7 +171,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     other_export_links.each {|format| assert_export_link(format, @view.send(:model_ui).default_exporter?(format), false)}
   end
 
-  def test_export_defaults
+  it "export defaults" do
     setup_export_tests
     assert_equal true, @view.send(:model_ui).allow_full_download
     assert_equal true, @view.send(:model_ui).default_full_download
@@ -181,7 +181,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_equal [],   @view.send(:model_ui).default_deselected_columns
   end
 
-  def test_allow_full_download_true_and_default_full_download_true
+  it "allow full download true and default full download true" do
     setup_export_tests
     @view.send(:model_ui).allow_full_download   true
     @view.send(:model_ui).default_full_download true
@@ -192,7 +192,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_full_download(true,   @view.send(:model_ui).default_full_download)  
   end
 
-  def test_allow_full_download_true_and_default_full_download_false
+  it "allow full download true and default full download false" do
     setup_export_tests
     @view.send(:model_ui).allow_full_download   true
     @view.send(:model_ui).default_full_download false
@@ -203,7 +203,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_full_download(true,   @view.send(:model_ui).default_full_download)  
   end
 
-  def test_not_visible_when_allow_full_download_false
+  it "not visible when allow full download false" do
     setup_export_tests
     @view.send(:model_ui).allow_full_download   false
     @view.send(:model_ui).default_full_download true
@@ -214,7 +214,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_full_download(true,   @view.send(:model_ui).default_full_download, false)  
   end
 
-  def test_default_separator
+  it "default separator" do
     setup_export_tests
     separator = ';'
     @view.send(:model_ui).default_separator separator
@@ -226,7 +226,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_select look_for, {:count => count}, error_msg
   end
 
-  def test_default_separator_visible_for_csv
+  it "default separator visible for csv" do
     setup_export_tests
     separator = ','
     @view.send(:model_ui).exporters :csv
@@ -238,7 +238,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_select look_for, {:count => count}, error_msg
   end
 
-  def test_default_separator_not_visible_for_other_formats
+  it "default separator not visible for other formats" do
     setup_export_tests
     separator = ','
     formats = @all_export_formats - Array(:csv)
@@ -251,19 +251,19 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_select look_for, {:count => count}, error_msg
   end
 
-  def test_default_skip_header_true
+  it "default skip header true" do
     skip_header_setup(true)
     assert_default_skip_header(true)
   end
 
-  def test_default_skip_header_false
+  it "default skip header false" do
     skip_header_setup(false)
     assert_default_skip_header(false)
     # and confirm its not showing up as checked
     assert_default_skip_header(true, false)
   end
 
-  def test_skip_header_visible_for_csv
+  it "skip header visible for csv" do
     setup_export_tests
     @view.send(:model_ui).exporters :csv
     get 'index'
@@ -271,7 +271,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_default_skip_header(false)
   end
 
-  def test_skip_header_not_visible_for_other_formats
+  it "skip header not visible for other formats" do
     setup_export_tests
     formats = @all_export_formats - Array(:csv)
     @view.send(:model_ui).exporters formats
@@ -280,7 +280,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_default_skip_header(false, false)
   end
 
-  def test_default_deselected_columns_with_symbol
+  it "default deselected columns with symbol" do
     setup_export_tests
     column = :last_name
     @view.send(:model_ui).default_deselected_columns column
@@ -298,7 +298,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     other_columns.each {|column| assert_selected_column(column, selected)}
   end
 
-  def test_default_deselected_columns_with_array
+  it "default deselected columns with array" do
     setup_export_tests
     columns = :first_name, :full_name
     @view.send(:model_ui).default_deselected_columns columns
@@ -315,7 +315,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_selected_column(other_column, selected)
   end
   
-  def test_columns_to_export_not_visible_for_other_formats
+  it "columns to export not visible for other formats" do
     setup_export_tests
     formats = @all_export_formats - @columns_to_export_formats
     @view.send(:model_ui).exporters formats
@@ -327,7 +327,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     columns.each {|column| assert_selected_column(column, selected, false)}
   end
 
-  def test_columns_to_export_header_visible
+  it "columns to export header visible" do
     setup_export_tests
     formats = @columns_to_export_formats
     look_for = "div[id=show_export] form[id=export] h4"
@@ -348,7 +348,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_select look_for, {:count => count, :text => text}, error_msg
   end
 
-  def test_columns_to_export_header_not_visible
+  it "columns to export header not visible" do
     setup_export_tests
     formats = @all_export_formats - @columns_to_export_formats
     look_for = "div[id=show_export] form[id=export] h4"
@@ -369,7 +369,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_select look_for, {:count => count, :text => text}, error_msg
   end
 
-  def test_options_header_visible_for_csv
+  it "options header visible for csv" do
     setup_export_tests
     @view.send(:model_ui).exporters :csv
     get 'index'
@@ -381,7 +381,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_select look_for, {:count => count, :text => text}, error_msg
   end
 
-  def test_options_header_visible_for_allow_full_download
+  it "options header visible for allow full download" do
     setup_export_tests
     @view.send(:model_ui).allow_full_download true
     get 'index'
@@ -393,7 +393,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_select look_for, {:count => count, :text => text}, error_msg
   end
 
-  def test_options_header_not_visible_when_no_options
+  it "options header not visible when no options" do
     setup_export_tests
     @view.send(:model_ui).allow_full_download false
     @view.send(:model_ui).exporters :xml
@@ -407,7 +407,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     assert_select look_for, {:count => count, :text => text}, error_msg
   end
 
-  def test_the_default_exporter_is_checked 
+  it "the default exporter is checked" do 
     setup_export_tests
     default = @view.send(:model_ui).default_exporter
     other_export_links = @all_export_formats - Array(default)
@@ -419,7 +419,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     other_export_links.each {|format| assert_export_link(format, true, false)}    
   end
 
-  def test_default_exporter_with_one_exporter
+  it "default exporter with one exporter" do
     setup_export_tests
     exporter = :csv
     @view.send(:model_ui).exporters exporter
@@ -432,7 +432,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     other_export_links.each {|format| assert_export_link(format, false, false)}    
   end
 
-  def test_default_exporter_with_several_including_default
+  it "default exporter with several including default" do
     setup_export_tests
     default = @view.send(:model_ui).default_exporter
     exporters = :yaml, default, :json
@@ -448,7 +448,7 @@ class Streamlined::UIFunctionalTest < Test::Unit::TestCase
     other_export_links.each {|format| assert_export_link(format, true, false)}    
   end
 
-  def test_default_exporter_with_several_excluding_default
+  it "default exporter with several excluding default" do
     setup_export_tests
     exporters = :xml, :yaml, :json
     default = exporters.first

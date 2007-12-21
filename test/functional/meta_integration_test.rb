@@ -4,7 +4,7 @@ require 'streamlined/ui'
 require 'streamlined/integration_tests'
 require 'action_controller/integration'
 
-class MetaIntegrationTest < ActionController::IntegrationTest
+describe "MetaIntegration", ActionController::IntegrationTest do
   # TODO: need some way to load routes
   # fixtures :people
   # include Streamlined::IntegrationTests
@@ -16,7 +16,7 @@ class MetaIntegrationTest < ActionController::IntegrationTest
   #   get '/people'
   # end
   
-  def test_truth
+  it "truth" do
     
   end
 end

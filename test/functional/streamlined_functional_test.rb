@@ -1,12 +1,12 @@
 require File.join(File.dirname(__FILE__), '../test_functional_helper')
 
-class StreamlinedFunctionalTest < Test::Unit::TestCase
+describe "StreamlinedFunctional" do
   
   def setup
     Streamlined::ReloadableRegistry.reset
   end
   
-  def test_ui_for
+  it "ui for" do
     assert_instance_of(Streamlined::UI, poem_ui = Streamlined.ui_for(Poem))
     assert_instance_of(Streamlined::UI, poet_ui = Streamlined.ui_for(Poet))
     assert_same(poem_ui, Streamlined.ui_for(Poem), "registry should cache ui instances")

@@ -1,35 +1,35 @@
 require File.join(File.dirname(__FILE__), '../test_functional_helper')
 include Streamlined::Column
 
-class AssociationFunctionalTest < Test::Unit::TestCase
+describe "AssociationFunctional" do
   fixtures :poets, :poems
 
-  def test_associables_for_non_polymorphic_association
+  it "associables for non polymorphic association" do
     @association = Association.new(Poet.reflect_on_association(:poems), Poet, :inset_table, :count)
     assert_equal [Poem], @association.associables
   end
 
-  def test_associables_for_polymorphic_association
+  it "associables for polymorphic association" do
     @association = Association.new(Authorship.reflect_on_association(:publication), Author, :inset_table, :count)
     assert_equal_sets [Book, Article], @association.associables
   end
   
-  def test_render_quick_add_for_belongs_to
+  it "render quick add for belongs to" do
     stock_controller_and_view
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
     html = @association.render_quick_add(@view)
     assert_people_quick_add_link(html)                          
   end
 
-  def test_render_quick_add_for_has_one   
+  it "render quick add for has one" do   
     # TODO Implement support for quick_add has_one.  (You will write the test first, won't you?)
   end
 
-  def test_render_quick_add_for_has_many   
+  it "render quick add for has many" do   
     # TODO Implement support for quick_add has_many.  (You will write the test first, won't you?)
   end
   
-  def test_render_td_list_with_link_to
+  it "render td list with link to" do
     stock_controller_and_view
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
     @association.link_to = { :action => "show" }
@@ -39,7 +39,7 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     assert_equal expected, @association.render_td_list(@view, poems(:haiku))
   end
   
-  def test_render_td_list_with_link_to_and_edit_in_list
+  it "render td list with link to and edit in list" do
     stock_controller_and_view
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
     @association.link_to = { :action => "show" }
@@ -50,7 +50,7 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     assert_equal expected, @association.render_td_list(@view, poems(:haiku))
   end
   
-  def test_render_td_edit      
+  it "render td edit" do      
     stock_controller_and_view              
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
     html = @association.render_td_edit(@view, poems(:limerick))
@@ -62,7 +62,7 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     assert_people_quick_add_link(html)                          
   end
 
-  def test_render_td_edit_with_html_options
+  it "render td edit with html options" do
     stock_controller_and_view              
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
     @association.html_options = { :class => 'foo_class' }
@@ -76,7 +76,7 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     assert_people_quick_add_link(html)                          
   end
 
-  def test_render_td_edit_with_unassigned_value_set      
+  it "render td edit with unassigned value set" do      
     stock_controller_and_view              
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
     @association.unassigned_value = "None"
@@ -89,7 +89,7 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     assert_people_quick_add_link(html)                          
   end
 
-  def test_render_td_edit_with_wrapper_set
+  it "render td edit with wrapper set" do
     stock_controller_and_view              
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
     @association.wrapper = Proc.new { |c| "<div id='wrapper'>#{c}</div>" }
@@ -108,7 +108,7 @@ class AssociationFunctionalTest < Test::Unit::TestCase
     end
   end 
   
-  def test_render_td_edit_with_options_for_select
+  it "render td edit with options for select" do
     stock_controller_and_view
     @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count)
 

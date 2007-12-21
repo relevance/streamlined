@@ -5,7 +5,7 @@ require "#{RAILS_ROOT}/app/controllers/application"
 class FoobarController < ApplicationController
 end
 
-class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
+describe "Streamlined::WindowLinkHelper" do
   include ActionView::Helpers::AssetTagHelper
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::UrlHelper 
@@ -31,7 +31,7 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     @controller.send(:initialize_current_url)
   end
   
-  def test_guess_show_link_for
+  it "guess show link for" do
     with_default_route do
       assert_equal "(multiple)", guess_show_link_for([])
       assert_equal "(unassigned)", guess_show_link_for(nil)
@@ -41,7 +41,7 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     end
   end
 
-  def test_guess_show_link_for_model_with_to_param_override
+  it "guess show link for model with to param override" do
     item = people(:justin)
     flexmock(item).stubs(:to_param).returns("some_seo_slug")
     with_default_route do
@@ -49,7 +49,7 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     end
   end
       
-  def test_link_to_new_model
+  it "link to new model" do
     @model_ui = flexmock(:read_only => false, :quick_new_button => true)
     @model_name = "Foo"
     with_default_route do
@@ -59,7 +59,7 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     end
   end
   
-  def test_link_to_show_model
+  it "link to show model" do
     @model_ui = flexmock(:read_only => false, :quick_new_button => true)
     @model_name = "Foo"
     item = flexmock(:id => 123)
@@ -70,7 +70,7 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     end
   end
 
-  def test_link_to_show_model_with_to_param_override
+  it "link to show model with to param override" do
     @model_ui = flexmock(:read_only => false)
     @model_name = "Foo"
     item = flexmock(:id => 123, :to_param => "some_seo_param")
@@ -81,7 +81,7 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     end
   end
   
-  def test_link_to_edit_model
+  it "link to edit model" do
     @model_ui = flexmock(:read_only => false, :quick_new_button => true)
     @model_name = "Foo"
     item = flexmock(:id => 123)
@@ -92,7 +92,7 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     end
   end
 
-  def test_link_to_edit_model_with_to_param
+  it "link to edit model with to param" do
     @model_ui = flexmock(:read_only => false, :quick_new_button => true)
     @model_name = "Foo"
     item = flexmock(:id => 123, :to_param => "some_seo_slug")
@@ -103,7 +103,7 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     end
   end
   
-  def test_link_to_delete_model
+  it "link to delete model" do
     item = flexmock(:id => 123)
     with_default_route do
       assert_equal "<a href=\"//foobar/destroy/123\" onclick=\"if (confirm('Are you sure?')) { " <<
@@ -117,7 +117,7 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     end
   end
   
-  def test_link_to_delete_model
+  it "link to delete model" do
     item = flexmock(:id => 123, :to_param => "some_seo_slug")
     with_default_route do
       assert_equal "<a href=\"//foobar/destroy/123\" onclick=\"if (confirm('Are you sure?')) { " <<
@@ -131,7 +131,7 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     end
   end
   
-  def test_link_to_next_page
+  it "link to next page" do
     flexmock(self).should_receive(:page_link_style).and_return("").once
     with_default_route do
       assert_equal "<a href=\"#\" onclick=\"Streamlined.PageOptions.nextPage(); return false;\">" <<
@@ -141,7 +141,7 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     end
   end
   
-  def test_link_to_previous_page
+  it "link to previous page" do
     flexmock(self).should_receive(:page_link_style).and_return("").once
     with_default_route do
       assert_equal "<a href=\"#\" onclick=\"Streamlined.PageOptions.previousPage(); return false;\">" <<
@@ -151,42 +151,42 @@ class Streamlined::WindowLinkHelperTest < Test::Unit::TestCase
     end
   end
   
-  def test_page_link_style_without_pages
+  it "page link style without pages" do
     @streamlined_item_pages = []
     assert_equal "display: none;", page_link_style
   end
   
-  def test_page_link_style_with_previous_page
+  it "page link style with previous page" do
     @streamlined_item_pages = flexmock(:empty? => false, :current => flexmock(:previous => true))
     assert_equal "", page_link_style
   end
   
-  def test_page_link_style_without_previous_page
+  it "page link style without previous page" do
     @streamlined_item_pages = flexmock(:empty? => false, :current => flexmock(:previous => false))
     assert_equal "display: none;", page_link_style
   end
   
-  def test_link_to_new_model_when_quick_new_button_is_false
+  it "link to new model when quick new button is false" do
     @model_ui = flexmock(:read_only => false, :quick_new_button => false)
     assert_nil link_to_new_model
   end
   
-  def test_wrap_with_link
+  it "wrap with link" do
     result = wrap_with_link("foo") { "bar" }
     assert_select root_node(result), "a[href=foo]", "bar"
   end
   
-  def test_wrap_with_link_with_empty_block
+  it "wrap with link with empty block" do
     result = wrap_with_link("foo") {}
     assert_select root_node(result), "a[href=foo]", "foo"
   end
   
-  def test_wrap_with_link_with_array
+  it "wrap with link with array" do
     result = wrap_with_link(["foo", {:action => "bar"}]) { "bat" }
     assert_select root_node(result), "a[href=foo][action=bar]", "bat"
   end
   
-  def test_wrap_with_link_with_array_and_empty_block
+  it "wrap with link with array and empty block" do
     result = wrap_with_link(["foo", {:action => "bar"}]) {}
     assert_select root_node(result), "a[href=foo][action=bar]", "foo"
   end

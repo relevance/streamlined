@@ -1,8 +1,9 @@
 require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
 require 'streamlined/controller/filter_methods'
 
-class FilterMethodsFunctionalTest < Test::Unit::TestCase
-  include Streamlined::Controller::FilterMethods
+include Streamlined::Controller::FilterMethods
+
+describe "FilterMethodsFunctional" do
 
   def setup
     @controller = PeopleController.new
@@ -22,7 +23,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
 #    end
   end
 
-  def test_add_a_filter
+  it "add a filter" do
     filter_column = "first_name"
     filter_value = "jus"
     operand = "like"
@@ -34,7 +35,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_two_filters
+  def add_two_filters
     filter_column = "first_name"
     filter_value = "jus"
     operand = "like"
@@ -56,7 +57,11 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
   
-  def test_add_a_filter_with_an_equals_sign_operand
+  it "can add two filters" do
+    add_two_filters
+  end
+  
+  it "add a filter with an equals sign operand" do
     filter_column = "first_name"
     filter_value = "=jus"
     operand = "="
@@ -68,7 +73,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_a_less_than_sign_operand
+  it "add a filter with a less than sign operand" do
     filter_column = "first_name"
     filter_value = "<j"
     operand = "<"
@@ -80,7 +85,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_spaces_after_the_operand
+  it "add a filter with spaces after the operand" do
     filter_column = "first_name"
     filter_value = "<       j"
     operand = "<"
@@ -93,7 +98,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
   end
 
 
-  def test_add_a_filter_with_a_less_than_or_equals_sign_operand
+  it "add a filter with a less than or equals sign operand" do
     filter_column = "first_name"
     filter_value = "<=j"
     operand = "<="
@@ -105,7 +110,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_a_greater_than_sign_operand
+  it "add a filter with a greater than sign operand" do
     filter_column = "first_name"
     filter_value = ">j"
     operand = ">"
@@ -117,7 +122,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_a_greater_than_or_equals_sign_operand
+  it "add a filter with a greater than or equals sign operand" do
     filter_column = "first_name"
     filter_value = ">=j"
     operand = ">="
@@ -129,7 +134,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_the_after_operand
+  it "add a filter with the after operand" do
     filter_column = "first_name"
     filter_value = "after j"
     operand = ">"
@@ -141,7 +146,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_mixed_case_operand
+  it "add a filter with mixed case operand" do
     filter_column = "first_name"
     filter_value = "AftEr j"
     operand = ">"
@@ -153,7 +158,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_upper_case_operand
+  it "add a filter with upper case operand" do
     filter_column = "first_name"
     filter_value = "AFTER J"
     operand = ">"
@@ -165,7 +170,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_the_before_operand
+  it "add a filter with the before operand" do
     filter_column = "first_name"
     filter_value = "before j"
     operand = "<"
@@ -177,7 +182,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_the_word_after_not_an_operand
+  it "add a filter with the word after not an operand" do
     filter_column = "first_name"
     filter_value = "afterj"
     operand = "like"
@@ -189,7 +194,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_the_word_before_not_an_operand
+  it "add a filter with the word before not an operand" do
     filter_column = "first_name"
     filter_value = "beforej"
     operand = "like"
@@ -201,7 +206,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
   
-  def test_add_a_filter_with_the_word_is_not_an_operand
+  it "add a filter with the word is not an operand" do
     filter_column = "first_name"
     filter_value = "isj"
     operand = "like"
@@ -213,7 +218,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_the_is_operand
+  it "add a filter with the is operand" do
     filter_column = "first_name"
     filter_value = "is j"
     operand = "="
@@ -225,7 +230,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_is_null
+  it "add a filter with is null" do
     filter_column = "first_name"
     filter_value = "is null"
     operand = "is"
@@ -237,7 +242,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_is_null_with_spaces
+  it "add a filter with is null with spaces" do
     filter_column = "first_name"
     filter_value = "is  null  "
     operand = "is"
@@ -249,7 +254,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_is_nil
+  it "add a filter with is nil" do
     filter_column = "first_name"
     filter_value = "is nil"
     operand = "is"
@@ -261,7 +266,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_is_blank
+  it "add a filter with is blank" do
     filter_column = "first_name"
     filter_value = "is blank"
     operand = "is"
@@ -273,7 +278,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_is_empty
+  it "add a filter with is empty" do
     filter_column = "first_name"
     filter_value = "is empty"
     operand = "is"
@@ -285,7 +290,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     add_a_filter(filter_column, filter_value, operand, sql_value, conditions_string, num_filters, filter_index)
   end
 
-  def test_add_a_filter_with_is_space
+  it "add a filter with is space" do
     filter_column = "first_name"
     filter_value = "is "
     operand = "is"
@@ -333,8 +338,12 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
 
   end
 
-  def test_delete_a_filter
-    test_add_two_filters
+  it "should delete a filter" do
+    delete_a_filter
+  end
+  
+  def delete_a_filter
+    add_two_filters
 
     filter_num = 1
 
@@ -369,8 +378,8 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
     assert_rjs :hide, "filter_session_expired_msg"
   end
 
-  def test_delete_each_filter
-    test_delete_a_filter
+  it "delete each filter" do
+    delete_a_filter
     
     filter_num = 2
 
@@ -402,8 +411,8 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
 
   end
 
-  def test_update_2_filters
-    test_add_two_filters
+  it "update 2 filters" do
+    add_two_filters
 
     filter_num = 1
     filter_column = "last_name"
@@ -486,8 +495,8 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
 
   end
 
-  def test_clear_all_filters
-    test_add_two_filters
+  it "clear all filters" do
+    add_two_filters
     
     xhr(:post,  :clear_all_filters, {})
 
@@ -512,7 +521,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
   end  
 
   # simulate expired session by not adding the filters.
-  def test_update_a_filter_when_filter_session_expired
+  it "update a filter when filter session expired" do
     filter_num = 1
     filter_column = "last_name"
     filter_value = "geht"
@@ -530,7 +539,7 @@ class FilterMethodsFunctionalTest < Test::Unit::TestCase
 
   end
 
-  def test_delete_a_filter_when_filter_session_expired
+  it "delete a filter when filter session expired" do
     filter_num = 1
 
     xhr(:post,  :delete_filter, {:id => filter_num})

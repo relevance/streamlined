@@ -1,8 +1,8 @@
 require File.join(File.dirname(__FILE__), '../../test_helper')
 
-class HashSmartMergeTest < Test::Unit::TestCase
+describe "HashSmartMerge" do
   
-  def test_smart_merge!
+  it "smart merge!" do
     one = { :foo => "123", :bar => "456" }
     two = { :bar => "789", :bat => "012" }
     one.smart_merge!(two)
@@ -10,7 +10,7 @@ class HashSmartMergeTest < Test::Unit::TestCase
     assert_equal expected, one
   end
   
-  def test_smart_merge_with_nils
+  it "smart merge with nils" do
     one = { :foo => "123", :bar => nil }
     two = { :bar => "789", :bat => "012" }
     one.smart_merge!(two)
@@ -18,7 +18,7 @@ class HashSmartMergeTest < Test::Unit::TestCase
     assert_equal expected, one
   end
   
-  def test_smart_merge_with_an_array_value
+  it "smart merge with an array value" do
     one = { :foo => "123", :bar => ["566", "667"] }
     two = { :bar => "789", :bat => "012" }
     one.smart_merge!(two)
@@ -26,7 +26,7 @@ class HashSmartMergeTest < Test::Unit::TestCase
     assert_equal expected, one
   end
   
-  def test_smart_merge_three_hashes
+  it "smart merge three hashes" do
     one = { :foo => "123", :bar => "456" }
     two = { :bar => "789", :bat => "012" }
     thr = { :bat => "556", :ant => "667" }

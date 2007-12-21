@@ -7,7 +7,7 @@ class StubClass
   end
 end
 
-class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
+describe "Streamlined::Controller::RelationshipMethods" do
   def setup
     @inst = Object.new
     class <<@inst
@@ -17,7 +17,7 @@ class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
     end
   end
   
-  def test_show_relationship
+  it "show relationship" do
     @inst.params = { :id => '1', :relationship => 'person' }
     flexmock(@inst) do |mock|
       mock.should_receive(:model).and_return(flexmock(:find => :item))
@@ -27,7 +27,7 @@ class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
     @inst.show_relationship
   end
   
-  def test_render_show_view_partial
+  it "render show view partial" do
     show_view = flexmock('show_view', :partial => :partial)
     relationship = flexmock('relationship', :show_view => show_view)
     flexmock(@inst) do |mock|
@@ -36,7 +36,7 @@ class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
     @inst.render_show_view_partial(relationship, :item)
   end
   
-  def test_edit_relationship
+  it "edit relationship" do
     @inst.params = { :id => '1', :relationship => 'person' }
     rel_type = flexmock(:edit_view => flexmock(:partial => 'partial'))
     flexmock(@inst) do |mock|
@@ -49,31 +49,31 @@ class Streamlined::Controller::RelationshipMethodsTest < Test::Unit::TestCase
     @inst.edit_relationship
   end
     
-  def test_update_relationship
+  it "update relationship" do
     @inst.params = { :id => '1', :rel_name => 'rel_name', :klass => 'StubClass', :item => { '1' => 'on' }}
     build_update_relationship_mocks
     @inst.update_relationship
   end
   
-  def test_update_relationship_without_item
+  it "update relationship without item" do
     @inst.params = { :id => '1', :rel_name => 'rel_name', :klass => 'StubClass' }
     build_update_relationship_mocks
     @inst.update_relationship
   end
   
-  def test_update_n_to_one_with_nil_item
+  it "update n to one with nil item" do
     @inst.params = { :id => '1', :rel_name => 'rel_name' }
     build_n_to_one_mocks
     @inst.update_n_to_one
   end
   
-  def test_update_n_to_one_with_item_and_klass
+  it "update n to one with item and klass" do
     @inst.params = { :id => '1', :rel_name => 'rel_name', :item => '1', :klass => 'StubClass' }
     build_n_to_one_mocks
     @inst.update_n_to_one
   end
   
-  def test_update_n_to_one_with_item_and_class_name
+  it "update n to one with item and class name" do
     @inst.
     params = { :id => '1', :rel_name => 'rel_name', :item => '1::StubClass' }
     build_n_to_one_mocks

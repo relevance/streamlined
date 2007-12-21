@@ -6,19 +6,19 @@ class StubController < ActionController::Base
   public :execute_db_action_filter
 end
 
-class Streamlined::Controller::DbActionMethodsTest < Test::Unit::TestCase
+describe "Streamlined::Controller::DbActionMethods" do
   
   def setup
     @controller = StubController.new
   end
   
-  def test_execute_db_action_filter_with_proc
+  it "execute db action filter with proc" do
     proc = Proc.new { "foo" }
     flexmock(@controller).should_receive(:current_db_action_filter).and_return(proc).once
     assert_equal "foo", @controller.execute_db_action_filter
   end
   
-  def test_execute_db_action_filter_with_symbol
+  it "execute db action filter with symbol" do
     flexmock(@controller) do |c|
       c.should_receive(:current_db_action_filter).and_return(:some_method).once
       c.should_receive(:some_method).and_return(:result).once
@@ -26,12 +26,14 @@ class Streamlined::Controller::DbActionMethodsTest < Test::Unit::TestCase
     assert_equal :result, @controller.execute_db_action_filter
   end
   
-  def test_execute_db_action_filter_with_invalid_filter
-    flexmock(@controller).should_receive(:current_db_action_filter).and_return(nil).once
-    @controller.execute_db_action_filter
-    flunk "Exception should have been thrown"
-  rescue ArgumentError => e
-    assert_equal "Invalid options for db_action_filter", e.message
+  it "execute db action filter with invalid filter" do
+    begin 
+      flexmock(@controller).should_receive(:current_db_action_filter).and_return(nil).once
+      @controller.execute_db_action_filter
+      flunk "Exception should have been thrown"
+    rescue ArgumentError => e
+      assert_equal "Invalid options for db_action_filter", e.message
+    end
   end
   
 end

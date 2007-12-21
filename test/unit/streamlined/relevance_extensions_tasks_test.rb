@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), '../../test_helper')
 require 'rake'
 
 # Test the install process that runs on install that copies over static files required by Streamlined
-class Streamlined::RakeTasksTest < Test::Unit::TestCase
+describe "Streamlined::RakeTasks" do
   RAKE_FILE = File.join(File.dirname(__FILE__), '../../../tasks/relevance_extensions_tasks.rake')
 
   # We test the install task using real files and real directories, because mocks are to easy to give
@@ -43,7 +43,7 @@ class Streamlined::RakeTasksTest < Test::Unit::TestCase
     should_not_exist root
   end
   
-  def test_install_skips_dot_files_and_CVS_metadata
+  it "install skips dot files and CVS metadata" do
     Streamlined::Assets.install
     
     should_be_copied.each { |path| should_exist(path) }
@@ -51,7 +51,7 @@ class Streamlined::RakeTasksTest < Test::Unit::TestCase
   end
   
   # lets make sure things work fine using rake invoke, since thats how install.rb does it
-  def test_should_be_able_to_install_using_rake_invoke
+  it "should be able to install using rake invoke" do
     Rake::Task['streamlined:install_files'].invoke
 
     should_be_copied.each { |path| should_exist(path) }

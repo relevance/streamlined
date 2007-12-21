@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), '../test_functional_helper')
 require 'streamlined/controller'
 require 'streamlined/ui'
 
-class StreamlinedControllerTest < Test::Unit::TestCase
+describe "StreamlinedController" do
   fixtures :people
 
   def setup
@@ -16,20 +16,20 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     @per_page = 10
   end
 
-  def test_delegated_methods_are_not_routable
+  it "delegated methods are not routable" do
     action_methods = PeopleController.action_methods.map(&:to_sym)
     (action_methods & Streamlined::Context::RequestContext::DELEGATES).size.should == 0
     (action_methods & Streamlined::Context::ControllerContext::DELEGATES).size.should == 0
   end
   
-  def test_index
+  it "index" do
     get :index
     assert_response :success
     assert_template generic_view("list")
     assert_equal @per_page, assigns(:options)[:per_page]
   end
   
-  def test_list
+  it "list" do
     get :list
     assert_response :success
     assert_template generic_view("list")
@@ -40,7 +40,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_equal @per_page, assigns(:options)[:per_page]
   end
   
-  def test_list_with_non_ar_column
+  it "list with non ar column" do
     get :list, :page_options=>{:sort_column=>"full_name", :sort_order=>"DESC"}
     
     assert_response :success
@@ -49,14 +49,14 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_equal @per_page, assigns(:options)[:per_page]
   end
   
-  def test_list_with_filter
+  it "list with filter" do
     get :list, :page_options=>{:filter=>"Justin"}
     assert_response :success
     assert_template generic_view("list")
     assert_equal @per_page, assigns(:options)[:per_page]
   end
   
-  def test_list_with_no_pagination
+  it "list with no pagination" do
     class <<@controller
       def pagination; false; end
     end
@@ -65,7 +65,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_equal nil, assigns(:options)[:per_page]
   end
   
-  def test_list_with_pagination_options
+  it "list with pagination options" do
     class <<@controller
       def pagination; { :per_page => 2 }; end
     end
@@ -75,7 +75,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_equal 2, assigns(:streamlined_item_pages).page_count
   end
               
-  def test_empty_list   
+  it "empty list" do   
     Person.delete_all
     get :list
     assert_response :success                          
@@ -86,7 +86,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
   
   # TODO: set Content-Disposition? optional?
   # @headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.csv\""
-  def test_list_xml
+  it "list xml" do
     @request.env["HTTP_ACCEPT"] = "application/xml"
     get :list, {:format => "xml", :full_download => "true"}
     assert_response :success
@@ -96,7 +96,7 @@ class StreamlinedControllerTest < Test::Unit::TestCase
     assert_equal nil, assigns(:options)[:per_page]
   end
 
-  def test_list_csv
+  it "list csv" do
     @request.env["HTTP_ACCEPT"] = "text/csv"
     get :list, {:format => "csv", :full_download => "true"}
     assert_response :success
@@ -112,7 +112,7 @@ END
     assert_equal nil, assigns(:options)[:per_page]
   end       
 
-  def test_list_csv_this_page
+  it "list csv this page" do
     @request.env["HTTP_ACCEPT"] = "text/csv"
     get :list, {:format => "csv", :full_download => "false"}
     assert_response :success
@@ -128,7 +128,7 @@ END
     assert_equal @per_page, assigns(:options)[:per_page]
   end       
 
-  def test_list_csv_with_no_header
+  it "list csv with no header" do
     @request.env["HTTP_ACCEPT"] = "text/csv"
     get :list, {:format => "csv", :full_download => "true", :skip_header => "1"}
     assert_response :success
@@ -143,7 +143,7 @@ END
     assert_equal nil, assigns(:options)[:per_page]
   end       
 
-  def test_list_csv_with_different_separator
+  it "list csv with different separator" do
     @request.env["HTTP_ACCEPT"] = "text/csv"
     get :list, {:format => "csv", :full_download => "true", :separator => ";"}
     assert_response :success
@@ -159,7 +159,7 @@ END
     assert_equal nil, assigns(:options)[:per_page]
   end       
 
-  def test_list_csv_with_no_header_and_different_separator
+  it "list csv with no header and different separator" do
     @request.env["HTTP_ACCEPT"] = "text/csv"
     get :list, {:format => "csv", :full_download => "true", :skip_header => "1", :separator => ";"}
     assert_response :success
@@ -174,7 +174,7 @@ END
     assert_equal nil, assigns(:options)[:per_page]
   end       
 
-  def test_list_json
+  it "list json" do
     @request.env["HTTP_ACCEPT"] = "application/json"
     get :list, {:format => "json", :full_download => "true"}
     assert_response :success
@@ -196,7 +196,7 @@ END
     assert_nil assigns(:options)[:per_page]
   end       
 
-  def test_list_yaml
+  it "list yaml" do
     @request.env["HTTP_ACCEPT"] = "application/yaml"
     get :list, {:format => "yaml", :full_download => "true"}
     assert_response :success
@@ -225,7 +225,7 @@ END
     assert_equal nil, assigns(:options)[:per_page]
   end       
 
-  def test_list_enhanced_xml
+  it "list enhanced xml" do
     @request.env["HTTP_ACCEPT"] = "application/xml"
     get :list, {:format => "EnhancedXML", :full_download => "true"}
     assert_response :success
@@ -260,7 +260,7 @@ END
     assert_equal nil, assigns(:options)[:per_page]
   end
 
-  def test_list_enhanced_xml_with_selected_columns
+  it "list enhanced xml with selected columns" do
     @request.env["HTTP_ACCEPT"] = "application/xml"
     get :list, {:format => "EnhancedXML", :full_download => "true", :export_columns => {:full_name => "1", :last_name => "1"}}
     assert_response :success
@@ -291,7 +291,7 @@ END
     assert_equal nil, assigns(:options)[:per_page]
   end
 
-  def test_list_enhanced_xml_to_file
+  it "list enhanced xml to file" do
     @request.env["HTTP_ACCEPT"] = "text/xml"
     get :list, {:format => "EnhancedXMLToFile", :full_download => "true"}
     assert_response :success
@@ -335,7 +335,7 @@ END
     assert_equal nil, assigns(:options)[:per_page]
   end
 
-  def test_list_enhanced_xml_to_file_with_selected_columns
+  it "list enhanced xml to file with selected columns" do
     @request.env["HTTP_ACCEPT"] = "text/xml"
     get :list, {:format => "EnhancedXMLToFile", :full_download => "true", :export_columns => {:full_name => "1", :last_name => "1"}}
     assert_response :success
@@ -375,7 +375,7 @@ END
     assert_equal nil, assigns(:options)[:per_page]
   end
 
-  def test_list_xml_stylesheet
+  it "list xml stylesheet" do
     @request.env["HTTP_ACCEPT"] = "text/xml"
     get :list, {:format => "XMLStylesheet", :full_download => "true"}
     assert_response :success
@@ -426,7 +426,7 @@ Full name            </th>
     assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
   end
  
-  def test_list_xml_stylesheet_with_selected_columns
+  it "list xml stylesheet with selected columns" do
     @request.env["HTTP_ACCEPT"] = "text/xml"
     get :list, {:format => "XMLStylesheet", :full_download => "true", :export_columns => {:full_name => "1", :last_name => "1"}}
     assert_response :success
@@ -472,13 +472,13 @@ Full name            </th>
     assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
   end
  
-  def test_popup
+  it "popup" do
     get :popup, :id => 1
     assert_equal people(:justin), assigns(:person)
     assert_template generic_view("_popup") 
   end
   
-  def test_show
+  it "show" do
     get :show, :id => 1
     assert_response :success
     assert_template generic_view("show")
@@ -492,7 +492,7 @@ Full name            </th>
     # assert_unobtrusive_javascript
   end
   
-  def test_edit
+  it "edit" do
     get :edit, :id => 1
     assert_response :success
     assert_template generic_view("edit")
@@ -504,7 +504,7 @@ Full name            </th>
     end
   end
 
-  def test_new
+  it "new" do
     get :new
     assert_response :success
     assert_template generic_view("new")
@@ -516,14 +516,14 @@ Full name            </th>
     end
   end
   
-  def test_create_xhr
+  it "create xhr" do
     assert_difference(Person, :count) do
       xhr :post, :create, :person => {:first_name=>'Another', :last_name=>'Person'}
       assert_response :success
     end
   end
 
-  def test_create
+  it "create" do
     assert_difference(Person, :count) do
       post :create, :person => {:first_name=>'Another', :last_name=>'Person'}
       assert_response :redirect
@@ -531,35 +531,35 @@ Full name            </th>
     end
   end
   
-  def test_create_with_db_action_filter_returning_true
+  it "create with db action filter returning true" do
     instance = setup_db_action_filters_test(true, :save)
     @controller.class.db_action_filter :create, Proc.new { instance.foo }
     post :create
     assert_response :redirect
   end
 
-  def test_create_with_db_action_filter_returning_false
+  it "create with db action filter returning false" do
     instance = setup_db_action_filters_test(false, :save)
     @controller.class.db_action_filter :create, Proc.new { instance.foo }
     post :create
     assert_response :success
   end
 
-  def test_update_with_db_action_filter_returning_true
+  it "update with db action filter returning true" do
     instance = setup_db_action_filters_test(true, :update_attributes)
     @controller.class.db_action_filter :update, Proc.new { instance.foo }
     post :update, :id => 1 
     assert_response :redirect
   end
 
-  def test_update_with_db_action_filter_returning_false
+  it "update with db action filter returning false" do
     instance = setup_db_action_filters_test(false, :update_attributes)
     @controller.class.db_action_filter :update, Proc.new { instance.foo }
     post :update, :id => 1
     assert_response :success
   end
   
-  def test_quick_add_uses_correct_form_field_labels
+  it "quick add uses correct form field labels" do
     xhr :get, :quick_add, :select_id => "foo", :model_class_name => "Poet"
     assert_response :success
     assert_template "quick_add"
@@ -567,7 +567,7 @@ Full name            </th>
     assert_match %r{<label for="poet_last_name">Last Name</label>}, @response.body
   end
 
-  def test_instance_is_accessible
+  it "instance is accessible" do
     # This would fail if it was private
     @controller.access_instance
     
@@ -577,11 +577,9 @@ Full name            </th>
     assert_equal people(:justin), assigns(:streamlined_item)
   end
   
-  def test_instance_is_not_an_action
-    get :instance
-    flunk "Should have thrown an UnknownAction exception"
-  rescue ActionController::UnknownAction => e
-    assert_equal "No action responded to instance", e.message
+  it "instance is not an action" do 
+    exception = lambda { get :instance }.should.raise(ActionController::UnknownAction)
+    exception.message.should.equal "No action responded to instance"
   end
 
   private

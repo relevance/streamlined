@@ -3,7 +3,7 @@ require 'streamlined/controller'
 require 'streamlined/ui'
 require 'streamlined/functional_tests'
 
-class MetaFunctionalTest < Test::Unit::TestCase
+describe "MetaFunctional" do
   fixtures :people
   include Streamlined::FunctionalTests
   def setup

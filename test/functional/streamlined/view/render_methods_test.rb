@@ -1,17 +1,17 @@
 require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
 require 'streamlined/helpers/link_helper'
 
-class Streamlined::View::RenderMethodsTest < Test::Unit::TestCase
+describe "Streamlined::View::RenderMethods" do
   def setup
     stock_controller_and_view
   end
   
-  def test_convert_partial_options_for_managed_partial
+  it "convert partial options for managed partial" do
     assert_true @view.send(:managed_partials_include?, "list")
     assert_equal({:file=>"../../../templates/generic_views/_list", :layout=>false}, @view.convert_partial_options(:partial => "list"))
   end
 
-  def test_convert_partial_options_leaves_non_managed_partial_alone
+  it "convert partial options leaves non managed partial alone" do
     assert_false @view.send(:managed_partials_include?, "foo")
     assert_equal({:partial=>"foo"}, @view.convert_partial_options(:partial => "foo"))
   end

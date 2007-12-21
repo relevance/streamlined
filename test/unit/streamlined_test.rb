@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), '/../test_helper')
 
-class StreamlinedTest < Test::Unit::TestCase
+describe "Streamlined" do
        
   def setup
     Streamlined::PermanentRegistry.reset
@@ -10,26 +10,26 @@ class StreamlinedTest < Test::Unit::TestCase
     Streamlined::PermanentRegistry.reset
   end
                   
-  def test_bad_format
+  it "bad format" do
     error = assert_raises(ArgumentError) {Streamlined.display_format_for("Forgot proc argument")}
     assert_equal "Block required", error.message
   end
   
-  def test_single_format_for_display
+  it "single format for display" do
     format_gandalf_for_display
   end                               
   
-  def test_single_format_for_edit
+  it "single format for edit" do
     format_voldemort_for_edit
   end
   
-  def test_multiple_formats
+  it "multiple formats" do
     format_gandalf_for_display
     format_fingolfin_for_display      
     format_voldemort_for_edit
   end
   
-  def test_reset_formats
+  it "reset formats" do
     format_gandalf_for_display
     format_fingolfin_for_display
     format_voldemort_for_edit
@@ -39,12 +39,12 @@ class StreamlinedTest < Test::Unit::TestCase
     assert_equal "Voldemort", Streamlined.format_for_edit("Voldemort")
   end
   
-  def test_should_return_true_for_edge_rails_if_edge_rails_features_are_present
+  it "should return true for edge rails if edge rails features are present" do
     ActionController::Base.expects(:respond_to?).with(:view_paths=).returns(true)
     assert Streamlined.edge_rails?
   end
   
-  def test_should_return_false_for_edge_rails_if_edge_rails_features_are_not_present
+  it "should return false for edge rails if edge rails features are not present" do
     ActionController::Base.expects(:respond_to?).with(:view_paths=).returns(false)
     assert_false Streamlined.edge_rails?
   end

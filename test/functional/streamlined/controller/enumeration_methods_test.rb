@@ -1,11 +1,11 @@
 require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
 require 'streamlined/controller/enumeration_methods'
 
-class Streamlined::Controller::EnumerationMethodsTest < Test::Unit::TestCase
+describe "Streamlined::Controller::EnumerationMethods" do
   include Streamlined::Controller::EnumerationMethods
   attr_accessor :instance
   
-  def test_edit_enumeration
+  it "edit enumeration" do
     setup_mocks(:enumeration => ['all', 'items'])
     should_render_with_partial('edit_partial')
     assert_equal 'render_results', edit_enumeration
@@ -15,28 +15,28 @@ class Streamlined::Controller::EnumerationMethodsTest < Test::Unit::TestCase
     assert_equal 'foo', @enumeration_name
   end
   
-  def test_edit_enumeration_with_hash
+  it "edit enumeration with hash" do
     setup_mocks(:enumeration => { 'all' => 1, 'items' => 2 })
     should_render_with_partial('edit_partial')
     assert_equal 'render_results', edit_enumeration
     assert_equal [['items', 2], ['all', 1]], @all_items
   end
   
-  def test_edit_enumeration_with_2d_array
+  it "edit enumeration with 2d array" do
     setup_mocks(:enumeration => [['all', 1], ['items', 2]])
     should_render_with_partial('edit_partial')
     assert_equal 'render_results', edit_enumeration
     assert_equal [['all', 1], ['items', 2]], @all_items
   end
   
-  def test_show_enumeration
+  it "show enumeration" do
     setup_mocks(:enumeration => ['all', 'items'])
     should_render_with_partial('show_partial')
     assert_equal 'render_results', show_enumeration
     assert_equal 'selected_item', instance.foo
   end
   
-  def test_update_enumeration
+  it "update enumeration" do
     setup_mocks(:enumeration => ['all', 'items'])
     should_update_and_render_nothing
     assert_equal 'render_results', update_enumeration

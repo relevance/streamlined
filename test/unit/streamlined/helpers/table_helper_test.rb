@@ -1,11 +1,11 @@
 require File.join(File.dirname(__FILE__), '../../../test_helper')
 require 'streamlined/helpers/table_helper'
 
-class Streamlined::TableHelperTest < Test::Unit::TestCase
+describe "Streamlined::TableHelper" do
   include Streamlined::Helpers::TableHelper
   attr_accessor :model_ui
   
-  def test_streamlined_filter
+  it "streamlined filter" do
     @model_ui = Struct.new(:table_filter).new(true)
     assert_equal "<div><form><label for='streamlined_filter_term'>Filter:</label>  <input type='text' id='streamlined_filter_term'></form></div>", 
                  streamlined_filter

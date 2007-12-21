@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../test_helper'
   
-class Relevance::HashInitTest < Test::Unit::TestCase
+describe "Relevance::HashInit" do
   def setup
     @c = Class.new do
       attr_accessor :one, :two
@@ -8,17 +8,17 @@ class Relevance::HashInitTest < Test::Unit::TestCase
     end
   end
   
-  def test_initialize
+  it "initialize" do
     inst = @c.new(:one=>1, :two=>2)
     assert_equal(1, inst.one)
     assert_equal(2, inst.two)
   end
   
-  def test_empty_initialize
+  it "empty initialize" do
     assert_nothing_raised { @c.new }
   end
   
-  def test_nil_initialize
+  it "nil initialize" do
     assert_nothing_raised { @c.new(nil) }
   end
   

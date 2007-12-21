@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
 
-class RelationshipMethodsFunctionalTest < Test::Unit::TestCase
+describe "RelationshipMethodsFunctional" do
   def setup
     Streamlined::ReloadableRegistry.reset
     @controller = PeopleController.new
@@ -12,13 +12,13 @@ class RelationshipMethodsFunctionalTest < Test::Unit::TestCase
     end
   end
 
-  def test_context_column_nil
+  it "context column nil" do
     @controller.crud_context = nil
     assert_same @controller.context_column("first_name"),
                 @person_ui.column("first_name") 
   end
   
-  def test_context_column_not_nil
+  it "context column not nil" do
     @controller.crud_context = "show"            
     assert_not_same @controller.context_column("first_name"),
                     @person_ui.column("first_name") 

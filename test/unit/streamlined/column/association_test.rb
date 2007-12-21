@@ -1,8 +1,9 @@
 require File.join(File.dirname(__FILE__), '../../../test_helper')
 require 'streamlined/column/association'
 
-class Streamlined::Column::AssociationTest < Test::Unit::TestCase
-  include Streamlined::Column
+include Streamlined::Column
+
+describe "Streamlined::Column::Association" do
   
   def setup
     @ar_assoc = flexmock(:name => 'some_name', :class_name => 'SomeClass')
@@ -25,44 +26,44 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   # end stub classes
   
   # This will probably change as more stuff moves from ui into assocation
-  def test_initializer
+  it "initializer" do
     assert_raise(ArgumentError) { Association.new(@ar_assoc, 'foo', 'bar') }
     assert_equal 'Some Name', @association.human_name
     assert_instance_of(Streamlined::View::ShowViews::Count, @association.show_view)
     assert_instance_of(Streamlined::View::EditViews::InsetTable, @association.edit_view)
   end
   
-  def test_table_name
+  it "table name" do
     assert_equal 'some_names', @association.table_name
   end
   
-  def test_belongs_to_delegates_to_underlying_association
+  it "belongs to delegates to underlying association" do
     flexmock(@association, :underlying_association => flexmock(:belongs_to? => :some_result))
     assert_equal :some_result, @association.belongs_to?
   end
   
-  def test_association
+  it "association" do
     assert @association.association?
   end
   
-  def test_filterable
+  it "filterable" do
     assert !@association.filterable?
     @association.filter_column = 'foobar'
     assert @association.filterable?
   end
   
-  def test_show_and_edit_view_symbol_args
+  it "show and edit view symbol args" do
     assert_kind_of Streamlined::View::ShowViews::Count, @association.show_view
     assert_kind_of Streamlined::View::EditViews::InsetTable, @association.edit_view
   end
   
-  def test_show_and_edit_view_array_args
+  it "show and edit view array args" do
     a = Association.new(@ar_assoc, nil, [:inset_table], [:count])
     assert_kind_of Streamlined::View::ShowViews::Count, a.show_view
     assert_kind_of Streamlined::View::EditViews::InsetTable, a.edit_view
   end
   
-  def test_show_and_edit_view_instance_args
+  it "show and edit view instance args" do
     inset_table_class = Streamlined::View::EditViews::InsetTable
     count_class = Streamlined::View::ShowViews::Count
     
@@ -71,23 +72,23 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     assert_kind_of inset_table_class, a.edit_view
   end
 
-  def test_show_and_edit_view_bad_args
+  it "show and edit view bad args" do
     assert_raise(ArgumentError) { a = Association.new(@ar_assoc, nil, [:inset_table], Object.new) }
     assert_raise(ArgumentError) { a = Association.new(@ar_assoc, nil, Object.new, [:count]) }
   end
   
-  def test_items_for_select_with_one_associable
+  it "items for select with one associable" do
     flexmock(@association).should_receive(:associables).and_return([SomeClass]).once
     assert_equal [:item1, :item2, :item3], @association.items_for_select
   end
   
-  def test_items_for_select_with_many_associables
+  it "items for select with many associables" do
     flexmock(@association).should_receive(:associables).and_return([SomeClass, AnotherClass]).twice
     expected = { 'SomeClass' => [:item1, :item2, :item3], 'AnotherClass' => [:item4, :item5] }
     assert_equal expected, @association.items_for_select
   end
   
-  def test_render_td
+  it "render td" do
     view = flexmock(:render => 'render', :controller_path => 'controller_path')
     item = flexmock(:id => 123)
     
@@ -99,7 +100,7 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
     assert_equal expected, @association.render_td(view, item)
   end
   
-  def test_render_td_with_read_only_true
+  it "render td with read only true" do
     view = flexmock(:render => 'render', :controller_path => 'controller_path')
     item = flexmock(:id => 123)
     @association.read_only = true
@@ -118,36 +119,36 @@ class Streamlined::Column::AssociationTest < Test::Unit::TestCase
   #   assert_equal 'show', @association.render_td(view,nil)
   # end
   
-  def test_render_td_list
+  it "render td list" do
     expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>link"
     assert_equal expected, @association.render_td_list(*view_and_item_mocks)
   end
   
-  def test_render_td_list_with_create_only_true
+  it "render td list with create only true" do
     @association.create_only = true
     expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>"
     assert_equal expected, @association.render_td_list(*view_and_item_mocks)
   end
   
-  def test_render_td_list_with_read_only_true
+  it "render td list with read only true" do
     @association.read_only = true
     expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>"
     assert_equal expected, @association.render_td_list(*view_and_item_mocks)
   end
   
-  def test_render_td_list_with_edit_in_list_false
+  it "render td list with edit in list false" do
     @association.edit_in_list = false
     expected = "<div id=\"InsetTable::some_name::123::SomeClass\">render</div>"
     assert_equal expected, @association.render_td_list(*view_and_item_mocks)
   end
   
-  def test_render_td_edit_with_options_for_select
+  it "render td edit with options for select" do
     flexmock(SomeClass).should_receive(:custom_options).and_return([:foo]).once
     @association.options_for_select = :custom_options
     assert_equal "select", @association.render_td_edit(*view_and_item_mocks_for_render_td_edit)
   end
   
-  def test_render_td_edit_with_options_for_select_that_accepts_item_arg
+  it "render td edit with options for select that accepts item arg" do
     view, item = view_and_item_mocks_for_render_td_edit
     streamlined_item = view.instance_variable_get("@streamlined_item")
     flexmock(SomeClass).should_receive(:custom_options).with(streamlined_item).and_return([:foo]).once

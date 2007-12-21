@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '../../../test_helper')
 require 'streamlined/controller/render_methods'
 
-class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
+describe "Streamlined::Controller::RenderMethods" do
   include Streamlined::Controller::RenderMethods
   attr_accessor :instance, :filters
   
@@ -35,14 +35,14 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
   end
   # end stub methods
   
-  def test_render_or_redirect_with_render
+  it "render or redirect with render" do
     (@instance = flexmock).should_receive(:id).and_return(123).once
     flexmock(self).should_receive(:respond_to).once  # not sure how to test blocks w/flexmock?
     render_or_redirect(:success, 'show')
     assert_equal 123, @id
   end
   
-  def test_render_or_redirect_with_redirect
+  it "render or redirect with redirect" do
     (@instance = flexmock).should_receive(:id).and_return(123).once
     (request = flexmock).should_receive(:xhr?).and_return(false).once
     flexmock(self) do |mock|
@@ -53,7 +53,7 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     assert_equal 123, @id
   end
   
-  def test_render_or_redirect_with_render_filter_proc
+  it "render or redirect with render filter proc" do
     (@instance = flexmock).should_receive(:id).and_return(123).once
     flexmock(self).should_receive(:instance_eval).at_least.once
     self.class.filters[:render] = { :edit => { :success => Proc.new { render :text => 'hello world' }}}
@@ -61,7 +61,7 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     assert_equal 123, @id
   end
   
-  def test_execute_render_filter_with_proc
+  it "execute render filter with proc" do
     proc = Proc.new { render :text => 'hello world' }
     flexmock(self).should_receive(:instance_eval).at_least.once
     # TODO: why isn't this working?
@@ -69,12 +69,12 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     execute_render_filter(proc)
   end
   
-  def test_execute_render_filter_with_symbol
+  it "execute render filter with symbol" do
     flexmock(self).should_receive(:method_to_invoke).once
     execute_render_filter(:method_to_invoke)
   end
   
-  def test_execute_render_filter_with_invalid_args
+  it "execute render filter with invalid args" do
     assert_raises(ArgumentError) { execute_render_filter("bad_args")}
   end
   
@@ -82,28 +82,28 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     flexstub(self).should_receive(:specific_template_exists?).and_return(exists)
   end
   
-  def test_convert_partial_options_for_generic
+  it "convert partial options for generic" do
     pretend_template_exists(false)
     options = {:partial=>"list", :other=>"1"}
     convert_partial_options(options)
     assert_equal({:layout=>false, :template=>generic_view("_list"), :other=>"1"}, options)
   end
 
-  def test_convert_partial_options_and_layout_for_generic
+  it "convert partial options and layout for generic" do
     pretend_template_exists(false)
     options = {:partial=>"list", :other=>"1", :layout=>true}
     convert_partial_options(options)
     assert_equal({:layout=>true, :template=>generic_view("_list"), :other=>"1"}, options)
   end
 
-  def test_convert_partial_options_for_specific
+  it "convert partial options for specific" do
     pretend_template_exists(true)
     options = {:partial=>"list", :other=>"1"}
     convert_partial_options(options)
     assert_equal({:partial=>"list", :other=>"1"}, options)
   end
   
-  def test_render_partials_with_tabs
+  it "render partials with tabs" do
     flexstub(self) do |stub|
       stub.should_receive(:render_tabs_to_string).with(1,2,3).returns("render_result")
       stub.should_receive(:render).with(:text=>"render_result", :layout=>true)
@@ -111,7 +111,7 @@ class Streamlined::Controller::RenderMethodsTest < Test::Unit::TestCase
     render_partials(:tabs=>[1,2,3])
   end
 
-  def test_render_partials_without_tabs
+  it "render partials without tabs" do
     flexstub(self) do |stub|
       stub.should_receive(:render_to_string).with({}).returns("render_result")
       stub.should_receive(:render).with(:text=>"render_result", :layout=>true)

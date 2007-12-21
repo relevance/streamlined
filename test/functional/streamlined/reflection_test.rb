@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '../../test_functional_helper')
 require 'streamlined/reflection'
 
-class Streamlined::ReflectionTest < Test::Unit::TestCase
+describe "Streamlined::Reflection" do
   include Streamlined::Reflection
   attr_accessor :model
   
@@ -9,19 +9,19 @@ class Streamlined::ReflectionTest < Test::Unit::TestCase
     Streamlined::ReloadableRegistry.reset
   end
   
-  def test_reflect_on_scalars
+  it "reflect on scalars" do
     self.model=Person
     hash = reflect_on_scalars
     assert_key_set([:id,:first_name,:last_name], hash)
   end
   
-  def test_reflect_on_additions
+  it "reflect on additions" do
     self.model=Person
     hash = reflect_on_additions
     assert_key_set([:full_name], hash)
   end
   
-  def test_reflect_on_relationships
+  it "reflect on relationships" do
     self.model=Poet
     hash = reflect_on_relationships
     assert_key_set([:poems], hash)
@@ -30,18 +30,18 @@ class Streamlined::ReflectionTest < Test::Unit::TestCase
     end
   end
   
-  def test_reflect_on_delegates_dups_columns_from_associations
+  it "reflect on delegates dups columns from associations" do
     self.model = Poem
     hash = reflect_on_delegates
     assert_not_same hash["first_name"], Streamlined.ui_for(Poet).column(:first_name)
   end
   
-  def test_should_only_reflect_on_delegates_to_associations
+  it "should only reflect on delegates to associations" do
     self.model = Poem
     assert reflect_on_delegates.keys.include?("first_name")
   end
   
-  def test_should_not_include_delegates_to_non_associations
+  it "should not include delegates to non associations" do
     self.model = Poem
     assert_false reflect_on_delegates.keys.include?("current_time")
   end

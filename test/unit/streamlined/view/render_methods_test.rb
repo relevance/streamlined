@@ -1,33 +1,33 @@
 require File.join(File.dirname(__FILE__), '../../../test_helper')
 require 'streamlined/view/render_methods'
 
-class Streamlined::View::RenderMethodsTest < Test::Unit::TestCase
+describe "Streamlined::View::RenderMethods" do
   def render(*args)
     nil
   end
   
   include Streamlined::View::RenderMethods
   
-  def test_controller_name
+  it "controller name" do
     flexmock(self).should_receive(:controller => flexmock(:controller_name => "foo")).once
     assert_equal "foo", controller_name
   end
   
-  def test_convert_partial_options_for_generic
+  it "convert partial options for generic" do
     setup_mocks(false)
     options = {:partial=>"list", :other=>"1"}
     convert_partial_options(options)
     assert_equal({:layout=>false, :file=>generic_view("_list"), :other=>"1"}, options)
   end
 
-  def test_convert_partial_options_and_layout_for_generic
+  it "convert partial options and layout for generic" do
     setup_mocks(false)
     options = {:partial=>"list", :other=>"1", :layout=>true}
     convert_partial_options(options)
     assert_equal({:layout=>true, :file=>generic_view("_list"), :other=>"1"}, options)
   end
 
-  def test_convert_partial_options_for_specific
+  it "convert partial options for specific" do
     setup_mocks(true)
     options = {:partial=>"list", :other=>"1"}
     convert_partial_options(options)

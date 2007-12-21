@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
 require 'streamlined/helpers/filter_helper'
 
-class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
+describe "Streamlined::Helpers::FilterHelperFunctional" do
   fixtures :people, :poems
   
   def setup
@@ -16,7 +16,7 @@ class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
 
   # Check that last_name first_name get included for filtering
   # and that the UI column "full_name" is excluded
-  def test_simple_advanced_filter_columns
+  it "simple advanced filter columns" do
     advanced_filter_columns = @view.advanced_filter_columns
     assert_equal 3, @person_ui.user_columns.length, "Should only have 3 person columns in total"
     assert_equal 2, advanced_filter_columns.length, "Should only have 2 person columns to filter on"
@@ -26,7 +26,7 @@ class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
   # Check that relation columns Articles::title and Books::title as well as
   # first_name and last_name get included for filtering
   # and that the UI column "full_name" and relation authorships are excluded
-  def test_complex_advanced_filter_columns
+  it "complex advanced filter columns" do
     complex_controller_and_view
     advanced_filter_columns = @view.advanced_filter_columns
     assert_equal 6, @author_ui.user_columns.length
@@ -80,7 +80,7 @@ class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
   # Check that relation columns Authors::last_name and Authors::first_name get included for filtering
   # and that Authors::full_name does not since it is not a db field, just a define in Author.rb 
   # using user_columns
-  def test_advanced_filter_columns_with_fields_and_user_columns
+  it "advanced filter columns with fields and user columns" do
     advanced_controller_and_view
     
     Streamlined::ReloadableRegistry.reset
@@ -100,7 +100,7 @@ class Streamlined::Helpers::FilterHelperFunctionalTest < Test::Unit::TestCase
   # Check that relation columns Authors::last_name and Authors::first_name get included for filtering
   # and that Authors::full_name does not since it is not a db field, just a define in Author.rb 
   # using list_columns
-  def test_advanced_filter_columns_with_fields_and_list_columns
+  it "advanced filter columns with fields and list columns" do
     advanced_controller_and_view
 
     Streamlined::ReloadableRegistry.reset

@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '../../test_helper')
 require 'streamlined/render_methods'
 
-class Streamlined::RenderMethodsTest < Test::Unit::TestCase
+describe "Streamlined::RenderMethods" do
   include Streamlined::RenderMethods
   
   # begin stub methods
@@ -14,7 +14,7 @@ class Streamlined::RenderMethodsTest < Test::Unit::TestCase
   end
   # end stub methods
   
-  def test_specific_template_exists?
+  it "specific template exists?" do
     assert specific_template_exists?("templates/template")
     assert specific_template_exists?("templates/template.rhtml")
     assert specific_template_exists?("templates/template.rxml")
@@ -22,14 +22,14 @@ class Streamlined::RenderMethodsTest < Test::Unit::TestCase
     assert !specific_template_exists?("templates/non_existing_template")
   end
   
-  def test_convert_action_options_for_generic
+  it "convert action options for generic" do
     @managed_views = ['new']
     options = {:action=>"new", :id=>"1"}
     convert_action_options(options)
     assert_equal({:template=>generic_view("new"), :id=>"1"}, options)
   end
 
-  def test_convert_action_options_for_specific
+  it "convert action options for specific" do
     @managed_partials = ['new']
     options = {:action=>"new", :id=>"1"}
     convert_action_options(options)

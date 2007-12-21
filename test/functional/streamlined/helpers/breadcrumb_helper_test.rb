@@ -1,27 +1,27 @@
 require File.join(File.dirname(__FILE__), "../../../test_functional_helper")
 require "streamlined/helpers/breadcrumb_helper"
 
-class Streamlined::BreadcrumbHelperTest < Test::Unit::TestCase
+describe "Streamlined::BreadcrumbHelper" do
   fixtures :people
 
   def setup
     stock_controller_and_view
   end
 
-  def test_breadcrumb_defaults_to_false
+  it "breadcrumb defaults to false" do
     assert !@view.breadcrumb
   end
   
-  def test_render_breadcrumb_uses_default_trail
+  it "render breadcrumb uses default trail" do
     assert_select root_node(@view.render_breadcrumb), "div[id=breadcrumb]", "Home < People"
   end
 
-  def test_render_breadcrumb_for_list_context
+  it "render breadcrumb for list context" do
     assert_render_breadcrumb(:list)
     assert_select root_node(@view.render_breadcrumb), "div[id=breadcrumb]", "Home < Fancy Models"
   end
 
-  def test_render_breadcrumb_for_edit_context
+  it "render breadcrumb for edit context" do
     assert_render_breadcrumb_for_sub_context(:edit)
     flexmock(@view) do |m|
       m.should_receive(:prefix_for_crud_context).and_return("Edit").once
@@ -30,7 +30,7 @@ class Streamlined::BreadcrumbHelperTest < Test::Unit::TestCase
     assert_select root_node(@view.render_breadcrumb), "div[id=breadcrumb]", "Home < Fancy Models < Edit Some Name" 
   end
 
-  def test_render_breadcrumb_for_new_context
+  it "render breadcrumb for new context" do
     assert_render_breadcrumb_for_sub_context(:new)
     flexmock(@view) do |m|
       m.should_receive(:prefix_for_crud_context).and_return("New").once
@@ -39,7 +39,7 @@ class Streamlined::BreadcrumbHelperTest < Test::Unit::TestCase
     assert_select root_node(@view.render_breadcrumb), "div[id=breadcrumb]", "Home < Fancy Models < New Some Name" 
   end
 
-  def test_render_breadcrumb_for_other_context
+  it "render breadcrumb for other context" do
     assert_render_breadcrumb_for_sub_context(:foo)
     flexmock(@view) do |m| 
       m.should_receive(:prefix_for_crud_context).and_return(nil).once    

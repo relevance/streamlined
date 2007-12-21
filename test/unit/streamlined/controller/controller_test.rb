@@ -5,11 +5,11 @@ require "#{RAILS_ROOT}/app/controllers/application"
 class FooController < ApplicationController
 end
 
-class Streamlined::ControllerTest < Test::Unit::TestCase
+describe "Streamlined::Controller" do
   include Streamlined::Controller::ClassMethods
   
   # verify that exception is logged and rethrown
-  def test_initialize_with_streamlined_variables
+  it "initialize with streamlined variables" do
     o = Object.new
     o.extend Streamlined::Controller::InstanceMethods
     logger = flexmock("logger") do |mock|
@@ -22,7 +22,7 @@ class Streamlined::ControllerTest < Test::Unit::TestCase
     end
   end
   
-  def test_deprecation_of_helper_overrides
+  it "deprecation of helper overrides" do
     c = FooController
     c.acts_as_streamlined
     assert_nil c.send(:instance_variable_get, :@helper_overrides)
@@ -31,33 +31,33 @@ class Streamlined::ControllerTest < Test::Unit::TestCase
     end
   end
   
-  def test_streamlined_model
+  it "streamlined model" do
     streamlined_model("Test")
     assert_equal "Test", model_name
-    streamlined_model(self)
-    assert_equal "test_streamlined_model(Streamlined::ControllerTest)", 
+    streamlined_model(stub(:name => "Tim"))
+    assert_equal "Tim", 
                  model_name, 
                  "streamlined_model should extract name property" 
   end  
   
-  def test_render_filter
+  it "render filter" do
     options = { :success => { :action => 'foo' }}
     render_filter :show, options
     assert_equal options, render_filters[:show]
   end
   
-  def test_db_action_filter
+  it "db action filter" do
     db_action_filter :create, :save_instances
     assert_equal :save_instances, db_action_filters[:create]
   end
   
-  def test_filter_readers_default_to_empty_hash
+  it "filter readers default to empty hash" do
     assert_equal({}, filters)
     assert_equal({}, render_filters)
     assert_equal({}, db_action_filters)
   end
   
-  def test_count_or_find_options
+  it "count or find options" do
     assert_equal({}, count_or_find_options)
     count_or_find_options(:foo => :bar)
     assert_equal({:foo => :bar}, count_or_find_options)

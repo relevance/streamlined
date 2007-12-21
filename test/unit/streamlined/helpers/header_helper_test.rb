@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '../../../test_helper')
 require 'streamlined/helpers/header_helper'
 
-class HeaderHelperTest < Test::Unit::TestCase
+describe "HeaderHelper" do
   
   class FancyController
     include Streamlined::Helpers::HeaderHelper
@@ -13,38 +13,38 @@ class HeaderHelperTest < Test::Unit::TestCase
     @controller.model_name = "Fancy Model"
   end
   
-  def test_render_header
+  it "render header" do
     assert_header_text "Very Fancy Model", @controller.render_header("Very")
   end
   
-  def test_render_full_header
+  it "render full header" do
     assert_header_text "Some Text", @controller.render_full_header("Some Text")
   end
   
-  def test_render_show_header
+  it "render show header" do
     flexmock(@controller).should_receive(:crud_context => :show)
     assert_header_text "Fancy Model", @controller.render_show_header
   end
   
-  def test_render_edit_header
+  it "render edit header" do
     assert_header_text "Edit Fancy Model", @controller.render_edit_header
   end
 
-  def test_render_new_header
+  it "render new header" do
     assert_header_text "New Fancy Model", @controller.render_new_header
   end
   
-  def test_prefix_for_crud_context_edit
+  it "prefix for crud context edit" do
     @controller.crud_context = :edit
     assert_equal "Edit", @controller.prefix_for_crud_context
   end
   
-  def test_prefix_for_crud_context_new
+  it "prefix for crud context new" do
     @controller.crud_context = :new
     assert_equal "New", @controller.prefix_for_crud_context
   end
   
-  def test_prefix_for_crud_context_with_bogus_context
+  it "prefix for crud context with bogus context" do
     @controller.crud_context = :bogus
     assert_nil @controller.prefix_for_crud_context
   end

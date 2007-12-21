@@ -1,14 +1,14 @@
 require File.join(File.dirname(__FILE__), '../../test_helper')
 require 'ostruct'
 
-class Streamlined::HelperTest < Test::Unit::TestCase
+describe "Streamlined::Helper" do
               
   def setup                       
     @inst = OpenStruct.new
     @inst.extend Streamlined::Helper
   end
 
-  def test_relationship_div_id
+  it "relationship div id" do
     rel = flexmock(:name => "relationship-name", :class_name => "relationship-class-name")
     item = Class.new {attr_accessor :id}.new
     item.id = "item-id"

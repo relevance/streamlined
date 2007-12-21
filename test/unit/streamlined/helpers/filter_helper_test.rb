@@ -1,10 +1,10 @@
 require File.join(File.dirname(__FILE__), '../../../test_helper')
 require 'streamlined/helpers/filter_helper'
 
-class Streamlined::FilterHelperTest < Test::Unit::TestCase
+describe "Streamlined::FilterHelper" do
   include Streamlined::Helpers::FilterHelper
 
-  def test_advanced_filtering_defaults_to_false
+  it "advanced filtering defaults to false" do
     assert !advanced_filtering
   end
 

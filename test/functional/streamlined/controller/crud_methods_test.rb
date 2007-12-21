@@ -2,50 +2,50 @@ require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
 require 'streamlined/controller/crud_methods'
 require 'streamlined/controller/filter_methods'
 
-class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
+describe "Streamlined::Controller::CrudMethods" do
   include Streamlined::Controller::CrudMethods
   include Streamlined::Controller::FilterMethods
   attr_accessor :model, :model_ui, :streamlined_request_context
   delegates *Streamlined::Context::RequestContext::DELEGATES
   
-  def test_helper_delegates_are_private
+  it "helper delegates are private" do
     assert_has_private_methods self, :pagination
   end
   
-  def test_default_options
+  it "default options" do
     @streamlined_request_context = Streamlined::Context::RequestContext.new
     @model_ui = Streamlined.ui_for(Person)
     @model_ui.default_order_options('first_name ASC')
     assert_equal({:order => 'first_name ASC'}, order_options)
   end
   
-  def test_no_options
+  it "no options" do
     @streamlined_request_context = Streamlined::Context::RequestContext.new
     @model_ui = Streamlined.ui_for(Author)
     assert_equal({}, order_options)
   end
   
-  def test_ar_options
+  it "ar options" do
     @streamlined_request_context = Streamlined::Context::RequestContext.new(:sort_order=>"ASC", :sort_column=>"first_name")
     self.model = Person
     assert_equal({:order=>"first_name ASC"}, order_options)
   end
 
   # TODO: non ar_options should go away
-  def test_non_ar_options
+  it "non ar options" do
     @streamlined_request_context = Streamlined::Context::RequestContext.new(:sort_order=>"ASC", :sort_column=>"widget")
     self.model = Person
     # assert_equal({:order=>"widget ASC"}, order_options)
     assert_equal({:dir=>"ASC", :non_ar_column=>"widget"}, order_options)
   end
   
-  def test_sort_models
+  it "sort models" do
     joe, frank, ted = models = build_models('Joe', 'Frank', 'Ted')
     sort_models(models, :fname)
     assert_equal [frank, joe, ted], models
   end
   
-  def test_sort_models_with_nil_value
+  it "sort models with nil value" do
     joe, frank, nada = models = build_models('Joe', 'Frank', nil)
     sort_models(models, :fname)
     assert_equal [nada, frank, joe], models
@@ -55,13 +55,13 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
     names.collect { |n| flexmock(:fname => n) }
   end
   
-  def test_filter_options_with_no_filter
+  it "filter options with no filter" do
     @streamlined_request_context = Streamlined::Context::RequestContext.new
     @model_ui = Streamlined.ui_for(Author)
     assert_equal({}, filter_options)
   end
 
-  def test_filter_options_with_simple_filter
+  it "filter options with simple filter" do
     str = "data"
     @streamlined_request_context = Streamlined::Context::RequestContext.new(:filter=>"#{str}")
     @model_ui = Streamlined.ui_for(Person)
@@ -86,7 +86,7 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
     @model_ui = Streamlined.ui_for(Person)
   end
 
-  def test_filter_options_with_advanced_filter_expired
+  it "filter options with advanced filter expired" do
     str = "data"
     conditions_string = "people.first_name like ?,%#{str}%"
 
@@ -95,7 +95,7 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
     assert_equal({}, filter_options)
   end
 
-  def test_filter_options_with_advanced_filter
+  it "filter options with advanced filter" do
     str = "data"
     conditions_string = "people.first_name like ?,%#{str}%"
     conditions        = ["people.first_name like ?", "%#{str}%"]
@@ -105,7 +105,7 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
     assert_equal({:conditions=>conditions}, filter_options)
   end
 
-  def test_filter_options_with_advanced_filter_and_include
+  it "filter options with advanced filter and include" do
     str = "data"
     conditions_string = "people.first_name like ?,%#{str}%"
     conditions        = ["people.first_name like ?", "%#{str}%"]
@@ -119,7 +119,7 @@ class Streamlined::Controller::CrudMethodsTest < Test::Unit::TestCase
     assert_equal({:conditions=>conditions, :include=>includes}, filter_options)
   end
 
-  def test_filter_options_with_advanced_filter_with_nil
+  it "filter options with advanced filter with nil" do
     str = "data"
     conditions_string = "people.first_name like ? and people.last_name is ?,%#{str}%,nil"
     conditions        = ["people.first_name like ? and people.last_name is ?", "%#{str}%", nil]

@@ -1,8 +1,8 @@
 require File.join(File.dirname(__FILE__), '../../test_helper')
 
-class ArrayConversionsTest < Test::Unit::TestCase
+describe "ArrayConversions" do
   
-  def test_to_2d_array
+  it "to 2d array" do
     assert_equal [[1, 1], [2, 2]], [1, 2].to_2d_array
     
     expected = [['A', 1], ['B', 2], ['C', 3]]

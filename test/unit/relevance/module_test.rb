@@ -1,20 +1,24 @@
 require File.dirname(__FILE__) + '/../../test_helper'
 
-class Relevance::ModuleExtensionsTest < Test::Unit::TestCase
-  def callme(*args); "foo"; end
-  def callme_with_block
-    yield
+
+describe "Relevance::ModuleExtensions" do
+  class TestMe
+    def callme(*args); "foo"; end
   end
-    
-  def test_wrap_method
-    assert_equal "foo", self.callme
-    assert_equal "foo", self.callme(1)
-    self.class.wrap_method :callme do |old_meth, args|
-      return args.size if args && args.size > 0
-      old_meth.call
+  
+  it "wrap method" do
+    @inst = TestMe.new
+    assert_equal "foo", @inst.callme
+    assert_equal "foo", @inst.callme(1)
+    @inst.class.wrap_method :callme do |old_meth, *args|
+      if args && args.size > 0
+        args.size
+      else
+        old_meth.call
+      end
     end
-    assert_equal "foo", self.callme
-    assert_equal 1, self.callme(1)
+    assert_equal "foo", @inst.callme
+    assert_equal 1, @inst.callme(1)
   end
 
 end

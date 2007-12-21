@@ -14,21 +14,21 @@ class StubController < ActionController::Base
                 :model_class_name, :model_name, :ui
 end
 
-class Streamlined::Controller::QuickAddMethodsTest < Test::Unit::TestCase
+describe "Streamlined::Controller::QuickAddMethods" do
   # TODO: test these actions with a class that uses delegation
   
   def setup
     @controller = StubController.new
   end
   
-  def test_quick_add
+  it "quick add" do
     build_param_and_render_mocks('quick_add')
     @controller.quick_add
     assert_equal :new, @controller.crud_context
     assert_correct_vars_set
   end
   
-  def test_save_quick_add
+  it "save quick add" do
     build_param_and_render_mocks('save_quick_add')
     flexmock(StubClass).new_instances.should_receive(:save).and_return(true).once
     @controller.save_quick_add
