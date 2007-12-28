@@ -494,6 +494,7 @@ Full name            </th>
   
   it "edit" do
     get :edit, :id => 1
+    assert_generic_views_rendered :form
     assert_response :success
     assert_template generic_view("edit")
     assert_not_nil assigns(:streamlined_item)
@@ -504,8 +505,21 @@ Full name            </th>
     end
   end
 
+  # This is a very ugly workaround to verify that specific views were rendered
+  # Currently relies on a variable set in convert_partial_options. Other 
+  # render methods might also need to set this variable to take advantage of 
+  # this assertion.
+  def assert_generic_views_rendered(*views)
+    generic_views = @response.template.generic_views_rendered
+    views.each do |view|
+      assert(generic_views.member?("../../../templates/generic_views/_#{view}"),
+             "Should have rendered generic view #{view}, rendered generic views #{generic_views.inspect}")
+    end
+  end
+  
   it "new" do
     get :new
+    assert_generic_views_rendered :form
     assert_response :success
     assert_template generic_view("new")
     assert_not_nil assigns(:streamlined_item)
