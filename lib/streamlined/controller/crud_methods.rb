@@ -80,8 +80,10 @@ module Streamlined::Controller::CrudMethods
    # render the #show view.  If the save was unsuccessful, re-render
    # the #new view so that errors can be fixed.
    def create
+     hsh = collect_has_manies(params[model_symbol])
      self.instance = model.new(params[model_symbol])
-     
+     set_has_manies(hsh)
+
      if execute_db_action_with_default { instance.save }
        flash[:notice] = "#{model_name.titleize} was successfully created."
        self.crud_context = :show
@@ -208,15 +210,26 @@ module Streamlined::Controller::CrudMethods
   end
   
   private
-  
-  def update_relationships(params)
-    instance.class.has_manies.each do |assoc|
+  def collect_has_manies(params)
+    hsh = {}
+    model.has_manies(:exclude_has_many_through => true).each do |assoc|
       param = params.delete(assoc.name)
       if param
-        instance.send("#{assoc.name.to_s.singularize}_ids=".to_sym, param)
+        hsh["#{assoc.name.to_s.singularize}_ids=".to_sym] = param
       end
     end
-    
+    hsh
+  end
+  
+  def set_has_manies(hsh)
+    hsh.each do |method, ids|
+      instance.send(method, ids)
+    end
+  end
+  
+  def update_relationships(params)
+    hsh = collect_has_manies(params)
+    set_has_manies(hsh)
     instance.update_attributes(params)
   end
 end     

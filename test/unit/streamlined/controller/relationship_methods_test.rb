@@ -27,7 +27,7 @@ describe "Streamlined::Controller::RelationshipMethods" do
     @inst.show_relationship
   end
   
-  it "render show view partial" do
+  it "renders show view partial" do
     show_view = flexmock('show_view', :partial => :partial)
     relationship = flexmock('relationship', :show_view => show_view)
     flexmock(@inst) do |mock|

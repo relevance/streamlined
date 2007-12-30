@@ -45,8 +45,14 @@ module Relevance::ActiveRecordExtensions::ClassMethods
     vals.join(" AND ")
   end
   
-  def has_manies
-    self.reflect_on_all_associations.select {|x| x.has_many? || x.has_and_belongs_to_many?}
+  # Valid options:
+  #  exclude_has_many_throughs = pass in true to not pull by :through has_manies -- by default they will be returned
+  def has_manies(options = {})
+    self.reflect_on_all_associations.select do |assoc|
+      result = (assoc.has_many? || assoc.has_and_belongs_to_many?) 
+      result = !assoc.options.include?(:through) if options[:exclude_has_many_throughs]
+      result
+    end
   end
   
   def has_ones

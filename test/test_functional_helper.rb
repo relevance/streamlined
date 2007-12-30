@@ -31,9 +31,9 @@ class Test::Unit::TestCase
     ActionController::Routing.use_controllers! %w(people)
   end
   
-  def stock_controller_and_view
+  def stock_controller_and_view(controller = PeopleController)
     setup_routes
-    @controller = PeopleController.new
+    @controller = controller.new
     @controller.logger = RAILS_DEFAULT_LOGGER
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
