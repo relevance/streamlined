@@ -10,32 +10,35 @@ describe "ActiveRecordExtensions" do
     assert_equal [], Person.find_by_like('wibble', Person.user_columns)
   end
   
+  it "gets the correct number of has one relationships" do
+    Poet.has_ones.size.should == 0
+    Person.has_ones.size.should == 0
+  end
+
   it "gets the correct number of has many relationships" do
-    assert_equal 1, Poet.has_manies.size
-    assert_equal 0, Person.has_manies.size
+    Poet.has_manies.size.should == 1
+    Person.has_manies.size.should == 0
   end
   
   it "can exclude has_many_through when getting has many relationships" do
     Author.has_manies(:exclude_has_many_throughs => true).should == [Author.reflect_on_association(:authorships)]
   end
   
-  it "has ones" do
-    assert_equal 0, Poet.has_ones.size
-    assert_equal 0, Person.has_ones.size
+  it "finds all records when given a blank template record" do
+    Person.find_by_criteria(Person.new).size.should == Person.count
   end
   
-  it "find by criteria" do
-    assert_equal Person.count, Person.find_by_criteria(Person.new).size
-    assert_equal [people(:justin)], 
-                 Person.find_by_criteria(Person.new(:first_name=>'usti'))
+  it "finds matching records using the template criteria" do
+    Person.find_by_criteria(Person.new(:first_name=>'usti')).should == [people(:justin)]
   end
   
   # The doubling ('%%') is to work around Rails. Some of Rails Connection.quote
   # code paths call sprintf, others do not. 
-  it "conditions by like" do
+  it "quotes properly when finding conditions by like" do
     expected = %q{first_name LIKE '%%in \\'quotes\\'%%' OR last_name LIKE '%%in \\'quotes\\'%%'}
-    assert_equal expected, Person.conditions_by_like("in 'quotes'")
-    assert_equal expected, Person.conditions_by_like("in 'quotes'", Person.user_columns)
-    assert_equal expected, Person.conditions_by_like("in 'quotes'", [:first_name, :last_name])
+    
+    Person.conditions_by_like("in 'quotes'").should == expected
+    Person.conditions_by_like("in 'quotes'", Person.user_columns).should == expected
+    Person.conditions_by_like("in 'quotes'", [:first_name, :last_name]).should == expected
   end
 end
