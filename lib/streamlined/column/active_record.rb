@@ -60,7 +60,6 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     modified_value = value = model_instance.send(method_name) unless model_instance.nil?
     modified_value = get_current_default_edit_value if value.blank?
     modified_value = Streamlined.format_for_edit(modified_value)                                                                     
-    modified_value = Streamlined.format_for_edit(modified_value)
     value == modified_value ? nil : modified_value
   end
   
