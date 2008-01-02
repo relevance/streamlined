@@ -1,5 +1,5 @@
 class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
-  attr_accessor :ar_column, :enumeration, :check_box
+  attr_accessor :ar_column, :enumeration, :check_box, :default_edit_value
   attr_with_default :filterable, 'true'
   delegates :name, :to => :ar_column
   delegates :table_name, :to => :parent_model
@@ -54,13 +54,21 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   end
   
   # helper method to let us apply Streamlined global edit_format_for hook
+  # TODO: This method isn't spec'd
   def custom_column_value(view, model_underscore, method_name)                   
-    model_instance = view.instance_variable_get("@#{model_underscore}")                                                                     
-    value = unless model_instance.nil?
-      model_instance.send(method_name)
-    end
-    modified_value = Streamlined.format_for_edit(value)
+    model_instance = view.instance_variable_get("@#{model_underscore}")
+    modified_value = value = model_instance.send(method_name) unless model_instance.nil?
+    modified_value = get_current_default_edit_value if value.blank?
+    modified_value = Streamlined.format_for_edit(modified_value)                                                                     
+    modified_value = Streamlined.format_for_edit(modified_value)
     value == modified_value ? nil : modified_value
+  end
+  
+  # TODO: This method isn't spec'd
+  def get_current_default_edit_value
+    return if self.default_edit_value.nil?
+    return self.default_edit_value.call if self.default_edit_value.is_a? Proc
+    self.default_edit_value
   end
   
   # TODO: This method depends on item being in scope under the instance variable name
