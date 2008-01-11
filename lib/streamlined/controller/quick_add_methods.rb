@@ -37,6 +37,7 @@ module Streamlined::Controller::QuickAddMethods
   def set_instance_vars
     @model_class_name = params[:model_class_name]
     @model_name = @model_class_name.underscore
+    puts @model_class_name
     @model = @model_class_name.constantize.new(params[@model_name.to_sym])
     @ui = Streamlined.ui_for(@model.class)
     instance_variable_set("@#{@model_name}", @model)
