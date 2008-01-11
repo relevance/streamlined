@@ -7,7 +7,7 @@ describe "Streamlined::TableHelper" do
   
   it "streamlined filter" do
     @model_ui = Struct.new(:table_filter).new(true)
-    assert_equal "<div><form><label for='streamlined_filter_term'>Filter:</label>  <input type='text' id='streamlined_filter_term'></form></div>", 
+    assert_equal "<div><form><label for='streamlined_filter_term'>Filter:</label>  <input type='text' name='streamlined_filter_term' id='streamlined_filter_term'></form></div>", 
                  streamlined_filter
     @model_ui.table_filter = false
     assert_equal "", streamlined_filter

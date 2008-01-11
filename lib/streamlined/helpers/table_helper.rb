@@ -29,7 +29,7 @@ module Streamlined::Helpers::TableHelper
   
   def streamlined_filter
     if model_ui.table_filter
-  	  "<div><form><label for='streamlined_filter_term'>Filter:</label>  <input type='text' id='streamlined_filter_term'></form></div>"
+  	  "<div><form><label for='streamlined_filter_term'>Filter:</label>  <input type='text' name='streamlined_filter_term' id='streamlined_filter_term'></form></div>"
     else
       ""
     end
