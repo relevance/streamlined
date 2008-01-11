@@ -39,6 +39,21 @@ describe "StreamlinedController" do
     assert_select 'table#sl_list_people', true, 'table should have generic id for acceptance testing'
     assert_equal @per_page, assigns(:options)[:per_page]
   end
+
+  def recording_log
+    @controller.logger = Logger.new(recorder = StringIO.new)
+    yield
+    recorder.rewind
+    recorder.read
+  end
+  
+  it "should log warning if user presents an illegal column name" do
+    (recording_log {
+      get :list, :page_options=>{:sort_column=>"dangerous!", :sort_order=>"DESC"}
+      assert_response :success
+      assert_template generic_view("list")
+    }).should =~ /^Possible intrusion attempt: Invalid sort column dangerous!$/
+  end
   
   it "list with non ar column" do
     get :list, :page_options=>{:sort_column=>"full_name", :sort_order=>"DESC"}

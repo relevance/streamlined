@@ -23,7 +23,11 @@ module Streamlined::Controller::CrudMethods
           @options.delete :non_ar_column
           @options.delete :dir
           model_pages, models = paginate model_name.downcase.pluralize, @options
-          sort_models(models, col)
+          if model_ui.has_sortable_column?(col)
+            model_ui.sort_models(models, col)
+          else
+            logger.warn("Possible intrusion attempt: Invalid sort column #{col}")
+          end
           models.reverse! if dir == 'DESC'
         else
           model_pages, models = paginate model_name.downcase.pluralize, @options
@@ -146,10 +150,6 @@ module Streamlined::Controller::CrudMethods
     end
   end
   
-  def sort_models(models, column)
-    models.sort! {|a,b| a.send(column.to_sym).to_s <=> b.send(column.to_sym).to_s}
-  end
-
   def filter_options
     if advanced_filter?
       return {} if filter_session_expired

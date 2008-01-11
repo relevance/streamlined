@@ -190,6 +190,10 @@ class Streamlined::UI
     instance_variable_get("@#{name}")
   end
   
+  def has_sortable_column?(name)
+    list_columns.map(&:name).member?(name.to_s)
+  end
+  
   def column(name, options={})
     if options[:crud_context]
       # find the column within a specific group
@@ -198,6 +202,11 @@ class Streamlined::UI
       # find the template column used to build the various groups
       scalars[name] || relationships[name] || delegations[name] || additions[name] 
     end
+  end
+  
+  def sort_models(models, column)
+    raise SecurityError, "Invalid sort column name: #{column}" unless has_sortable_column?(column)
+    models.sort! {|a,b| a.send(column.to_sym).to_s <=> b.send(column.to_sym).to_s}
   end
   
   def scalars

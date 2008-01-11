@@ -16,7 +16,13 @@ describe "Streamlined::UI" do
   def setup
     @ui = Streamlined::UI.new(TestModel)
   end
-  
+
+  it "knows its sortable columns" do
+    flexmock(@ui).should_receive(:list_columns).and_return([flexstub(:name => "foo")])
+    @ui.has_sortable_column?(:foo).should == true
+    @ui.has_sortable_column?(:bar).should == false
+  end
+    
   it "style class for with empty style classes hash" do
     assert_equal({}, @ui.style_classes)
     assert_nil @ui.style_class_for(:list, :cell, nil)

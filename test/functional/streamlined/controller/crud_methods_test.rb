@@ -39,22 +39,6 @@ describe "Streamlined::Controller::CrudMethods" do
     assert_equal({:dir=>"ASC", :non_ar_column=>"widget"}, order_options)
   end
   
-  it "sort models" do
-    joe, frank, ted = models = build_models('Joe', 'Frank', 'Ted')
-    sort_models(models, :fname)
-    assert_equal [frank, joe, ted], models
-  end
-  
-  it "sort models with nil value" do
-    joe, frank, nada = models = build_models('Joe', 'Frank', nil)
-    sort_models(models, :fname)
-    assert_equal [nada, frank, joe], models
-  end
-  
-  def build_models(*names)
-    names.collect { |n| flexmock(:fname => n) }
-  end
-  
   it "filter options with no filter" do
     @streamlined_request_context = Streamlined::Context::RequestContext.new
     @model_ui = Streamlined.ui_for(Author)

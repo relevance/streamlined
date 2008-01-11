@@ -11,6 +11,23 @@ describe "Streamlined::UIFunctional" do
                    :poet, { :filter_column => "first_name" }
     end
   end
+
+  it "can sort models by a known column" do
+    @poet_ui = Streamlined.ui_for(Poet) do
+      list_columns :full_name
+    end
+    poets = [zed = Poet.new(:first_name => "Zed"), al = Poet.new(:first_name => "Al")]
+    @poet_ui.sort_models(poets, :full_name).should == [al, zed]
+  end
+
+  it "raises a security exception for unknown column" do
+    @poet_ui = Streamlined.ui_for(Poet) do
+      list_columns :full_name
+    end
+    poets = [zed = Poet.new(:first_name => "Zed"), al = Poet.new(:first_name => "Al")]
+    err = lambda { @poet_ui.sort_models(poets, :dangerous!) }.should.raise(SecurityError)
+    err.message.should == "Invalid sort column name: dangerous!"
+  end
   
   it "all columns" do
     assert_equal_sets([:id,:first_name,:poems,:last_name],@poet_ui.all_columns.map{|x| x.name.to_sym})
