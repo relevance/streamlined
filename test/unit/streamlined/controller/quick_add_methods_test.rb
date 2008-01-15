@@ -30,7 +30,7 @@ describe "Streamlined::Controller::QuickAddMethods" do
   
   it "save quick add" do
     build_param_and_render_mocks('save_quick_add')
-    flexmock(StubClass).new_instances.should_receive(:save).and_return(true).once
+    StubClass.any_instance.expects(:save).returns(true)
     @controller.save_quick_add
     assert_nil @controller.crud_context
     assert_correct_vars_set
@@ -40,16 +40,13 @@ describe "Streamlined::Controller::QuickAddMethods" do
     assert @controller.instance.is_a?(StubClass)
     assert @controller.model.is_a?(StubClass)
     assert @controller.stub_class.is_a?(StubClass)
-    
     assert_equal 'StubClass', @controller.model_class_name
     assert_equal 'stub_class', @controller.model_name    
     assert_instance_of Streamlined::UI, @controller.ui
   end
   
   def build_param_and_render_mocks(template)
-    flexmock(@controller) do |mock|
-      mock.should_receive(:params => { :model_class_name => 'StubClass' }).at_least.once
-      mock.should_receive(:render_or_redirect).with(:success, template).once
-    end
+    @controller.stubs(:params).returns({ :model_class_name => 'StubClass' })
+    @controller.expects(:render_or_redirect).with(:success, template)
   end
 end
