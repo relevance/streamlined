@@ -195,13 +195,9 @@ class Streamlined::UI
   end
   
   def column(name, options={})
-    if options[:crud_context]
-      # find the column within a specific group
-      send("#{options[:crud_context]}_columns").find {|col| col.name.to_s == name.to_s}
-    else
-      # find the template column used to build the various groups
-      scalars[name] || relationships[name] || delegations[name] || additions[name] 
-    end
+    col = send("#{options[:crud_context]}_columns").find {|col| col.name.to_s == name.to_s} if options[:crud_context]
+    col ||= scalars[name] || relationships[name] || delegations[name] || additions[name]
+    col
   end
   
   def sort_models(models, column)
