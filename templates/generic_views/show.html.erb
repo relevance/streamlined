@@ -18,6 +18,5 @@ if (top.Streamlined.PageOptions.form()) {
 </script>
 </div>
 <% unless model_ui.read_only %>
-<%= link_to 'Edit', {:action => 'edit', :id => @streamlined_item}, 
-                    {:onclick => "Streamlined.Link.submit(this); return false;"} %> 
+<%= link_to 'Edit', {:action => 'edit', :id => @streamlined_item} %> 
 <% end %>
