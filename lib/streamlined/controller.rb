@@ -140,13 +140,17 @@ module Streamlined::Controller::ClassMethods
     render_filters[action] = options
   end
   
+  # Declare a method or proc to be called after the instance is created (and populated with params) but before save is called
+  # If the callback returns false, save will not be called.
   def before_streamlined_create(callback)
     unless callback.is_a?(Proc) || callback.is_a?(Symbol) 
       raise ArgumentError, "Invalid options for db_action_filter - must pass either a Proc or a Symbol, you gave [#{callback.inspect}]"
     end
     callbacks[:before_create] = callback
   end
-  
+
+  # Declare a method or proc to be called after the instance is updated (and populated with params) but before save is called
+  # If the callback returns false, save will not be called.  
   def before_streamlined_update(callback)
     unless callback.is_a?(Proc) || callback.is_a?(Symbol) 
       raise ArgumentError, "Invalid options for db_action_filter - must pass either a Proc or a Symbol, you gave [#{callback.inspect}]"
