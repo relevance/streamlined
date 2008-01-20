@@ -1,6 +1,4 @@
-module Streamlined::Controller::DbActionMethods
-  include Streamlined::RenderMethods
-  
+module Streamlined::Controller::Callbacks  
   private
 
   def current_before_callback(action)

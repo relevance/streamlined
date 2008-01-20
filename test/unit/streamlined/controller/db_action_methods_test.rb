@@ -1,11 +1,11 @@
 require File.join(File.dirname(__FILE__), '../../../test_helper')
-require 'streamlined/controller/db_action_methods'
+require 'streamlined/controller/callbacks'
 
 class StubController < ActionController::Base
-  include Streamlined::Controller::DbActionMethods
+  include Streamlined::Controller::Callbacks
 end
 
-describe "Streamlined::Controller::DbActionMethods" do
+describe "Streamlined::Controller::Callbacks" do
   
   def setup
     @controller = StubController.new

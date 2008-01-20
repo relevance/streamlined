@@ -8,7 +8,7 @@ require 'streamlined/controller/crud_methods'
 require 'streamlined/controller/enumeration_methods'
 require 'streamlined/controller/relationship_methods'
 require 'streamlined/controller/render_methods'
-require 'streamlined/controller/db_action_methods'
+require 'streamlined/controller/callbacks'
 require 'streamlined/controller/quick_add_methods'
 require 'streamlined/controller/filter_methods'
 require 'streamlined/controller/options_methods'
@@ -17,7 +17,7 @@ module Streamlined::Controller::InstanceMethods
   include Streamlined::Controller::CrudMethods
   include Streamlined::Controller::EnumerationMethods
   include Streamlined::Controller::RenderMethods
-  include Streamlined::Controller::DbActionMethods
+  include Streamlined::Controller::Callbacks
   include Streamlined::Controller::RelationshipMethods
   include Streamlined::Controller::QuickAddMethods
   include Streamlined::Controller::FilterMethods
