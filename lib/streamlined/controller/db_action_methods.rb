@@ -3,24 +3,28 @@ module Streamlined::Controller::DbActionMethods
   
   private
 
-  def current_before_streamlined_create_or_update_filter
-    self.class.before_streamlined_create_or_update_filters[current_action]
+  def current_before_callback(action)
+    self.class.callbacks["before_#{action}".to_sym]
   end
   
-  def execute_before_streamlined_create_or_update_filter
-    filter = current_before_streamlined_create_or_update_filter
-    if filter.is_a?(Proc)
-      self.instance_eval(&filter)
-    elsif filter.is_a?(Symbol)
-      self.send(filter)
-    else
-      raise ArgumentError, "Invalid options for db_action_filter - must pass either a Proc or a Symbol, you gave [#{filter.inspect}]"
-    end
+  def execute_before_callback(action)
+    callback = current_before_callback(action)
+    return self.send(callback) if callback.is_a?(Symbol)
+    self.instance_eval(&callback)
   end
   
-  def execute_before_filter_and_yield(&default_action)
-    execute_before_streamlined_create_or_update_filter if current_before_streamlined_create_or_update_filter
-    yield
+  def execute(action)
+    result = execute_before_callback(action) if current_before_callback(action)
+    yield unless result == false
   end
+  
+  def execute_before_create_and_yield(&proc)
+    execute(:create, &proc)
+  end
+
+  def execute_before_update_and_yield(&proc)
+    execute(:update, &proc)
+  end
+
 end
   

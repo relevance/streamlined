@@ -81,7 +81,6 @@ module Streamlined::Controller::InstanceMethods
     return paginator, collection 
   end
 
-
   def streamlined_logger
     RAILS_DEFAULT_LOGGER
   end
@@ -129,21 +128,30 @@ module Streamlined::Controller::ClassMethods
     @filters ||= {}
   end
   
+  def callbacks
+    @callbacks ||= {}
+  end
+  
   def render_filters
     filters[:render] ||= {}
   end
-  
-  # Filters registered here will happen before cre
-  def before_streamlined_create_or_update_filters
-    filters[:before_streamlined_create_or_update_filters] ||= {}
-  end
-  
+    
   def render_filter(action, options)
     render_filters[action] = options
   end
   
-  def before_streamlined_create_or_update(action, options)
-    before_streamlined_create_or_update_filters[action] = options
+  def before_streamlined_create(callback)
+    unless callback.is_a?(Proc) || callback.is_a?(Symbol) 
+      raise ArgumentError, "Invalid options for db_action_filter - must pass either a Proc or a Symbol, you gave [#{callback.inspect}]"
+    end
+    callbacks[:before_create] = callback
+  end
+  
+  def before_streamlined_update(callback)
+    unless callback.is_a?(Proc) || callback.is_a?(Symbol) 
+      raise ArgumentError, "Invalid options for db_action_filter - must pass either a Proc or a Symbol, you gave [#{callback.inspect}]"
+    end
+    callbacks[:before_update] = callback
   end
   
   def count_or_find_options(options=nil)

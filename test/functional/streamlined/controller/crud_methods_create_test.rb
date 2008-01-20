@@ -9,7 +9,7 @@ describe "create with a db action filter" do
   end
   
   it "should do a proc filter before the save" do
-    @controller.class.before_streamlined_create_or_update(:create, lambda { @poet.first_name = "Barack"; @poet.last_name = "Obama" })
+    @controller.class.before_streamlined_create(lambda { @poet.first_name = "Barack"; @poet.last_name = "Obama" })
     post :create, {:poet => {:first_name => "George", :last_name => "Bush" } }
     assigns(:streamlined_item).first_name.should == "Barack"
     assigns(:streamlined_item).last_name.should == "Obama"

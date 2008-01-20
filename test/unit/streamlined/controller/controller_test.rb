@@ -46,15 +46,9 @@ describe "Streamlined::Controller" do
     assert_equal options, render_filters[:show]
   end
   
-  it "registers streamlined before saves" do
-    before_streamlined_create_or_update :create, :save_instances
-    assert_equal :save_instances, before_streamlined_create_or_update_filters[:create]
-  end
-  
   it "should have empty hashes for the filter readers by default" do
     assert_equal({}, filters)
     assert_equal({}, render_filters)
-    assert_equal({}, before_streamlined_create_or_update_filters)
   end
   
   it "count or find options" do
@@ -64,4 +58,11 @@ describe "Streamlined::Controller" do
     count_or_find_options(:abc => :def)
     assert_equal({:abc => :def}, count_or_find_options)
   end
+  
+  it "should raise if trying to register an invalid callback" do
+    lambda { FooController.before_streamlined_create(nil) }.should.
+      raise(ArgumentError).
+      message.should == "Invalid options for db_action_filter - must pass either a Proc or a Symbol, you gave [nil]"
+  end
+  
 end

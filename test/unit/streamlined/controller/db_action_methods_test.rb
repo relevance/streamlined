@@ -3,7 +3,6 @@ require 'streamlined/controller/db_action_methods'
 
 class StubController < ActionController::Base
   include Streamlined::Controller::DbActionMethods
-  public :execute_before_streamlined_create_or_update_filter
 end
 
 describe "Streamlined::Controller::DbActionMethods" do
@@ -13,16 +12,17 @@ describe "Streamlined::Controller::DbActionMethods" do
   end
 
   it "should call the method registered" do
-    @controller.expects(:current_before_streamlined_create_or_update_filter).returns(:some_method)
+    @controller.expects(:current_before_callback).with(:create).returns(:some_method)
     @controller.expects(:some_method).returns(:result)
-    assert_equal :result, @controller.execute_before_streamlined_create_or_update_filter
+    assert_equal :result, @controller.send(:execute_before_callback, :create)
   end
   
-  it "should raise if trying to register an invalid filter" do
-    @controller.expects(:current_before_streamlined_create_or_update_filter).returns(nil)
-    lambda { @controller.execute_before_streamlined_create_or_update_filter }.should.
-      raise(ArgumentError).
-      message.should == "Invalid options for db_action_filter - must pass either a Proc or a Symbol, you gave [nil]"
+  it "execute doesn't yield if the callback returns false" do
+    proc_called = false
+    @controller.stubs(:current_before_callback).with(:any).returns(:not_nil)
+    @controller.expects(:execute_before_callback).with(:any).returns(false)
+    @controller.send(:execute, :any, &Proc.new{proc_called = true})
+    proc_called.should == false
   end
-  
+    
 end
