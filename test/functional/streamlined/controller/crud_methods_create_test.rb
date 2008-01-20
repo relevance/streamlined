@@ -2,6 +2,21 @@ require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
 require 'streamlined/controller/crud_methods'
 require 'streamlined/controller/filter_methods'
 
+describe "create with a db action filter" do
+  attr_reader :controller
+  setup do
+    stock_controller_and_view(PoetsController)
+  end
+  
+  it "should do a proc filter before the save" do
+    @controller.class.db_action_filter(:create, lambda { @poet.first_name = "Barack"; @poet.last_name = "Obama" })
+    post :create, {:poet => {:first_name => "George", :last_name => "Bush" } }
+    assigns(:streamlined_item).first_name.should == "Barack"
+    assigns(:streamlined_item).last_name.should == "Obama"
+  end
+  
+end
+
 describe "creating with has many relationships" do
   attr_reader :controller
   setup do

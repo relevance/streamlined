@@ -13,12 +13,13 @@ module Streamlined::Controller::DbActionMethods
     elsif filter.is_a?(Symbol)
       self.send(filter)
     else
-      raise ArgumentError, "Invalid options for db_action_filter"
+      raise ArgumentError, "Invalid options for db_action_filter - must pass either a Proc or a Symbol, you gave [#{filter.inspect}]"
     end
   end
   
   def execute_db_action_with_default(&default_action)
-    current_db_action_filter ? execute_db_action_filter : yield
+    execute_db_action_filter if current_db_action_filter
+    yield
   end
 end
   

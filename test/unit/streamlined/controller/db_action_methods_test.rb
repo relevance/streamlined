@@ -11,18 +11,10 @@ describe "Streamlined::Controller::DbActionMethods" do
   def setup
     @controller = StubController.new
   end
-  
-  it "execute db action filter with proc" do
-    proc = Proc.new { "foo" }
-    flexmock(@controller).should_receive(:current_db_action_filter).and_return(proc).once
-    assert_equal "foo", @controller.execute_db_action_filter
-  end
-  
+
   it "execute db action filter with symbol" do
-    flexmock(@controller) do |c|
-      c.should_receive(:current_db_action_filter).and_return(:some_method).once
-      c.should_receive(:some_method).and_return(:result).once
-    end
+    @controller.expects(:current_db_action_filter).returns(:some_method)
+    @controller.expects(:some_method).returns(:result)
     assert_equal :result, @controller.execute_db_action_filter
   end
   
@@ -32,7 +24,7 @@ describe "Streamlined::Controller::DbActionMethods" do
       @controller.execute_db_action_filter
       flunk "Exception should have been thrown"
     rescue ArgumentError => e
-      assert_equal "Invalid options for db_action_filter", e.message
+      assert_equal "Invalid options for db_action_filter - must pass either a Proc or a Symbol, you gave [nil]", e.message
     end
   end
   

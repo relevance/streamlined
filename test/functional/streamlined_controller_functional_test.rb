@@ -22,14 +22,14 @@ describe "StreamlinedController" do
     (action_methods & Streamlined::Context::ControllerContext::DELEGATES).size.should == 0
   end
   
-  it "index" do
+  it "should render index" do
     get :index
     assert_response :success
     assert_template generic_view("list")
     assert_equal @per_page, assigns(:options)[:per_page]
   end
   
-  it "list" do
+  it "should render list" do
     get :list
     assert_response :success
     assert_template generic_view("list")
@@ -90,7 +90,7 @@ describe "StreamlinedController" do
     assert_equal 2, assigns(:streamlined_item_pages).page_count
   end
               
-  it "empty list" do   
+  it "should render an empty list" do   
     Person.delete_all
     get :list
     assert_response :success                          
@@ -111,7 +111,7 @@ describe "StreamlinedController" do
     assert_equal nil, assigns(:options)[:per_page]
   end
 
-  it "list csv" do
+  it "should export csv with full download" do
     @request.env["HTTP_ACCEPT"] = "text/csv"
     get :list, {:format => "csv", :full_download => "true"}
     assert_response :success
@@ -127,7 +127,7 @@ END
     assert_equal nil, assigns(:options)[:per_page]
   end       
 
-  it "list csv this page" do
+  it "should export csv for current page only" do
     @request.env["HTTP_ACCEPT"] = "text/csv"
     get :list, {:format => "csv", :full_download => "false"}
     assert_response :success
@@ -143,7 +143,7 @@ END
     assert_equal @per_page, assigns(:options)[:per_page]
   end       
 
-  it "list csv with no header" do
+  it "should export csv with no header" do
     @request.env["HTTP_ACCEPT"] = "text/csv"
     get :list, {:format => "csv", :full_download => "true", :skip_header => "1"}
     assert_response :success
@@ -560,18 +560,11 @@ Full name            </th>
     end
   end
   
-  it "create with db action filter returning true" do
+  it "should redirect when db_action_filter returns true" do
     instance = setup_db_action_filters_test(true, :save)
     @controller.class.db_action_filter :create, Proc.new { instance.foo }
     post :create
     assert_response :redirect
-  end
-
-  it "create with db action filter returning false" do
-    instance = setup_db_action_filters_test(false, :save)
-    @controller.class.db_action_filter :create, Proc.new { instance.foo }
-    post :create
-    assert_response :success
   end
 
   it "update with db action filter returning true" do
@@ -579,13 +572,6 @@ Full name            </th>
     @controller.class.db_action_filter :update, Proc.new { instance.foo }
     post :update, :id => 1 
     assert_response :redirect
-  end
-
-  it "update with db action filter returning false" do
-    instance = setup_db_action_filters_test(false, :update_attributes)
-    @controller.class.db_action_filter :update, Proc.new { instance.foo }
-    post :update, :id => 1
-    assert_response :success
   end
   
   it "quick add uses correct form field labels" do
@@ -596,7 +582,7 @@ Full name            </th>
     assert_match %r{<label for="poet_last_name">Last Name</label>}, @response.body
   end
 
-  it "instance is accessible" do
+  it "should have an accessible instance" do
     # This would fail if it was private
     @controller.access_instance
     
@@ -606,7 +592,7 @@ Full name            </th>
     assert_equal people(:justin), assigns(:streamlined_item)
   end
   
-  it "instance is not an action" do 
+  it "hide the instance so its not an action" do 
     exception = lambda { get :instance }.should.raise(ActionController::UnknownAction)
     exception.message.should.equal "No action responded to instance"
   end
