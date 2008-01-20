@@ -133,16 +133,17 @@ module Streamlined::Controller::ClassMethods
     filters[:render] ||= {}
   end
   
-  def db_action_filters
-    filters[:db_action] ||= {}
+  # Filters registered here will happen before cre
+  def before_streamlined_create_or_update_filters
+    filters[:before_streamlined_create_or_update_filters] ||= {}
   end
   
   def render_filter(action, options)
     render_filters[action] = options
   end
   
-  def db_action_filter(action, options)
-    db_action_filters[action] = options
+  def before_streamlined_create_or_update(action, options)
+    before_streamlined_create_or_update_filters[action] = options
   end
   
   def count_or_find_options(options=nil)

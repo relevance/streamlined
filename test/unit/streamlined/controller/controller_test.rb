@@ -46,15 +46,15 @@ describe "Streamlined::Controller" do
     assert_equal options, render_filters[:show]
   end
   
-  it "db action filter" do
-    db_action_filter :create, :save_instances
-    assert_equal :save_instances, db_action_filters[:create]
+  it "registers streamlined before saves" do
+    before_streamlined_create_or_update :create, :save_instances
+    assert_equal :save_instances, before_streamlined_create_or_update_filters[:create]
   end
   
-  it "filter readers default to empty hash" do
+  it "should have empty hashes for the filter readers by default" do
     assert_equal({}, filters)
     assert_equal({}, render_filters)
-    assert_equal({}, db_action_filters)
+    assert_equal({}, before_streamlined_create_or_update_filters)
   end
   
   it "count or find options" do

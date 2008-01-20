@@ -88,7 +88,7 @@ module Streamlined::Controller::CrudMethods
      self.instance = model.new(params[model_symbol])
      set_has_manies(hsh)
 
-     if execute_db_action_with_default { instance.save }
+     if execute_before_filter_and_yield { instance.save }
        flash[:notice] = "#{model_name.titleize} was successfully created."
        self.crud_context = :show
        render_or_redirect(:success, "show", :action=>"list")
@@ -112,7 +112,7 @@ module Streamlined::Controller::CrudMethods
   def update
     self.instance = model.find(params[:id])
 
-    if execute_db_action_with_default { update_relationships(params[model_symbol]) }
+    if execute_before_filter_and_yield { update_relationships(params[model_symbol]) }
       # TODO: reimplement tag support
       # get_instance.tag_with(params[:tags].join(' ')) if params[:tags] && Object.const_defined?(:Tag)
       flash[:notice] = "#{model_name.titleize} was successfully updated."
