@@ -559,21 +559,7 @@ Full name            </th>
       assert_redirected_to :action => 'list'
     end
   end
-  
-  it "should redirect when db_action_filter returns true" do
-    instance = setup_db_action_filters_test(true, :save)
-    @controller.class.db_action_filter :create, Proc.new { instance.foo }
-    post :create
-    assert_response :redirect
-  end
-
-  it "update with db action filter returning true" do
-    instance = setup_db_action_filters_test(true, :update_attributes)
-    @controller.class.db_action_filter :update, Proc.new { instance.foo }
-    post :update, :id => 1 
-    assert_response :redirect
-  end
-  
+    
   it "quick add uses correct form field labels" do
     xhr :get, :quick_add, :select_id => "foo", :model_class_name => "Poet"
     assert_response :success
@@ -597,13 +583,4 @@ Full name            </th>
     exception.message.should.equal "No action responded to instance"
   end
 
-  private
-
-  def setup_db_action_filters_test(filter_return_value, default_method)
-    instance = flexmock(@controller.send(:instance))
-    instance.should_receive(:foo).and_return(filter_return_value).once
-    instance.should_receive(default_method).never
-    instance
-  end
-    
 end
