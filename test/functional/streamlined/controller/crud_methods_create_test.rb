@@ -26,7 +26,7 @@ describe "creating with has many relationships" do
   it "should save the has_many side after the parent" do
     params = {:poet => {:first_name => "John", :last_name => "Doe", :poems => ["1", "2"] } }
     post :create, params
-    assigns(:streamlined_item).poem_ids.should == [1,2]
+    assigns(:streamlined_item).poem_ids.sort.should == [1,2]
   end
   
   it "should just save the parent if there are no has_manies set" do

@@ -14,6 +14,28 @@ Dir.glob("#{base}/fixtures/*.rb").sort.each do |file|
   require file
 end
 
+EXPECTED_USERS = [/\d[[:punct:]]Justin[[:punct:]]Gehtland/, /\d[[:punct:]]Stu[[:punct:]]Halloway/,/\d[[:punct:]]Jason[[:punct:]]Rudolph/,/\d[[:punct:]]Glenn[[:punct:]]Vanderburg/]
+EXPECTED_USERS_IN_XML = [/<Person>\n.*<last_name>Gehtland<\/last_name>\n.*<full_name>Justin Gehtland<\/full_name>\n.*<\/Person>/,
+  /<Person>\n.*<last_name>Halloway<\/last_name>\n.*<full_name>Stu Halloway<\/full_name>\n.*<\/Person>/,
+  /<Person>\n.*<last_name>Rudolph<\/last_name>\n.*<full_name>Jason Rudolph<\/full_name>\n.*<\/Person>/,
+  /<Person>\n.*<last_name>Vanderburg<\/last_name>\n.*<full_name>Glenn Vanderburg<\/full_name>\n.*<\/Person>/]
+EXPECTED_USERS_IN_XML_FIRST_LAST = [/<Person>\n.*<first_name>Justin<\/first_name>\n.*<last_name>Gehtland<\/last_name>\n.*<full_name>Justin Gehtland<\/full_name>\n.*<\/Person>/,
+  /<Person>\n.*<first_name>Stu<\/first_name>\n.*<last_name>Halloway<\/last_name>\n.*<full_name>Stu Halloway<\/full_name>\n.*<\/Person>/,
+  /<Person>\n.*<first_name>Jason<\/first_name>\n.*<last_name>Rudolph<\/last_name>\n.*<full_name>Jason Rudolph<\/full_name>\n.*<\/Person>/,
+  /<Person>\n.*<first_name>Glenn<\/first_name>\n.*<last_name>Vanderburg<\/last_name>\n.*<full_name>Glenn Vanderburg<\/full_name>\n.*<\/Person>/]                           
+EXPECTED_USERS_IN_JSON = [/\{id: \"1\", first_name: \"Justin\", last_name: \"Gehtland\"\}/,
+  /\{id: \"2\", first_name: \"Stu\", last_name: \"Halloway\"\}/,
+  /\{id: \"3\", first_name: \"Jason\", last_name: \"Rudolph\"\}/,
+  /\{id: \"4\", first_name: \"Glenn\", last_name: \"Vanderburg\"\}/]
+EXPECTED_USERS_IN_JSON_EDGE = [/\{\"id\": 1, \"first_name\": \"Justin\", \"last_name\": \"Gehtland\"\}/,
+  /\{\"id\": 2, \"first_name\": \"Stu\", \"last_name\": \"Halloway\"\}/,
+  /\{\"id\": 3, \"first_name\": \"Jason\", \"last_name\": \"Rudolph\"\}/,
+  /\{\"id\": 4, \"first_name\": \"Glenn\", \"last_name\": \"Vanderburg\"\}/]
+EXPECTED_USERS_IN_YAML = [/id: 1\n.* first_name: Justin\n.* last_name: Gehtland/,
+  /id: 2\n.* first_name: Stu\n.* last_name: Halloway/,
+  /id: 3\n.* first_name: Jason\n.* last_name: Rudolph/,
+  /id: 4\n.* first_name: Glenn\n.* last_name: Vanderburg/]
+  
 class Test::Unit::TestCase
   self.fixture_path = File.dirname(__FILE__) + "/fixtures/"
   self.use_instantiated_fixtures = false
@@ -41,6 +63,7 @@ class Test::Unit::TestCase
     get 'index'
     @view = @response.template
   end
+
 end
 
 unless ActionController::Base.respond_to?(:view_paths=)
@@ -54,6 +77,12 @@ unless ActionController::Base.respond_to?(:view_paths=)
       @logger = controller && controller.logger 
       @base_path = File.join(RAILS_ROOT, "app/views")
     end
+  end
+end
+
+def assert_matches_all(expecteds, actual)
+  expecteds.each do |reg|
+    assert_match(reg, actual)
   end
 end
 

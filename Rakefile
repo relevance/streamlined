@@ -39,7 +39,6 @@ namespace :test do
   
 end
 
-
 namespace :test do
   desc 'Unit test the streamlined plugin.'
   Rake::TestTask.new(:units) do |t|
@@ -70,9 +69,8 @@ namespace :test do
   
   desc 'Build the MySQL test databases'
   task :build_mysql_databases do
-    %x( mysqladmin -u #{db_config['username']} create #{db_config['database']} )
-    # %x( mysql -u #{db_config['username']} -e "grant all on #{db_config['database']}.* to #{db_config['username']}@localhost" )
-    %x( mysql -u #{db_config['username']} #{db_config['database']} < 'test/db/mysql.sql' )
+    %x( mysqladmin -u #{db_config['username']} --password=#{db_config['password']} create #{db_config['database']} )
+    Rake::Task['schema:load'].invoke
   end
   
   desc 'Drop the MySQL test databases'
@@ -83,6 +81,38 @@ namespace :test do
   desc 'Rebuild the MySQL test databases'
   task :rebuild_mysql_databases => ['test:drop_mysql_databases', 'test:build_mysql_databases']
   
+  desc 'Build PostgreSQL test databases'
+  task :build_postgresql_databases do
+    %x(createdb #{db_config['database']})
+    Rake::Task['schema:load'].invoke
+  end
+  
+  desc 'Drop the PostgreSQL test databases'
+  task :drop_postgresql_databases do
+    %x(dropdb #{db_config['database']})
+  end
+  
+  desc 'Build test databases'
+  task :build_test_databases do
+    Rake::Task["test:build_#{db_config['adapter']}_databases"].invoke
+  end
+  
+end
+
+namespace :schema do
+  desc "Create a db/schema.rb file that can be portably used against any DB supported by AR"
+  task :dump do
+    require 'active_record/schema_dumper'
+    File.open(ENV['SCHEMA'] || "test/db/schema.rb", "w") do |file|
+      ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, file)
+    end
+  end
+
+  desc "Load a schema.rb file into the database"
+  task :load do
+    file = ENV['SCHEMA'] || "test/db/schema.rb"
+    load(file)
+  end
 end
 
 desc 'Generate documentation for the streamlined plugin.'

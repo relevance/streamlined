@@ -83,17 +83,17 @@ describe "Streamlined::UIFunctional" do
     ui = Streamlined.ui_for(Poet) do
       list_columns :first_name, :last_name, :poems, { :filter_column => :text }
     end
-    expected = "poets.first_name LIKE '%value%' OR poets.last_name LIKE '%value%' OR poems.text LIKE '%value%'"
+    expected = "poets.first_name LIKE #{ActiveRecord::Base.connection.quote('%value%')} OR poets.last_name LIKE #{ActiveRecord::Base.connection.quote('%value%')} OR poems.text LIKE #{ActiveRecord::Base.connection.quote('%value%')}"
     assert_equal expected, ui.conditions_by_like_with_associations("value")
   end
 
   it "conditions by like with associations for unconventional table names" do
-    expected = "people.first_name LIKE '%value%' OR people.last_name LIKE '%value%'"
+    expected = "people.first_name LIKE #{ActiveRecord::Base.connection.quote('%value%')} OR people.last_name LIKE #{ActiveRecord::Base.connection.quote('%value%')}"
     assert_equal expected, Streamlined.ui_for(Unconventional).conditions_by_like_with_associations("value")
   end
   
   it "conditions by like with non filterable columns" do
-    expected = "people.first_name LIKE '%value%'"
+    expected = "people.first_name LIKE #{ActiveRecord::Base.connection.quote('%value%')}"
     ui = Streamlined.ui_for(Person) { user_columns :first_name, :last_name, { :filterable => false }}
     assert_equal expected, ui.conditions_by_like_with_associations("value")
   end
@@ -103,7 +103,7 @@ describe "Streamlined::UIFunctional" do
       user_columns :first_name
       list_columns :first_name, :last_name
     end
-    expected = "people.first_name LIKE '%value%' OR people.last_name LIKE '%value%'"
+    expected = "people.first_name LIKE #{ActiveRecord::Base.connection.quote('%value%')} OR people.last_name LIKE #{ActiveRecord::Base.connection.quote('%value%')}"
     assert_equal expected, ui.conditions_by_like_with_associations("value")
   end
   

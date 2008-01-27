@@ -49,7 +49,8 @@ describe "Streamlined::Controller::CrudMethods" do
     str = "data"
     @streamlined_request_context = Streamlined::Context::RequestContext.new(:filter=>"#{str}")
     @model_ui = Streamlined.ui_for(Person)
-    assert_equal({:conditions=>"people.first_name LIKE '%#{str}%' OR people.last_name LIKE '%#{str}%'", :include=>[]}, filter_options)
+    #{ActiveRecord::Base.connection.quote('%value%')}
+    assert_equal({:conditions=>"people.first_name LIKE #{ActiveRecord::Base.connection.quote('%data%')} OR people.last_name LIKE #{ActiveRecord::Base.connection.quote('%data%')}", :include=>[]}, filter_options)
   end
   
   def filter_setup(conditions_string)

@@ -35,7 +35,7 @@ describe "ActiveRecordExtensions" do
   # The doubling ('%%') is to work around Rails. Some of Rails Connection.quote
   # code paths call sprintf, others do not. 
   it "quotes properly when finding conditions by like" do
-    expected = %q{first_name LIKE '%%in \\'quotes\\'%%' OR last_name LIKE '%%in \\'quotes\\'%%'}
+    expected = "first_name LIKE #{ActiveRecord::Base.connection.quote("%%in 'quotes'%%")} OR last_name LIKE #{ActiveRecord::Base.connection.quote("%%in 'quotes'%%")}"
     
     Person.conditions_by_like("in 'quotes'").should == expected
     Person.conditions_by_like("in 'quotes'", Person.user_columns).should == expected

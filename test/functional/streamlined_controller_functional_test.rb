@@ -117,13 +117,7 @@ describe "StreamlinedController" do
     assert_response :success
     assert_template nil
     assert_equal "text/csv", @response.content_type
-    assert_equal(<<-END, @response.body)
-id,first_name,last_name
-1,Justin,Gehtland
-2,Stu,Halloway
-3,Jason,Rudolph
-4,Glenn,Vanderburg
-END
+    assert_matches_all(EXPECTED_USERS, @response.body)
     assert_equal nil, assigns(:options)[:per_page]
   end       
 
@@ -133,13 +127,7 @@ END
     assert_response :success
     assert_template nil
     assert_equal "text/csv", @response.content_type
-    assert_equal(<<-END, @response.body)
-id,first_name,last_name
-1,Justin,Gehtland
-2,Stu,Halloway
-3,Jason,Rudolph
-4,Glenn,Vanderburg
-END
+    assert_matches_all(EXPECTED_USERS, @response.body)
     assert_equal @per_page, assigns(:options)[:per_page]
   end       
 
@@ -149,12 +137,7 @@ END
     assert_response :success
     assert_template nil
     assert_equal "text/csv", @response.content_type
-    assert_equal(<<-END, @response.body)
-1,Justin,Gehtland
-2,Stu,Halloway
-3,Jason,Rudolph
-4,Glenn,Vanderburg
-END
+    assert_matches_all(EXPECTED_USERS, @response.body)
     assert_equal nil, assigns(:options)[:per_page]
   end       
 
@@ -164,13 +147,7 @@ END
     assert_response :success
     assert_template nil
     assert_equal "text/csv", @response.content_type
-    assert_equal(<<-END, @response.body)
-id;first_name;last_name
-1;Justin;Gehtland
-2;Stu;Halloway
-3;Jason;Rudolph
-4;Glenn;Vanderburg
-END
+    assert_matches_all(EXPECTED_USERS, @response.body)
     assert_equal nil, assigns(:options)[:per_page]
   end       
 
@@ -180,12 +157,7 @@ END
     assert_response :success
     assert_template nil
     assert_equal "text/csv", @response.content_type
-    assert_equal(<<-END, @response.body)
-1;Justin;Gehtland
-2;Stu;Halloway
-3;Jason;Rudolph
-4;Glenn;Vanderburg
-END
+    assert_matches_all(EXPECTED_USERS, @response.body)
     assert_equal nil, assigns(:options)[:per_page]
   end       
 
@@ -198,16 +170,10 @@ END
     # JSON formatting changed between Rails 1.x and Rails 2
     # http://blog.codefront.net/2007/10/10/new-on-edge-rails-json-serialization-of-activerecord-objects-reaches-maturity/
     if Streamlined.edge_rails?
-      expected_json =<<-END
-    [{"id": 1, "first_name": "Justin", "last_name": "Gehtland"}, {"id": 2, "first_name": "Stu", "last_name": "Halloway"}, {"id": 3, "first_name": "Jason", "last_name": "Rudolph"}, {"id": 4, "first_name": "Glenn", "last_name": "Vanderburg"}]
-END
+      assert_matches_all(EXPECTED_USERS_IN_JSON_EDGE, @response.body)
     else
-      expected_json =<<-END
-    [{attributes: {id: "1", first_name: "Justin", last_name: "Gehtland"}}, {attributes: {id: "2", first_name: "Stu", last_name: "Halloway"}}, {attributes: {id: "3", first_name: "Jason", last_name: "Rudolph"}}, {attributes: {id: "4", first_name: "Glenn", last_name: "Vanderburg"}}]
-END
+      assert_matches_all(EXPECTED_USERS_IN_JSON, @response.body)
     end
-    expected_json = expected_json.strip
-    assert_equal(expected_json, @response.body)
     assert_nil assigns(:options)[:per_page]
   end       
 
@@ -217,26 +183,7 @@ END
     assert_response :success
     assert_template nil
     assert_equal "application/x-yaml", @response.content_type   
-    expected_yaml =<<-END
---- 
-- Person: 
-    id: 1
-    first_name: Justin
-    last_name: Gehtland
-- Person: 
-    id: 2
-    first_name: Stu
-    last_name: Halloway
-- Person: 
-    id: 3
-    first_name: Jason
-    last_name: Rudolph
-- Person: 
-    id: 4
-    first_name: Glenn
-    last_name: Vanderburg
-END
-    assert_equal(expected_yaml, @response.body)
+    assert_matches_all(EXPECTED_USERS_IN_YAML, @response.body)
     assert_equal nil, assigns(:options)[:per_page]
   end       
 
@@ -247,31 +194,7 @@ END
     assert_template STREAMLINED_TEMPLATE_ROOT + '/generic_views/list.rxml'
     assert_equal "application/xml", @response.content_type
     assert_select("people person", {:count=>4})
-    check_for = '<?xml version="1.0" encoding="UTF-8"?>
-<People>
-  <Person>
-    <first_name>Justin</first_name>
-    <last_name>Gehtland</last_name>
-    <full_name>Justin Gehtland</full_name>
-  </Person>
-  <Person>
-    <first_name>Stu</first_name>
-    <last_name>Halloway</last_name>
-    <full_name>Stu Halloway</full_name>
-  </Person>
-  <Person>
-    <first_name>Jason</first_name>
-    <last_name>Rudolph</last_name>
-    <full_name>Jason Rudolph</full_name>
-  </Person>
-  <Person>
-    <first_name>Glenn</first_name>
-    <last_name>Vanderburg</last_name>
-    <full_name>Glenn Vanderburg</full_name>
-  </Person>
-</People>
-'
-    assert_equal(check_for, @response.body)
+    assert_matches_all(EXPECTED_USERS_IN_XML_FIRST_LAST, @response.body)
     assert_equal nil, assigns(:options)[:per_page]
   end
 
@@ -282,27 +205,7 @@ END
     assert_template STREAMLINED_TEMPLATE_ROOT + '/generic_views/list.rxml'
     assert_equal "application/xml", @response.content_type
     assert_select("people person", {:count=>4})
-    check_for = '<?xml version="1.0" encoding="UTF-8"?>
-<People>
-  <Person>
-    <last_name>Gehtland</last_name>
-    <full_name>Justin Gehtland</full_name>
-  </Person>
-  <Person>
-    <last_name>Halloway</last_name>
-    <full_name>Stu Halloway</full_name>
-  </Person>
-  <Person>
-    <last_name>Rudolph</last_name>
-    <full_name>Jason Rudolph</full_name>
-  </Person>
-  <Person>
-    <last_name>Vanderburg</last_name>
-    <full_name>Glenn Vanderburg</full_name>
-  </Person>
-</People>
-'
-    assert_equal(check_for, @response.body)
+    assert_matches_all(EXPECTED_USERS_IN_XML, @response.body)
     assert_equal nil, assigns(:options)[:per_page]
   end
 
@@ -313,40 +216,7 @@ END
     assert_template STREAMLINED_TEMPLATE_ROOT + '/generic_views/list.rxml'
     assert_equal "text/xml", @response.content_type
     assert_select("people person", {:count=>4})
-
-    check_for = '<?xml version="1.0" encoding="UTF-8"?>'
-    assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
-
-    # The parameters appear in random orders so we check for one or the other
-    check_for = '<?xml-stylesheet type="text/xsl" href="person.xsl"?>'
-    check_for_2 = '<?xml-stylesheet href="person.xsl" type="text/xsl"?>'
-    assert @response.body.to_s.index(check_for) || @response.body.to_s.index(check_for_2), "Did not find exact match for #{check_for} OR #{check_for_2} in #{@response.body}"  
-
-    check_for = '
-<People>
-  <Person>
-    <first_name>Justin</first_name>
-    <last_name>Gehtland</last_name>
-    <full_name>Justin Gehtland</full_name>
-  </Person>
-  <Person>
-    <first_name>Stu</first_name>
-    <last_name>Halloway</last_name>
-    <full_name>Stu Halloway</full_name>
-  </Person>
-  <Person>
-    <first_name>Jason</first_name>
-    <last_name>Rudolph</last_name>
-    <full_name>Jason Rudolph</full_name>
-  </Person>
-  <Person>
-    <first_name>Glenn</first_name>
-    <last_name>Vanderburg</last_name>
-    <full_name>Glenn Vanderburg</full_name>
-  </Person>
-</People>
-'
-    assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
+    assert_matches_all(EXPECTED_USERS_IN_XML_FIRST_LAST, @response.body)
     assert_equal nil, assigns(:options)[:per_page]
   end
 
@@ -365,28 +235,7 @@ END
     check_for = '<?xml-stylesheet type="text/xsl" href="person.xsl"?>'
     check_for_2 = '<?xml-stylesheet href="person.xsl" type="text/xsl"?>'
     assert @response.body.to_s.index(check_for) || @response.body.to_s.index(check_for_2), "Did not find exact match for #{check_for} OR #{check_for_2} in #{@response.body}"  
-
-    check_for = '
-<People>
-  <Person>
-    <last_name>Gehtland</last_name>
-    <full_name>Justin Gehtland</full_name>
-  </Person>
-  <Person>
-    <last_name>Halloway</last_name>
-    <full_name>Stu Halloway</full_name>
-  </Person>
-  <Person>
-    <last_name>Rudolph</last_name>
-    <full_name>Jason Rudolph</full_name>
-  </Person>
-  <Person>
-    <last_name>Vanderburg</last_name>
-    <full_name>Glenn Vanderburg</full_name>
-  </Person>
-</People>
-'
-    assert_response_contains(check_for, "Did not find exact match for #{check_for} in #{@response.body}")
+    assert_matches_all(EXPECTED_USERS_IN_XML, @response.body)
     assert_equal nil, assigns(:options)[:per_page]
   end
 
