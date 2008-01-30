@@ -206,5 +206,53 @@ describe "Streamlined::UI" do
                        }
     assert_equal export_labels, @ui.export_labels                       
   end
+  
+  describe "sql_pair" do
+    def setup
+      @ui = Streamlined::UI.new(TestModel)
+    end
+    
+    it "should return default pair" do
+      ActiveRecord::Base.stubs(:connection).returns(stub(:quote => %Q{"joe"}))
+      @ui.sql_pair("user", "joe").should == "user LIKE \"joe\""
+    end
+    
+    it "should return case-sensitive pair" do
+      ActiveRecord::Base.stubs(:connection).returns(stub(:quote => %Q{"joe"}))
+      @ui.stubs(:show_table_filter?).returns(false)
+      @ui.sql_pair("user", "joe").should == "UPPER(user) LIKE UPPER(\"joe\")"
+    end
+    
+    it "should return non-case-sensitive pair" do
+      ActiveRecord::Base.stubs(:connection).returns(stub(:quote => %Q{"joe"}))
+      @ui.stubs(:show_table_filter?).returns(true)
+      @ui.sql_pair("user", "joe").should == "user LIKE \"joe\""
+    end
+  end
+  
+  describe "show_table_filter?" do
+    def setup
+      @ui = Streamlined::UI.new(TestModel)
+    end
+    
+    it "should return true when table_filter hash :show key is set to true" do
+      @ui.stubs(:table_filter).returns(:show => true)
+      assert @ui.show_table_filter?
+    end
 
+    it "should return false when table_filter hash :show key is set to false" do
+      @ui.stubs(:table_filter).returns(:show => false)
+      assert !@ui.show_table_filter?
+    end
+
+    it "should return true when table_filter returns true" do
+      @ui.stubs(:table_filter).returns(true)
+      assert @ui.show_table_filter?
+    end
+
+    it "should return false when table_filter returns false" do
+      @ui.stubs(:table_filter).returns(false)
+      assert !@ui.show_table_filter?
+    end
+  end
 end

@@ -5,14 +5,16 @@ describe "Streamlined::TableHelper" do
   include Streamlined::Helpers::TableHelper
   attr_accessor :model_ui
   
-  it "streamlined filter" do
-    @model_ui = Struct.new(:table_filter).new(true)
-    assert_equal "<div><form><label for='streamlined_filter_term'>Filter:</label>  <input type='text' name='streamlined_filter_term' id='streamlined_filter_term'></form></div>", 
-                 streamlined_filter
-    @model_ui.table_filter = false
-    assert_equal "", streamlined_filter
+  it "should render table filter when show_table_filter? returns true" do
+    @model_ui.stubs(:show_table_filter?).returns(true)
+    assert_select root_node(streamlined_filter), "div form" do
+      assert_select "label[for=streamlined_filter_term]", "Filter:"
+      assert_select "input[type=text][name=streamlined_filter_term][id=streamlined_filter_term]"
+    end
   end
   
-  
-
+  it "should not render table filter when show_table_filter? returns false" do
+    @model_ui.stubs(:show_table_filter?).returns(false)
+    assert streamlined_filter.blank?
+  end
 end

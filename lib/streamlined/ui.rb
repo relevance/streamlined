@@ -33,7 +33,7 @@ class Streamlined::UI
   declarative_scalar :quick_delete_button, :default => true
   declarative_scalar :quick_edit_button, :default => true
   declarative_scalar :quick_new_button, :default => true
-  declarative_scalar :table_filter, :default => true
+  declarative_scalar :table_filter, :default => {:show => true, :case_sensitive => true}
   declarative_scalar :read_only, :default => false
   declarative_scalar :new_submit_button, :default => {:ajax => true}
   declarative_scalar :edit_submit_button, :default => {:ajax => true}
@@ -228,8 +228,17 @@ class Streamlined::UI
   def conditions_by_like_with_associations(value)
     column_pairs = filterable_columns.collect { |c| "#{c.table_name}.#{c.filter_column}" }
     column_pairs += columns_with_additional_column_pairs.collect(&:additional_column_pairs)
-    conditions = column_pairs.collect { |c| "#{c} LIKE #{ActiveRecord::Base.connection.quote("%#{value}%")}" }
+    conditions = column_pairs.collect { |c| sql_pair(c, value) }
     conditions.join(" OR ")
+  end
+  
+  def sql_pair(column, value)
+    quoted_value = ActiveRecord::Base.connection.quote("%#{value}%")
+    show_table_filter? ? "#{column} LIKE #{quoted_value}" : "UPPER(#{column}) LIKE UPPER(#{quoted_value})"
+  end
+  
+  def show_table_filter?
+    table_filter.is_a?(Hash) ? table_filter[:show] : table_filter
   end
   
   def filterable_columns
