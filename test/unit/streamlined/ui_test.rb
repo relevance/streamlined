@@ -219,13 +219,13 @@ describe "Streamlined::UI" do
     
     it "should return case-sensitive pair" do
       ActiveRecord::Base.stubs(:connection).returns(stub(:quote => %Q{"joe"}))
-      @ui.stubs(:show_table_filter?).returns(false)
+      @ui.stubs(:table_filter).returns(:case_sensitive => false)
       @ui.sql_pair("user", "joe").should == "UPPER(user) LIKE UPPER(\"joe\")"
     end
     
     it "should return non-case-sensitive pair" do
       ActiveRecord::Base.stubs(:connection).returns(stub(:quote => %Q{"joe"}))
-      @ui.stubs(:show_table_filter?).returns(true)
+      @ui.stubs(:table_filter).returns(:case_sensitive => true)
       @ui.sql_pair("user", "joe").should == "user LIKE \"joe\""
     end
   end
@@ -244,6 +244,11 @@ describe "Streamlined::UI" do
       @ui.stubs(:table_filter).returns(:show => false)
       assert !@ui.show_table_filter?
     end
+    
+    it "should return false when table_filter hash has no :show key" do
+      @ui.stubs(:table_filter).returns({})
+      assert !@ui.show_table_filter?
+    end
 
     it "should return true when table_filter returns true" do
       @ui.stubs(:table_filter).returns(true)
@@ -253,6 +258,37 @@ describe "Streamlined::UI" do
     it "should return false when table_filter returns false" do
       @ui.stubs(:table_filter).returns(false)
       assert !@ui.show_table_filter?
+    end
+    
+    describe "case_sensitive_filtering?" do
+      def setup
+        @ui = Streamlined::UI.new(TestModel)
+      end
+
+      it "should return true when table_filter hash :case_sensitive key is set to true" do
+        @ui.stubs(:table_filter).returns(:case_sensitive => true)
+        assert @ui.case_sensitive_filtering?
+      end
+
+      it "should return false when table_filter hash :case_sensitive key is set to false" do
+        @ui.stubs(:table_filter).returns(:case_sensitive => false)
+        assert !@ui.case_sensitive_filtering?
+      end
+      
+      it "should return false when table_filter hash has no :case_sensitive key" do
+        @ui.stubs(:table_filter).returns({})
+        assert !@ui.case_sensitive_filtering?
+      end
+
+      it "should return false when table_filter returns true" do
+        @ui.stubs(:table_filter).returns(true)
+        assert !@ui.case_sensitive_filtering?
+      end
+
+      it "should return false when table_filter returns false" do
+        @ui.stubs(:table_filter).returns(false)
+        assert !@ui.case_sensitive_filtering?
+      end
     end
   end
 end

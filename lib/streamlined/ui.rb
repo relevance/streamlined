@@ -234,11 +234,15 @@ class Streamlined::UI
   
   def sql_pair(column, value)
     quoted_value = ActiveRecord::Base.connection.quote("%#{value}%")
-    show_table_filter? ? "#{column} LIKE #{quoted_value}" : "UPPER(#{column}) LIKE UPPER(#{quoted_value})"
+    case_sensitive_filtering? ? "#{column} LIKE #{quoted_value}" : "UPPER(#{column}) LIKE UPPER(#{quoted_value})"
   end
   
   def show_table_filter?
     table_filter.is_a?(Hash) ? table_filter[:show] : table_filter
+  end
+  
+  def case_sensitive_filtering?
+    table_filter[:case_sensitive] if table_filter.is_a?(Hash)
   end
   
   def filterable_columns
