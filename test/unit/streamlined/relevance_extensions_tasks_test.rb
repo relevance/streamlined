@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '../../test_helper')
+require File.expand_path(File.join(File.dirname(__FILE__), '../../test_helper'))
 require 'rake'
 
 # Test the install process that runs on install that copies over static files required by Streamlined

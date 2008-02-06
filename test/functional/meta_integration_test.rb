@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '../test_functional_helper')
+require File.expand_path(File.join(File.dirname(__FILE__), '../test_functional_helper'))
 require 'streamlined/controller'
 require 'streamlined/ui'
 require 'streamlined/integration_tests'

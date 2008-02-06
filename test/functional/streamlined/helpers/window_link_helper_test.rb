@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '../../../test_functional_helper')
+require File.expand_path(File.join(File.dirname(__FILE__), '../../../test_functional_helper'))
 require 'streamlined/helpers/window_link_helper'
 
 require "#{RAILS_ROOT}/app/controllers/application"

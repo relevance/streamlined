@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '../../../test_helper')
+require File.expand_path(File.join(File.dirname(__FILE__), '../../../test_helper'))
 require 'streamlined/view/render_methods'
 
 describe "Streamlined::View::RenderMethods" do

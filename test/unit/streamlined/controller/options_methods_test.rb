@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '../../../test_helper')
+require File.expand_path(File.join(File.dirname(__FILE__), '../../../test_helper'))
 require 'streamlined/controller/options_methods'
 
 describe "Streamlined::Controller::OptionsMethods" do
