@@ -6,9 +6,10 @@ module Streamlined::Controller::QuickAddMethods
     set_instance_vars
     @model.class.delegate_targets.each do |dt| 
       assoc = @model.class.reflect_on_association(dt)
-      target_class = assoc.class_name.constantize
-      
-      instance_variable_set("@#{target_class.name.variableize}", target_class.new)
+      if assoc
+        target_class = assoc.class_name.constantize
+        instance_variable_set("@#{target_class.name.variableize}", target_class.new)
+      end
     end
     self.instance = @model
     render_or_redirect(:success, 'quick_add')
@@ -20,13 +21,14 @@ module Streamlined::Controller::QuickAddMethods
     @success = true
     @model.class.delegate_targets.each do |dt| 
       assoc = @model.class.reflect_on_association(dt)
-      target_class = assoc.class_name.constantize
-      
-      assoc_name = assoc.class_name.variableize.to_sym
-      assoc_model = target_class.new(params[assoc_name])
-      @success = assoc_model.save && @success
-      instance_variable_set("@#{assoc_name}", assoc_model)
-      @model.send("#{assoc_name}=", assoc_model)
+      if assoc
+        target_class = assoc.class_name.constantize
+        assoc_name = assoc.class_name.variableize.to_sym
+        assoc_model = target_class.new(params[assoc_name])
+        @success = assoc_model.save && @success
+        instance_variable_set("@#{assoc_name}", assoc_model)
+        @model.send("#{assoc_name}=", assoc_model)
+      end
     end
     @success = @model.save && @success
     self.instance = @model
