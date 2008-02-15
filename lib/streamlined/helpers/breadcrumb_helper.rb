@@ -1,10 +1,10 @@
 module Streamlined::Helpers::BreadcrumbHelper
   include Streamlined::Breadcrumb
-  attr_with_default(:breadcrumb) {false}
+  attr_with_default(:streamlined_breadcrumb) {false}
   
   def render_breadcrumb
     html = Builder::XmlMarkup.new
-    html.div(:id => "breadcrumb") do
+    html.div(:id => "streamlined_breadcrumb") do
       html << trail.join(" #{DELIMETER} ")
     end
     html.target!

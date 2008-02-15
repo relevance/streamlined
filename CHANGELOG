@@ -1,3 +1,18 @@
+1.0RC01 -- 02/15/08
+
+02/15/08 - changed #breadcrumb method to #streamlined_breadcrumb
+         - changed breadcrumb div id from breadcrumb to streamlined_breadcrumb
+         - added select component that lets you select none for has_manies
+         - fixed habtm bug #162 (thanks ErsatzTom)
+
+01/27/08 - fixed streamlined support for Postgres
+
+01/20/08 - renamed db_action_filter to before_streamlined_create
+         - renamed db_action_methods to callbacks
+
+New Year - working on Rails 2.0.x
+         - add multi_rails for different Rails version testing
+
 12/21/07 - Moved all tests to test-spec [SDH, JNR]
 
 10/30/07 - Moved the init code setting up various path constants (STREAMLINED_ROOT, etc) from controller to the Streamlined:Environment module [Rob Sanheim]
@@ -5,6 +20,7 @@
 10/30/07 - update copyrights, urls, various other little cleanups [Rob Sanheim]
 
 10/24/07 - Merged in Luis' additional_includes declaration [Matthew Bass]
+         - added classic_pagination so that Pagination would work out of the box with Rails 2.x
 
 10/24/07 - Added :filterable option for ActiveRecord columns [Matthew Bass]
 
@@ -30,3 +46,5 @@
 09/14/07 - Additional options can now be set with the #pagination declaration [Matthew Bass]
 
 09/14/07 - Created CHANGELOG [Matthew Bass]
+
+0.9 -- 9/12/2007
