@@ -212,7 +212,7 @@ module Streamlined::Controller::CrudMethods
   private
   def collect_has_manies(params)
     hsh = {}
-    model.has_manies(:exclude_has_many_through => true).each do |assoc|
+    model.has_manies(:exclude_has_many_throughs => true).each do |assoc|
       param = params.delete(assoc.name)
       if param
         hsh["#{assoc.name.to_s.singularize}_ids=".to_sym] = param

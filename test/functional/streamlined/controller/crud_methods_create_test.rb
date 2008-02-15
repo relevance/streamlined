@@ -2,10 +2,16 @@ require File.expand_path(File.join(File.dirname(__FILE__), '../../../test_functi
 require 'streamlined/controller/crud_methods'
 require 'streamlined/controller/filter_methods'
 
-describe "create with a db action filter" do
+describe "create with a before_streamlined_create filter" do
   attr_reader :controller
   setup do
     stock_controller_and_view(PoetsController)
+  end
+  
+  it "should redirect after valid save" do
+    @controller.class.before_streamlined_create(lambda { @poet.first_name = "Barack"; @poet.last_name = "Obama" })
+    post :create, {:poet => {:first_name => "George", :last_name => "Bush" } }
+    assert_response :redirect
   end
   
   it "should do a proc filter before the save" do
