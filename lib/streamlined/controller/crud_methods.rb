@@ -223,6 +223,7 @@ module Streamlined::Controller::CrudMethods
   
   def set_has_manies(hsh)
     hsh.each do |method, ids|
+      ids.delete(STREAMLINED_SELECT_NONE)
       instance.send(method, ids)
     end
   end

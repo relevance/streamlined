@@ -12,9 +12,9 @@ describe "StreamlinedEnvironment" do
     Streamlined::Environment.init_environment
   end
 
-  it "should init streamlined paths" do
+  it "should setup constants" do
     ignore_any_dynamic_constants_set
-    Streamlined::Environment.expects(:init_streamlined_paths)
+    Streamlined::Environment.expects(:init_streamlined_constants)
     Streamlined::Environment.init_environment
   end
   

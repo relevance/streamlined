@@ -14,7 +14,7 @@ describe "create with a before_streamlined_create filter" do
     assert_response :redirect
   end
   
-  it "should do a proc filter before the save" do
+  it "should do the filter before the save" do
     @controller.class.before_streamlined_create(lambda { @poet.first_name = "Barack"; @poet.last_name = "Obama" })
     post :create, {:poet => {:first_name => "George", :last_name => "Bush" } }
     assigns(:streamlined_item).first_name.should == "Barack"
@@ -24,22 +24,43 @@ describe "create with a before_streamlined_create filter" do
 end
 
 describe "creating with has many relationships" do
-  attr_reader :controller
   setup do
     stock_controller_and_view(PoetsController)
   end
   
   it "should save the has_many side after the parent" do
-    params = {:poet => {:first_name => "John", :last_name => "Doe", :poems => ["1", "2"] } }
+    params = {:poet => {:first_name => "John", :last_name => "Doe", :poems => ["1", "2", STREAMLINED_SELECT_NONE] } }
     post :create, params
     assigns(:streamlined_item).poem_ids.sort.should == [1,2]
   end
   
-  it "should just save the parent if there are no has_manies set" do
-    params = {:poet => {:first_name => "John", :last_name => "Doe" } }
-    assert_difference(Poet, :count) do
-      post :create, params
-    end
+  it "should clear has_manies if only the streamlined special 'none' value is sent" do
+    params = {:poet => {:first_name => "John", :last_name => "Doe", :poems => [STREAMLINED_SELECT_NONE] } }
+    post :create, params
+    assigns(:streamlined_item).poems.should == []
   end
   
+end
+
+describe "editing has many relationships" do
+  fixtures :poets, :poems
+  setup do
+    stock_controller_and_view(PoetsController)
+  end
+  
+  it "should clear existing has manies when user posts only the special STREAMLINED_SELECT_NONE" do
+    poet = poets(:justin)
+    poet.poems.size.should >= 1
+    params = {:id => poet.id, :poet => {:poems => [STREAMLINED_SELECT_NONE] } }
+    post :update, params
+    poet.poems.should == []
+  end
+
+  it "should update has manies and ignore STREAMLINED_SELECT_NONE when user posts real ids" do
+    poet = poets(:justin)
+    poet.poems.size.should >= 1
+    params = {:id => poet.id, :poet => {:poems => ["1", "2", STREAMLINED_SELECT_NONE] } }
+    post :update, params
+    poet.poems.size.should == 2
+  end
 end

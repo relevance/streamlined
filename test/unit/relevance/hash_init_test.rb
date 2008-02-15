@@ -14,12 +14,19 @@ describe "Relevance::HashInit" do
     assert_equal(2, inst.two)
   end
   
-  it "empty initialize" do
+  it "should handle empty initialize" do
     assert_nothing_raised { @c.new }
   end
   
-  it "nil initialize" do
+  it "should handle nil initialize" do
     assert_nothing_raised { @c.new(nil) }
   end
   
+  it "can yield a block, too" do
+    @inst = @c.new(:one => "value one") do |i|
+      i.two = "value two"
+    end
+    @inst.one.should == "value one"
+    @inst.two.should == "value two"
+  end
 end

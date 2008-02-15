@@ -10,11 +10,12 @@ module Streamlined::Environment
     end
     
     # Initialize constants needed throughout Streamlined
-    def init_streamlined_paths
+    def init_streamlined_constants
       Object.const_set("STREAMLINED_ROOT", find_streamlined_root)
       Object.const_set("STREAMLINED_TEMPLATE_ROOT", find_template_root)
       Object.const_set("STREAMLINED_GENERIC_VIEW_ROOT", "#{STREAMLINED_TEMPLATE_ROOT}/generic_views")
       Object.const_set("STREAMLINED_GENERIC_OVERRIDE_ROOT", File.join('..', 'streamlined', 'views'))
+      Object.const_set("STREAMLINED_SELECT_NONE", "__streamlined_select_none__")
     end
     
     # Use an absolute path for the Streamlined root if at all possible; otherwise use a relative path
@@ -31,7 +32,7 @@ module Streamlined::Environment
   
     # Bootstrap the Streamlined environment
     def init_environment
-      init_streamlined_paths
+      init_streamlined_constants
       # Streamlined depends on classic pagination, so we just require the plugin itself
       # to avoid deprecation warnings in 1.2.x or errors in 2.x.
       require_streamlined_plugin(:classic_pagination)

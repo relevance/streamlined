@@ -104,6 +104,14 @@ class Streamlined::Column::Association < Streamlined::Column::Base
       "open_relationship('#{id}', this, '/#{view.controller_path}')") if editable
     content
   end
+
+  # TODO: moved STREAMLINED_NONE smarts into a separate component
+  def render_select_with_streamlined_none(view, object, method, choices, options, html_options)
+    normal_select = view.select(object, method, choices, options, html_options)
+    name = "#{object}[#{method}][]"
+    hidden_none_select = view.hidden_field_tag(name, STREAMLINED_SELECT_NONE)
+    normal_select + hidden_none_select
+  end
   
   def render_td_edit(view, item)
     result = "[TBD: editable associations]"
@@ -111,9 +119,14 @@ class Streamlined::Column::Association < Streamlined::Column::Base
     when has_many?, has_and_belongs_to_many?
       choices = options_for_select ? custom_options_for_select(view) : standard_options_for_select
       selected_choices = item.send(name).collect {|e| e.id} if item.send(name)
-      result = view.select(model_underscore, name, choices,
-                           {:selected => selected_choices }, 
-                           {:size => 5, :multiple => true} )  
+      result = Streamlined::Components::Select.render do |s|
+        s.view = view
+        s.object = model_underscore
+        s.method = name
+        s.choices = choices
+        s.options = {:selected => selected_choices }
+        s.html_options = {:size => 5, :multiple => true}
+      end
     when belongs_to?
       choices = options_for_select ? custom_options_for_select(view) : standard_options_for_select
       choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name)
