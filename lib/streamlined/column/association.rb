@@ -18,7 +18,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   attr_accessor :options_for_select
   attr_with_default :quick_add, 'true'
   delegates :name, :class_name, :to => :underlying_association
-  delegates :belongs_to?, :has_many?, :to => :underlying_association
+  delegates :belongs_to?, :has_many?, :has_and_belongs_to_many?, :to => :underlying_association 
   
   def initialize(assoc, parent_model, edit, show)
     @underlying_association = assoc
@@ -108,7 +108,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   def render_td_edit(view, item)
     result = "[TBD: editable associations]"
     case
-    when has_many?
+    when has_many?, has_and_belongs_to_many?
       choices = options_for_select ? custom_options_for_select(view) : standard_options_for_select
       selected_choices = item.send(name).collect {|e| e.id} if item.send(name)
       result = view.select(model_underscore, name, choices,

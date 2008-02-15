@@ -170,6 +170,7 @@ describe "Streamlined::Column::Association" do
       mock.should_receive(:column_can_be_unassigned?).with(@model, "some_name").and_return(true).once
       mock.should_receive(:has_many? => false).once
       mock.should_receive(:belongs_to? => true).once
+      mock.should_receive(:has_and_belongs_to_many? => false).once    
       mock.should_receive(:should_render_quick_add? => false).once
     end
     [view, item]
