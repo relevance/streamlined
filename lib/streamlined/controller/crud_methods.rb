@@ -210,7 +210,8 @@ module Streamlined::Controller::CrudMethods
   end
   
   private
-  def collect_has_manies(params)
+  def collect_has_manies(params)     
+    return {} if params.blank?
     hsh = {}
     model.has_manies(:exclude_has_many_throughs => true).each do |assoc|
       param = params.delete(assoc.name)
@@ -222,6 +223,7 @@ module Streamlined::Controller::CrudMethods
   end
   
   def set_has_manies(hsh)
+    return hsh if hsh.blank?
     hsh.each do |method, ids|
       ids.delete(STREAMLINED_SELECT_NONE)
       instance.send(method, ids)
