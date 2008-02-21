@@ -13,12 +13,12 @@ describe "Streamlined::BreadcrumbHelper" do
   end
   
   it "render streamlined_breadcrumb uses default trail" do
-    assert_select root_node(@view.render_breadcrumb), "div[id=streamlined_breadcrumb]", "Home < People"
+    assert_select root_node(@view.render_breadcrumb), "div[id=streamlined_breadcrumb]", "Home &lt; People"
   end
 
   it "render streamlined_breadcrumb for list context" do
     assert_render_breadcrumb(:list)
-    assert_select root_node(@view.render_breadcrumb), "div[id=streamlined_breadcrumb]", "Home < Fancy Models"
+    assert_select root_node(@view.render_breadcrumb), "div[id=streamlined_breadcrumb]", "Home &lt; Fancy Models"
   end
 
   it "render streamlined_breadcrumb for edit context" do
@@ -27,7 +27,7 @@ describe "Streamlined::BreadcrumbHelper" do
       m.should_receive(:prefix_for_crud_context).and_return("Edit").once
       m.should_receive(:header_text).with("Edit").and_return("Edit Some Name").once
     end
-    assert_select root_node(@view.render_breadcrumb), "div[id=streamlined_breadcrumb]", "Home < Fancy Models < Edit Some Name" 
+    assert_select root_node(@view.render_breadcrumb), "div[id=streamlined_breadcrumb]", "Home &lt; Fancy Models &lt; Edit Some Name" 
   end
 
   it "render streamlined_breadcrumb for new context" do
@@ -36,7 +36,7 @@ describe "Streamlined::BreadcrumbHelper" do
       m.should_receive(:prefix_for_crud_context).and_return("New").once
       m.should_receive(:header_text).with("New").and_return("New Some Name").once
     end
-    assert_select root_node(@view.render_breadcrumb), "div[id=streamlined_breadcrumb]", "Home < Fancy Models < New Some Name" 
+    assert_select root_node(@view.render_breadcrumb), "div[id=streamlined_breadcrumb]", "Home &lt; Fancy Models &lt; New Some Name" 
   end
 
   it "render streamlined_breadcrumb for other context" do
@@ -45,7 +45,7 @@ describe "Streamlined::BreadcrumbHelper" do
       m.should_receive(:prefix_for_crud_context).and_return(nil).once    
       m.should_receive(:header_text).with(nil).and_return("Foo").once
     end
-    assert_select root_node(@view.render_breadcrumb), "div[id=streamlined_breadcrumb]", "Home < Fancy Models < Foo" 
+    assert_select root_node(@view.render_breadcrumb), "div[id=streamlined_breadcrumb]", "Home &lt; Fancy Models &lt; Foo" 
   end
   
   private 

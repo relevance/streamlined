@@ -1,7 +1,5 @@
 module Streamlined; end
 module Streamlined::Breadcrumb
-  DELIMETER = "<"
-  
   def node_for(crud_context, instance)
     class_name = instance.class.to_s
     case crud_context

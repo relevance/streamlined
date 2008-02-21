@@ -1,13 +1,14 @@
 module Streamlined::Helpers::BreadcrumbHelper
-  include Streamlined::Breadcrumb
+  include Streamlined::Breadcrumb                               
+  DELIMITER = "<"
   attr_with_default(:streamlined_breadcrumb) {false}
-  
+                                                                
   def render_breadcrumb
     html = Builder::XmlMarkup.new
     html.div(:id => "streamlined_breadcrumb") do
-      html << trail.join(" #{DELIMETER} ")
+      html << trail.join(ERB::Util.h " #{DELIMITER} ")
     end
-    html.target!
+    html.target!                      
   end
   
   private
