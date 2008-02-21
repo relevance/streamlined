@@ -51,8 +51,11 @@ module Relevance::ActiveRecordExtensions::ClassMethods
     options.assert_valid_keys(:exclude_has_many_throughs)
     self.reflect_on_all_associations.select do |assoc|
       result = (assoc.has_many? || assoc.has_and_belongs_to_many?) 
-      result = !assoc.options.include?(:through) if options[:exclude_has_many_throughs]
-      result
+      if options[:exclude_has_many_throughs]
+        result && !assoc.options.include?(:through)
+      else
+        result
+      end
     end
   end
   

@@ -11,18 +11,22 @@ describe "ActiveRecordExtensions" do
   end
   
   it "gets the correct number of has one relationships" do
-    Poet.has_ones.size.should == 0
-    Person.has_ones.size.should == 0
+    Poet.has_ones.should.be.blank
+    Person.has_ones.should.be.blank
   end
 
   it "gets the correct number of has many relationships" do
-    Poet.has_manies.size.should == 1
-    Person.has_manies.size.should == 0
+    Poet.has_manies.map(&:name).should == [:poems]
+    Person.has_manies.should.be.blank
+  end
+
+  it "ignores 1-1 relationships when excluding throughs (regression!)" do
+    Poem.has_manies(:exclude_has_many_throughs => true).should.be.blank
   end
   
   it "can exclude has_many_through when getting has many relationships" do
     Author.has_manies(:exclude_has_many_throughs => true).should == [Author.reflect_on_association(:authorships)]
-  end
+  end  
   
   it "finds all records when given a blank template record" do
     Person.find_by_criteria(Person.new).size.should == Person.count
