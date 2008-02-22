@@ -1,3 +1,7 @@
+1.0RC02 -- 02/22/08
+         - fixed show stopper bug on editing relationships (SDH)
+         - fixed html escaping bug (SDH)
+         
 1.0RC01 -- 02/15/08
 
 02/15/08 - changed #breadcrumb method to #streamlined_breadcrumb
