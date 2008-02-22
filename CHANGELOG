@@ -3,7 +3,8 @@
          - fixed html escaping bug (SDH)
          - security check on quick add model
          - security check on quick add model_name_method
-         - fixed bugs around STREAMLINED_SELECT_NONE
+         - fixed bugs around STREAMLINED_SELECT_NONE    
+         - fixed bug: was treating all delegate_targets as associations
          
 1.0RC01 -- 02/15/08
 

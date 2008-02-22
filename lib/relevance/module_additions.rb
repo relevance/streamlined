@@ -13,7 +13,7 @@ module Relevance::ModuleAdditions
   #
   def delegate_targets
     @delegate_targets ||= []
-  end
+  end                 
   
   def delegates(*methods)
     options = methods.pop

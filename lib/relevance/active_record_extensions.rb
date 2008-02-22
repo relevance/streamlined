@@ -62,7 +62,15 @@ module Relevance::ActiveRecordExtensions::ClassMethods
   def has_ones
     self.reflect_on_all_associations.select {|x| x.has_one? || x.belongs_to?}
   end
-  
+
+  def delegate_target_associations
+    self.delegate_targets.inject([]) do |acc, dt|
+      assoc = self.reflect_on_association(dt)
+      acc << assoc if assoc
+      acc
+    end
+  end
+
 end
   
 module Relevance::ActiveRecordExtensions::InstanceMethods

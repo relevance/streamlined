@@ -88,7 +88,7 @@ describe "Streamlined::Controller::QuickAddMethods for non-relational delegate" 
   before do
     reset_streamlined!
     @controller = StubController.new
-    StubModel.stubs(:delegate_targets).returns([:target])
+    StubModel.stubs(:delegate_target_associations).returns([])
     StubModel.stubs(:reflect_on_association).returns(nil)
     @controller.stubs(:safe_to_instantiate?).returns(true)
   end
@@ -115,6 +115,7 @@ describe "Streamlined::Controller::QuickAddMethods" do
   
   before do                          
     reset_streamlined!
+    StubModel.stubs(:delegate_target_associations).returns([])
     @controller = StubController.new
     @controller.stubs(:safe_to_instantiate?).returns(true)
   end

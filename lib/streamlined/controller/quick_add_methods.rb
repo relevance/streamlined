@@ -4,12 +4,9 @@ module Streamlined::Controller::QuickAddMethods
   def quick_add
     self.crud_context = :new
     return unless set_instance_vars
-    @model.class.delegate_targets.each do |dt| 
-      assoc = @model.class.reflect_on_association(dt)
-      if assoc
-        target_class = assoc.class_name.constantize
-        instance_variable_set("@#{target_class.name.variableize}", target_class.new)
-      end
+    @model.class.delegate_target_associations.each do |assoc| 
+      target_class = assoc.class_name.constantize
+      instance_variable_set("@#{target_class.name.variableize}", target_class.new)
     end
     self.instance = @model
     render_or_redirect(:success, 'quick_add')
@@ -22,16 +19,13 @@ module Streamlined::Controller::QuickAddMethods
     @success = true  
     name = @model.send(params[:model_name_method].blank? ? 'name' : params[:model_name_method])
     
-    @model.class.delegate_targets.each do |dt| 
-      assoc = @model.class.reflect_on_association(dt)
-      if assoc
-        target_class = assoc.class_name.constantize
-        assoc_name = assoc.class_name.variableize.to_sym
-        assoc_model = target_class.new(params[assoc_name])
-        @success = assoc_model.save && @success
-        instance_variable_set("@#{assoc_name}", assoc_model)
-        @model.send("#{assoc_name}=", assoc_model)
-      end
+    @model.class.delegate_target_associations.each do |assoc| 
+      target_class = assoc.class_name.constantize
+      assoc_name = assoc.class_name.variableize.to_sym
+      assoc_model = target_class.new(params[assoc_name])
+      @success = assoc_model.save && @success
+      instance_variable_set("@#{assoc_name}", assoc_model)
+      @model.send("#{assoc_name}=", assoc_model)
     end
     @success = @model.save && @success
     self.instance = @model

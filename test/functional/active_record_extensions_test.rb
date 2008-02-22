@@ -3,6 +3,12 @@ require 'relevance/active_record_extensions'
 
 describe "ActiveRecordExtensions" do
   fixtures :people, :poets, :poems
+                         
+  it "returns delegate target associations for delegate targets that are associations" do
+    assoc = Authorship.reflect_on_association(:author)          
+    assoc.should.not == nil
+    assocs = Authorship.delegate_target_associations.should == [assoc]
+  end
   
   it "can find by like" do
     assert_equal [people(:justin)], Person.find_by_like('Just', Person.user_columns)
