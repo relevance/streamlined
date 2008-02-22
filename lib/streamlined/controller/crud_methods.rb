@@ -223,9 +223,9 @@ module Streamlined::Controller::CrudMethods
   end
   
   def set_has_manies(hsh)
-    return hsh if hsh.blank?
+    return hsh if hsh.blank? 
+    Streamlined::Components::Select.purge_streamlined_select_none_from_params(hsh)
     hsh.each do |method, ids|
-      ids.delete(STREAMLINED_SELECT_NONE)
       instance.send(method, ids)
     end
   end

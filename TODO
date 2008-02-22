@@ -1,2 +1,3 @@
 - review the @custom_model_name stuff -- does this make any sense? does it belong on ControllerContext?
 - integrate association columns with acts_as_dropdown if present?
+

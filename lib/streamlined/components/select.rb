@@ -29,6 +29,14 @@ module Streamlined::Components
     
     def self.render(*args, &blk)
       self.new(*args, &blk).render
+    end   
+    
+    def self.purge_streamlined_select_none_from_params(params) 
+      return params if params.blank?
+      params.each do |k,v|
+        params[k].delete(STREAMLINED_SELECT_NONE) if Array === params[k] 
+        purge_streamlined_select_none_from_params(params[k]) if Hash === params[k]
+      end
     end
     
     def render

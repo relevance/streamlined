@@ -2,14 +2,23 @@ require File.expand_path(File.join(File.dirname(__FILE__), '/../test_helper'))
 
 describe "Streamlined" do
        
-  def setup
+  before do
     Streamlined::PermanentRegistry.reset
+    Streamlined::ReloadableRegistry.reset
   end                          
   
-  def teardown
+  after do
     Streamlined::PermanentRegistry.reset
+    Streamlined::ReloadableRegistry.reset
   end
-                  
+                 
+  it "caches UI instances for Streamlined models" do
+    ui_stub = stub
+    Streamlined::UI.expects(:new).returns(ui_stub).once
+    Streamlined::ui_for("SomeModel").should == ui_stub
+    Streamlined::ui_for("SomeModel").should == ui_stub
+  end
+
   it "bad format" do
     error = assert_raises(ArgumentError) {Streamlined.display_format_for("Forgot proc argument")}
     assert_equal "Block required", error.message

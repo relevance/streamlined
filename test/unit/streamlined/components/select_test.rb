@@ -21,5 +21,23 @@ describe "Select component" do
     end                                       
     assert_select html, "input[type=hidden][value=#{STREAMLINED_SELECT_NONE}]"
   end
+  
+  it "can purge all special select none markers" do
+    params = {:foo => "bar", 
+               :bar => [STREAMLINED_SELECT_NONE, "1"],
+               :bee => {:bar => ["5", STREAMLINED_SELECT_NONE]},
+               :quux => ["3"]}
+    Select.purge_streamlined_select_none_from_params(params)
+    params.should ==
+              {:foo => "bar", 
+                :bee => {:bar => ["5"]},
+                :bar => ["1"],
+                :quux => ["3"]}
+  end
+  
+  it "should handle nil or empty hash" do
+    Select.purge_streamlined_select_none_from_params(nil).should == nil
+    Select.purge_streamlined_select_none_from_params({}).should == {}
+  end
 end
 

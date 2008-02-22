@@ -410,6 +410,7 @@ Full name            </th>
   end
     
   it "quick add uses correct form field labels" do
+    Streamlined.ui_for("Poet")
     xhr :get, :quick_add, :select_id => "foo", :model_class_name => "Poet"
     assert_response :success
     assert_template "quick_add"

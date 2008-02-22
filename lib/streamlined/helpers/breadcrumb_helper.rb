@@ -6,7 +6,7 @@ module Streamlined::Helpers::BreadcrumbHelper
   def render_breadcrumb
     html = Builder::XmlMarkup.new
     html.div(:id => "streamlined_breadcrumb") do
-      html << trail.join(ERB::Util.h " #{DELIMITER} ")
+      html << trail.join(ERB::Util.h(" #{DELIMITER} "))
     end
     html.target!                      
   end

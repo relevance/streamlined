@@ -37,6 +37,11 @@ EdgeRailsTestHelper.bootstrap_test_environment_for_edge if Streamlined.edge_rail
 class Test::Unit::TestCase
   include Relevance::RailsAssertions
   include Arts
+        
+  def reset_streamlined!
+    Streamlined::PermanentRegistry.reset
+    Streamlined::ReloadableRegistry.reset
+  end
   
   def root_node(html) 
      HTML::Document.new(html).root

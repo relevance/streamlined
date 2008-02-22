@@ -1,6 +1,9 @@
 1.0RC02 -- 02/22/08
          - fixed show stopper bug on editing relationships (SDH)
          - fixed html escaping bug (SDH)
+         - security check on quick add model
+         - security check on quick add model_name_method
+         - fixed bugs around STREAMLINED_SELECT_NONE
          
 1.0RC01 -- 02/15/08
 
