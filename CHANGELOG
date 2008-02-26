@@ -1,3 +1,6 @@
+1.0RC03 -- 02/29/08
+         - public API change: streamlined_model now called streamlined_ui
+
 1.0RC02 -- 02/22/08
          - fixed show stopper bug on editing relationships (SDH)
          - fixed html escaping bug (SDH)
