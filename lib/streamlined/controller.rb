@@ -57,9 +57,9 @@ module Streamlined::Controller::InstanceMethods
     @streamlined_request_context = Streamlined::Context::RequestContext.new(params[:page_options])
   end
       
-  def initialize_streamlined_values(mod_name = nil)
+  def initialize_streamlined_values
     @streamlined_controller_context = Streamlined::Context::ControllerContext.new
-    @streamlined_controller_context.model_name = mod_name || self.class.model_name || Inflector.classify(self.class.controller_name)
+    @streamlined_controller_context.model_name = self.class.model_name || Inflector.classify(self.class.controller_name)
     # TODO: why isn't this in the html head?
     @page_title = "Manage #{model_name.pluralize}"
   rescue Exception => ex
