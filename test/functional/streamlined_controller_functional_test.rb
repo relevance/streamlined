@@ -19,7 +19,6 @@ describe "StreamlinedController" do
   it "delegated methods are not routable" do
     action_methods = PeopleController.action_methods.map(&:to_sym)
     (action_methods & Streamlined::Context::RequestContext::DELEGATES).size.should == 0
-    (action_methods & Streamlined::Context::ControllerContext::DELEGATES).size.should == 0
   end
   
   it "should render index" do

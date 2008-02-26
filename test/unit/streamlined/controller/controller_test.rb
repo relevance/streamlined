@@ -8,36 +8,24 @@ end
 describe "Streamlined::Controller" do
   include Streamlined::Controller::ClassMethods
   
-  # verify that exception is logged and rethrown
-  it "initialize with streamlined variables" do
-    o = Object.new
-    o.extend Streamlined::Controller::InstanceMethods
-    logger = flexmock("logger") do |mock|
-      mock.should_receive(:info).once
-    end 
-    flexmock(o, :streamlined_logger => logger)
-    flexmock(Streamlined::Context::ControllerContext).should_receive(:new).and_raise(RuntimeError,"mocked!")
-    assert_raise(RuntimeError) do
-      o.send :initialize_streamlined_values
-    end
+  before do
+    @clazz = Class.new
+    @clazz.extend Streamlined::Controller::ClassMethods 
   end
   
-  it "deprecation of helper overrides" do
-    c = FooController
-    c.acts_as_streamlined
-    assert_nil c.send(:instance_variable_get, :@helper_overrides)
-    assert_raises(ArgumentError) do
-      c.acts_as_streamlined :helpers => ["NEW HELPER"]
-    end
+  it "initialize streamlined controller context" do
+    @clazz.expects(:delegate_non_routable)
+    @clazz.initialize_streamlined_controller_context("Foo")
+    context = @clazz.streamlined_controller_context
+    context.should.be.instance_of Streamlined::Context::ControllerContext
   end
   
   it "streamlined model" do
-    streamlined_model("Test")
-    assert_equal "Test", model_name
-    streamlined_model(stub(:name => "Tim"))
-    assert_equal "Tim", 
-                 model_name, 
-                 "streamlined_model should extract name property" 
+    @clazz.expects(:delegate_non_routable)
+    @clazz.initialize_streamlined_controller_context("Foo")
+    @clazz.model_name.should == "Foo"
+    @clazz.streamlined_ui("Bar")
+    @clazz.model_name.should == "Bar"
   end  
   
   it "render filter" do

@@ -1,5 +1,5 @@
 # Streamlined
-# (c) 2005-7 Relevance, LLC. (http://thinkrelevance.com)
+# (c) 2005-2008 Relevance, Inc.. (http://thinkrelevance.com)
 # Streamlined is freely distributable under the terms of an MIT-style license.
 # For details, see http://streamlinedframework.org/
 #
@@ -27,9 +27,14 @@ module Streamlined::Helper
   
   def self.included(includer)
     includer.class_eval do
-      attr_reader :streamlined_controller_context, :streamlined_request_context
-      # TODO: should delegate to controller, not controller context. Need to test. --SDH
-      delegates *Streamlined::Context::ControllerContext::DELEGATES
+      attr_reader :streamlined_request_context
+      delegates :model_name,
+                :model, 
+                :model_symbol, 
+                :model_table, 
+                :model_underscore, 
+                :model_ui,  
+                {:to=>:controller}
       delegates :list_columns, :to=>:model_ui
     end
   end

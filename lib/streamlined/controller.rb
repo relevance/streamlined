@@ -1,5 +1,5 @@
 # Streamlined
-# (c) 2005-7 Relevance, LLC. (http://thinkrelevance.com)
+# (c) 2005-2008 Relevance, Inc.. (http://thinkrelevance.com)
 # Streamlined is freely distributable under the terms of an MIT-style license.
 # For details, see http://streamlinedframework.org/
 module Streamlined::Controller; end
@@ -47,26 +47,10 @@ module Streamlined::Controller::InstanceMethods
   
        
   private
-  def initialize_with_streamlined_variables
-    initialize_streamlined_values
-    streamlined_logger.info("model NAME: #{model_name}")
-    streamlined_logger.info("model: #{model.inspect}")
-  end
-  
   def initialize_request_context
     @streamlined_request_context = Streamlined::Context::RequestContext.new(params[:page_options])
   end
       
-  def initialize_streamlined_values
-    @streamlined_controller_context = Streamlined::Context::ControllerContext.new
-    @streamlined_controller_context.model_name = self.class.model_name || Inflector.classify(self.class.controller_name)
-    # TODO: why isn't this in the html head?
-    @page_title = "Manage #{model_name.pluralize}"
-  rescue Exception => ex
-    streamlined_logger.info("Could not instantiate controller: #{self.class.name}")
-    raise ex
-  end
-
   # rewrite of rails method
   def paginator_and_collection_for(collection_id, options) #:nodoc:
     klass = model
@@ -87,21 +71,13 @@ module Streamlined::Controller::InstanceMethods
 end
 
 module Streamlined::Controller::ClassMethods  
-  @custom_model_name = nil
-
   def acts_as_streamlined(options = {})
-    raise ArgumentError, "options[:helpers] is deprecated" if options[:helpers]
     class_eval do
-      attr_reader :streamlined_controller_context, :streamlined_request_context
+      attr_reader :streamlined_request_context
       attr_with_default(:breadcrumb_trail) {[]}
       helper_method :crud_context, :render_tabs, :render_partials, :instance, :breadcrumb_trail
-      # delegated helpers do not appear as routable actions!
-      def self.delegate_non_routable(*delegates_args)
-        delegates *delegates_args
-        delegates_args.each {|arg| hide_action(arg)}
-      end
-      delegate_non_routable(*Streamlined::Context::ControllerContext::DELEGATES)
-      delegate_non_routable(*Streamlined::Context::RequestContext::DELEGATES)
+      delegate_non_routable(*Streamlined::Context::RequestContext::DELEGATES) 
+      initialize_streamlined_controller_context(controller_name.singularize.classify)
       include Streamlined::Controller::InstanceMethods
       before_filter :initialize_request_context
       Dir["#{RAILS_ROOT}/app/streamlined/*.rb"].each do |name|
@@ -110,18 +86,26 @@ module Streamlined::Controller::ClassMethods
       # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
       verify :method => :post, :only => [ :destroy, :create, :update ],
             :redirect_to => { :action => :list }
-      alias_method_chain :initialize, :streamlined_variables
     end
   end
-  
-  def model_name
-    @custom_model_name || nil
+
+  def delegate_non_routable(*delegates_args)
+    delegates *delegates_args
+    delegates_args.each {|arg| hide_action(arg)}
   end
   
-  def streamlined_model(mod)
-    @custom_model_name = mod.instance_of?(String) ? mod : mod.name
+  # controller name is passed in by acts_as_streamlined and becomes model name      
+  def initialize_streamlined_controller_context(model_name)        
+    class << self
+      attr_reader :streamlined_controller_context 
+      delegate *Streamlined::Context::ControllerContext.delegates + 
+               [{:to => :streamlined_controller_context}]
+    end
+    @streamlined_controller_context = Streamlined::Context::ControllerContext.new(model_name)
+    delegate_non_routable *Streamlined::Context::ControllerContext.delegates + 
+                           [{:to => "self.class"}]
   end
-  
+
   def filters
     @filters ||= {}
   end
