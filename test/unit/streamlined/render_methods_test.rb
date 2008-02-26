@@ -23,14 +23,14 @@ describe "Streamlined::RenderMethods" do
   end
   
   it "convert action options for generic" do
-    @managed_views = ['new']
+    self.stubs(:managed_views).returns(['new'])
     options = {:action=>"new", :id=>"1"}
     convert_action_options(options)
     assert_equal({:template=>generic_view("new"), :id=>"1"}, options)
   end
 
   it "convert action options for specific" do
-    @managed_partials = ['new']
+    self.stubs(:managed_views).returns([])
     options = {:action=>"new", :id=>"1"}
     convert_action_options(options)
     assert_equal({:action=>"new", :id=>"1"}, options)

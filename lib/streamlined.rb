@@ -17,7 +17,7 @@ module Streamlined
   class Error < RuntimeError; end
   
   def self.ui_for(model, options = {}, &blk)
-    ui = Streamlined::ReloadableRegistry.ui_for(model, options)
+    ui = Streamlined::ReloadableRegistry.ui_for(model, options  )
     ui.instance_eval(&blk) if block_given?
     ui
   end 

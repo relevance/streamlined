@@ -19,11 +19,11 @@ module Streamlined::RenderMethods
   end
   
   def managed_partials
-    @managed_partials ||= []
+    ['list', 'form', 'popup', 'quick_add_errors']
   end
-  
+                             
   def managed_views
-    @managed_views ||= []
+    ['list', 'new', 'show', 'edit', 'quick_add', 'save_quick_add', 'update_filter_select']
   end  
   
   # Returns true if the given template exists under <tt>app/views</tt>.

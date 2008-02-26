@@ -1,5 +1,5 @@
 module Streamlined::Controller::CrudMethods
-  # Creates the list of items of the @managed model class. Default behavior
+  # Creates the list of items of the managed model class. Default behavior
   # creates an Ajax-enabled table view that paginates in groups of 10.  The 
   # resulting view will use Prototype and XHR to allow the user to page
   # through the model instances.  

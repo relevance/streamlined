@@ -49,8 +49,6 @@ module Streamlined::Controller::InstanceMethods
   private
   def initialize_with_streamlined_variables
     initialize_streamlined_values
-    @managed_views = ['list', 'new', 'show', 'edit', 'quick_add', 'save_quick_add', 'update_filter_select']
-    @managed_partials = ['list', 'form', 'popup', 'quick_add_errors']
     streamlined_logger.info("model NAME: #{model_name}")
     streamlined_logger.info("model: #{model.inspect}")
   end
