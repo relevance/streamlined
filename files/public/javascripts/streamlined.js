@@ -218,7 +218,8 @@ Streamlined.Relationships = {
 		rel_name = ids[1];
 		item_id = ids[2];
 		klass = ids[3];
-        params = "id=" + item_id + "&relationship=" + rel_name + "&klass=" + klass + "&type=" + rel_type;
+    params = "id=" + item_id + "&relationship=" + rel_name + "&klass=" + klass + "&type=" + rel_type +
+             "&authenticity_token=" + Streamlined.AuthenticityToken.from_page();
 		if(rel_type == "Window") {
 			new Ajax.Request(url + "/edit_relationship", {
 				method: "get",
@@ -249,7 +250,8 @@ Streamlined.Relationships = {
 		item_id = ids[2];
 		klass = ids[3];
 		new Ajax.Updater(id, url + "/show_relationship", {
-			parameters: "id=" + item_id + "&relationship=" + rel_name + "&klass=" + klass + "&type=" + rel_type
+			parameters: "id=" + item_id + "&relationship=" + rel_name + "&klass=" + klass + "&type=" + rel_type +
+			            "&authenticity_token=" + Streamlined.AuthenticityToken.from_page();
 		})
 		if(rel_type == "rel_many")
 			link.innerHTML = "+";
@@ -265,7 +267,8 @@ Streamlined.Enumerations = {
 		rel_type = ids[0];
 		rel_name = ids[1];
 		item_id = ids[2];
-        params = "id=" + item_id + "&enumeration=" + rel_name + "&type=" + rel_type;
+    params = "id=" + item_id + "&enumeration=" + rel_name + "&type=" + rel_type +
+						 "&authenticity_token=" + Streamlined.AuthenticityToken.from_page();
 		if(rel_type == "Window") {
 			new Ajax.Request(url + "/edit_enumeration", {
 				method: "get",
@@ -292,7 +295,8 @@ Streamlined.Enumerations = {
 		rel_name = ids[1];
 		item_id = ids[2];
 		new Ajax.Updater(id, url + "/show_enumeration", {
-			parameters: "id=" + item_id + "&enumeration=" + rel_name + "&type=" + rel_type
+			parameters: "id=" + item_id + "&enumeration=" + rel_name + "&type=" + rel_type +
+			            "&authenticity_token=" + Streamlined.AuthenticityToken.from_page();
 		})
 		link.innerHTML = "Edit";
 		link.onclick = new Function("Streamlined.Enumerations.open_enumeration('" + id + "', this, '" + url + "')");
@@ -366,5 +370,11 @@ Streamlined.Form = {
     } else {
       $(field).disabled = "true";
     }
+  }
+}
+
+Streamlined.AuthenticityToken = {
+  from_page:function() {
+    return encodeURIComponent($('authenticity_token').innerHTML.strip());
   }
 }

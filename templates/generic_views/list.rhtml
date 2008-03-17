@@ -10,6 +10,12 @@
   Counter <%= form.text_field 'counter', {:autocomplete=>"off"} %>
   <%= submit_tag "Show Me" %>
 <% end %>
+
+<!-- Embedded authenticity token for use in JavaScript that sends custom AJAX requests -->
+<div id="authenticity_token" style="display: none">
+  <%= form_authenticity_token if protect_against_forgery? %>
+</div>
+
 <div id="streamlined_list">
   <div class="actions" id="list-filter">
     <%= streamlined_filter %>
