@@ -136,11 +136,43 @@ describe "Streamlined::Column::ActiveRecord" do
     assert_equal "Unassigned", @ar.render_td_show(@view, item)
   end
   
-  it "render td with enumeration" do
+  it "render td with array-backed enumeration" do
     setup_mocks
     @ar.enumeration = %w{ A B C }
     @view.should_receive(:crud_context).and_return(:list).once
     expected = "<div id=\"EnumerableSelect::column::123::\">render</div>link"
+    assert_equal expected, @ar.render_td(@view, @item)
+  end
+  
+  it "render td with hash-backed enumeration" do
+    setup_mocks(:column => 1)
+    @ar.enumeration = { "A" => 1, "B" => 2, "C" => 3 }
+    @view.should_receive(:crud_context).and_return(:list).once
+    expected = "<div id=\"EnumerableSelect::column::123::\">A</div>link"
+    assert_equal expected, @ar.render_td(@view, @item)
+  end
+  
+  it "render td with hash-backed enumeration and nil column value" do
+    setup_mocks(:column => nil)
+    @ar.enumeration = { "A" => 1, "B" => 2, "C" => 3 }
+    @view.should_receive(:crud_context).and_return(:list).once
+    expected = "<div id=\"EnumerableSelect::column::123::\">Unassigned</div>link"
+    assert_equal expected, @ar.render_td(@view, @item)
+  end
+  
+  it "render td with 2d array-backed enumeration" do
+    setup_mocks(:column => 1)
+    @ar.enumeration = [["A", 1], ["B", 2], ["C", 3]]
+    @view.should_receive(:crud_context).and_return(:list).once
+    expected = "<div id=\"EnumerableSelect::column::123::\">A</div>link"
+    assert_equal expected, @ar.render_td(@view, @item)
+  end
+  
+  it "render td with 2d array-backed enumeration and nil column value" do
+    setup_mocks(:column => nil)
+    @ar.enumeration = [["A", 1], ["B", 2], ["C", 3]]
+    @view.should_receive(:crud_context).and_return(:list).once
+    expected = "<div id=\"EnumerableSelect::column::123::\">Unassigned</div>link"
     assert_equal expected, @ar.render_td(@view, @item)
   end
   
@@ -223,8 +255,8 @@ private
     flexmock(:name => name, :human_name => human_name)
   end
   
-  def setup_mocks
+  def setup_mocks(item_attrs={})
     @view = flexmock(:controller_name => 'controller_name', :link_to_function => 'link')
-    @item = flexmock(:id => 123, :column => 'render')
+    @item = flexmock(item_attrs.reverse_merge(:id => 123, :column => 'render'))
   end
 end

@@ -37,11 +37,20 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   def render_td_show(view, item)
     if enumeration
       content = item.send(self.name)
+      if enumeration.first.is_a?(Array)
+        key_value_pair = enumeration.detect { |e| e.last == content }
+        content = key_value_pair.first if key_value_pair
+      end
       content = content && !content.blank? ? content : self.unassigned_value
       content = wrap_with_link(content, view, item)
     else
       render_content(view, item)
     end
+  end
+  
+  def enumeration
+    # Convert the enumeration to a 2d array if it's a hash
+    @enumeration.is_a?(Hash) ? @enumeration.to_a : @enumeration
   end
   
   def render_td_list(view, item)

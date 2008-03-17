@@ -1,6 +1,16 @@
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
+
+# Suppress file lists when running tests
+Rake::TestTask.class_eval do
+  alias_method :original_define, :define
+  def define
+    @verbose = false
+    original_define
+  end
+end
+
 require 'test/lib/ar_helper'
 load 'test/lib/multi_rails/tasks/multi_rails.rake'
 load 'tasks/rcov.rake'
