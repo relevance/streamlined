@@ -11,10 +11,12 @@
   <%= submit_tag "Show Me" %>
 <% end %>
 
-<!-- Embedded authenticity token for use in JavaScript that sends custom AJAX requests -->
-<div id="authenticity_token" style="display: none">
-  <%= form_authenticity_token if protect_against_forgery? %>
-</div>
+<% if Rails::VERSION::MAJOR >= 2 -%>
+  <!-- Embedded authenticity token for use in JavaScript that sends custom AJAX requests -->
+  <div id="authenticity_token" style="display: none">
+    <%= form_authenticity_token if protect_against_forgery? %>
+  </div>
+<% end -%>
 
 <div id="streamlined_list">
   <div class="actions" id="list-filter">
