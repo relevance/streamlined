@@ -2,6 +2,7 @@
          - public API change: streamlined_model now called streamlined_ui
          - added CSS IDs to each item table row on the list view (MJB)
          - now outputting flash notices on the list view (MJB)
+         - fixed enumeration editing bugs (MJB)
 
 1.0RC02 -- 02/22/08
          - fixed show stopper bug on editing relationships (SDH)

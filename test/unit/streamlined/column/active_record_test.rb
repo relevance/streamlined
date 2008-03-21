@@ -256,7 +256,7 @@ private
   end
   
   def setup_mocks(item_attrs={})
-    @view = flexmock(:controller_name => 'controller_name', :link_to_function => 'link')
+    @view = flexmock(:controller_path => 'controller_path', :link_to_function => 'link')
     @item = flexmock(item_attrs.reverse_merge(:id => 123, :column => 'render'))
   end
 end

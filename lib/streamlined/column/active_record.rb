@@ -34,11 +34,15 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     Streamlined::View::EditViews.create_relationship(:enumerable_select)
   end
   
+  def show_view
+    Streamlined::View::ShowViews.create_summary(:enumeration)
+  end
+  
   def render_td_show(view, item)
     if enumeration
       content = item.send(self.name)
       if enumeration.first.is_a?(Array)
-        key_value_pair = enumeration.detect { |e| e.last == content }
+        key_value_pair = enumeration_key_for(content)
         content = key_value_pair.first if key_value_pair
       end
       content = content && !content.blank? ? content : self.unassigned_value
@@ -53,12 +57,16 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
     @enumeration.is_a?(Hash) ? @enumeration.to_a : @enumeration
   end
   
+  def enumeration_key_for(value)
+    enumeration.detect { |e| e.last == value } 
+  end
+  
   def render_td_list(view, item)
     id = relationship_div_id(name, item)
     div = render_td_show(view, item)
     div = div_wrapper(id) { div } if enumeration
     div += view.link_to_function("Edit", "Streamlined.Enumerations." <<
-      "open_enumeration('#{id}', this, '/#{view.controller_name}')") if enumeration && editable
+      "open_enumeration('#{id}', this, '/#{view.controller_path}')") if enumeration && editable
     div
   end
   

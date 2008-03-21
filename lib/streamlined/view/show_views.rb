@@ -37,6 +37,11 @@ module Streamlined::View::ShowViews
     
   end
   
+  # Renders the enumeration value.
+  class Enumeration < Streamlined::View::Base
+    
+  end
+  
   class Graph < Streamlined::View::Base
     def must_have_sparklines!
       raise "STREAMLINED ERROR: Cannot use the Sparklines Graph relationship summary: need to install Sparklines plugin first (requires RMagick, which is not the easiest thing to install, we're just warning you)" unless 'Sparklines'.to_const
