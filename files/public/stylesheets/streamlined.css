@@ -61,7 +61,7 @@ td.sl_edit_value { font-family: Verdana, Arial; font-size: 10pt; margin-left: 10
 #errorExplanation h2    { text-align: left; font-weight: bold; padding: 5px 5px 5px 15px; font-size: 12px; margin: -7px; background-color: #c00; color: #fff; }
 #errorExplanation p     { color: #333; margin-bottom: 0; padding: 5px; }
 #errorExplanation ul li { font-size: 12px; list-style: square; }
-#notice                 { color: green; position: absolute; background-color: transparent; }
+#notice                 { color: green; }
 /*----------------------------------*/
 
 /*----------------------------------*/
