@@ -29,4 +29,9 @@ describe "ActiveRecordExtensions" do
     assert_equal %w{alpha beta}, @cls.user_columns.map(&:name)
   end
   
+  it "returns streamlined css id" do
+    @inst.stubs(:id).returns(123)
+    @inst.streamlined_css_id.should == "object_123"
+  end
+  
 end

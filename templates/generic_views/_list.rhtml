@@ -20,7 +20,7 @@
   <% odd = false %>
   <% for item in @streamlined_items %>
     <% odd = !odd %>
-    <tr class="<%= odd ? 'odd' : 'even'%> <%= model_ui.style_class_for(:list, :row, item) %>">
+    <tr id="<%= item.streamlined_css_id %>" class="<%= odd ? 'odd' : 'even'%> <%= model_ui.style_class_for(:list, :row, item) %>">
     <% list_columns.each do |column| %>
       <% if column.is_displayable_in_context?(self, item) %>
         <td class="<%= model_ui.style_class_for(:list, :cell, item) %>">

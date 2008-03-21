@@ -83,6 +83,10 @@ module Relevance::ActiveRecordExtensions::InstanceMethods
       return self.id
     end
   end
+  
+  def streamlined_css_id
+    "#{self.class.name.downcase}_#{self.id}"
+  end
 end
   
 ActiveRecord::Base.send(:extend, Relevance::ActiveRecordExtensions::ClassMethods)
