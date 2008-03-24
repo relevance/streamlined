@@ -51,7 +51,7 @@ describe "Streamlined::Column::ActiveRecord" do
   it "enumeration can be set" do
     assert_nil @ar.enumeration
     @ar.enumeration = %w{ A B C }
-    assert_equal %w{ A B C }, @ar.enumeration
+    assert_equal [%w(A A), %w(B B), %w(C C)], @ar.enumeration
   end
   
   it "equal" do
@@ -248,6 +248,36 @@ describe "Streamlined::Column::ActiveRecord" do
     @ar.html_options = { :class => 'foo_class' }
     @view.should_receive(:select).with('model', 'column', [["Unassigned", nil]], {}, { :class => 'foo_class' }).once
     @ar.render_enumeration_select(@view, @item)
+  end
+  
+  describe "enumeration" do
+    def setup
+      # TODO: having to duplicate this setup method here smells bad
+      ar_column = flexmock(:name => 'column')
+      model = flexmock(:name => 'model')
+      @class_under_test = Streamlined::Column::ActiveRecord
+      @ar = @class_under_test.new(ar_column, model)
+    end
+    
+    it "converts hash to sorted 2d array" do
+      @ar.enumeration = { :foo => "bar", :bat => "boo" }
+      @ar.enumeration.should == [[:bat, "boo"], [:foo, "bar"]]
+    end
+    
+    it "converts 1d array to 2d array" do
+      @ar.enumeration = [1, 2, 3]
+      @ar.enumeration.should == [[1, 1], [2, 2], [3, 3]]
+    end
+    
+    it "returns 2d array as is" do
+      @ar.enumeration = [%w(A A), %w(B B), %w(C C)]
+      @ar.enumeration.should == [%w(A A), %w(B B), %w(C C)]
+    end
+    
+    it "returns nil if enumeration is nil" do
+      @ar.enumeration = nil
+      @ar.enumeration.should.be nil
+    end
   end
   
 private

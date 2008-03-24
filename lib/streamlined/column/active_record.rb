@@ -53,8 +53,13 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
   end
   
   def enumeration
-    # Convert the enumeration to a 2d array if it's a hash
-    @enumeration.is_a?(Hash) ? @enumeration.to_a : @enumeration
+    if @enumeration.is_a?(Hash)
+      # convert the enumeration to a sorted 2d array if it's a hash
+      @enumeration.to_a.sort { |x,y| x.to_s <=> y.to_s }
+    elsif @enumeration
+      # convert the enumeration to a 2d array of it's a 1d array, otherwise leave it alone
+      @enumeration.first.is_a?(Array) ? @enumeration : @enumeration.inject([]) { |a,v| a << [v,v] }
+    end
   end
   
   def enumeration_key_for(value)
