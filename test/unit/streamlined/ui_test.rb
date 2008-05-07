@@ -70,6 +70,7 @@ describe "Streamlined::UI" do
     assert_equal true, @ui.quick_delete_button
     assert_equal true, @ui.quick_edit_button
     assert_equal true, @ui.quick_new_button
+    assert_equal true, @ui.quick_show_button
   end
   
   it "new submit button" do

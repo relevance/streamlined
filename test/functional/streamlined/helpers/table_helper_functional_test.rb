@@ -17,15 +17,15 @@ describe "Streamlined::Helpers::TableHelperFunctional" do
     @view.send(:model_ui).table_row_buttons true
     assert_equal "<th>&nbsp;</th>", @view.streamlined_table_row_button_header
     item = people(:justin)
-    assert_equal "<td>#{@view.link_to_show_model(item)} #{@view.link_to_edit_model(item)}#{@view.quick_delete_button(item)}</td>", @view.streamlined_table_row_buttons(item)
+    assert_equal "<td>#{@view.quick_show_button(item)}#{@view.quick_edit_button(item)}#{@view.quick_delete_button(item)}</td>", @view.streamlined_table_row_buttons(item)
   end
   
   it "no quick delete button" do
-    @view.send(:model_ui).table_row_buttons true    
+    @view.send(:model_ui).table_row_buttons true
     @view.send(:model_ui).quick_delete_button false
     assert_equal "<th>&nbsp;</th>", @view.streamlined_table_row_button_header
     item = people(:justin)
-    assert_equal "<td>#{@view.link_to_show_model(item)} #{@view.link_to_edit_model(item)}</td>", @view.streamlined_table_row_buttons(item)
+    assert_equal "<td>#{@view.quick_show_button(item)}#{@view.quick_edit_button(item)}</td>", @view.streamlined_table_row_buttons(item)
   end
   
   it "no quick edit button" do
@@ -33,7 +33,15 @@ describe "Streamlined::Helpers::TableHelperFunctional" do
     @view.send(:model_ui).quick_edit_button false
     assert_equal "<th>&nbsp;</th>", @view.streamlined_table_row_button_header
     item = people(:justin)
-    assert_equal "<td>#{@view.link_to_show_model(item)}</td>", @view.streamlined_table_row_buttons(item)
+    assert_equal "<td>#{@view.quick_show_button(item)}</td>", @view.streamlined_table_row_buttons(item)
+  end
+  
+  it "no quick show button" do
+    @view.send(:model_ui).table_row_buttons true    
+    @view.send(:model_ui).quick_show_button false
+    assert_equal "<th>&nbsp;</th>", @view.streamlined_table_row_button_header
+    item = people(:justin)
+    assert_equal "<td></td>", @view.streamlined_table_row_buttons(item)
   end
   
 end

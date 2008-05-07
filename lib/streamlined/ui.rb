@@ -33,6 +33,7 @@ class Streamlined::UI
   declarative_scalar :quick_delete_button, :default => true
   declarative_scalar :quick_edit_button, :default => true
   declarative_scalar :quick_new_button, :default => true
+  declarative_scalar :quick_show_button, :default => true
   declarative_scalar :table_filter, :default => {:show => true, :case_sensitive => true}
   declarative_scalar :read_only, :default => false
   declarative_scalar :new_submit_button, :default => {:ajax => true}
@@ -65,6 +66,7 @@ class Streamlined::UI
     subclass.quick_delete_button(self.quick_delete_button)
     subclass.quick_edit_button(self.quick_edit_button)
     subclass.quick_new_button(self.quick_new_button)
+    subclass.quick_show_button(self.quick_show_button)
     subclass.exporters(*self.exporters)
   end      
   
