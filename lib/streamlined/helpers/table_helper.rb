@@ -5,7 +5,7 @@ module Streamlined::Helpers::TableHelper
   
   def streamlined_table_row_buttons(item)
     if model_ui.table_row_buttons
-      "<td>#{quick_show_button(item)}#{quick_edit_button(item)}#{quick_delete_button(item)}</td>"
+      "<td>#{quick_show_button(item)}#{quick_edit_button(item)}#{quick_delete_button(item)}&nbsp;</td>"
     else
       ""
     end
