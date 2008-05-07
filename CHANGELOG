@@ -1,3 +1,5 @@
+05/07/08 - added quick_show_button option for hiding the show button on the list view [Matthew Bass]
+
 1.0RC03 -- 02/29/08
          - public API change: streamlined_model now called streamlined_ui
          - added CSS IDs to each item table row on the list view (MJB)
