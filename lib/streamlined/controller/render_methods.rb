@@ -47,9 +47,9 @@ module Streamlined::Controller::RenderMethods
     options
   end
 
-  def render(options = {}, deprecated_status = nil, &block) 
+  def render(options = {}, &block) 
     options = convert_all_options(options)
-    super(options, deprecated_status, &block)
+    super(options, &block)
   end
 
   def render_partials(*args)
