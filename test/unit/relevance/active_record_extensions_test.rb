@@ -10,15 +10,43 @@ describe "ActiveRecordExtensions" do
     @cls.extend(Relevance::ActiveRecordExtensions::ClassMethods)
   end
   
-  it "streamlined name" do
-    flexstub(@inst).should_receive(:id).and_return('my_id')
-    assert_equal('my_id', @inst.streamlined_name)
-    flexstub(@inst).should_receive(:title).and_return('my_title')
-    assert_equal('my_title', @inst.streamlined_name)
-    flexstub(@inst).should_receive(:name).and_return('my_name')
-    assert_equal('my_name', @inst.streamlined_name)
-    assert_equal('my_title:my_id', @inst.streamlined_name([:title,:id]))
-    assert_equal('my_title-my_id', @inst.streamlined_name([:title,:id], '-'))
+  it "streamlined name returns id" do
+    flexstub(@inst).should_receive(:id).and_return(123)
+    assert_equal(123, @inst.streamlined_name)
+  end
+  
+  it "streamlined name returns title" do
+    @inst.instance_eval { def title; "title"; end }
+    assert_equal("title", @inst.streamlined_name)
+  end
+  
+  it "streamlined name returns name" do
+    @inst.instance_eval { def name; "name"; end }
+    assert_equal("name", @inst.streamlined_name)
+  end
+  
+  it "streamlined name returns options" do
+    flexstub(@inst).should_receive(:id).and_return(123)
+    @inst.instance_eval { def title; "title"; end }
+    assert_equal("title:123", @inst.streamlined_name([:title,:id]))
+  end
+  
+  it "streamlined name returns options with delimiter" do
+    flexstub(@inst).should_receive(:id).and_return(123)
+    @inst.instance_eval { def title; "title"; end }
+    assert_equal("title-123", @inst.streamlined_name([:title,:id], "-"))
+  end
+  
+  it "streamlined name with instance that has name method with single arg" do
+    flexstub(@inst).should_receive(:id).and_return(123)
+    @inst.instance_eval { def name(arg); end }
+    @inst.streamlined_name.should == 123
+  end
+  
+  it "streamlined name with instance that has title method with single arg" do
+    flexstub(@inst).should_receive(:id).and_return(123)
+    @inst.instance_eval { def title(arg); end }
+    @inst.streamlined_name.should == 123
   end
   
   it "user columns" do

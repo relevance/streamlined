@@ -48,6 +48,18 @@ describe "HeaderHelper" do
     @controller.crud_context = :bogus
     assert_nil @controller.prefix_for_crud_context
   end
+  
+  it "header text with name" do
+    class SomeInstance; def name; "Some Instance"; end; end
+    @controller.instance = SomeInstance.new
+    @controller.header_text.should == "Some Instance"
+  end
+  
+  it "header text with name that has one arg" do
+    class SomeInstance; def name(arg); end; end
+    @controller.instance = SomeInstance.new
+    @controller.header_text.should == "Fancy Model"
+  end
 
   private
   def assert_header_text(expected_header_text, actual_header_html)

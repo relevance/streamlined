@@ -78,8 +78,8 @@ module Relevance::ActiveRecordExtensions::InstanceMethods
     if options
       options.map {|x| self.send(x)}.join(separator)
     else
-      return self.name if self.respond_to?('name')
-      return self.title if self.respond_to?('title')
+      return self.name if self.respond_to?(:name) && self.method(:name).arity == 0
+      return self.title if self.respond_to?(:title) && self.method(:title).arity == 0
       return self.id
     end
   end

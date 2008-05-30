@@ -29,10 +29,10 @@ module Streamlined::Helpers::HeaderHelper
       when "New"
         header_name = model_name.titleize
       else
-        name_exists = !instance.nil? && instance.respond_to?(:name) && !instance.name.blank?
+        name_exists = !instance.nil? && instance.respond_to?(:name) && instance.method(:name).arity == 0 && !instance.name.blank?
         header_name = name_exists ? instance.name : model_name.titleize
     end
-    header = prefix ? "#{prefix} #{header_name}" : header_name
+    [prefix, header_name].compact.join(" ")
   end
   
   def prefix_for_crud_context
