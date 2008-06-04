@@ -5,5 +5,5 @@ streamlined_unittest:
   adapter: mysql
   database: streamlined_unittest
   username: root
-  password: 
-  socket: /tmp/mysql.sock
+  password:
+

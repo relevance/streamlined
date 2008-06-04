@@ -1,0 +1,7 @@
+development:
+  adapter: sqlserver
+  mode: odbc
+  dsn: STREAMLINED_DSN
+  username: sa
+  password:
+
