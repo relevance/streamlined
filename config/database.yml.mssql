@@ -1,4 +1,4 @@
-development:
+streamlined_unittest:
   adapter: sqlserver
   mode: odbc
   dsn: STREAMLINED_DSN
