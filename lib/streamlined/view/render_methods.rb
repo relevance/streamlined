@@ -12,6 +12,7 @@ module Streamlined::View::RenderMethods
     if partial && managed_partials_include?(partial)
       unless specific_template_exists?("#{controller_path}/_#{partial}")
         options.delete(:partial)        
+        options[:use_full_path] = false
         options[:file] = generic_view("_#{partial}")
         generic_views_rendered << options[:file]
         options[:layout] = false unless options.has_key?(:layout)

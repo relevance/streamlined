@@ -172,7 +172,7 @@ module Streamlined::Controller::CrudMethods
   def export_xml
     if params[:format] == "EnhancedXML"
       @xml_file = false
-      render :template => STREAMLINED_TEMPLATE_ROOT + '/generic_views/list.rxml', :layout => false
+      render_streamlined_file '/generic_views/list.rxml', :layout => false
     else
       render :xml => @streamlined_items.to_xml
     end
@@ -182,13 +182,13 @@ module Streamlined::Controller::CrudMethods
     @xml_file = true
     headers["Content-Type"] = "text/xml"
     headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.xml\""
-    render :template => STREAMLINED_TEMPLATE_ROOT + '/generic_views/list.rxml', :layout => false
+    render_streamlined_file '/generic_views/list.rxml', :layout => false
   end
 
   def export_xml_stylesheet
     headers["Content-Type"] = "text/xml"
     headers["Content-Disposition"] = "attachment; filename=\"#{model_underscore}.xsl\""
-    render :template => STREAMLINED_TEMPLATE_ROOT + '/generic_views/stylesheet.rxml', :layout => false
+    render_streamlined_file '/generic_views/stylesheet.rxml', :layout => false
   end
   
   def exporting

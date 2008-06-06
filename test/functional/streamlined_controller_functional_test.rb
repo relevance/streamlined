@@ -357,9 +357,8 @@ Full name            </th>
   
   it "edit" do
     get :edit, :id => 1
-    assert_generic_views_rendered :form
+    assert_generic_views_rendered "_form"
     assert_response :success
-    assert_template generic_view("edit")
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
     assert_select '#sl_field_person_first_name' do
@@ -373,18 +372,17 @@ Full name            </th>
   # render methods might also need to set this variable to take advantage of 
   # this assertion.
   def assert_generic_views_rendered(*views)
-    generic_views = @response.template.generic_views_rendered
+    generic_views = @response.template.generic_views_rendered.map{|v| File.basename(v,".*")}    
     views.each do |view|
-      assert(generic_views.member?("../../../templates/generic_views/_#{view}"),
+      assert(generic_views.member?(view),
              "Should have rendered generic view #{view}, rendered generic views #{generic_views.inspect}")
     end
   end
   
   it "new" do
     get :new
-    assert_generic_views_rendered :form
+    assert_generic_views_rendered "_form"
     assert_response :success
-    assert_template generic_view("new")
     assert_not_nil assigns(:streamlined_item)
     assert assigns(:streamlined_item).valid?
     assert_select '#sl_field_person_first_name' do
@@ -412,7 +410,7 @@ Full name            </th>
     Streamlined.ui_for("Poet")
     xhr :get, :quick_add, :select_id => "foo", :model_class_name => "Poet"
     assert_response :success
-    assert_template "quick_add"
+    assert_template "quick_add.rhtml"
     assert_match %r{<label for="poet_first_name">First Name</label>}, @response.body
     assert_match %r{<label for="poet_last_name">Last Name</label>}, @response.body
   end

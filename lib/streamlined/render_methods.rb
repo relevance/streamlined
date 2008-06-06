@@ -1,15 +1,32 @@
-# render overrides shared by controllers and views
-module Streamlined::RenderMethods
-  private
+# render overrides shared by controllers and views   
+module Streamlined::GenericView
+  protected
   def generic_view(template)
-    generic_override = File.join(STREAMLINED_GENERIC_OVERRIDE_ROOT, template)
-    if File.exist?(File.join(RAILS_ROOT, 'app', 'streamlined', 'views', template + ".rhtml"))
-      generic_override
-    else
-      "#{STREAMLINED_GENERIC_VIEW_ROOT}/#{template}"
+    test = Proc.new do |*args|
+      file = File.join(*args)
+      File.exist?(file) && file
     end
+    test[STREAMLINED_GENERIC_OVERRIDE_ROOT, "#{template}.rhtml"] ||
+    test[STREAMLINED_GENERIC_OVERRIDE_ROOT, "#{template}.html.erb"] ||
+    test[STREAMLINED_GENERIC_OVERRIDE_ROOT, "#{template}.rxml"] ||
+    test[STREAMLINED_GENERIC_OVERRIDE_ROOT, "#{template}.xml.erb"] ||
+    test[STREAMLINED_GENERIC_OVERRIDE_ROOT, "#{template}.rjs"]
+    test[STREAMLINED_GENERIC_VIEW_ROOT, "#{template}.rhtml"] ||
+    test[STREAMLINED_GENERIC_VIEW_ROOT, "#{template}.html.erb"] ||
+    test[STREAMLINED_GENERIC_VIEW_ROOT, "#{template}.rxml"] ||
+    test[STREAMLINED_GENERIC_VIEW_ROOT, "#{template}.xml.erb"] ||
+    test[STREAMLINED_GENERIC_VIEW_ROOT, "#{template}.rjs"]
   end
+end
 
+module Streamlined::RenderMethods
+  include Streamlined::GenericView
+  private
+                 
+  def render_streamlined_file(file, options={})
+    render({:file => File.join(STREAMLINED_TEMPLATE_ROOT,file), :use_full_path => false}.merge(options))
+  end
+  
   def managed_views_include?(action)
     managed_views.include?(action)
   end
@@ -46,7 +63,9 @@ module Streamlined::RenderMethods
     if action && managed_views_include?(options[:action])
       unless specific_template_exists?("#{controller_path}/#{options[:action]}")
         options.delete(:action)
-        options[:template] = generic_view(action)
+        options[:layout] = true unless options.has_key?(:layout)
+        options[:use_full_path] = false
+        options[:file] = Pathname.new(generic_view(action)).expand_path.to_s
       end
     end
     options

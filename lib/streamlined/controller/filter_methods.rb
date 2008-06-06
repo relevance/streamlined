@@ -5,7 +5,7 @@ module Streamlined::Controller::FilterMethods
         @column = params[:filter_column]
         @value = params[:filter_value]
         @conditions = build_filter(:add, nil, @column, @value)
-        render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/add_filter.rjs'
+        render_streamlined_file '/shared/add_filter.rjs'
 #        if filter_session_expired
 #          render :update do |page|
 #            page.replace_html "advanced_filter", :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/new_filter', :layout => false 
@@ -25,7 +25,7 @@ module Streamlined::Controller::FilterMethods
       
       def delete_filter
         if filter_session_expired
-          render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/filter_session_expired.rjs'
+          render_streamlined_file '/shared/filter_session_expired.rjs'
 #          render :update do |page|
 #            page << "$('page_options_advanced_filter').value =  \"\" "
 #            page.replace_html "advanced_filter", ""
@@ -34,7 +34,7 @@ module Streamlined::Controller::FilterMethods
         else
           @filter_num = params[:id]
           @conditions = build_filter(:delete, @filter_num, nil, nil)
-          render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/delete_filter.rjs'
+          render_streamlined_file '/shared/delete_filter.rjs'
 #          render :update do |page|
 #            page.remove "filter_#{@filter_num}"
 #            page << "$('page_options_advanced_filter').value =  \"#{@conditions}\" "
@@ -46,7 +46,7 @@ module Streamlined::Controller::FilterMethods
       # Update a filter in repsonse to it being changed on the screen      
       def update_filter
         if filter_session_expired
-          render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/filter_session_expired.rjs'
+          render_streamlined_file '/shared/filter_session_expired.rjs'
 #          render :update do |page|
 #            page << "$('page_options_advanced_filter').value =  \"\" "
 #            page.replace_html "advanced_filter", ""
@@ -57,7 +57,7 @@ module Streamlined::Controller::FilterMethods
           @column = params["filter_column__" + @filter_num.to_s]
           @value = params["filter_value__" + @filter_num.to_s]
           @conditions = build_filter(:update, @filter_num, @column, @value)
-          render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/update_filter.rjs'
+          render_streamlined_file '/shared/update_filter.rjs'
 #          render :update do |page|
 #            page << "$('page_options_advanced_filter').value =  \"#{@conditions}\" "
 #            page.hide "filter_session_expired_msg"
@@ -67,7 +67,7 @@ module Streamlined::Controller::FilterMethods
 
       def clear_all_filters
         clear_filters
-        render :template => STREAMLINED_TEMPLATE_ROOT + '/shared/clear_all_filters.rjs'
+        render_streamlined_file '/shared/clear_all_filters.rjs'
 #        render :update do |page|
 #          page << "$('page_options_advanced_filter').value =  \"\" "
 #          page.replace_html "advanced_filter", ""

@@ -38,7 +38,8 @@ describe "Streamlined::Controller::EnumerationMethods" do
   
   it "update enumeration" do
     setup_mocks(:enumeration => ['all', 'items'])
-    should_update_and_render_nothing
+    @item.should_receive(:update_attribute).with("foo", nil).once
+    flexmock(self).should_receive(:render).with(:nothing => true).and_return('render_results').once
     assert_equal 'render_results', update_enumeration
     assert_equal 'selected_item', instance.foo
   end
@@ -63,8 +64,4 @@ private
     flexmock(self).should_receive(:render).with(render_options).and_return('render_results').once
   end
   
-  def should_update_and_render_nothing
-    @item.should_receive(:update_attribute).with(:foo, nil).once
-    flexmock(self).should_receive(:render).with(:nothing => true).and_return('render_results').once
-  end
 end

@@ -27,7 +27,7 @@ module Streamlined::Environment
     
     # Find the streamlined template root -- we use a relative path here to stay compatible with Rails 1.2.x
     def find_template_root
-      File.join(Pathname.new(STREAMLINED_ROOT).relative_path_from(Pathname.new(RAILS_ROOT+"/app/views").expand_path), "/templates")
+      File.join(STREAMLINED_ROOT, "templates")
     end
   
     # Bootstrap the Streamlined environment

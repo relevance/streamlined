@@ -86,14 +86,14 @@ describe "Streamlined::Controller::RenderMethods" do
     pretend_template_exists(false)
     options = {:partial=>"list", :other=>"1"}
     convert_partial_options(options)
-    assert_equal({:layout=>false, :template=>generic_view("_list"), :other=>"1"}, options)
+    assert_equal({:layout=>false, :file=>generic_view("_list"), :other=>"1", :use_full_path => false}, options)
   end
 
   it "convert partial options and layout for generic" do
     pretend_template_exists(false)
     options = {:partial=>"list", :other=>"1", :layout=>true}
     convert_partial_options(options)
-    assert_equal({:layout=>true, :template=>generic_view("_list"), :other=>"1"}, options)
+    assert_equal({:layout=>true, :file=>generic_view("_list"), :other=>"1", :use_full_path => false}, options)
   end
 
   it "convert partial options for specific" do

@@ -23,7 +23,7 @@
 	 <div id="left">
 	   <%= render(:partial => "shared/streamlined/side_menu")%>
 	   <% if advanced_filtering %>
-         <%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/filter' %>	   
+         <%= render_streamlined_file '/shared/_filter.rhtml' %>	   
        <% end %>
 	 </div>
 	 <div id="center">

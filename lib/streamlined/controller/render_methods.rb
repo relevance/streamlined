@@ -40,14 +40,16 @@ module Streamlined::Controller::RenderMethods
     if partial && managed_partials_include?(partial)
       unless specific_template_exists?("#{controller_path}/_#{partial}")
         options.delete(:partial)
-        options[:template] = generic_view("_#{partial}")
+        options[:file] = generic_view("_#{partial}")
+        options[:use_full_path]  = false
         options[:layout] = false unless options.has_key?(:layout)
       end
     end
     options
   end
 
-  def render(options = {}, &block) 
+  DEPRECATED_STATUS_DEFAULT = (Rails::VERSION::MAJOR == 1) ? nil : { }
+  def render(options = {}, deprecated_status = DEPRECATED_STATUS_DEFAULT, &block) 
     options = convert_all_options(options)
     super(options, &block)
   end

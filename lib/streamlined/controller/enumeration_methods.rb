@@ -23,7 +23,7 @@ module Streamlined::Controller::EnumerationMethods
   def update_enumeration
     self.instance = model.find(params[:id])
     item = (params[:item] == 'nil') ? nil : params[:item]
-    instance.update_attribute(params[:rel_name].to_sym, item)
+    instance.update_attribute(params[:rel_name], item)
     render(:nothing => true)
   end
 end

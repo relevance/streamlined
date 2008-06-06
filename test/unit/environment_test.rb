@@ -30,8 +30,8 @@ describe "StreamlinedEnvironment" do
     Streamlined::Environment.find_streamlined_root.should == path
   end
   
-  it "should use relative path for streamlined template root to stay backwards compatible" do
-    Pathname.new(Streamlined::Environment.find_template_root).should.be.relative
+  it "should use absolute path for streamlined template root" do
+    Pathname.new(Streamlined::Environment.find_template_root).should.not.be.relative
   end
   
   # avoid errors by not actually setting constants in the test

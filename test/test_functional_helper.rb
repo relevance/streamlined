@@ -4,14 +4,15 @@ require File.join(base, 'test_helper')
 require File.join(base, "lib", 'ar_helper')
 require 'active_record/fixtures'
 
+$: << File.join(base,"fixtures")
 # getting messy: Poet needed by Poem
-require "#{base}/fixtures/poet.rb"
+require "poet"
 
 # Require sample fixtures, models, and UI classes
 # .sort.each added to ensure that the list is sorted and person.rb is "required"
 # before person_ui.rb; person_ui.rb references the Person class.
 Dir.glob("#{base}/fixtures/*.rb").sort.each do |file|
-  require file
+  require File.basename(file, ".*")
 end
 
 EXPECTED_USERS = [/\d[[:punct:]]Justin[[:punct:]]Gehtland/, /\d[[:punct:]]Stu[[:punct:]]Halloway/,/\d[[:punct:]]Jason[[:punct:]]Rudolph/,/\d[[:punct:]]Glenn[[:punct:]]Vanderburg/]

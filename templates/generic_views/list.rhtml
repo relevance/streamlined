@@ -1,5 +1,5 @@
-<%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/notice' %>
-<%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/header_partials' %>
+<%= render_streamlined_file '/shared/_notice.rhtml' %>
+<%= render_streamlined_file 'shared/_header_partials.rhtml' %>
 <% form_for :page_options, @page_options, 
             :url => { :action => "list"}, :html=> {:id => :page_options, :style => 'display: none;'} do |form| %>
   <%# TODO: hide this form when JavaScript is available, then use it behind scenes%>
@@ -26,12 +26,12 @@
 	<div class="streamlined_header">
 	  <h2><%= image_tag_if_exists("#{model_table}.png", {:align => 'top'}) %> <%= model_name.titleize.pluralize %></h2>	
 	</div>
-	<%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/after_header_partials' %>
+	<%= render_streamlined_file '/shared/_after_header_partials.rhtml' %>
 	<div id="show_export">
-		<%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/generic_views/show_export' %>	
+		<%= render_streamlined_file '/generic_views/_show_export.rhtml' %>	
 	</div>
 	<div id="model_list">
-		<%= render :partial=>'list' %>
+		<%= render_streamlined_file '/generic_views/_list.rhtml' %>
 	</div>
 	<div class="#streamlined_list-footer"> 
 		<div id="controls">
@@ -43,7 +43,7 @@
 		</div>
 	</div>
 </div>
-<%= render :partial => STREAMLINED_TEMPLATE_ROOT + '/shared/footer_partials' %>
+<%= render_streamlined_file '/shared/_footer_partials.rhtml' %>
 <%= update_page_tag do |page|
     page.hide 'show_export'
   end 

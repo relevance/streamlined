@@ -36,6 +36,7 @@ EdgeRailsTestHelper.bootstrap_test_environment_for_edge if Streamlined.edge_rail
 
 class Test::Unit::TestCase
   include Relevance::RailsAssertions
+  include Streamlined::GenericView
   include Arts
         
   def reset_streamlined!
@@ -45,10 +46,6 @@ class Test::Unit::TestCase
   
   def root_node(html) 
      HTML::Document.new(html).root
-  end
-  
-  def generic_view(template)
-    "../../../templates/generic_views/#{template}"
   end
   
   def assert_difference(object, method = nil, difference = 1)

@@ -31,9 +31,9 @@ module Streamlined::FunctionalTests
   
   # have to allow for both path-to-name and name
   def assert_streamlined_template(expected, message=nil)
-    rendered =  @response.rendered_file
+    rendered = File.basename(@response.rendered_file,".*")
     msg = build_message(message, "expecting <?> but rendering with <?>", expected, rendered)
-    assert rendered =~/\b#{expected}$/, msg
+    assert_equal expected, rendered, msg
   end
   
   def test_list
