@@ -1,3 +1,5 @@
+06/16/08 - fixed partial rendering calls that had been missed during RC3 refactoring [Matthew Bass]
+
 05/07/08 - added quick_show_button option for hiding the show button on the list view [Matthew Bass]
 
 1.0RC03 -- 02/29/08

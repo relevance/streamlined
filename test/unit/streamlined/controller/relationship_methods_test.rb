@@ -31,7 +31,7 @@ describe "Streamlined::Controller::RelationshipMethods" do
     show_view = flexmock('show_view', :partial => :partial)
     relationship = flexmock('relationship', :show_view => show_view)
     flexmock(@inst) do |mock|
-      mock.should_receive(:render).with(:partial => :partial, :locals => {:item => :item, :relationship => relationship, :streamlined_def => show_view}).once
+      mock.should_receive(:render).with(:file => :partial, :use_full_path => false, :locals => {:item => :item, :relationship => relationship, :streamlined_def => show_view}).once
     end
     @inst.render_show_view_partial(relationship, :item)
   end
@@ -43,7 +43,7 @@ describe "Streamlined::Controller::RelationshipMethods" do
       mock.should_receive(:model).and_return(flexmock('model', :find => nil))
       mock.should_receive(:context_column).and_return(rel_type).once
       mock.should_receive(:set_items_and_all_items).with(rel_type).once
-      expected_render_args = { :partial => 'partial', :locals => { :relationship => rel_type }}
+      expected_render_args = { :file => 'partial', :use_full_path => false, :locals => { :relationship => rel_type }}
       mock.should_receive(:render).with(expected_render_args).once
     end
     @inst.edit_relationship

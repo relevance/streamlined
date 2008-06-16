@@ -7,7 +7,8 @@ module Streamlined::Controller::RelationshipMethods
    @rel_name = params[:relationship]
    relationship = context_column(@rel_name)
    set_items_and_all_items(relationship)
-   render(:partial => relationship.edit_view.partial, :locals => {:relationship => relationship})
+   render(:file => relationship.edit_view.partial, :use_full_path => false,
+          :locals => {:relationship => relationship})
  end
 
  # Show's the relationship's configured +Show+ view, 
@@ -19,9 +20,9 @@ module Streamlined::Controller::RelationshipMethods
  end
 
  def render_show_view_partial(relationship, item)
-   render(:partial => relationship.show_view.partial, :locals => {:item => item, 
-                                            :relationship => relationship, 
-                                            :streamlined_def => relationship.show_view})
+   render(:file => relationship.show_view.partial, :use_full_path => false,
+          :locals => {:item => item, :relationship => relationship,
+                      :streamlined_def => relationship.show_view})
  end
 
  # Add new items to the given relationship collection. Used by the #membership view, as 

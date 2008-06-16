@@ -22,8 +22,8 @@ module Streamlined::View::EditViews
   
   # Renders an Ajax-enabled table in a JavaScript window.
   class Window < Streamlined::View::Base
-    def partial      
-      "../../vendor/plugins/streamlined/templates/relationships/edit_views/inset_table"
+    def partial
+      File.join(STREAMLINED_TEMPLATE_ROOT, "relationships/edit_views/_inset_table.rhtml")
     end
   end
   
@@ -44,15 +44,11 @@ module Streamlined::View::EditViews
   
   # Like Membership, but with two distinct groups of checkboxes and an autofilter field
   class FilterSelect < Streamlined::View::Base
-  
     def render_on_update(rel_name, id)
       @rel_name = rel_name
       @current_id = id
       "update_filter_select"
-      # page.replace_html "rel_#{rel_name}_#{id}_unselected", :partial => '../../vendor/plugins/streamlined/templates/relationships/edit_views/filter_select/unselected_items'
-      # page.replace_html "rel_#{rel_name}_#{id}_selected", :partial => '../../vendor/plugins/streamlined/templates/relationships/edit_views/filter_select/selected_items'
     end
-    
   end
   
 end

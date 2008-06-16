@@ -90,9 +90,8 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   end
   
   def render_td_show(view, item)
-    view.render(:partial => show_view.partial, 
-                :locals => { :item => item, :relationship => self, 
-                :streamlined_def => show_view })
+    view.render(:file => show_view.partial, :use_full_path => false,
+                :locals => { :item => item, :relationship => self, :streamlined_def => show_view })
   end
   
   def render_td_list(view, item)

@@ -15,6 +15,6 @@ describe "Streamlined::View::Base" do
   end
   
   it "partial" do
-    assert_equal "../../vendor/plugins/streamlined/templates/relationships/view/base", @base.partial
+    assert_equal "#{STREAMLINED_TEMPLATE_ROOT}/relationships/view/_base.rhtml", @base.partial
   end
 end

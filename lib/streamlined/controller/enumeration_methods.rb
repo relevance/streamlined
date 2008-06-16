@@ -7,7 +7,8 @@ module Streamlined::Controller::EnumerationMethods
     rel_type = model_ui.scalars[@enumeration_name.to_sym]
     @all_items = rel_type.enumeration.to_2d_array
     @selected_item = instance.send(@enumeration_name)
-    render(:partial => rel_type.edit_view.partial, :locals => {:item => instance, :relationship => rel_type})
+    render(:file => rel_type.edit_view.partial, :use_full_path => false,
+           :locals => {:item => instance, :relationship => rel_type})
   end
 
   # Show's the enumeration's configured +Show+ view, 
@@ -15,7 +16,8 @@ module Streamlined::Controller::EnumerationMethods
   def show_enumeration
     self.instance = model.find(params[:id])
     rel_type = model_ui.scalars[params[:enumeration].to_sym]
-    render(:partial => rel_type.show_view.partial, :locals => {:item => instance, :relationship => rel_type})
+    render(:file => rel_type.show_view.partial, :use_full_path => false,
+           :locals => {:item => instance, :relationship => rel_type})
   end
 
   # Select an item in the given enumeration. Used by the #enumerable view, as 

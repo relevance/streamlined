@@ -8,7 +8,7 @@ xml.tag! Inflector.pluralize(model_name) do
       @export_columns.each do |column|
         if column.is_displayable_in_context?(self, item)
           if column.is_a?(Streamlined::Column::Association)
-            contents =  render(:partial => column.show_view.partial, 
+            contents =  render(:file => column.show_view.partial, :use_full_path => false, 
                 :locals => { :item => item, :relationship => column, 
                 :streamlined_def => column.show_view })
             # strip out html tags

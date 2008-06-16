@@ -52,7 +52,7 @@ private
     @rel_type = flexmock(:enumeration => options[:enumeration], :edit_view => edit_view, :show_view => show_view)
     
     (model = flexmock).should_receive(:find).with('123').and_return(@item).once
-    (model_ui = flexmock).should_receive(:scalars).and_return(:foo => @rel_type).once
+    (model_ui = flexmock).stubs(:scalars).returns(:foo => @rel_type)
     
     flexmock(self, :model => model)
     flexmock(self, :model_ui => model_ui)
@@ -60,7 +60,7 @@ private
   end
   
   def should_render_with_partial(partial)
-    render_options = { :partial => partial, :locals => { :item => @item, :relationship => @rel_type }}
+    render_options = { :file => partial, :use_full_path => false, :locals => { :item => @item, :relationship => @rel_type }}
     flexmock(self).should_receive(:render).with(render_options).and_return('render_results').once
   end
   

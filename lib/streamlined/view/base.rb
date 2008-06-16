@@ -25,7 +25,8 @@ class Streamlined::View::Base
   # Returns the path to the partial that will be used to render this relationship type.
   def partial
     mod = self.class.name.split("::")[-2]
-"../../vendor/plugins/streamlined/templates/relationships/#{mod.underscore}/#{Inflector.underscore(Inflector.demodulize(self.class.name))}"
+    partial_name = Inflector.underscore(Inflector.demodulize(self.class.name))
+    File.join(STREAMLINED_TEMPLATE_ROOT, "relationships/#{mod.underscore}/_#{partial_name}.rhtml")
   end
     
 end
