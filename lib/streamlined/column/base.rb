@@ -6,7 +6,7 @@ class Streamlined::Column::Base
   include ERB::Util
   
   attr_accessor :human_name, :link_to, :popup, :parent_model, :wrapper, :additional_column_pairs,
-                :additional_includes, :filter_column
+                :additional_includes, :filter_column, :help
   
   attr_with_default :human_name_explicitly_set, 'false'
   attr_with_default :read_only, 'false'
@@ -112,10 +112,11 @@ class Streamlined::Column::Base
   
   def render_td(view, item)
     if read_only
-      render_td_show(view, item)
+      result = render_td_show(view, item)
     else
-      send "render_td_#{view.crud_context}", view, item
+      result = send("render_td_#{view.crud_context}", view, item)
     end
+    wrap(result)
   end
   
   [:show, :edit, :list, :new].each do |meth|
@@ -192,6 +193,12 @@ class Streamlined::Column::Base
         x << render_td(view, item)
       end
     end
+  end
+  
+  def append_help(html)
+    x = Builder::XmlMarkup.new
+    x.div(:class => "streamlined_help") { x << help } unless help.blank?
+    html << x.target!
   end
   
   def is_displayable_in_context?(view, item)

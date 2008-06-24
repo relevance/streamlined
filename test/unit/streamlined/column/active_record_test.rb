@@ -89,7 +89,7 @@ describe "Streamlined::Column::ActiveRecord" do
   end
   
   it "render td edit" do
-    (view = flexmock).should_receive(:input).with('model', 'column', {}).once
+    (view = mock).expects(:input).with('model', 'column', {}).returns('input').once
     @ar.render_td_edit(view, 'item')
   end
   
@@ -101,14 +101,15 @@ describe "Streamlined::Column::ActiveRecord" do
   
   it "render td edit with checkbox" do
     @ar.check_box = true
-    (view = flexmock).should_receive(:check_box).with('model', 'column', {}).once
+    (view = mock).expects(:check_box).with('model', 'column', {}).returns('input').once
     @ar.render_td_edit(view, 'item')
   end
   
-  it "render td edit with wrapper" do
-    @ar.wrapper = Proc.new { |c| "<<<#{c}>>>" }
-    (view = flexmock).should_receive(:input).with('model', 'column', {}).and_return('result').once
-    assert_equal '<<<result>>>', @ar.render_td_edit(view, 'item')
+  it "render td edit with help" do
+    view = stub(:input => "content")
+    @ar.help = "This is an optional field"
+    expected = "content<div class=\"streamlined_help\">This is an optional field</div>"
+    @ar.render_td_edit(view, 'item').should == expected
   end
   
   it "render td edit with html options" do

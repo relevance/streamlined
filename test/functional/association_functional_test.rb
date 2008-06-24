@@ -88,25 +88,6 @@ describe "AssociationFunctional" do
     end                                       
     assert_people_quick_add_link(html)                          
   end
-
-  it "render td edit with wrapper set" do
-    stock_controller_and_view              
-    @association = Association.new(Poem.reflect_on_association(:poet), Poem, :inset_table, :count) 
-    @association.wrapper = Proc.new { |c| "<div id='wrapper'>#{c}</div>" }
-    html = @association.render_td_edit(@view, poems(:limerick))
-    assert_select root_node(html), "div" do 
-      assert_select "select[id=poem_poet_id]" do
-        assert_select "option[value=]", "Unassigned"
-        assert_select "option[value=1]", "1"
-        assert_select "option[value=2][selected=selected]", "2"
-      end                                       
-      assert_select "a" do
-        assert_select "[href=?]", %r{/people/quick_add\?.*}  
-        assert_select "[href=?]", %r{.*select_id=poem_poet_id.*}
-        assert_select "[href=?]", %r{.*model_class_name=Poet.*}
-      end                
-    end
-  end 
   
   it "render td edit with options for select" do
     stock_controller_and_view

@@ -133,7 +133,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
       result = view.select(model_underscore, name_as_id, choices, { :selected => selected_choice }, html_options)
       result += render_quick_add(view) if should_render_quick_add?(view)
     end
-    wrap(result)
+    append_help(result)
   end 
   alias :render_td_new :render_td_edit
   

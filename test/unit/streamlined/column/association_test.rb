@@ -156,6 +156,14 @@ describe "Streamlined::Column::Association" do
     assert_equal "select", @association.render_td_edit(view, item)
   end
   
+  it "render td edit with help" do
+    flexmock(SomeClass).stubs(:custom_options).returns([:foo])
+    @association.options_for_select = :custom_options
+    @association.help = "This is an optional field"
+    expected = "select<div class=\"streamlined_help\">This is an optional field</div>"
+    @association.render_td_edit(*view_and_item_mocks_for_render_td_edit).should == expected
+  end
+  
   private
   def view_and_item_mocks(view_attrs={})
     view = flexmock(:render => 'render', :controller_path => 'controller_path', :link_to_function => 'link')
@@ -164,9 +172,9 @@ describe "Streamlined::Column::Association" do
   end
 
   def view_and_item_mocks_for_render_td_edit(options={:unassigned_value => 'Unassigned'})
-    item = flexmock(:respond_to? => true, :some_name => nil)
-    (view = flexmock).should_receive(:select).with('model', 'some_name_id', [[options[:unassigned_value], nil], :foo], { :selected => nil }, {}).and_return("select").once
-    flexmock(@association) do |mock|
+    item = flexmock("item", :respond_to? => true, :some_name => nil)
+    (view = flexmock("view")).should_receive(:select).with('model', 'some_name_id', [[options[:unassigned_value], nil], :foo], { :selected => nil }, {}).and_return("select").once
+    flexmock("association", @association) do |mock|
       mock.should_receive(:column_can_be_unassigned?).with(@model, "some_name").and_return(true).once
       mock.should_receive(:has_many? => false).once
       mock.should_receive(:belongs_to? => true).once

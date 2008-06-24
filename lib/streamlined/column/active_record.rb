@@ -104,7 +104,7 @@ class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
       options = custom_value ? html_options.merge(:value => custom_value) : html_options
       result = view.input(model_underscore, name, options)
     end
-    wrap(result)
+    append_help(result)
   end
   alias :render_td_new :render_td_edit
   

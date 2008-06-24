@@ -74,6 +74,13 @@ describe "Streamlined::Column::Base" do
                       "The set of render_ methods has changed. Make sure the semantics of renderer= are correct, then fix this test to pass again."
   end
   
+  it "render td with wrapper" do
+    view = stub(:crud_context => :edit)
+    item = stub(:send => "content")
+    @addition.wrapper = Proc.new { |c| "<<<#{c}>>>" }
+    assert_equal '<<<content>>>', @addition.render_td(view, item)
+  end
+  
   it "renderer block that does not yield" do
     @addition.render_wrapper = Proc.new {|old_meth, *args| "#{old_meth.name} rendered!"}
     @addition.renderers.each do |renderer|

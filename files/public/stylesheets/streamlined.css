@@ -12,6 +12,7 @@ body        { margin: 0; font-family: "Lucida Grande", Verdana, Arial;}
 #ft         { background-color: #7594A1; margin-top: -16px; }
 .clear      { clear:  both;   overflow:  hidden;  width:  1px;   height:  1px;  margin:   0  -1px  -1px  0;   border:  0;  padding:   0;  font-size:  0;  line-height:   0;  }
 #streamlined_breadcrumb { font-size: 80%; font-weight: bold; margin-top: 5px; margin-bottom: 5px;}
+.streamlined_help { font-size: 80%; }
 
 /*----------------------------------*/
 
