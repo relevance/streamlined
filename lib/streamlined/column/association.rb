@@ -18,7 +18,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
   attr_accessor :options_for_select
   attr_with_default :quick_add, 'true'
   delegates :name, :class_name, :to => :underlying_association
-  delegates :belongs_to?, :has_many?, :has_and_belongs_to_many?, :to => :underlying_association 
+  delegates :belongs_to?, :has_many?, :has_and_belongs_to_many?, :primary_key_name, :to => :underlying_association 
   
   def initialize(assoc, parent_model, edit, show)
     @underlying_association = assoc
@@ -130,7 +130,7 @@ class Streamlined::Column::Association < Streamlined::Column::Base
       choices = options_for_select ? custom_options_for_select(view) : standard_options_for_select
       choices.unshift(unassigned_option) if column_can_be_unassigned?(parent_model, name)
       selected_choice = item.send(name).id if item.send(name)
-      result = view.select(model_underscore, name_as_id, choices, { :selected => selected_choice }, html_options)
+      result = view.select(model_underscore, primary_key_name, choices, { :selected => selected_choice }, html_options)
       result += render_quick_add(view) if should_render_quick_add?(view)
     end
     append_help(result)

@@ -9,6 +9,7 @@ describe "Streamlined::Column::Association" do
     @ar_assoc = flexmock(:name => 'some_name', :class_name => 'SomeClass')
     @model = flexmock(:name => 'model')
     @association = Association.new(@ar_assoc, @model, :inset_table, :count)
+    @association.stubs(:primary_key_name).returns("some_name_id")
   end
   
   # begin stub classes
