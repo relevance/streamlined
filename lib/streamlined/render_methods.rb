@@ -45,11 +45,15 @@ module Streamlined::RenderMethods
   
   # Returns true if the given template exists under <tt>app/views</tt>.
   # The template name can optionally include an extension.  If an extension
-  # is not provided, <tt>rhtml</tt> will be used by default.
+  # is not provided, <tt>rhtml</tt> and <tt>.html.haml</tt> will be used by default.
   def specific_template_exists?(template)
     template, extension = template.split('.')
     path = File.join(RAILS_ROOT, "app/views", template)
-    File.exist?("#{path}.#{extension || 'rhtml'}")
+    if extension.blank?
+      File.exist?("#{path}.rhtml") || File.exist?("#{path}.html.haml")
+    else
+      File.exist?("#{path}.#{extension}")
+    end
   end
   
   def convert_default_options(options)

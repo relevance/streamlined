@@ -6,6 +6,7 @@ describe "Streamlined::RenderMethods#specific_template_exists" do
   
   it "specific template exists?" do
     assert specific_template_exists?("templates/template")
+    assert specific_template_exists?("templates/haml_template")
     assert specific_template_exists?("templates/template.rhtml")
     assert specific_template_exists?("templates/template.rxml")
     assert !specific_template_exists?("templates/template.rpdf")
