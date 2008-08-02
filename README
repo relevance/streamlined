@@ -43,3 +43,6 @@ To initialize your local database and run the tests, execute:
 
 If database creation task fails, make sure your config/database.yml file is configured properly
 for your local installation of MySQL.
+
+Clone or view the Streamlined Source at: http://github.com/relevance/streamlined/
+Clone or view some sample apps as:       http://github.com/relevance/streamlined_samples/
