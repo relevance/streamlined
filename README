@@ -1,7 +1,6 @@
 Streamlined - http://streamlinedframework.org/
 ===================
 
-
 Streamlined allows you to quickly generate useful user interfaces, declaratively.
 
 Streamlined is not a code generator. It relies on you having an existing database schema,
