@@ -22,15 +22,15 @@ class Streamlined::Context::ControllerContext
   end
   
   def model_symbol
-    Inflector.underscore(model_name).to_sym
+    ActiveSupport::Inflector.underscore(model_name).to_sym
   end
   
   def model_table
-    Inflector.tableize(model_name)
+    ActiveSupport::Inflector.tableize(model_name)
   end
   
   def model_underscore
-    Inflector.underscore(model_name)
+    ActiveSupport::Inflector.underscore(model_name)
   end
     
   def model_ui

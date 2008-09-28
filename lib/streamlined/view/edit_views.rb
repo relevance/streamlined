@@ -1,7 +1,7 @@
 module Streamlined::View::EditViews
   def self.create_relationship(sym, options = {})
     raise ArgumentError unless Symbol === sym
-    Class.class_eval(Inflector.camelize(sym.to_s)).new options
+    Class.class_eval(ActiveSupport::Inflector.camelize(sym.to_s)).new options
   end  
 
   # Factory method for creating a relationship View given the name of a view.

@@ -9,7 +9,7 @@
 <p> 
 <% if show_columns_to_export -%>
   <% model_ui.list_columns.each do |column| -%>
-    <%= content_tag(:label, check_box_tag("export_columns[#{column.name}]", 1, !export_config.default_deselected_column?(column.name.to_sym)) + "&nbsp;#{Inflector.humanize(column.name)}") %>
+    <%= content_tag(:label, check_box_tag("export_columns[#{column.name}]", 1, !export_config.default_deselected_column?(column.name.to_sym)) + "&nbsp;#{ActiveSupport::Inflector.humanize(column.name)}") %>
   <% end -%>  
 <% end -%>  
 </p>

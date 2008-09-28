@@ -1,7 +1,7 @@
 xml.instruct!
 xml.instruct! :"xml-stylesheet", :type => "text/xsl", :href => "#{model_underscore}.xsl" if @xml_file
 
-xml.tag! Inflector.pluralize(model_name) do
+xml.tag! ActiveSupport::Inflector.pluralize(model_name) do
   for item in @streamlined_items 
     xml.tag! model_name do
       # model columns

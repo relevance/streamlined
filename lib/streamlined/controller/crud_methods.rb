@@ -38,7 +38,7 @@ module Streamlined::Controller::CrudMethods
     end
 
     self.instance_variable_set("@#{model_name.variableize}_pages", model_pages)
-    self.instance_variable_set("@#{Inflector.tableize(model_name)}", models)
+    self.instance_variable_set("@#{ActiveSupport::Inflector.tableize(model_name)}", models)
     @streamlined_items = models
     @streamlined_item_pages = model_pages
     find_columns_for_export if exporting
@@ -181,7 +181,7 @@ module Streamlined::Controller::CrudMethods
   def export_xml_file 
     @xml_file = true
     headers["Content-Type"] = "text/xml"
-    headers["Content-Disposition"] = "attachment; filename=\"#{Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.xml\""
+    headers["Content-Disposition"] = "attachment; filename=\"#{ActiveSupport::Inflector.tableize(model_name)}_#{Time.now.strftime('%Y%m%d')}.xml\""
     render_streamlined_file '/generic_views/list.rxml', :layout => false
   end
 

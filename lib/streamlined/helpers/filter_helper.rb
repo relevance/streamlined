@@ -16,7 +16,7 @@ module Streamlined::Helpers::FilterHelper
         if model_ui.column(association_name, :crud_context => :list).show_view.fields
           model_ui.column(association_name, :crud_context => :list).show_view.fields.each do |field|
             if model.reflect_on_association(association_name).klass.column_names.index(field.to_s) 
-              filter_columns[Inflector.humanize(association_name.to_s) + " (" + Inflector.humanize(field) + ")"] = "rel::" + association_name.to_s + "::" + "#{field}"
+              filter_columns[ActiveSupport::Inflector.humanize(association_name.to_s) + " (" + ActiveSupport::Inflector.humanize(field) + ")"] = "rel::" + association_name.to_s + "::" + "#{field}"
             end
           end
         else  
@@ -24,7 +24,7 @@ module Streamlined::Helpers::FilterHelper
           no_name_yet = true
           names.each do |name|
             if no_name_yet && model.reflect_on_association(association_name).klass.column_names.index(name) 
-              filter_columns[Inflector.humanize(association_name.to_s) + " (" + Inflector.humanize(name) + ")"] = "rel::" + association_name.to_s + "::" + "#{name}"
+              filter_columns[ActiveSupport::Inflector.humanize(association_name.to_s) + " (" + ActiveSupport::Inflector.humanize(name) + ")"] = "rel::" + association_name.to_s + "::" + "#{name}"
               no_name_yet = false
             end
           end    
